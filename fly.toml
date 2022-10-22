@@ -1,4 +1,4 @@
-app = "anveio-e2d4"
+app = "anveio"
 kill_signal = "SIGINT"
 kill_timeout = 5
 processes = [ ]
