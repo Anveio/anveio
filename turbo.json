@@ -1,0 +1,68 @@
+{
+  "$schema": "https://turborepo.org/schema.json",
+  "pipeline": {
+    "build": {
+      "dependsOn": ["generate:css", "build:remix", "build:server"]
+    },
+    "build:remix": {
+      "outputs": ["build/**"]
+    },
+    "build:server": {
+      "outputs": ["build/server.js"]
+    },
+    "lint": {
+      "inputs": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"],
+      "outputs": []
+    },
+    "setup": {
+      "inputs": ["prisma/**"],
+      "outputs": ["prisma/migrations/**", "postgres-data/**"]
+    },
+    "start": {
+      "dependsOn": ["build"],
+      "inputs": ["build/server.js"]
+    },
+    "start:mocks": {
+      "dependsOn": ["build"],
+      "inputs": ["build/server.js", "mocks/**"]
+    },
+    "dev": {
+      "dependsOn": ["dev:build", "dev:css", "dev:remix", "dev:server"]
+    },
+    "dev:build": {
+      "outputs": ["build/server.js"]
+    },
+    "dev:css": {
+      "dependsOn": ["generate:css"]
+    },
+    "dev:remix": {
+      "outputs": ["build/**"]
+    },
+    "dev:server": {
+      "dependsOn": ["build:server"],
+      "inputs": ["./node_modules/dotenv/config", "./mocks/build/server.js"]
+    },
+    "generate:css": {
+      "outputs": ["./app/styles/tailwind.css"],
+      "inputs": ["./tailwind.config.js"]
+    },
+    "docker": {
+      "inputs": ["Dockerfile", "build/**"]
+    },
+    "test": {
+      "inputs": [
+        "./app/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}",
+        "./test/setup-test-env.ts"
+      ]
+    },
+    "test:e2e:dev": {
+      "dependsOn": ["dev", "build"]
+    },
+    "typecheck": {
+      "inputs": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"]
+    },
+    "validate": {
+      "dependsOn": ["test", "lint", "typecheck", "test:e2e:run"]
+    }
+  }
+}
