@@ -56,13 +56,13 @@
       ]
     },
     "test:e2e:dev": {
-      "dependsOn": ["dev", "build"]
+      "dependsOn": ["dev"]
+    },
+    "test:e2e:run": {
+      "dependsOn": ["build"]
     },
     "typecheck": {
       "inputs": ["remix.env.d.ts", "**/*.ts", "**/*.tsx"]
-    },
-    "validate": {
-      "dependsOn": ["test", "lint", "typecheck", "test:e2e:run"]
     }
   }
 }
