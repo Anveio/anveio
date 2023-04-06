@@ -1,5 +1,5 @@
 export * from "./ExampleStack"
 export * from "./ChatStack"
-export * from "./BackendStack"
+export * from "./ApiStack"
 export * from "./WebsiteStack"
 export * from "./GitHubContinuousIntegrationStack"
