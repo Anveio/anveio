@@ -1,3 +1,3 @@
 import { nextAuthHandler } from "@/lib/features/next-auth";
 
-export { nextAuthHandler as GET, nextAuthHandler as POST };
+export default nextAuthHandler;

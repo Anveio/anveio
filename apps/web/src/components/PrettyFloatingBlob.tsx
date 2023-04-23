@@ -1,7 +1,7 @@
 export function PrettyFloatingBlob() {
   return (
     <div
-      className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
+      className="absolute pointer-events-none inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80"
       aria-hidden="true"
     >
       <div
@@ -18,7 +18,7 @@ export function PrettyFloatingBlob() {
 export function PrettyFloatingBlob2() {
   return (
     <div
-      className="absolute animate-pulse inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
+      className="absolute pointer-events-none animate-pulse inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]"
       aria-hidden="true"
     >
       <div
