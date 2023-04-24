@@ -1,7 +1,7 @@
 "use client";
 
 import { getServerSession } from "next-auth";
-import { redirect } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 
 import { Routes } from "@/lib/constants/routes";
 import Link from "next/link";
@@ -12,12 +12,8 @@ const secondaryNavigation = [
   { name: "Settings", href: Routes.SETTINGS, current: false },
 ];
 
-export function SettingsSecondaryNavigation({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  const location = useRouter();
+export function SettingsSecondaryNavigation() {
+  const pathname = usePathname();
 
   return (
     <header className="border-b border-white/5">
@@ -31,11 +27,7 @@ export function SettingsSecondaryNavigation({
             <li key={item.name}>
               <Link
                 href={item.href}
-                className={
-                  location.pathname.startsWith(item.href)
-                    ? "text-indigo-400"
-                    : ""
-                }
+                className={pathname === item.href ? "text-indigo-400" : ""}
               >
                 {item.name}
               </Link>

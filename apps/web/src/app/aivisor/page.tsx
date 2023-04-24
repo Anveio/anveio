@@ -3,7 +3,7 @@ export default function Aivisor() {
     <>
       <main className="py-10">
         <h1 className="mt-6 text-center text-4xl font-bold leading-9 tracking-tight text-gray-900">
-          Avisor Coming Soon
+          Aivisor Coming Soon
         </h1>
       </main>
     </>
