@@ -1,31 +1,23 @@
 "use client";
 
+import { Routes, TEAMS, TOP_LEVEL_NAVIGATION } from "@/lib/constants/routes";
+import { useMobileNavStore } from "@/lib/features/mobile-nav/state";
 import { Dialog, Transition } from "@headlessui/react";
 import {
-  CalendarIcon,
   Cog6ToothIcon,
-  FolderIcon,
-  HomeIcon,
-  UsersIcon,
-  XMarkIcon,
+  XMarkIcon
 } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 import CompanyLogoWhite from "../../../public/company-logo-white.svg";
-import { Routes, TEAMS, TOP_LEVEL_NAVIGATION } from "@/lib/constants/routes";
 
 export function MobileSidebar() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
-
+  const { isOpen, close } = useMobileNavStore();
   return (
-    <Transition.Root show={sidebarOpen} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-50 lg:hidden"
-        onClose={setSidebarOpen}
-      >
+    <Transition.Root show={isOpen} as={Fragment}>
+      <Dialog as="div" className="relative z-50 lg:hidden" onClose={close}>
         <Transition.Child
           as={Fragment}
           enter="transition-opacity ease-linear duration-300"
@@ -62,7 +54,7 @@ export function MobileSidebar() {
                   <button
                     type="button"
                     className="-m-2.5 p-2.5"
-                    onClick={() => setSidebarOpen(false)}
+                    onClick={close}
                   >
                     <span className="sr-only">Close sidebar</span>
                     <XMarkIcon

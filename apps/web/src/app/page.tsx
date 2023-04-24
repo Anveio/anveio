@@ -13,7 +13,7 @@ export default async function Home() {
         <Pricing />
         <Faqs /> */}
       </main>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
