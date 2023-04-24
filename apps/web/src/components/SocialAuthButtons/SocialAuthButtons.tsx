@@ -32,13 +32,13 @@ export function SignInWithGitHubButton() {
 export function SignInWithGoogleButton() {
   return (
     <button
-      className="flex drop-shadow-md w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
+      className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-1.5 text-white drop-shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
       onClick={async () => {
         await signIn("google");
       }}
     >
       <Image alt="" height={20} width={20} src={SignInWithGoogleIcon}></Image>
-      <span className="text-sm text-black font-semibold leading-6">Google</span>
+      <span className="text-sm font-semibold leading-6 text-black">Google</span>
     </button>
   );
 }
@@ -46,12 +46,12 @@ export function SignInWithGoogleButton() {
 export function SignOutButton() {
   return (
     <button
-      className="flex w-full items-center justify-center gap-3 rounded-md bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
+      className="flex items-center justify-center gap-3 rounded-md bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
       onClick={async () => {
         await signOut();
       }}
     >
-      <span className="text-sm font-semibold leading-6">Sign out</span>
+      <span className="text-sm font-semibold leading-6">Log out</span>
     </button>
   );
 }

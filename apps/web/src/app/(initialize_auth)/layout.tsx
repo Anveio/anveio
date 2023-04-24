@@ -3,15 +3,23 @@ import {
   PrettyFloatingBlob2,
 } from "@/components/PrettyFloatingBlob";
 import { TopNavigationBar } from "@/components/TopNavigationBar";
+import { NEXT_AUTH_HANDLER_OPTIONS } from "@/lib/features/next-auth";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
-export default function AuthLayout({
+export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await getServerSession(NEXT_AUTH_HANDLER_OPTIONS);
+
+  if (session) {
+    return redirect("/");
+  }
+
   return (
     <>
-      <TopNavigationBar />
       <PrettyFloatingBlob />
       <PrettyFloatingBlob2 />
       <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
