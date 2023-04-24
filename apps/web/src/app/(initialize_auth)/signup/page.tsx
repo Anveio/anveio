@@ -6,6 +6,10 @@ import {
 import Link from "next/link";
 import React from "react";
 
+export const metadata = {
+  title: "Jipitty - Sign Up",
+};
+
 export default async function Auth() {
   return (
     <>
