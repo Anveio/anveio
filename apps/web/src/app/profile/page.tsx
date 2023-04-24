@@ -31,8 +31,8 @@ export default async function Profile() {
                 <Image
                   src={session.user?.image ?? ""}
                   alt=""
-                  width={24}
-                  height={24}
+                  width={96}
+                  height={96}
                   className="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
                 />
                 <div>
@@ -81,6 +81,7 @@ export default async function Profile() {
                     type="text"
                     name="last-name"
                     id="last-name"
+                    disabled
                     defaultValue={session.user?.email ?? undefined}
                     autoComplete="family-name"
                     className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
@@ -97,10 +98,13 @@ export default async function Profile() {
                 </label>
                 <div className="mt-2">
                   <input
+                    readOnly={true}
+                    disabled
                     id="email"
                     name="email"
                     type="email"
                     autoComplete="email"
+                    defaultValue={session.user?.email ?? undefined}
                     className="block w-full rounded-md border-0 bg-white/5 py-1.5 text-white shadow-sm ring-1 ring-inset ring-white/10 focus:ring-2 focus:ring-inset focus:ring-indigo-500 sm:text-sm sm:leading-6"
                   />
                 </div>

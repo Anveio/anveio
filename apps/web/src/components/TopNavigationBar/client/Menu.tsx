@@ -21,8 +21,10 @@ export function TopNavigationBarMenu(props: Props) {
         <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
           <span className="sr-only">Open user menu</span>
           <Image
+            width={32}
+            height={32}
             className="h-8 w-8 rounded-full"
-            src={DefaultProfilePicture}
+            src={props.session.user?.image ?? ""}
             alt=""
           />
         </Menu.Button>
