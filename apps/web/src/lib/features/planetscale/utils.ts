@@ -37,7 +37,102 @@ const generatePasswordHash = async (password: string) => {
   return hashedPassword;
 };
 
-export const createUser = async () => {};
+export const getUserByEmailAddress = async (
+  emailAddress: string,
+  tx?: Transaction
+) => {
+  const validatedEmail = z.string().email().parse(emailAddress);
+  const { rows } = await (tx || GLOBAL_DATABASE_CONNECTION).execute(
+    `SELECT id, username, email FROM users WHERE email = ? LIMIT 1`,
+    [validatedEmail]
+  );
+
+  return rows[0] as [number, string | null, string] | undefined;
+};
+
+export const createUserWithOAuthToken = async (
+  emailAddress: string | undefined | null,
+  oAuthToken: string | undefined | null,
+  oAuthProvider: string | undefined | null
+) => {
+  console.log("IN HERE");
+  const validatedEmail = z.string().email().parse(emailAddress);
+  const validatedOAuthToken = z.string().parse(oAuthToken);
+  const validatedOAuthProvider = z.string().parse(oAuthProvider);
+
+  await GLOBAL_DATABASE_CONNECTION.transaction(async (tx) => {
+    const user = await getUserByEmailAddress(validatedEmail, tx);
+
+    if (user) {
+      const [userId] = user;
+      /**
+       * Check if this token exists in our DB for this user already
+       */
+      const maybeExistingToken = await tx.execute(
+        `
+        SELECT id, expires_at
+        FROM oauth_tokens
+        WHERE user_id = ?
+        AND provider = ?
+        AND access_token = ?`,
+        [userId, oAuthProvider, oAuthToken]
+      );
+
+      if (maybeExistingToken.rows.length === 0) {
+        const [existingOauthTokenId, expires_at] = maybeExistingToken
+          .rows[0] as [number, Date];
+
+        /**
+         * Expire the user's oauth token
+         */
+        await tx.execute(
+          `UPDATE oauth_tokens SET expires_at = NOW() WHERE id = ?`,
+          [Number(existingOauthTokenId)]
+        );
+      }
+
+      /**
+       * Create a new oauthTokenfor the user
+       */
+      await tx.execute(
+        `INSERT INTO oauth_tokens (user_id, provider, token, token_type, expires_at) 
+       VALUES (?, ?, ?, 'Bearer', NULL) ON DUPLICATE KEY UPDATE token = '?';`,
+        [
+          userId,
+          validatedOAuthProvider,
+          validatedOAuthToken,
+          validatedOAuthToken,
+        ]
+      );
+    } else {
+      /**
+       * Create the user and the oauth token for them
+       */
+      console.log("Creating new User");
+      await tx.execute(
+        `
+        INSERT INTO users (email, password_hash) SELECT ?, NULL;
+        SET @user_id = LAST_INSERT_ID();
+        INSERT INTO oauth_tokens (user_id, provider, access_token, refresh_token, token_type)
+        VALUES (
+          (SELECT id FROM users WHERE email = ?),
+          ?,
+          ?,
+          ?,
+          'Bearer',
+        )
+        `,
+        [validatedEmail, validatedOAuthProvider, validatedOAuthToken]
+      );
+    }
+  });
+};
+
+export const createOauthTokenForUserByEmail = (
+  email: string,
+  oauthProviderName: string,
+  access_token: string
+) => {};
 
 export const checkIfPasswordIsValidForUserByEmail = async (
   email: string,
@@ -52,10 +147,7 @@ export const checkIfPasswordIsValidForUserByEmail = async (
 
   const passwordHashField: unknown = rows[0].at(0) as unknown;
 
-  console.log("passwordHashField", passwordHashField);
-
   const password_hash = z.string().parse(passwordHashField);
 
   return verify(password_hash, password);
 };
-

@@ -22,11 +22,13 @@ export default async function RootLayout({
 }) {
   const session = await getServerSession(NEXT_AUTH_HANDLER_OPTIONS);
 
+  console.log("SESSION", session);
+
   return (
     <html lang="en" className={`h-full bg-white ${inter.className}`}>
       <body className="h-full">
         <div className="h-full lg:grid lg:grid-cols-[14rem_1fr]">
-          <Sidebar />
+          <Sidebar session={session} />
           <div>
             <TopNavigationBar session={session} />
             {children}

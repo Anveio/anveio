@@ -6,6 +6,7 @@ import { createDatabaseConnection } from "../planetscale/planetscale";
 import CredentialsProvider from "next-auth/providers/credentials";
 import {
   checkIfPasswordIsValidForUserByEmail,
+  createUserWithOAuthToken,
   getDoesUserAlreadyExist,
 } from "../planetscale/utils";
 
@@ -50,36 +51,26 @@ export const NEXT_AUTH_HANDLER_OPTIONS: AuthOptions = {
     }),
   ],
   secret: NEXTAUTH_SECRET,
+  logger: {
+    debug: console.log,
+    error: console.error,
+    warn: console.warn,
+  },
   callbacks: {
     async session(args) {
-      console.log("Executing session callback");
+      console.log(args.session);
       return args.session;
     },
     async signIn(options) {
       try {
-        await createDatabaseConnection().transaction(async (tx) => {
-          const userAlreadyExists = await getDoesUserAlreadyExist(
-            options.user.email,
-            tx
-          );
-
-          if (userAlreadyExists) {
-            console.log("Skipping user creation -- already exists");
-            return true;
-          }
-          /**
-           * SQL string to insert into the users table
-           */
-          const createdUser = await tx.execute(
-            `INSERT INTO users (username, email) VALUES (?, ?)`,
-            [options.user.name, options.user.email]
-          );
-          console.log("IN HERE", createdUser);
-          return [userAlreadyExists, createdUser];
-        });
+        await createUserWithOAuthToken(
+          options.user.email,
+          options.account?.access_token,
+          "github"
+        );
         return true;
       } catch (error) {
-        console.error("ERROR", error);
+        console.error(error);
         return false;
       }
     },

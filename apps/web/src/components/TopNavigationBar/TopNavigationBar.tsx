@@ -4,6 +4,7 @@ import { SearchField } from "./client/SearchField";
 import { Session } from "next-auth";
 import Link from "next/link";
 import { Routes } from "@/lib/constants/routes";
+import { WithSessionOnly } from "../WithSessionOnly";
 
 interface Props {
   session: Session | null;
@@ -23,13 +24,15 @@ export function TopNavigationBar(props: Props) {
       <div className="flex flex-1 gap-x-4 self-stretch lg:gap-x-6">
         <SearchField />
         <div className="flex items-center gap-x-4 lg:gap-x-6">
-          <button
-            type="button"
-            className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
-          >
-            <span className="sr-only">View notifications</span>
-            <BellIcon className="h-6 w-6" aria-hidden="true" />
-          </button>
+          <WithSessionOnly session={props.session}>
+            <button
+              type="button"
+              className="-m-2.5 p-2.5 text-gray-400 hover:text-gray-500"
+            >
+              <span className="sr-only">View notifications</span>
+              <BellIcon className="h-6 w-6" aria-hidden="true" />
+            </button>
+          </WithSessionOnly>
 
           {/* Separator */}
           <div

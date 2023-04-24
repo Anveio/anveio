@@ -15,6 +15,7 @@ export function Hero() {
     <Container className="pb-16 pt-20 text-center lg:pt-32">
       <PrettyFloatingBlob />
       <PrettyFloatingBlob2 />
+
       <div className="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
         <h1 className="mx-auto max-w-4xl text-4xl font-bold text-gray-900 sm:text-6xl">
           Cutting-edge AI{" "}
@@ -34,23 +35,8 @@ export function Hero() {
 
       <p className="mx-auto mt-6 mt-6 text-lg leading-8 tracking-tight text-gray-600">
         Converse with AI, transcribe audio, generate photos and art, share
-        everything you make.
+        anything you make.
       </p>
-      <div className="mt-10 flex justify-center gap-x-6">
-        <Button href="/register">Get 6 months free</Button>
-        <Button
-          href="https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-          variant="outline"
-        >
-          <svg
-            aria-hidden="true"
-            className="h-3 w-3 flex-none fill-blue-600 group-active:fill-current"
-          >
-            <path d="m9.997 6.91-7.583 3.447A1 1 0 0 1 1 9.447V2.553a1 1 0 0 1 1.414-.91L9.997 5.09c.782.355.782 1.465 0 1.82Z" />
-          </svg>
-          <span className="ml-3">Watch video</span>
-        </Button>
-      </div>
     </Container>
   );
 }
