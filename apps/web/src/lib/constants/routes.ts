@@ -22,8 +22,8 @@ export const Routes = {
 
 export const TOP_LEVEL_NAVIGATION = [
   { name: "Aivisor", href: Routes.AIVISOR, icon: ChatBubbleBottomCenterIcon },
-  { name: "Upload", href: Routes.LIBRARY, icon: BuildingLibraryIcon },
-  { name: "Create", href: Routes.STUDIO, icon: HomeModernIcon },
+  { name: "Media Library", href: Routes.LIBRARY, icon: BuildingLibraryIcon },
+  { name: "Studio", href: Routes.STUDIO, icon: HomeModernIcon },
 ] as const;
 
 export const TEAMS = [
@@ -31,21 +31,21 @@ export const TEAMS = [
     id: 1,
     name: "Snorpies",
     href: "/teams/snorpies",
-    initial: "H",
+    initial: "S",
     current: false,
   },
   {
     id: 2,
     name: "Global",
     href: "/teams/global",
-    initial: "T",
+    initial: "G",
     current: false,
   },
   {
     id: 3,
-    name: "Workcation",
-    href: "/teams/workcation",
-    initial: "W",
+    name: "Blues",
+    href: "/teams/blues",
+    initial: "B",
     current: false,
   },
 ];

@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { GLOBAL_DATABASE_CONNECTION } from "./planetscale";
 import { Transaction } from "@planetscale/database";
-import { argon2d, hash, verify } from "argon2";
+import argon2 from "argon2";
 
 export const getDoesUserAlreadyExist = async (
   email?: string | null,
@@ -29,7 +29,7 @@ export const getDoesUserAlreadyExist = async (
 };
 
 const generatePasswordHash = async (password: string) => {
-  const hashedPassword = await hash(password, {
+  const hashedPassword = await argon2.hash(password, {
     salt: Buffer.from(
       "b5108428bd29d1c4a6ec2555e9473db2f381139979b9d9107a16ad83171d3659"
     ),
@@ -47,40 +47,74 @@ export const getUserByEmailAddress = async (
     [validatedEmail]
   );
 
-  return rows[0] as [number, string | null, string] | undefined;
+  return rows[0] as
+    | {
+        id: string;
+        username: string | null;
+        email: string;
+      }
+    | undefined;
 };
 
 export const createUserWithOAuthToken = async (
   emailAddress: string | undefined | null,
   oAuthToken: string | undefined | null,
-  oAuthProvider: string | undefined | null
+  oAuthProvider: string | undefined | null,
+  refresh_token: string | undefined | null
 ) => {
-  console.log("IN HERE");
-  const validatedEmail = z.string().email().parse(emailAddress);
-  const validatedOAuthToken = z.string().parse(oAuthToken);
-  const validatedOAuthProvider = z.string().parse(oAuthProvider);
+  const validatedEmail = z
+
+    .string({
+      required_error: "Missing email",
+    })
+    .describe("Email")
+    .email({
+      message: "Invalid email",
+    })
+
+    .parse(emailAddress);
+  const validatedOAuthToken = z
+    .string()
+    .describe("OAuth Token")
+    .parse(oAuthToken);
+  const validatedOAuthProvider = z
+    .string()
+    .describe("OAuth Provider")
+    .parse(oAuthProvider);
+  const validatedRefreshToken = z
+    .string()
+    .optional()
+    .describe("OAuth Refresh Token")
+    .parse(refresh_token);
 
   await GLOBAL_DATABASE_CONNECTION.transaction(async (tx) => {
     const user = await getUserByEmailAddress(validatedEmail, tx);
 
     if (user) {
-      const [userId] = user;
+      console.log("Found user: ", user);
+      const userId = user.id;
       /**
        * Check if this token exists in our DB for this user already
        */
-      const maybeExistingToken = await tx.execute(
+      const maybeExistingTokenQuery = await tx.execute(
         `
         SELECT id, expires_at
         FROM oauth_tokens
         WHERE user_id = ?
-        AND provider = ?
-        AND access_token = ?`,
-        [userId, oAuthProvider, oAuthToken]
+        `,
+        [Number(userId)]
       );
 
-      if (maybeExistingToken.rows.length === 0) {
-        const [existingOauthTokenId, expires_at] = maybeExistingToken
-          .rows[0] as [number, Date];
+      const maybeExistingToken = maybeExistingTokenQuery.rows[0] as
+        | {
+            id: string;
+            expiresAt: Date;
+          }
+        | undefined;
+
+      if (maybeExistingToken) {
+        console.log("Found existing token", maybeExistingToken);
+        const { id: existingOauthTokenId } = maybeExistingToken;
 
         /**
          * Expire the user's oauth token
@@ -95,8 +129,8 @@ export const createUserWithOAuthToken = async (
        * Create a new oauthTokenfor the user
        */
       await tx.execute(
-        `INSERT INTO oauth_tokens (user_id, provider, token, token_type, expires_at) 
-       VALUES (?, ?, ?, 'Bearer', NULL) ON DUPLICATE KEY UPDATE token = '?';`,
+        `INSERT INTO oauth_tokens (user_id, oauth_provider_name, access_token, token_type) 
+       VALUES (?, ?, ?, 'Bearer') ON DUPLICATE KEY UPDATE access_token = ?;`,
         [
           userId,
           validatedOAuthProvider,
@@ -110,19 +144,28 @@ export const createUserWithOAuthToken = async (
        */
       console.log("Creating new User");
       await tx.execute(
+        `INSERT INTO users (email, password_hash) VALUES (?, NULL)`,
+        [validatedEmail]
+      );
+
+      console.log("Creating an OAuth token for the user");
+      await tx.execute(
         `
-        INSERT INTO users (email, password_hash) SELECT ?, NULL;
-        SET @user_id = LAST_INSERT_ID();
-        INSERT INTO oauth_tokens (user_id, provider, access_token, refresh_token, token_type)
+        INSERT INTO oauth_tokens (user_id, oauth_provider_name, access_token, refresh_token, token_type)
         VALUES (
           (SELECT id FROM users WHERE email = ?),
           ?,
           ?,
           ?,
-          'Bearer',
+          'Bearer'
         )
         `,
-        [validatedEmail, validatedOAuthProvider, validatedOAuthToken]
+        [
+          validatedEmail,
+          validatedOAuthProvider,
+          validatedOAuthToken,
+          validatedRefreshToken || null,
+        ]
       );
     }
   });
@@ -149,5 +192,5 @@ export const checkIfPasswordIsValidForUserByEmail = async (
 
   const password_hash = z.string().parse(passwordHashField);
 
-  return verify(password_hash, password);
+  return argon2.verify(password_hash, password);
 };

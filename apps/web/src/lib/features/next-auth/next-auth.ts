@@ -2,13 +2,7 @@ import NextAuth, { AuthOptions } from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { z } from "zod";
-import { createDatabaseConnection } from "../planetscale/planetscale";
-import CredentialsProvider from "next-auth/providers/credentials";
-import {
-  checkIfPasswordIsValidForUserByEmail,
-  createUserWithOAuthToken,
-  getDoesUserAlreadyExist,
-} from "../planetscale/utils";
+import { createUserWithOAuthToken } from "../planetscale/utils";
 
 const GITHUB_CLIENT_ID = z
   .string({
@@ -63,10 +57,12 @@ export const NEXT_AUTH_HANDLER_OPTIONS: AuthOptions = {
     },
     async signIn(options) {
       try {
+        console.log("&&& OPTIONS", options);
         await createUserWithOAuthToken(
           options.user.email,
           options.account?.access_token,
-          "github"
+          "github",
+          options.account?.refresh_token
         );
         return true;
       } catch (error) {

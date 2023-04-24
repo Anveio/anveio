@@ -14,9 +14,9 @@ interface Props {
 
 export function Sidebar(props: Props) {
   return (
-    <>
+    <div className="">
       <MobileSidebar />
-      <div className="hidden lg:flex lg:flex-col">
+      <div className="sticky top-0 z-40 hidden h-full lg:flex lg:flex-col">
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4 ring-1 ring-white/10">
           <div className="flex h-16 shrink-0 items-center">
             <Link href="/">
@@ -54,7 +54,7 @@ export function Sidebar(props: Props) {
                   <ul role="list" className="-mx-2 mt-2 space-y-1">
                     {TEAMS.map((team) => (
                       <li key={team.name}>
-                        <a
+                        <Link
                           href={team.href}
                           className={clsx(
                             team.current
@@ -67,28 +67,28 @@ export function Sidebar(props: Props) {
                             {team.initial}
                           </span>
                           <span className="truncate">{team.name}</span>
-                        </a>
+                        </Link>
                       </li>
                     ))}
                   </ul>
                 </li>
               </WithSessionOnly>
-              <li className="mt-auto">
-                <Link
-                  href={Routes.SETTINGS}
-                  className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white"
-                >
-                  <Cog6ToothIcon
-                    className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white"
-                    aria-hidden="true"
-                  />
-                  Settings
-                </Link>
-              </li>
             </ul>
           </nav>
         </div>
+        <div className="sticky bottom-0 mt-auto bg-gray-900 px-6 pb-4">
+          <Link
+            href={Routes.SETTINGS}
+            className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white"
+          >
+            <Cog6ToothIcon
+              className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white"
+              aria-hidden="true"
+            />
+            Settings
+          </Link>
+        </div>
       </div>
-    </>
+    </div>
   );
 }
