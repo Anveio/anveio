@@ -33,8 +33,8 @@ export function Hero() {
       </div>
 
       <p className="mx-auto mt-6 mt-6 text-lg leading-8 tracking-tight text-gray-600">
-        Most bookkeeping software is accurate, but hard to use. We make the
-        opposite trade-off, and hope you don’t get audited.
+        Converse with AI, transcribe audio, generate photos and art, share
+        everything you make.
       </p>
       <div className="mt-10 flex justify-center gap-x-6">
         <Button href="/register">Get 6 months free</Button>

@@ -13,6 +13,11 @@ export const Routes = {
   AIVISOR: "/aivisor",
   LIBRARY: "/library",
   STUDIO: "/studio",
+  LOGIN: "/login",
+  SIGNUP: "/signup",
+  PROFILE: "/profile",
+  SETTINGS: "/protile/settings",
+  TEAMS: "/teams",
 } as const;
 
 export const TOP_LEVEL_NAVIGATION = [
@@ -20,3 +25,27 @@ export const TOP_LEVEL_NAVIGATION = [
   { name: "Upload", href: Routes.LIBRARY, icon: BuildingLibraryIcon },
   { name: "Create", href: Routes.STUDIO, icon: HomeModernIcon },
 ] as const;
+
+export const TEAMS = [
+  {
+    id: 1,
+    name: "Snorpies",
+    href: "/teams/snorpies",
+    initial: "H",
+    current: false,
+  },
+  {
+    id: 2,
+    name: "Global",
+    href: "/teams/global",
+    initial: "T",
+    current: false,
+  },
+  {
+    id: 3,
+    name: "Workcation",
+    href: "/teams/workcation",
+    initial: "W",
+    current: false,
+  },
+];

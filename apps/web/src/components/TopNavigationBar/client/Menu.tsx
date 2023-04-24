@@ -7,8 +7,13 @@ import Image from "next/image";
 import Link from "next/link";
 import { Fragment } from "react";
 import DefaultProfilePicture from "@/images/avatars/avatar-1.png";
+import { Session } from "next-auth";
 
-export function TopNavigationBarMenu() {
+interface Props {
+  session: Session;
+}
+
+export function TopNavigationBarMenu(props: Props) {
   return (
     <Menu as="div" className="relative ml-4 flex-shrink-0">
       <div>
@@ -34,20 +39,20 @@ export function TopNavigationBarMenu() {
           <Menu.Item>
             {({ active }) => (
               <Link
-                href="/me"
+                href="/profile"
                 className={clsx(
                   active ? "bg-gray-100" : "",
                   "block px-4 py-2 text-sm text-gray-700"
                 )}
               >
-                Your Profile
+                Profile
               </Link>
             )}
           </Menu.Item>
           <Menu.Item>
             {({ active }) => (
               <Link
-                href="/me/settings"
+                href="/profile/settings"
                 className={clsx(
                   active ? "bg-gray-100" : "",
                   "block px-4 py-2 text-sm text-gray-700"

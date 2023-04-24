@@ -1,18 +1,10 @@
-import { TOP_LEVEL_NAVIGATION } from "@/lib/constants/routes";
-import {
-    Cog6ToothIcon
-} from "@heroicons/react/24/outline";
+import { TEAMS, TOP_LEVEL_NAVIGATION } from "@/lib/constants/routes";
+import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import CompanyLogoWhite from "../../../public/company-logo-white.svg";
 import { MobileSidebar } from "./MobileSidebar";
-
-const teams = [
-  { id: 1, name: "Snorpies", href: "#", initial: "H", current: false },
-  { id: 2, name: "Global", href: "#", initial: "T", current: false },
-  { id: 3, name: "Workcation", href: "#", initial: "W", current: false },
-];
 
 export function Sidebar() {
   return (
@@ -24,11 +16,9 @@ export function Sidebar() {
         {/* Sidebar component, swap this element with another sidebar if you like */}
         <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-indigo-600 px-6 pb-4">
           <div className="flex h-16 shrink-0 items-center">
-            <Image
-              className="h-8 w-auto"
-              src={CompanyLogoWhite}
-              alt="Your Company"
-            />
+            <Link href="/">
+              <Image className="h-8 w-auto" src={CompanyLogoWhite} alt="" />
+            </Link>
           </div>
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -61,7 +51,7 @@ export function Sidebar() {
                   Your teams
                 </div>
                 <ul role="list" className="-mx-2 mt-2 space-y-1">
-                  {teams.map((team) => (
+                  {TEAMS.map((team) => (
                     <li key={team.name}>
                       <a
                         href={team.href}
