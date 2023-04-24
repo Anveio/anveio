@@ -14,7 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Fragment, useState } from "react";
 import CompanyLogoWhite from "../../../public/company-logo-white.svg";
-import { TEAMS, TOP_LEVEL_NAVIGATION } from "@/lib/constants/routes";
+import { Routes, TEAMS, TOP_LEVEL_NAVIGATION } from "@/lib/constants/routes";
 
 export function MobileSidebar() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -136,7 +136,7 @@ export function MobileSidebar() {
                     </li>
                     <li className="mt-auto">
                       <Link
-                        href="#"
+                        href={Routes.SETTINGS}
                         className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white"
                       >
                         <Cog6ToothIcon

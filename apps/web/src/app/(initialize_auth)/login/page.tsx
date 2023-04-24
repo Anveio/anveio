@@ -2,10 +2,7 @@
 import {
   SignInWithGitHubButton,
   SignInWithGoogleButton,
-  SignOutButton,
 } from "@/components/SocialAuthButtons";
-import { NEXT_AUTH_HANDLER_OPTIONS } from "@/lib/features/next-auth";
-import { getServerSession } from "next-auth";
 import Link from "next/link";
 import React from "react";
 

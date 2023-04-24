@@ -1,4 +1,4 @@
-import { TEAMS, TOP_LEVEL_NAVIGATION } from "@/lib/constants/routes";
+import { Routes, TEAMS, TOP_LEVEL_NAVIGATION } from "@/lib/constants/routes";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 import clsx from "clsx";
 import Image from "next/image";
@@ -10,7 +10,6 @@ export function Sidebar() {
   return (
     <>
       <MobileSidebar />
-
       {/* Static sidebar for desktop */}
       <div className="hidden lg:flex lg:flex-col">
         {/* Sidebar component, swap this element with another sidebar if you like */}
@@ -72,8 +71,8 @@ export function Sidebar() {
                 </ul>
               </li>
               <li className="mt-auto">
-                <a
-                  href="#"
+                <Link
+                  href={Routes.SETTINGS}
                   className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-indigo-200 hover:bg-indigo-700 hover:text-white"
                 >
                   <Cog6ToothIcon
@@ -81,7 +80,7 @@ export function Sidebar() {
                     aria-hidden="true"
                   />
                   Settings
-                </a>
+                </Link>
               </li>
             </ul>
           </nav>

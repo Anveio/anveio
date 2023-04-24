@@ -16,7 +16,7 @@ export const Routes = {
   LOGIN: "/login",
   SIGNUP: "/signup",
   PROFILE: "/profile",
-  SETTINGS: "/protile/settings",
+  SETTINGS: "/profile/settings",
   TEAMS: "/teams",
 } as const;
 

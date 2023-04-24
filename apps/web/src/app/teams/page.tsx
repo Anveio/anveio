@@ -1,4 +1,4 @@
-export default function Aivisor() {
+export default function Teams() {
   return (
     <>
       <main className="py-10">

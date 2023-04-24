@@ -8,6 +8,7 @@ import Link from "next/link";
 import { Fragment } from "react";
 import DefaultProfilePicture from "@/images/avatars/avatar-1.png";
 import { Session } from "next-auth";
+import { Routes } from "@/lib/constants/routes";
 
 interface Props {
   session: Session;
@@ -52,7 +53,7 @@ export function TopNavigationBarMenu(props: Props) {
           <Menu.Item>
             {({ active }) => (
               <Link
-                href="/profile/settings"
+                href={Routes.SETTINGS}
                 className={clsx(
                   active ? "bg-gray-100" : "",
                   "block px-4 py-2 text-sm text-gray-700"
@@ -67,10 +68,10 @@ export function TopNavigationBarMenu(props: Props) {
               <button
                 className={clsx(
                   active ? "bg-gray-100" : "",
-                  "block px-4 py-2 text-sm text-gray-700"
+                  "block w-full px-4 py-2 text-left text-sm text-gray-700"
                 )}
                 onClick={() => {
-                  signOut;
+                  signOut();
                 }}
               >
                 Sign out

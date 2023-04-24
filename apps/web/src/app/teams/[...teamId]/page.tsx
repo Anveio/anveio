@@ -1,4 +1,4 @@
-export default function Aivisor() {
+export default function TeamSpecificPage() {
   return (
     <>
       <main className="py-10">
