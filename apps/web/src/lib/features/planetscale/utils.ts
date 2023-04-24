@@ -101,6 +101,9 @@ export const createUserWithOAuthToken = async (
         SELECT id, expires_at
         FROM oauth_tokens
         WHERE user_id = ?
+        AND (expires_at IS NULL OR expires_at > NOW())
+        ORDER BY expires_at DESC
+        LIMIT 1
         `,
         [Number(userId)]
       );

@@ -52,12 +52,12 @@ export const NEXT_AUTH_HANDLER_OPTIONS: AuthOptions = {
   },
   callbacks: {
     async session(args) {
-      console.log(args.session);
+      console.log("In Session Callback", args.session);
       return args.session;
     },
     async signIn(options) {
       try {
-        console.log("&&& OPTIONS", options);
+        console.log("In SignIn callback", options);
         await createUserWithOAuthToken(
           options.user.email,
           options.account?.access_token,
