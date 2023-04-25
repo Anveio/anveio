@@ -1,5 +1,7 @@
 import { OPEN_AI_GLOBAL_SINGLETON } from "@/lib/features/ai/openai/openAi";
 import { NextApiRequest, NextApiResponse } from "next";
+import NextAuth from "next-auth/next";
+import { NextResponse } from "next/server";
 import { z } from "zod";
 
 export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -27,11 +29,7 @@ export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
     stop: ["\n"],
   });
 
-  // const response = data.choices[0].text;
-
-  // const response = "Hello";
-
-  return res.status(200).json({
+  return NextResponse.json({
     message: "success",
     response: data,
   });
