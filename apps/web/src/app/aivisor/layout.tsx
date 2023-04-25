@@ -3,11 +3,7 @@ import { NEXT_AUTH_HANDLER_OPTIONS } from "@/lib/features/next-auth";
 import { Session, getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
-interface Props extends React.PropsWithChildren {
-  session: Session | null;
-}
-
-export default async function Aivisor(props: Props) {
+export default async function Aivisor(props: React.PropsWithChildren) {
   const session = await getServerSession(NEXT_AUTH_HANDLER_OPTIONS);
 
   if (!session) {
