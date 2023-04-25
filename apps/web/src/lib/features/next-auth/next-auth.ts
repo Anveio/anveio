@@ -3,6 +3,7 @@ import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import { z } from "zod";
 import { createUserWithOAuthToken } from "../planetscale/utils";
+import { createToast } from "../toasts";
 
 const GITHUB_CLIENT_ID = z
   .string({
@@ -64,6 +65,7 @@ export const NEXT_AUTH_HANDLER_OPTIONS: AuthOptions = {
           "github",
           options.account?.refresh_token
         );
+
         return true;
       } catch (error) {
         console.error(error);

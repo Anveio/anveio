@@ -3,6 +3,9 @@ import { TopNavigationBar } from "@/components/TopNavigationBar";
 import { NEXT_AUTH_HANDLER_OPTIONS } from "@/lib/features/next-auth";
 import { getServerSession } from "next-auth";
 import "./globals.css";
+import "@/lib/features/toasts/toast-styles.css";
+import { Analytics } from "@vercel/analytics/react";
+
 export const metadata = {
   title: "Jipitty - AI Chat, AI Art, AI Insights",
 };
@@ -17,13 +20,14 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`bg-white`}>
       <body>
-        <div className="static min-h-screen lg:grid lg:grid-cols-[14rem_1fr]">
+        <div className="static min-h-screen lg:grid lg:grid-cols-[15rem_1fr]">
           <Sidebar session={session} />
           <div>
             <TopNavigationBar session={session} />
             {children}
           </div>
         </div>
+        <Analytics />
       </body>
     </html>
   );

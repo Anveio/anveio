@@ -1,11 +1,9 @@
 "use client";
 
-import { getServerSession } from "next-auth";
-import { redirect, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 import { Routes } from "@/lib/constants/routes";
-import Link from "next/link";
-import { useRouter } from "next/router";
+import { signOut } from "next-auth/react";
 
 const secondaryNavigation = [
   { name: "Account", href: Routes.PROFILE, current: true },
@@ -16,25 +14,23 @@ export function SettingsSecondaryNavigation() {
   const pathname = usePathname();
 
   return (
-    <header className="border-b border-white/5">
-      {/* Secondary navigation */}
-      <nav className="flex overflow-x-auto py-4">
-        <ul
-          role="list"
-          className="flex min-w-full flex-none gap-x-6 px-4 text-sm font-semibold leading-6 text-gray-400 sm:px-6 lg:px-8"
+    <div className="md:flex md:items-center md:justify-between">
+      <div className="min-w-0 flex-1">
+        <h2 className="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">
+          {pathname === Routes.SETTINGS ? "Settings" : "Account"}
+        </h2>
+      </div>
+      <div className="mt-4 flex md:ml-4 md:mt-0">
+        <button
+          type="button"
+          className="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
+          onClick={() => {
+            signOut();
+          }}
         >
-          {secondaryNavigation.map((item) => (
-            <li key={item.name}>
-              <Link
-                href={item.href}
-                className={pathname === item.href ? "text-indigo-400" : ""}
-              >
-                {item.name}
-              </Link>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </header>
+          Log out
+        </button>
+      </div>
+    </div>
   );
 }

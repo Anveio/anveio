@@ -1,14 +1,8 @@
+import { SettingsSecondaryNavigation } from "@/components/Settings/SettingsSecondaryNavigation";
+import { Routes } from "@/lib/constants/routes";
+import { NEXT_AUTH_HANDLER_OPTIONS } from "@/lib/features/next-auth";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
-import { NEXT_AUTH_HANDLER_OPTIONS } from "@/lib/features/next-auth";
-import { Routes } from "@/lib/constants/routes";
-import Link from "next/link";
-import { SettingsSecondaryNavigation } from "@/components/Settings/SettingsSecondaryNavigation";
-
-const secondaryNavigation = [
-  { name: "Account", href: Routes.PROFILE, current: true },
-  { name: "Settings", href: Routes.SETTINGS, current: false },
-];
 
 export default async function ProfileLayout({
   children,
@@ -23,8 +17,7 @@ export default async function ProfileLayout({
 
   return (
     <main className="h-full bg-gray-800">
-      <header className="border-b border-white/5">
-        {/* Secondary navigation */}
+      <header className="border-b border-white/5 px-6 py-3">
         <SettingsSecondaryNavigation />
       </header>
       {children}

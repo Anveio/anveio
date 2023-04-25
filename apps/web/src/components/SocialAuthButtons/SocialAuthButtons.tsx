@@ -3,13 +3,27 @@
 import { signIn, signOut } from "next-auth/react";
 import SignInWithGoogleIcon from "../../../public/sign-in-with-google-light-enabled.svg";
 import Image from "next/image";
+import { createToast, destroyToastById } from "@/lib/features/toasts";
+
+const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export function SignInWithGitHubButton() {
   return (
     <button
       className="flex w-full items-center justify-center gap-3 rounded-md bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
       onClick={async () => {
-        await signIn("github");
+        try {
+          createToast("Signing in...", {
+            timeout: 15000,
+            category: "sign-in",
+          });
+
+          const maybeSignInResponse = await signIn("github");
+
+          console.log(maybeSignInResponse);
+        } catch (e) {
+          console.error(e);
+        }
       }}
     >
       <svg
