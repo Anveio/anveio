@@ -5,11 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import CompanyLogoWhite from "../../../public/company-logo-white.svg";
 import { WithSessionOnly } from "../WithSessionOnly";
-import {
-  ProfileButton,
-  SignInWithGitHubButton,
-  SignInWithGoogleButton,
-} from "./SidebarButtons";
+import { AuthButtons } from "./SidebarButtons";
 
 interface Props {
   session: Session | null;
@@ -85,14 +81,7 @@ export function SidebarCore(props: Props) {
       </div>
 
       <div className="mt-auto grid gap-3 bg-inherit">
-        {props.session ? (
-          <ProfileButton session={props.session} />
-        ) : (
-          <ul className="grid grid-cols-1 gap-2  px-2 py-3">
-            <SignInWithGoogleButton />
-            <SignInWithGitHubButton />{" "}
-          </ul>
-        )}
+        <AuthButtons session={props.session} />
       </div>
     </div>
   );

@@ -197,3 +197,27 @@ export const checkIfPasswordIsValidForUserByEmail = async (
 
   return argon2.verify(password_hash, password);
 };
+
+export const createMessageRow = async (userId: string) => {
+  await GLOBAL_DATABASE_CONNECTION.transaction(async (tx) => {
+    /**
+     * Create a new conversation if one doesn't exist
+     */
+    await tx.execute(`IF NOT EXISTS (
+      SELECT id
+      FROM conversations
+      WHERE participants->>'$."1"' = @user_email
+  ) THEN
+      INSERT INTO conversations (
+          participants,
+          created_at,
+          updated_at
+      ) VALUES (
+          JSON_ARRAY(JSON_QUOTE(@user_email), JSON_QUOTE('assistant@example.com')),
+          NOW(),
+          NOW()
+      );
+      SET @conversation_id = LAST_INSERT_ID();
+  END IF`);
+  });
+};

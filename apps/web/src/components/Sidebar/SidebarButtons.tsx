@@ -15,12 +15,14 @@ import { Routes } from "@/lib/constants/routes";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
 
 import { usePathname } from "next/navigation";
-import { signInWithGitHub, signInWithGoogle } from "@/lib/utils/signIn";
-
+import { useClientSessionState } from "@/lib/features/client-session-state/client-session-state";
+import { AnimatePresence, motion } from "framer-motion";
 export function SignInWithGitHubButton() {
+  const { signInWithGitHub, isBusy } = useClientSessionState();
   return (
     <button
-      className="flex w-full items-center justify-start gap-3 rounded-md bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
+      disabled={isBusy}
+      className="flex w-full items-center justify-start gap-3 rounded-md bg-[#24292F] px-3 py-1.5 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] disabled:animate-pulse"
       onClick={signInWithGitHub}
     >
       <svg
@@ -35,6 +37,7 @@ export function SignInWithGitHubButton() {
           clipRule="evenodd"
         />
       </svg>
+
       <span className="text-sm font-semibold leading-6">
         Sign in with GitHub
       </span>
@@ -43,9 +46,11 @@ export function SignInWithGitHubButton() {
 }
 
 export function SignInWithGoogleButton() {
+  const { signInWithGoogle, isBusy } = useClientSessionState();
   return (
     <button
-      className="flex w-full items-center justify-start gap-3 rounded-md bg-white px-3 py-1.5 text-white drop-shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F]"
+      disabled={isBusy}
+      className="flex w-full items-center justify-start gap-3 rounded-md bg-white px-3 py-1.5 text-white drop-shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#24292F] disabled:animate-pulse"
       onClick={signInWithGoogle}
     >
       <Image alt="" height={20} width={20} src={SignInWithGoogleIcon}></Image>
@@ -73,7 +78,7 @@ export function ProfileButton(props: { session: Session }) {
   const pathName = usePathname();
 
   return (
-    <div
+    <motion.div
       className={clsx(
         "grid grid-cols-[1fr_min-content] divide-x divide-zinc-400 border-t border-zinc-400"
       )}
@@ -108,6 +113,21 @@ export function ProfileButton(props: { session: Session }) {
         />
         <span className="sr-only">Settings</span>
       </Link>
-    </div>
+    </motion.div>
   );
 }
+
+export const AuthButtons = (props: { session: Session | null }) => {
+  return (
+    <AnimatePresence>
+      {props.session ? (
+        <ProfileButton session={props.session} />
+      ) : (
+        <motion.ul className="grid grid-cols-1 gap-4 px-6 py-6">
+          <SignInWithGoogleButton />
+          <SignInWithGitHubButton />{" "}
+        </motion.ul>
+      )}
+    </AnimatePresence>
+  );
+};
