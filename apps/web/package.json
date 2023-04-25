@@ -20,6 +20,7 @@
     "argon2": "^0.30.3",
     "clsx": "^1.2.1",
     "contentlayer": "^0.3.1",
+    "eventsource-parser": "^1.0.0",
     "framer-motion": "^10.12.4",
     "next": "13.3.1",
     "next-auth": "^4.22.1",
@@ -28,6 +29,7 @@
     "postcss-focus-visible": "^8.0.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "yield-stream": "^3.0.0",
     "zod": "^3.21.4",
     "zustand": "^4.3.7"
   },

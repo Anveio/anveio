@@ -1,7 +1,8 @@
 import { Configuration, OpenAIApi } from "openai";
 import { z } from "zod";
+import "server-only";
 
-const OPEN_AI_SECRET = z
+export const OPEN_AI_SECRET = z
   .string({
     required_error: "OPEN_AI_SECRET missing",
   })

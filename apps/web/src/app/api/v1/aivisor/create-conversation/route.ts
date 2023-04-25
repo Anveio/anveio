@@ -1,36 +1,25 @@
-import { OPEN_AI_GLOBAL_SINGLETON } from "@/lib/features/ai/openai/openAi";
-import { NextApiRequest, NextApiResponse } from "next";
-import NextAuth from "next-auth/next";
-import { NextResponse } from "next/server";
-import { z } from "zod";
+import { OpenAIEdgeClient } from "@/lib/features/ai/openai/edge-client";
+import { OPEN_AI_SECRET } from "@/lib/features/ai/openai/openAi";
+import { NextRequest, NextResponse } from "next/server";
 
-export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
-  const { message } = req.body;
+export const runtime = "edge";
 
-  const validatedMessage = z
-    .string()
-    .max(4096, "Message cannot be more than 4096 characters")
-    .nonempty()
-    .parse(message);
+export const POST = async (req: NextRequest, res: NextResponse) => {
+  const responseStream = await OpenAIEdgeClient(
+    "chat",
+    {
+      model: "gpt-3.5-turbo",
+      messages: [],
+      temperature: 0.9,
+      n: 1,
+      max_tokens: 150,
+      stream: true,
+      stop: ["\n"],
+    },
+    {
+      apiKey: OPEN_AI_SECRET,
+    }
+  );
 
-  if (!validatedMessage) {
-    return res.status(400).json({
-      message: "message is required",
-    });
-  }
-
-  const { data } = await OPEN_AI_GLOBAL_SINGLETON.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages: [],
-    temperature: 0.9,
-    n: 1,
-    max_tokens: 150,
-    stream: false,
-    stop: ["\n"],
-  });
-
-  return NextResponse.json({
-    message: "success",
-    response: data,
-  });
+  return responseStream;
 };
