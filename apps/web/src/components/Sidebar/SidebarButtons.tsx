@@ -1,22 +1,19 @@
 "use client";
 
-import { createToast } from "@/lib/features/toasts";
-import { signIn, signOut } from "next-auth/react";
+import { signOut } from "next-auth/react";
 import Image from "next/image";
 import SignInWithGoogleIcon from "../../../public/sign-in-with-google-light-enabled.svg";
 
-import { Menu, Transition } from "@headlessui/react";
-import clsx from "clsx";
-import Link from "next/link";
-import { Fragment } from "react";
-import DefaultProfilePicture from "@/images/avatars/avatar-1.png";
-import { Session } from "next-auth";
 import { Routes } from "@/lib/constants/routes";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
+import clsx from "clsx";
+import { Session } from "next-auth";
+import Link from "next/link";
 
-import { usePathname } from "next/navigation";
 import { useClientSessionState } from "@/lib/features/client-session-state/client-session-state";
 import { AnimatePresence, motion } from "framer-motion";
+import { usePathname } from "next/navigation";
+import { useMobileNavStore } from "@/lib/features/mobile-nav/state";
 export function SignInWithGitHubButton() {
   const { signInWithGitHub, isBusy } = useClientSessionState();
   return (
@@ -76,7 +73,7 @@ export function SignOutButton() {
 
 export function ProfileButton(props: { session: Session }) {
   const pathName = usePathname();
-
+  const { close } = useMobileNavStore();
   return (
     <motion.div
       className={clsx(
@@ -84,6 +81,7 @@ export function ProfileButton(props: { session: Session }) {
       )}
     >
       <Link
+        onClick={close}
         href={Routes.PROFILE}
         className={clsx(
           "flex items-center gap-x-4 px-4 py-3 text-sm font-semibold leading-6 text-white ",
@@ -102,6 +100,7 @@ export function ProfileButton(props: { session: Session }) {
       </Link>
       <Link
         href={Routes.SETTINGS}
+        onClick={close}
         className={clsx(
           "group flex items-center gap-x-3 p-4 text-lg font-semibold leading-6 text-indigo-200 hover:text-white lg:text-sm",
           pathName === Routes.SETTINGS ? "bg-indigo-600" : "hover:bg-gray-800"

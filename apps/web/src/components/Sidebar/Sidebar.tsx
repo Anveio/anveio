@@ -8,7 +8,7 @@ interface Props {
 
 export function Sidebar(props: Props) {
   return (
-    <div className="">
+    <div>
       <MobileSidebar>
         <SidebarCore session={props.session} />
       </MobileSidebar>

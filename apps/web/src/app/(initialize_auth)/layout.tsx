@@ -2,7 +2,6 @@ import {
   PrettyFloatingBlob,
   PrettyFloatingBlob2,
 } from "@/components/PrettyFloatingBlob";
-import { TopNavigationBar } from "@/components/TopNavigationBar";
 import { NEXT_AUTH_HANDLER_OPTIONS } from "@/lib/features/next-auth";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";

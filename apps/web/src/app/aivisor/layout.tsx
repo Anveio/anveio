@@ -12,7 +12,7 @@ export default async function Aivisor(props: React.PropsWithChildren) {
 
   return (
     <main className="h-full bg-gray-800">
-      <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+      <div className="sm:px6 mx-auto max-w-7xl px-3 lg:px-8">
         <header className="tborder-b border-white/5 py-3">
           <div className="md:flex md:items-center md:justify-between">
             <div className="min-w-0 flex-1">

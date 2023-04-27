@@ -1,21 +1,20 @@
 "use client";
 
-import { Routes, TEAMS, TOP_LEVEL_NAVIGATION } from "@/lib/constants/routes";
 import { useMobileNavStore } from "@/lib/features/mobile-nav/state";
 import { Dialog, Transition } from "@headlessui/react";
-import { Cog6ToothIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import clsx from "clsx";
-import Image from "next/image";
-import Link from "next/link";
+import { XMarkIcon } from "@heroicons/react/24/outline";
 import { Fragment, PropsWithChildren } from "react";
-import CompanyLogoWhite from "../../../public/company-logo-white.svg";
-import { SidebarCore } from "./SidebarCore";
 
 export function MobileSidebar(props: PropsWithChildren<{}>) {
   const { isOpen, close } = useMobileNavStore();
   return (
     <Transition.Root show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-50 lg:hidden" onClose={close}>
+      <Dialog
+        as="div"
+        className="relative z-50 lg:hidden"
+        onClose={close}
+        onScroll={close}
+      >
         <Transition.Child
           as={Fragment}
           enter="transition-opacity ease-linear duration-300"

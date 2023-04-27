@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { NEXT_AUTH_HANDLER_OPTIONS } from "@/lib/features/next-auth";
 import { Routes } from "@/lib/constants/routes";
 
-export default async function TeamsLayout({
+export default async function StudioLayout({
   children,
 }: {
   children: React.ReactNode;

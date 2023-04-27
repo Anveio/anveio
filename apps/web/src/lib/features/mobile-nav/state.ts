@@ -1,3 +1,5 @@
+"use client";
+
 /**
  * Zustand store for whether the mobile menu is open or not
  */

@@ -1,10 +1,10 @@
 import { Sidebar } from "@/components/Sidebar";
 import { TopNavigationBar } from "@/components/TopNavigationBar";
 import { NEXT_AUTH_HANDLER_OPTIONS } from "@/lib/features/next-auth";
-import { getServerSession } from "next-auth";
-import "./globals.css";
 import "@/lib/features/toasts/toast-styles.css";
 import { Analytics } from "@vercel/analytics/react";
+import { getServerSession } from "next-auth";
+import "./globals.css";
 
 export const metadata = {
   title: "Jipitty - AI Chat, AI Art, AI Insights",

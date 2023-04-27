@@ -14,13 +14,14 @@ export default async function ProfileLayout({
   if (!session) {
     return redirect(Routes.LOGIN);
   }
-
   return (
     <main className="h-full bg-gray-800">
-      <header className="border-b border-white/5 px-6 py-3">
-        <SettingsSecondaryNavigation />
-      </header>
-      {children}
+      <div className="sm:px6 mx-auto max-w-7xl px-3 lg:px-8">
+        <header className="tborder-b border-white/5 py-3">
+          <SettingsSecondaryNavigation />
+        </header>
+        {children}
+      </div>
     </main>
   );
 }

@@ -6,10 +6,12 @@ import Link from "next/link";
 import CompanyLogoWhite from "../../../public/company-logo-white.svg";
 import { WithSessionOnly } from "../WithSessionOnly";
 import { AuthButtons } from "./SidebarButtons";
+import { SidebarTeamLinks, SidebarTopLevelNavLinks } from "./SidebarNavLink";
 
 interface Props {
   session: Session | null;
   className?: string;
+  closeOnNavChange?: boolean;
 }
 
 export function SidebarCore(props: Props) {
@@ -29,51 +31,14 @@ export function SidebarCore(props: Props) {
         <nav className="flex flex-1 flex-col">
           <ul role="list" className="flex flex-1 flex-col gap-y-7">
             <li>
-              <ul role="list" className="-mx-2 space-y-1">
-                {TOP_LEVEL_NAVIGATION.map((item) => (
-                  <li key={item.name}>
-                    <Link
-                      href={item.href}
-                      className={clsx(
-                        "text-gray-400 hover:bg-gray-800 hover:text-white",
-                        "group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 lg:text-sm"
-                      )}
-                    >
-                      <item.icon
-                        className={clsx("h-6 w-6 shrink-0")}
-                        aria-hidden="true"
-                      />
-                      {item.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
+              <SidebarTopLevelNavLinks />
             </li>
             <WithSessionOnly session={props.session}>
               <li>
                 <div className="text-xs font-semibold leading-6 text-indigo-200">
                   Your teams
                 </div>
-                <ul role="list" className="-mx-2 mt-2 space-y-1">
-                  {TEAMS.map((team) => (
-                    <li key={team.name}>
-                      <Link
-                        href={team.href}
-                        className={clsx(
-                          team.current
-                            ? "bg-indigo-700 text-white"
-                            : "text-indigo-200 hover:bg-indigo-700 hover:text-white",
-                          "group flex gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 lg:text-sm"
-                        )}
-                      >
-                        <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-indigo-400 bg-indigo-500 text-[0.625rem] font-medium text-white">
-                          {team.initial}
-                        </span>
-                        <span className="truncate">{team.name}</span>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
+                <SidebarTeamLinks teams={TEAMS} />
               </li>
             </WithSessionOnly>
           </ul>
