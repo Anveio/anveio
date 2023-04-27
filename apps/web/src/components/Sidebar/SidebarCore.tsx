@@ -16,7 +16,7 @@ export function SidebarCore(props: Props) {
   return (
     <div
       className={clsx(
-        "fixed top-0 z-40 flex h-full h-screen w-[15rem] flex-col bg-gray-900",
+        "fixed top-0 z-40 flex h-[100dvh] h-full w-[15rem] flex-col bg-gray-900",
         props.className
       )}
     >

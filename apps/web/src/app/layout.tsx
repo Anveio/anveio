@@ -20,7 +20,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`bg-white`}>
       <body>
-        <div className="static min-h-screen lg:grid lg:grid-cols-[15rem_1fr]">
+        <div className="static min-h-[100dvh] lg:grid lg:grid-cols-[15rem_1fr]">
           <Sidebar session={session} />
           <div>
             <TopNavigationBar session={session} />
