@@ -60,5 +60,5 @@ amplifytools.xcconfig
 **.sample
 #amplify-do-not-edit-end
 
-apps/web/.env
-~apps/web/
+apps/*/.env
+~apps/*/

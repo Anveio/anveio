@@ -8,7 +8,8 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "vitest run",
-    "deploy": "cdk deploy --all --require-approval never"
+    "deploy": "cdk deploy --all --require-approval never",
+    "lint": "next lint"
   },
   "devDependencies": {
     "@types/aws-lambda": "^8.10.109",
