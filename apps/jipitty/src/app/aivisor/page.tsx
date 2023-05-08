@@ -11,5 +11,5 @@ export default async function Aivisor() {
 		return null
 	}
 
-	return <ChatFeed session={session} />
+	return <ChatFeed session={session} initialMessages={[]}/>
 }
