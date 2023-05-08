@@ -4,9 +4,6 @@ import { PaperClipIcon } from "@heroicons/react/20/solid"
 import { Session } from "next-auth"
 import Image from "next/image"
 import { ResponseCard } from "./ResponseCard"
-import * as React from "react"
-import { useMachine } from "@xstate/react"
-import { streamedChatMachine } from "@/lib/features/ai/openai/client"
 import { useChat } from "./use-chat"
 
 export default function ChatFeed(props: { session: Session; initialMessages: any[] }) {
