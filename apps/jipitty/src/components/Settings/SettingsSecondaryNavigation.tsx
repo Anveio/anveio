@@ -3,17 +3,12 @@
 import { usePathname } from "next/navigation"
 
 import { Routes } from "@/lib/constants/routes"
-import { createToast } from "@/lib/features/toasts"
-import { signOut } from "next-auth/react"
 import { useClientSessionState } from "@/lib/features/client-session-state/client-session-state"
 
 export function SettingsSecondaryNavigation() {
 	const pathname = usePathname()
 
-	const {
-		setSession,
-		signOut
-	} = useClientSessionState()
+	const { isBusy, signOut } = useClientSessionState()
 
 	return (
 		<div className="md:flex md:items-center md:justify-between">
@@ -25,7 +20,8 @@ export function SettingsSecondaryNavigation() {
 			<div className="mt-4 flex md:ml-4 md:mt-0">
 				<button
 					type="button"
-					className="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
+					disabled={isBusy}
+					className="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20 disabled:animate-pulse"
 					onClick={signOut}
 				>
 					Log out

@@ -9,6 +9,15 @@ if (!NEXTAUTH_SECRET) {
 	throw new Error("NEXTAUTH_SECRET missing")
 }
 
+export const parseSession =  async (sessionToken: string) => {
+	const session = await decode({
+		token: sessionToken,
+		secret: NEXTAUTH_SECRET
+	})
+
+	return session
+}
+
 export const ensureRequestIsAuthenticated = async <T extends z.ZodType>(
 	request: NextRequest,
 	schema: T

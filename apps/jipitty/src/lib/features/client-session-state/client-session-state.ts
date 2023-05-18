@@ -75,12 +75,18 @@ export const useClientSessionState = create<IClientSessionState>((set) => ({
 		}
 	},
 	signOut: async () => {
-		await signOut({
-            
-        })
+		createToast("Signing out...", {
+			category: 'sign-out'
+		})
+
+		set({ isBusy: true })
+
+		await signOut()
 
         set({ session: null })
-        createToast("You have been logged out of your account.")
+        createToast("You have been logged out of your account.", {
+			category: 'sign-out'
+		})
 	},
 	setSession: (session) => set({ session })
 }))

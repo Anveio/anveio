@@ -1,10 +1,15 @@
 import { Routes } from "@/lib/constants/routes"
 import { NEXT_AUTH_HANDLER_OPTIONS } from "@/lib/features/next-auth"
-import { Session, getServerSession } from "next-auth"
+import { getServerSession } from "next-auth"
 import { redirect } from "next/navigation"
 
-export default async function Aivisor(props: React.PropsWithChildren) {
-	console.log("in Aivisor layout")
+export default async function AivisorLayout(
+	props: React.PropsWithChildren<{
+		params?: {
+			conversationPublicId: string
+		}
+	}>
+) {
 	const session = await getServerSession(NEXT_AUTH_HANDLER_OPTIONS)
 
 	if (!session) {

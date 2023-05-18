@@ -1,13 +1,13 @@
 import {
-	createConversationFromScratch,
+	createUserMessage,
 	getAllMessagesForConversation
 } from "@/lib/db/utils"
 import { OpenAIEdgeClient } from "@/lib/features/ai/openai/edge-client"
+import { sendMessageRequestBodySchema } from "@/lib/utils/aivisor-client"
 import { ensureRequestIsAuthenticated } from "@/lib/utils/requestGuard"
 import "@edge-runtime/ponyfill"
 import type { NextRequest } from "next/server"
 import { ChatCompletionRequestMessageRoleEnum } from "openai"
-import { z } from "zod"
 
 export const runtime = "edge"
 
@@ -18,15 +18,9 @@ if (!OPENAI_SECRET) {
 }
 
 export default async function sendMessage(request: NextRequest) {
-	const requestBodySchema = z.object({
-		email: z.string().email(),
-		message: z.string(),
-		conversationId: z.string().optional()
-	})
-
 	const { errorResponse, successResponse } = await ensureRequestIsAuthenticated(
 		request,
-		requestBodySchema
+		sendMessageRequestBodySchema
 	)
 
 	if (errorResponse) {
@@ -38,28 +32,10 @@ export default async function sendMessage(request: NextRequest) {
 	 * make some DB reads and writes.
 	 */
 
-	let conversationId = successResponse.conversationId
+	const { conversationPublicId, email } = successResponse
 
-	if (!conversationId) {
-		console.log(
-			"Generating a conversation from scratch for user with email",
-			successResponse.email
-		)
-		conversationId = await createConversationFromScratch(
-			successResponse.email,
-			"private"
-		)
-	}
-
-	console.log("Creating a message under conversation", conversationId)
-
-	const messageHistory = await getAllMessagesForConversation(conversationId)
-
-	console.log(
-		"Found messages for conversation with ID ",
-		conversationId,
-		"--",
-		messageHistory
+	const { conversation, messages } = await getAllMessagesForConversation(
+		conversationPublicId
 	)
 
 	try {
@@ -68,12 +44,12 @@ export default async function sendMessage(request: NextRequest) {
 			{
 				model: "gpt-3.5-turbo",
 				stream: true,
-				messages: messageHistory
+				messages: messages
 					.map((el) => {
 						return {
 							content: el.content,
 							role:
-								el.sender === "user"
+								el.sender_type === "user"
 									? ChatCompletionRequestMessageRoleEnum.User
 									: ChatCompletionRequestMessageRoleEnum.Assistant
 						}
@@ -90,7 +66,13 @@ export default async function sendMessage(request: NextRequest) {
 			}
 		)
 
-		return new Response(responseStream)
+		const [clientStream, serverStream] = responseStream.tee()
+
+		processStreamedData(serverStream).then((result) => {
+			createUserMessage(result, conversation.id, email)
+		})
+
+		return new Response(clientStream)
 	} catch (e) {
 		const errorResponse = new Response(String(e), {
 			status: 500,
@@ -101,4 +83,48 @@ export default async function sendMessage(request: NextRequest) {
 
 		return errorResponse
 	}
+}
+
+async function* readerToGenerator(
+	reader: ReadableStreamDefaultReader<Uint8Array>
+): AsyncGenerator<Uint8Array> {
+	while (true) {
+		const { done, value } = await reader.read()
+
+		if (done) {
+			break
+		}
+
+		yield value
+	}
+}
+
+async function processStreamedData(rootStream: ReadableStream<Uint8Array>) {
+	const reader = rootStream.getReader()
+	const textDecoderStreamRef = new TextDecoderStream()
+
+	const readableStream = new ReadableStream<Uint8Array>({
+		async start(controller) {
+			for await (const chunk of readerToGenerator(reader)) {
+				controller.enqueue(chunk)
+			}
+			controller.close()
+		}
+	})
+
+	let finalResult = ""
+
+	const resultStream = readableStream.pipeThrough(textDecoderStreamRef)
+	const resultReader = resultStream.getReader()
+
+	while (true) {
+		const { done, value } = await resultReader.read()
+		if (done) break
+
+		if (value) {
+			finalResult += value
+		}
+	}
+
+	return finalResult
 }

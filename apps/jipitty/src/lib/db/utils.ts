@@ -2,6 +2,7 @@ import { z } from "zod"
 import { db } from "./db"
 import { Transaction } from "@planetscale/database"
 import { nanoid } from "nanoid"
+import { ConversationRow, MessageRow, UserRow } from "./types"
 
 export const getDoesUserAlreadyExist = async (
 	email?: string | null,
@@ -38,13 +39,7 @@ export const getUserByEmailAddress = async (
 		[validatedEmail]
 	)
 
-	return rows[0] as
-		| {
-				id: string
-				username: string | null
-				email: string
-		  }
-		| undefined
+	return rows[0] as UserRow | undefined
 }
 
 export const createUserWithOAuthToken = async (
@@ -165,16 +160,87 @@ export const createUserWithOAuthToken = async (
 	})
 }
 
-export const getAllConversationsForUserByEmailAddress = async () => {
-	const conversations = await db.execute(
-		`
-    SELECT conversations.*
-    FROM conversations
-    JOIN user_conversations ON user_conversations.conversation_id = conversations.id
-    WHERE user_conversations.user_id = <user_id>`
-	)
+export const getAllConversationsForUserByEmailAddress = async (
+	emailAddress: string
+) => {
+	const validatedEmailAddress = z.string().email().parse(emailAddress)
 
-	return conversations.rows
+	const conversations = await db.transaction(async (tx) => {
+		const user = await getUserByEmailAddress(validatedEmailAddress, tx)
+
+		if (!user) {
+			throw new Error(
+				"User not found for email address: " + validatedEmailAddress
+			)
+		}
+
+		const conversations = await tx.execute(
+			`
+		SELECT participants, admin_id, title, visibility, created_at, updated_at, public_id, created_by_user_id
+		FROM conversations
+		WHERE created_by_user_id = ?
+		`,
+			[user.id]
+		)
+
+		return conversations.rows as Pick<
+			ConversationRow,
+			| "participants"
+			| "admin_id"
+			| "title"
+			| "visibility"
+			| "created_at"
+			| "updated_at"
+			| "public_id"
+			| "created_by_user_id"
+		>[]
+	})
+
+	return conversations
+}
+
+function doesUserBelongToConversation(
+	user: UserRow,
+	conversation: ConversationRow
+): boolean {
+	switch (conversation.visibility) {
+		case "public":
+		case "url":
+			return true
+
+		case "shared":
+			if (
+				user.id === conversation.admin_id ||
+				user.id === conversation.created_by_user_id
+			) {
+				return true
+			}
+
+			const participantEmails = JSON.parse(conversation.participants)
+			const validatedParticipantEmails = z
+				.array(z.string().email())
+				.parse(participantEmails)
+
+			if (
+				validatedParticipantEmails.includes(user.email) ||
+				user.id === conversation.admin_id ||
+				user.id === conversation.created_by_user_id
+			) {
+				return true
+			} else {
+				return false
+			}
+
+		case "private":
+			if (user.id === conversation.created_by_user_id) {
+				return true
+			} else {
+				return false
+			}
+
+		default:
+			return false
+	}
 }
 
 export const checkIfUserBelongsToConversation = async (
@@ -186,12 +252,12 @@ export const checkIfUserBelongsToConversation = async (
 
 	const conversations = await db.execute(
 		`
-    SELECT EXISTS (
-      SELECT 1
-      FROM user_conversations
-      WHERE conversation_id = ${validatedConversationId}
-        AND user_id = ${validatedUserId}
-    ) AS is_created_by_user
+		SELECT EXISTS (
+		SELECT 1
+		FROM user_conversations
+		WHERE conversation_id = ${validatedConversationId}
+			AND user_id = ${validatedUserId}
+		) AS is_created_by_user
   `
 	)
 
@@ -262,28 +328,20 @@ export const createConversationFromScratch = async (
 				"Failed to find user with email: " + validatedEmailAddress
 			)
 		}
-
-		console.log(
-			"Inserting into conversations with ",
-			publicId,
-			user.id,
-			validatedVisibility
-		)
-
 		const conversation = await tx.execute(
 			`INSERT INTO conversations (
-      public_id,
-      admin_id,
-      visibility,
-      created_by_user_id,
-      participants
-    ) VALUES (
-      ?,
-      ?,
-      ?,
-      ?,
-      ?
-    )`,
+				public_id,
+				admin_id,
+				visibility,
+				created_by_user_id,
+				participants
+				) VALUES (
+				?,
+				?,
+				?,
+				?,
+				?
+			)`,
 			[
 				publicId,
 				user.id,
@@ -303,26 +361,164 @@ export const createConversationFromScratch = async (
       ${conversationId}
     )`)
 
-		return conversationId
+		return { conversationId, publicId }
 	})
 
 	return result
 }
 
-export const getAllMessagesForConversation = async (conversationId: string) => {
+export const getMessagesForConversationByPublicIdAndUserEmail = async (
+	publicId: string,
+	emailAddress: string
+) => {
+	const validatedPublicId = z.string().parse(publicId)
+	const validatedEmailAddress = z.string().email().parse(emailAddress)
+
+	const messages = await db.transaction(async (tx) => {
+		const user = await getUserByEmailAddress(validatedEmailAddress, tx)
+
+		if (!user) {
+			throw new Error(
+				"No user found for email address: " + validatedEmailAddress
+			)
+		}
+
+		const conversations = await db.execute(
+			`
+				SELECT conversations.*
+				FROM conversations
+				WHERE conversations.public_id = ?
+			`,
+			[validatedPublicId]
+		)
+
+		const conversation = conversations.rows[0] as undefined | ConversationRow
+
+		if (!conversation) {
+			throw new Error(
+				"No conversation found for public id: " + validatedPublicId
+			)
+		}
+
+		const userBelongsToConversation = doesUserBelongToConversation(
+			user,
+			conversation
+		)
+
+		if (!userBelongsToConversation) {
+			throw new Error(
+				"User does not belong to conversation with public id: " +
+					validatedPublicId
+			)
+		}
+
+		const messages = await tx.execute(
+			`
+			SELECT messages.*
+			FROM messages
+			WHERE messages.conversation_id = ?
+			ORDER BY messages.created_at DESC
+		`, [conversation.id]
+		)
+
+		return messages.rows as MessageRow[]
+	})
+
+	return messages
+}
+
+export const getAllMessagesForConversation = async (
+	conversationPublicId: string,
+) => {
+	const validatedConversationId = z.string().parse(conversationPublicId)
+
+	const result = await db.transaction(async (tx) => {
+		const conversation = (
+			await tx.execute(
+				`
+			SELECT conversations.*
+			FROM conversations
+			WHERE conversations.public_id = ?
+			LIMIT 1
+			`,
+				[validatedConversationId]
+			)
+		).rows[0] as undefined | ConversationRow
+
+		if (!conversation) {
+			throw new Error(
+				"No conversation found for public id: " + validatedConversationId
+			)
+		}
+
+		const messages = await db.execute(
+			`
+			SELECT messages.*
+			FROM messages
+			WHERE messages.conversation_id = ?
+			ORDER BY messages.created_at DESC
+		`,
+			[conversation.id]
+		)
+
+		return {
+			messages: messages.rows as MessageRow[],
+			conversation
+		}
+	})
+
+	return result
+}
+
+export const createSystemMessage = (
+	message: string,
+	conversationId: string
+) => {
+	const validatedMessage = z.string().parse(message)
 	const validatedConversationId = z.string().parse(conversationId)
 
-	const messages = await db.execute(
+	return db.execute(
 		`
-    SELECT messages.*
-    FROM messages
-    WHERE messages.conversation_id = ${validatedConversationId}
-    ORDER BY messages.created_at DESC
-    `
+	INSERT INTO messages (
+		sender_type,
+		content,
+		conversation_id,
+		public_id,
+	) VALUES (?, ?, ?, ?, ?)
+	`,
+		["system", validatedMessage, validatedConversationId, nanoid(12)]
 	)
+}
 
-	return messages.rows as {
-		sender: "user" | "ai_assistant"
-		content: string
-	}[]
+export const createUserMessage = (
+	message: string,
+	conversationId: string,
+	senderEmailAddress: string
+) => {
+	const validatedMessage = z.string().parse(message)
+	const validatedConversationId = z.string().parse(conversationId)
+	const validatedSenderEmailAddress = z.string().parse(senderEmailAddress)
+
+	return db.transaction(async (tx) => {
+		const user = await getUserByEmailAddress(validatedSenderEmailAddress, tx)
+
+		if (!user) {
+			throw new Error(
+				"User not found for email address: " + validatedSenderEmailAddress
+			)
+		}
+
+		return tx.execute(
+			`
+		INSERT INTO messages (
+			sender_type,
+			content,
+			conversation_id,
+			user_id,
+			public_id
+		) VALUES ('user', ?, ?, ?, ?)
+		`,
+			[validatedMessage, validatedConversationId, user.id, nanoid(12)]
+		)
+	})
 }

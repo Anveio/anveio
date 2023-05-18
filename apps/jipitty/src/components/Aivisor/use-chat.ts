@@ -1,81 +1,87 @@
+import { MessageRow } from "@/lib/db"
+import {
+	createConversation,
+	createMessageInConversation
+} from "@/lib/utils/aivisor-client"
 import { Session } from "next-auth"
 import * as React from "react"
 
 interface ChatMachineContext {
-	previousMessages: {
-		senderName: string
-		message: string
-	}[]
+	previousMessages: MessageRow[]
 	messageDraft: string
 	session: Session
 	responseStream: ReadableStream<Uint8Array> | null
 	streamedReplyFromAi: string
 }
 
-const textDecoderStreamRef = new TextDecoderStream()
 export const useChat = (
 	initialSession: Session,
-	initialChatHistory: ChatMachineContext["previousMessages"]
+	initialChatHistory: ChatMachineContext["previousMessages"],
+	conversationPublicId: string | null,
+	onGenerateConversationPublicId?: (publicId: string) => void
 ) => {
+	const currentConversationIdRef = React.useRef(conversationPublicId)
 
 	const [state, setState] = React.useState<ChatMachineContext>({
 		previousMessages: initialChatHistory,
 		messageDraft: "Please type 2 sentences of lorem ipsum",
 		session: initialSession,
 		responseStream: null,
-		streamedReplyFromAi: "string"
+		streamedReplyFromAi: ""
 	})
+
+	const generateConversationId = async () => {
+		if (!state.session.user?.email) {
+			throw new Error("No session user email:" + JSON.stringify(state.session))
+		}
+
+		const json = await createConversation({
+			email: state.session.user?.email
+		})
+
+		if (onGenerateConversationPublicId) {
+			onGenerateConversationPublicId(json.publicId)
+		}
+
+		return json
+	}
 
 	const uploadMessage = async () => {
 		if (!state.session) {
 			throw new Error("No session")
 		}
 
-		const response = await fetch("/api/v1/aivisor/send-message", {
-			method: "POST",
-			body: JSON.stringify({
-				email: state.session.user?.email,
-				message: state.messageDraft
-			})
-		})
-
-		if (!response.body) {
-			throw new Error("No Response Body")
+		if (!state.session.user?.email) {
+			throw new Error("No session user email")
 		}
 
-		if (!response.ok) {
-			throw new Error("Response not ok")
+		if (!currentConversationIdRef.current) {
+			currentConversationIdRef.current = (await generateConversationId()).publicId
 		}
 
-		const reader = response.body.getReader()
-
-		const readableStream = new ReadableStream<Uint8Array>({
-			async start(controller) {
-				for await (const chunk of readerToGenerator(reader)) {
-					controller.enqueue(chunk)
-				}
-				controller.close()
-			}
+		const resultReader = await createMessageInConversation({
+			conversationPublicId: currentConversationIdRef.current,
+			email: state.session.user?.email,
+			message: state.messageDraft
 		})
 
 		try {
-			const resultStream = readableStream.pipeThrough(textDecoderStreamRef)
-			const resultReader = resultStream.getReader()
 			while (true) {
 				const { done, value } = await resultReader.read()
-				console.log("Reading", !done)
 				if (done) break
 
 				if (value) {
-					console.log("Sending message to parent;")
+					console.log("Received chunk", value)
 					setState((prevState) => ({
-                        ...prevState,
-                        streamedReplyFromAi: prevState.streamedReplyFromAi + value
-                    }))
+						...prevState,
+						streamedReplyFromAi: prevState.streamedReplyFromAi + value
+					}))
 				}
 			}
+		} catch (e) {
+			throw e
 		} finally {
-			reader.releaseLock()
+			resultReader.releaseLock()
 		}
 	}
 
@@ -89,21 +95,7 @@ export const useChat = (
 	return {
 		state,
 		uploadMessage,
-		updateDraftMessage
-	}
-}
-
-
-async function* readerToGenerator(
-	reader: ReadableStreamDefaultReader<Uint8Array>
-): AsyncGenerator<Uint8Array> {
-	while (true) {
-		const { done, value } = await reader.read()
-
-		if (done) {
-			break
-		}
-
-		yield value
+		updateDraftMessage,
+		createConversation
 	}
 }

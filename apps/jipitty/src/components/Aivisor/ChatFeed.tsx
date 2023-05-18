@@ -1,17 +1,26 @@
 "use client"
 
+import { MessageRow } from "@/lib/db"
 import { PaperClipIcon } from "@heroicons/react/20/solid"
 import { Session } from "next-auth"
 import Image from "next/image"
 import { ResponseCard } from "./ResponseCard"
 import { useChat } from "./use-chat"
 
-export default function ChatFeed(props: { session: Session; initialMessages: any[] }) {
-	const {
-		state,
-		updateDraftMessage,
-		uploadMessage
-	} = useChat(props.session, [])
+export default function ChatFeed(props: {
+	session: Session
+	initialMessages: MessageRow[]
+	conversatioPublicId: string | null
+}) {
+
+	const { state, updateDraftMessage, uploadMessage } = useChat(
+		props.session,
+		props.initialMessages,
+		props.conversatioPublicId,
+		(generatedConversationId) => {
+			window.history.pushState({}, "", `/aivisor/c/${generatedConversationId}`)
+		}
+	)
 
 	return (
 		<div>
@@ -45,8 +54,7 @@ export default function ChatFeed(props: { session: Session; initialMessages: any
 								placeholder="Type a message..."
 								value={state.messageDraft}
 								onChange={(event) => {
-									updateDraftMessage( event.target.value
-									)
+									updateDraftMessage(event.target.value)
 								}}
 							/>
 

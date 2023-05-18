@@ -21,7 +21,6 @@ export const Routes = {
 } as const
 
 export const TOP_LEVEL_NAVIGATION = [
-	{ name: "Aivisor", href: Routes.AIVISOR, icon: ChatBubbleBottomCenterIcon },
 	{ name: "Media Library", href: Routes.LIBRARY, icon: BuildingLibraryIcon },
 	{ name: "Studio", href: Routes.STUDIO, icon: HomeModernIcon }
 ] as const

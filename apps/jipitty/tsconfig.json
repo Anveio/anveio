@@ -29,8 +29,6 @@
 		"**/*.ts",
 		"**/*.tsx",
 		".next/types/**/*.ts",
-		"src/components/TopNavigationBar",
-		"src/lib/features/ai/openai/client/client-state-machine.ts"
 	],
 	"exclude": ["node_modules"]
 }
