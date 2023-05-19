@@ -1,1 +1,0 @@
-export { useConwaysGameOfLife } from './state'
