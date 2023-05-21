@@ -6,7 +6,7 @@ interface Props {
 	session: Session | null
 	conversations: {
 		title: string | null
-		public_id: string;
+		public_id: string
 	}[]
 }
 
@@ -23,7 +23,11 @@ export function Sidebar(props: Props) {
 					conversations={props.conversations}
 				/>
 			</MobileSidebar>
-			<SidebarCore conversations={props.conversations} session={props.session} className="hidden lg:flex" />
+			<SidebarCore
+				conversations={props.conversations}
+				session={props.session}
+				className="hidden lg:flex"
+			/>
 		</div>
 	)
 }

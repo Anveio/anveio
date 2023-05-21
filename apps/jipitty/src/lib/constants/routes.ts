@@ -13,8 +13,8 @@ export const Routes = {
 	AIVISOR: "/aivisor",
 	LIBRARY: "/library",
 	STUDIO: "/studio",
-	LOGIN: "/login",
-	SIGNUP: "/signup",
+	LOGIN: "/sign-in",
+	SIGNUP: "/sign-up",
 	PROFILE: "/profile",
 	SETTINGS: "/profile/settings",
 	TEAMS: "/teams"

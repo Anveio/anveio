@@ -1,17 +1,18 @@
-import { Routes, TEAMS, TOP_LEVEL_NAVIGATION } from "@/lib/constants/routes"
+import { Routes, TEAMS } from "@/lib/constants/routes"
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 import clsx from "clsx"
 import { Session } from "next-auth"
 import Image from "next/image"
 import Link from "next/link"
 import CompanyLogoWhite from "../../../public/company-logo-white.svg"
 import { WithSessionOnly } from "../WithSessionOnly"
-import { AuthButtons } from "./SidebarButtons"
 import {
 	AivisorLink,
 	SidebarTeamLinks,
 	SidebarTopLevelNavLinks
 } from "./SidebarNavLink"
-import { ChatBubbleBottomCenterIcon } from "@heroicons/react/24/outline"
+import { ProfileButton } from "./SidebarButtons"
+import { SignUpButton } from "@clerk/clerk-react"
 
 interface Props {
 	session: Session | null
@@ -44,11 +45,11 @@ export function SidebarCore(props: Props) {
 						<li>
 							<AivisorLink />
 							{props.conversations && props.conversations.length > 0 ? (
-								<ul className="pt-1 pb-3 pl-5 text-white">
+								<ul className="pb-3 pl-5 pt-1 text-white">
 									{props.conversations.map((conversation) => (
 										<li key={conversation.public_id}>
 											<Link
-											className=""
+												className=""
 												href={Routes.AIVISOR + "/c/" + conversation.public_id}
 											>
 												{conversation.title || "Untitled"}
@@ -61,7 +62,7 @@ export function SidebarCore(props: Props) {
 						<SidebarTopLevelNavLinks />
 						<WithSessionOnly session={props.session}>
 							<li>
-								<div className="text-xs font-semibold leading-6 text-indigo-200 pl-2 mt-4">
+								<div className="mt-4 pl-2 text-xs font-semibold leading-6 text-indigo-200">
 									Your teams
 								</div>
 								<SidebarTeamLinks teams={TEAMS} />
@@ -71,8 +72,14 @@ export function SidebarCore(props: Props) {
 				</nav>
 			</div>
 
-			<div className="mt-auto grid gap-3 bg-inherit">
-				<AuthButtons session={props.session} />
+			<div className="mt-auto grid gap-3 bg-inherit text-indigo-200">
+				<SignedOut>
+					<Link href={Routes.LOGIN}>Log in</Link>
+					<Link href={Routes.SIGNUP}>Sign up</Link>
+				</SignedOut>
+				<SignedIn>
+					<ProfileButton />
+				</SignedIn>
 			</div>
 		</div>
 	)

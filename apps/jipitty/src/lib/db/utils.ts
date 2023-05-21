@@ -5,15 +5,12 @@ import { nanoid } from "nanoid"
 import { ConversationRow, MessageRow, UserRow } from "./types"
 import { eq } from "drizzle-orm"
 import { users } from "./schema"
+import { AdapterUser, DefaultAdapter } from "next-auth/adapters"
 
-export const getDoesUserAlreadyExist = async (
-	email?: string | null,
-	tx?: Transaction
+export const getDoesUserAlreadyExistByEmail = async (
+	email: string,
+	tx?: Parameters<Parameters<typeof db.transaction>[0]>[0]
 ) => {
-	if (!email) {
-		return false
-	}
-
 	const validatedEmail = z
 		.string({
 			required_error: "Email is required"
@@ -21,7 +18,7 @@ export const getDoesUserAlreadyExist = async (
 		.email()
 		.parse(email)
 
-	const userAlreadyExistsQuery = db
+	const userAlreadyExistsQuery = (tx || db)
 		.select()
 		.from(users)
 		.where(eq(users.email, validatedEmail))
@@ -32,17 +29,49 @@ export const getDoesUserAlreadyExist = async (
 	return queryResult.length > 0
 }
 
-export const getUserByEmailAddress = async (
-	emailAddress: string,
-	tx?: Transaction
-) => {
+export const getUserByEmailAddress = async (emailAddress: string) => {
 	const validatedEmail = z.string().email().parse(emailAddress)
-	const { rows } = await (tx || db).execute(
-		`SELECT id, username, email FROM users WHERE email = ? LIMIT 1`,
-		[validatedEmail]
-	)
 
-	return rows[0] as UserRow | undefined
+	const result = await db
+		.select({
+			id: users.id,
+			username: users.username,
+			email: users.email
+		})
+		.from(users)
+		.where(eq(users.email, validatedEmail))
+		.limit(1)
+		.execute()
+
+	return result[0]
+}
+
+export const createUserFromAdapterUser: DefaultAdapter["createUser"] = async (
+	user
+) => {
+	const validatedEmail = z.string().email().parse(user.email)
+	const validatedUsername = z.string().nullable().parse(user.name)
+
+	const idForUser = await db.transaction(async (tx) => {
+		const userAlreadyExists = await getDoesUserAlreadyExistByEmail(
+			validatedEmail,
+			tx
+		)
+
+		if (userAlreadyExists) {
+			throw new Error("User already exists")
+		}
+
+		const newUser = await tx.insert(users).values({
+			email: validatedEmail,
+			username: validatedUsername,
+			
+		})
+
+		return newUser.insertId
+	})
+
+	return { id: idForUser, email: validatedEmail, emailVerified: user.emailVerified }
 }
 
 export const createUserWithOAuthToken = async (

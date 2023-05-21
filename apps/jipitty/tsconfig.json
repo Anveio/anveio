@@ -1,14 +1,18 @@
 {
 	"compilerOptions": {
 		"target": "ES2017",
-		"lib": ["dom", "dom.iterable", "esnext"],
+		"lib": [
+			"dom",
+			"dom.iterable",
+			"esnext"
+		],
 		"allowJs": true,
 		"skipLibCheck": true,
 		"strict": true,
 		"forceConsistentCasingInFileNames": true,
 		"noEmit": true,
 		"esModuleInterop": true,
-		"module": "es2022",
+		"module": "esnext",
 		"moduleResolution": "node",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
@@ -20,15 +24,24 @@
 			}
 		],
 		"paths": {
-			"@/*": ["./src/*"]
+			"@/*": [
+				"./src/*"
+			],
+			"@/fonts": [
+				"./src/styles/fonts"
+			]
 		},
-		"types": ["@edge-runtime/types"]
+		"types": [
+			"@edge-runtime/types"
+		]
 	},
 	"include": [
 		"next-env.d.ts",
 		"**/*.ts",
 		"**/*.tsx",
-		".next/types/**/*.ts",
+		".next/types/**/*.ts"
 	],
-	"exclude": ["node_modules"]
+	"exclude": [
+		"node_modules"
+	]
 }

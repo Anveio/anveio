@@ -1,2 +1,1 @@
-export * from './cn'
-export * from './use-interval'
+export * from "./cn"

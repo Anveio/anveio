@@ -1,5 +1,5 @@
 "use client"
-
+import { UserButton } from "@clerk/nextjs"
 import { signOut } from "next-auth/react"
 import Image from "next/image"
 import SignInWithGoogleIcon from "../../../public/sign-in-with-google-light-enabled.svg"
@@ -72,68 +72,39 @@ export function SignOutButton() {
 	)
 }
 
-export function ProfileButton(props: { session: Session }) {
+export function ProfileButton() {
 	const pathName = usePathname()
-	const { close } = useMobileNavStore()
 	return (
 		<motion.div
 			className={clsx(
-				"grid grid-cols-[1fr_min-content] divide-x divide-white/10 ring-1 ring-white/10"
+				"grid grid-cols-[1fr_min-content] divide-x divide-white/10 ring-1 ring-white/10 group-hover:text-white"
 			)}
 		>
-			<Link
-				onClick={close}
-				href={Routes.PROFILE}
-				className={clsx(
-					"flex items-center gap-x-4 px-4 py-3 text-sm font-semibold leading-6 text-white ",
-					pathName === Routes.PROFILE ? "bg-indigo-600" : "hover:bg-gray-800"
-				)}
-			>
-				<Image
-					width={32}
-					height={32}
-					className="h-8 w-8 rounded-full"
-					src={props.session.user?.image ?? ""}
-					alt=""
+			<Link href={Routes.PROFILE}>
+				<UserButton
+					userProfileUrl={Routes.PROFILE}
+					userProfileMode="navigation"
+					showName
+					appearance={{
+						elements: {
+							rootBox: "flex items-center p-2",
+							userButtonBox: "flex-row-reverse",
+							userButtonOuterIdentifier: "text-current"
+						},
+						layout: {}
+					}}
 				/>
-				<span className="sr-only">Your profile</span>
-				<span aria-hidden="true">{props.session.user?.name ?? "Profile"}</span>
 			</Link>
 			<Link
 				href={Routes.SETTINGS}
-				onClick={close}
 				className={clsx(
-					"group flex items-center gap-x-3 p-4 text-lg font-semibold leading-6 text-indigo-200 hover:text-white lg:text-sm",
+					"group flex items-center gap-x-3 p-4 text-lg font-semibold leading-6 hover:text-white lg:text-sm",
 					pathName === Routes.SETTINGS ? "bg-indigo-600" : "hover:bg-gray-800"
 				)}
 			>
-				<Cog6ToothIcon
-					className="h-6 w-6 shrink-0 text-indigo-200 group-hover:text-white"
-					aria-hidden="true"
-				/>
+				<Cog6ToothIcon className="h-6 w-6 shrink-0" aria-hidden="true" />
 				<span className="sr-only">Settings</span>
 			</Link>
 		</motion.div>
-	)
-}
-
-export const AuthButtons = (props: { session: Session | null }) => {
-	const { setSession } = useClientSessionState()
-
-	React.useEffect(() => {
-		setSession(props.session)
-	}, [props.session])
-
-	return (
-		<AnimatePresence>
-			{props.session ? (
-				<ProfileButton session={props.session} />
-			) : (
-				<motion.ul className="grid grid-cols-1 gap-4 px-6 py-6">
-					<SignInWithGoogleButton />
-					<SignInWithGitHubButton />{" "}
-				</motion.ul>
-			)}
-		</AnimatePresence>
 	)
 }

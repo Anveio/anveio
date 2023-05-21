@@ -5,12 +5,6 @@ import Image from "next/image"
 import { redirect } from "next/navigation"
 
 export default async function Profile() {
-	const session = await getServerSession(NEXT_AUTH_HANDLER_OPTIONS)
-
-	if (!session) {
-		return redirect(Routes.LOGIN)
-	}
-
 	return (
 		<>
 			{/* Settings forms */}

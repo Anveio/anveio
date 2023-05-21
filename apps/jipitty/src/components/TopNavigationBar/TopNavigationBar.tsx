@@ -17,6 +17,10 @@ export function TopNavigationBar(props: Props) {
 			<MobileNavMenuOpener />
 			{/* Separator */}
 			<div className="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true" />
+			<div>
+				<Link href={Routes.SIGNUP}>Sign up</Link>
+				<Link href={Routes.SIGNUP}>Log in</Link>
+			</div>
 		</div>
 	)
 }
