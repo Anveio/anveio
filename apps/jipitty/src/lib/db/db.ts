@@ -1,32 +1,23 @@
-import { Client } from "@planetscale/database"
+import { Client, connect } from "@planetscale/database"
 import { z } from "zod"
+import { drizzle } from 'drizzle-orm/planetscale-serverless';
+import { migrate } from "drizzle-orm/mysql2/migrator";
+import { DATABASE_HOST, DATABASE_PASSWORD, DATABASE_USERNAME } from "./environment";
 
-const DATABASE_HOST = z
-	.string({
-		required_error: "DATABASE_HOST missing"
-	})
-	.parse(process.env.DATABASE_HOST)
-const DATABASE_USERNAME = z
-	.string({
-		required_error: "DATABASE_USERNAME missing"
-	})
-	.parse(process.env.DATABASE_USERNAME)
-
-const DATABASE_PASSWORD = z
-	.string({
-		required_error: "DATABASE_PASSWORD missing"
-	})
-	.parse(process.env.DATABASE_PASSWORD)
-
-const config = {
+export const config = {
 	host: DATABASE_HOST,
 	username: DATABASE_USERNAME,
 	password: DATABASE_PASSWORD
 }
 
-export const db = new Client(config).connection()
+
+const connection = connect(config)
+
+export const db = drizzle(connection);
 
 export const createDatabaseConnection = () => {
 	const connection = new Client(config).connection()
 	return connection
 }
+
+await migrate(db as any, { migrationsFolder: "drizzle" });

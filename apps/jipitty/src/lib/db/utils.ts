@@ -3,6 +3,8 @@ import { db } from "./db"
 import { Transaction } from "@planetscale/database"
 import { nanoid } from "nanoid"
 import { ConversationRow, MessageRow, UserRow } from "./types"
+import { eq } from "drizzle-orm"
+import { users } from "./schema"
 
 export const getDoesUserAlreadyExist = async (
 	email?: string | null,
@@ -19,14 +21,15 @@ export const getDoesUserAlreadyExist = async (
 		.email()
 		.parse(email)
 
-	const userAlreadyExistsQuery = (tx || db).execute(
-		`SELECT * FROM users WHERE email = ? LIMIT 1`,
-		[validatedEmail]
-	)
+	const userAlreadyExistsQuery = db
+		.select()
+		.from(users)
+		.where(eq(users.email, validatedEmail))
+		.limit(1)
 
 	const queryResult = await userAlreadyExistsQuery
 
-	return queryResult.rows.length > 0
+	return queryResult.length > 0
 }
 
 export const getUserByEmailAddress = async (
@@ -418,7 +421,8 @@ export const getMessagesForConversationByPublicIdAndUserEmail = async (
 			FROM messages
 			WHERE messages.conversation_id = ?
 			ORDER BY messages.created_at DESC
-		`, [conversation.id]
+		`,
+			[conversation.id]
 		)
 
 		return messages.rows as MessageRow[]
@@ -428,7 +432,7 @@ export const getMessagesForConversationByPublicIdAndUserEmail = async (
 }
 
 export const getAllMessagesForConversation = async (
-	conversationPublicId: string,
+	conversationPublicId: string
 ) => {
 	const validatedConversationId = z.string().parse(conversationPublicId)
 
