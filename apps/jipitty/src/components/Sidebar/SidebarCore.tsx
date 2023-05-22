@@ -1,21 +1,18 @@
 import { Routes, TEAMS } from "@/lib/constants/routes"
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
+import { SignedIn, SignedOut } from "@clerk/nextjs"
 import clsx from "clsx"
-import { Session } from "next-auth"
 import Image from "next/image"
 import Link from "next/link"
 import CompanyLogoWhite from "../../../public/company-logo-white.svg"
-import { WithSessionOnly } from "../WithSessionOnly"
+import { Button } from "../ShadCdn/button"
+import { ProfileButton } from "./SidebarButtons"
 import {
 	AivisorLink,
 	SidebarTeamLinks,
 	SidebarTopLevelNavLinks
 } from "./SidebarNavLink"
-import { ProfileButton } from "./SidebarButtons"
-import { SignUpButton } from "@clerk/clerk-react"
 
 interface Props {
-	session: Session | null
 	className?: string
 	closeOnNavChange?: boolean
 	conversations?: {
@@ -25,8 +22,6 @@ interface Props {
 }
 
 export function SidebarCore(props: Props) {
-	console.log(props.conversations?.length, "L")
-
 	return (
 		<div
 			className={clsx(
@@ -60,22 +55,38 @@ export function SidebarCore(props: Props) {
 							) : null}
 						</li>
 						<SidebarTopLevelNavLinks />
-						<WithSessionOnly session={props.session}>
+						<SignedIn>
 							<li>
 								<div className="mt-4 pl-2 text-xs font-semibold leading-6 text-indigo-200">
 									Your teams
 								</div>
 								<SidebarTeamLinks teams={TEAMS} />
 							</li>
-						</WithSessionOnly>
+						</SignedIn>
 					</ul>
 				</nav>
 			</div>
 
 			<div className="mt-auto grid gap-3 bg-inherit text-indigo-200">
 				<SignedOut>
-					<Link href={Routes.LOGIN}>Log in</Link>
-					<Link href={Routes.SIGNUP}>Sign up</Link>
+					<div className="mb-2 grid grid-cols-2 gap-3">
+						<Link href={Routes.LOGIN}>
+							<Button
+								variant={"secondary"}
+								className="w-full bg-white px-3 py-1.5 text-sm font-semibold leading-6 text-gray-900 shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+							>
+								Log in
+							</Button>
+						</Link>
+						<Link href={Routes.SIGNUP}>
+							<Button
+								variant={"default"}
+								className="w-full bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+							>
+								Sign up
+							</Button>
+						</Link>
+					</div>
 				</SignedOut>
 				<SignedIn>
 					<ProfileButton />

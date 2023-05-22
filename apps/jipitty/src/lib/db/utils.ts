@@ -1,430 +1,78 @@
+import { eq } from "drizzle-orm"
+import { nanoid } from "nanoid"
 import { z } from "zod"
 import { db } from "./db"
-import { Transaction } from "@planetscale/database"
-import { nanoid } from "nanoid"
-import { ConversationRow, MessageRow, UserRow } from "./types"
-import { eq } from "drizzle-orm"
-import { users } from "./schema"
-import { AdapterUser, DefaultAdapter } from "next-auth/adapters"
+import { conversations, messages } from "./schema"
+import { ConversationRow, MessageRow } from "./types"
 
-export const getDoesUserAlreadyExistByEmail = async (
-	email: string,
-	tx?: Parameters<Parameters<typeof db.transaction>[0]>[0]
-) => {
-	const validatedEmail = z
-		.string({
-			required_error: "Email is required"
-		})
-		.email()
-		.parse(email)
+type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
 
-	const userAlreadyExistsQuery = (tx || db)
-		.select()
-		.from(users)
-		.where(eq(users.email, validatedEmail))
-		.limit(1)
+export const getAllConversationsForUserByUserId = async (userId: string) => {
+	const validatedUserId = z.string().parse(userId)
 
-	const queryResult = await userAlreadyExistsQuery
-
-	return queryResult.length > 0
-}
-
-export const getUserByEmailAddress = async (emailAddress: string) => {
-	const validatedEmail = z.string().email().parse(emailAddress)
-
-	const result = await db
+	return db
 		.select({
-			id: users.id,
-			username: users.username,
-			email: users.email
+			admin_id: conversations.adminId,
+			title: conversations.title,
+			visibility: conversations.visibility,
+			created_at: conversations.createdAt,
+			updated_at: conversations.updatedAt,
+			public_id: conversations.publicId,
+			created_by_user_id: conversations.createdbyUserId
 		})
-		.from(users)
-		.where(eq(users.email, validatedEmail))
-		.limit(1)
-		.execute()
-
-	return result[0]
-}
-
-export const createUserFromAdapterUser: DefaultAdapter["createUser"] = async (
-	user
-) => {
-	const validatedEmail = z.string().email().parse(user.email)
-	const validatedUsername = z.string().nullable().parse(user.name)
-
-	const idForUser = await db.transaction(async (tx) => {
-		const userAlreadyExists = await getDoesUserAlreadyExistByEmail(
-			validatedEmail,
-			tx
-		)
-
-		if (userAlreadyExists) {
-			throw new Error("User already exists")
-		}
-
-		const newUser = await tx.insert(users).values({
-			email: validatedEmail,
-			username: validatedUsername,
-			
-		})
-
-		return newUser.insertId
-	})
-
-	return { id: idForUser, email: validatedEmail, emailVerified: user.emailVerified }
-}
-
-export const createUserWithOAuthToken = async (
-	emailAddress: string | undefined | null,
-	oAuthToken: string | undefined | null,
-	oAuthProvider: string | undefined | null,
-	refresh_token: string | undefined | null
-) => {
-	const validatedEmail = z
-
-		.string({
-			required_error: "Missing email"
-		})
-		.describe("Email")
-		.email({
-			message: "Invalid email"
-		})
-
-		.parse(emailAddress)
-	const validatedOAuthToken = z
-		.string()
-		.describe("OAuth Token")
-		.parse(oAuthToken)
-	const validatedOAuthProvider = z
-		.string()
-		.describe("OAuth Provider")
-		.parse(oAuthProvider)
-	const validatedRefreshToken = z
-		.string()
-		.optional()
-		.describe("OAuth Refresh Token")
-		.parse(refresh_token)
-
-	await db.transaction(async (tx) => {
-		const user = await getUserByEmailAddress(validatedEmail, tx)
-
-		if (user) {
-			console.log("Found user: ", user)
-			const userId = user.id
-			/**
-			 * Check if this token exists in our DB for this user already
-			 */
-			const maybeExistingTokenQuery = await tx.execute(
-				`
-        SELECT id, expires_at
-        FROM oauth_tokens
-        WHERE user_id = ?
-        AND (expires_at IS NULL OR expires_at > NOW())
-        ORDER BY expires_at DESC
-        LIMIT 1
-        `,
-				[Number(userId)]
-			)
-
-			const maybeExistingToken = maybeExistingTokenQuery.rows[0] as
-				| {
-						id: string
-						expiresAt: Date
-				  }
-				| undefined
-
-			if (maybeExistingToken) {
-				console.log("Found existing token", maybeExistingToken)
-				const { id: existingOauthTokenId } = maybeExistingToken
-
-				/**
-				 * Expire the user's oauth token
-				 */
-				await tx.execute(
-					`UPDATE oauth_tokens SET expires_at = NOW() WHERE id = ?`,
-					[Number(existingOauthTokenId)]
-				)
-			}
-
-			/**
-			 * Create a new oauthTokenfor the user
-			 */
-			await tx.execute(
-				`INSERT INTO oauth_tokens (user_id, oauth_provider_name, access_token, token_type) 
-       VALUES (?, ?, ?, 'Bearer') ON DUPLICATE KEY UPDATE access_token = ?;`,
-				[
-					userId,
-					validatedOAuthProvider,
-					validatedOAuthToken,
-					validatedOAuthToken
-				]
-			)
-		} else {
-			/**
-			 * Create the user and the oauth token for them
-			 */
-			console.log("Creating new User")
-			await tx.execute(
-				`INSERT INTO users (email, password_hash) VALUES (?, NULL)`,
-				[validatedEmail]
-			)
-
-			console.log("Creating an OAuth token for the user")
-			await tx.execute(
-				`
-        INSERT INTO oauth_tokens (user_id, oauth_provider_name, access_token, refresh_token, token_type)
-        VALUES (
-          (SELECT id FROM users WHERE email = ?),
-          ?,
-          ?,
-          ?,
-          'Bearer'
-        )
-        `,
-				[
-					validatedEmail,
-					validatedOAuthProvider,
-					validatedOAuthToken,
-					validatedRefreshToken || null
-				]
-			)
-		}
-	})
-}
-
-export const getAllConversationsForUserByEmailAddress = async (
-	emailAddress: string
-) => {
-	const validatedEmailAddress = z.string().email().parse(emailAddress)
-
-	const conversations = await db.transaction(async (tx) => {
-		const user = await getUserByEmailAddress(validatedEmailAddress, tx)
-
-		if (!user) {
-			throw new Error(
-				"User not found for email address: " + validatedEmailAddress
-			)
-		}
-
-		const conversations = await tx.execute(
-			`
-		SELECT participants, admin_id, title, visibility, created_at, updated_at, public_id, created_by_user_id
-		FROM conversations
-		WHERE created_by_user_id = ?
-		`,
-			[user.id]
-		)
-
-		return conversations.rows as Pick<
-			ConversationRow,
-			| "participants"
-			| "admin_id"
-			| "title"
-			| "visibility"
-			| "created_at"
-			| "updated_at"
-			| "public_id"
-			| "created_by_user_id"
-		>[]
-	})
-
-	return conversations
+		.from(conversations)
+		.where(eq(conversations.createdbyUserId, validatedUserId))
 }
 
 function doesUserBelongToConversation(
-	user: UserRow,
+	userId: string,
 	conversation: ConversationRow
 ): boolean {
-	switch (conversation.visibility) {
-		case "public":
-		case "url":
-			return true
-
-		case "shared":
-			if (
-				user.id === conversation.admin_id ||
-				user.id === conversation.created_by_user_id
-			) {
-				return true
-			}
-
-			const participantEmails = JSON.parse(conversation.participants)
-			const validatedParticipantEmails = z
-				.array(z.string().email())
-				.parse(participantEmails)
-
-			if (
-				validatedParticipantEmails.includes(user.email) ||
-				user.id === conversation.admin_id ||
-				user.id === conversation.created_by_user_id
-			) {
-				return true
-			} else {
-				return false
-			}
-
-		case "private":
-			if (user.id === conversation.created_by_user_id) {
-				return true
-			} else {
-				return false
-			}
-
-		default:
-			return false
-	}
-}
-
-export const checkIfUserBelongsToConversation = async (
-	userId: string,
-	conversationId: string
-) => {
-	const validatedUserId = z.string().parse(userId)
-	const validatedConversationId = z.string().parse(conversationId)
-
-	const conversations = await db.execute(
-		`
-		SELECT EXISTS (
-		SELECT 1
-		FROM user_conversations
-		WHERE conversation_id = ${validatedConversationId}
-			AND user_id = ${validatedUserId}
-		) AS is_created_by_user
-  `
+	return (
+		userId === conversation.createdbyUserId || userId === conversation.adminId
 	)
-
-	return conversations.rows
 }
 
-export const createMessageRowForUserByEmailAddress = async (
-	emailAddress: string,
-	conversationPublicId: string | null
-) => {
-	await db.transaction(async (tx) => {
-		const user = await getUserByEmailAddress(emailAddress, tx)
-
-		if (!user) {
-			throw new Error(
-				"User not found for user with email address: " + emailAddress
-			)
-		}
-
-		const { id: userId } = user
-
-		await tx.execute(
-			`
-    IF @provided_conversation_id IS NOT NULL THEN
-        -- Use the provided conversation ID
-        SET @conversation_id = @provided_conversation_id;
-    ELSE
-        -- Create a new conversation
-        INSERT INTO conversations (
-            created_at,
-            updated_at
-        ) VALUES (
-            NOW(),
-            NOW()
-        );
-        SET @conversation_id = LAST_INSERT_ID();
-        
-        -- Create a row in user_conversations for the user
-        INSERT INTO user_conversations (
-            user_id,
-            conversation_id
-        ) VALUES (
-            (SELECT id FROM users WHERE email = @user_email),
-            @conversation_id
-        );
-    END IF;
-    `
-		)
-	})
-}
-
-export const createConversationFromScratch = async (
-	emailAddress: string,
+export const createConversationForUserId = async (
+	userId: string,
 	visibility: "private" | "public" | "url" | "shared"
 ) => {
-	const validatedEmailAddress = z.string().email().parse(emailAddress)
+	const validatedUserId = z.string().parse(userId)
 	const validatedVisibility = z
 		.enum(["private", "public", "url", "shared"])
 		.parse(visibility)
 
 	const publicId = nanoid(12)
 
-	const result = await db.transaction(async (tx) => {
-		const user = await getUserByEmailAddress(validatedEmailAddress, tx)
+	const result = await db
+		.insert(conversations)
+		.values({
+			adminId: validatedUserId,
+			publicId: publicId,
+			visibility: validatedVisibility,
+			createdbyUserId: validatedUserId
+		})
+		.execute()
 
-		if (!user) {
-			throw new Error(
-				"Failed to find user with email: " + validatedEmailAddress
-			)
-		}
-		const conversation = await tx.execute(
-			`INSERT INTO conversations (
-				public_id,
-				admin_id,
-				visibility,
-				created_by_user_id,
-				participants
-				) VALUES (
-				?,
-				?,
-				?,
-				?,
-				?
-			)`,
-			[
-				publicId,
-				user.id,
-				validatedVisibility,
-				user.id,
-				JSON.stringify([validatedEmailAddress])
-			]
-		)
-
-		const conversationId = conversation.insertId
-
-		await tx.execute(`INSERT INTO user_conversations (
-      user_id,
-      conversation_id
-    ) VALUES (
-      ${user.id},
-      ${conversationId}
-    )`)
-
-		return { conversationId, publicId }
-	})
-
-	return result
+	return { conversationId: result.insertId, publicId }
 }
 
-export const getMessagesForConversationByPublicIdAndUserEmail = async (
-	publicId: string,
-	emailAddress: string
+export const getMessagesForConversationByPublicIdUserId = async (
+	conversationPublicId: string,
+	userId: string
 ) => {
-	const validatedPublicId = z.string().parse(publicId)
-	const validatedEmailAddress = z.string().email().parse(emailAddress)
+	const validatedPublicId = z.string().parse(conversationPublicId)
+	const validatedUserId = z.string().parse(userId)
 
-	const messages = await db.transaction(async (tx) => {
-		const user = await getUserByEmailAddress(validatedEmailAddress, tx)
+	return db.transaction(async (tx) => {
+		const conversationQueryResult = await tx
+			.select()
+			.from(conversations)
+			.where(eq(conversations.publicId, validatedPublicId))
+			.limit(1)
+			.execute()
 
-		if (!user) {
-			throw new Error(
-				"No user found for email address: " + validatedEmailAddress
-			)
-		}
-
-		const conversations = await db.execute(
-			`
-				SELECT conversations.*
-				FROM conversations
-				WHERE conversations.public_id = ?
-			`,
-			[validatedPublicId]
-		)
-
-		const conversation = conversations.rows[0] as undefined | ConversationRow
+		const conversation = conversationQueryResult[0]
 
 		if (!conversation) {
 			throw new Error(
@@ -433,7 +81,7 @@ export const getMessagesForConversationByPublicIdAndUserEmail = async (
 		}
 
 		const userBelongsToConversation = doesUserBelongToConversation(
-			user,
+			validatedUserId,
 			conversation
 		)
 
@@ -444,114 +92,47 @@ export const getMessagesForConversationByPublicIdAndUserEmail = async (
 			)
 		}
 
-		const messages = await tx.execute(
-			`
-			SELECT messages.*
-			FROM messages
-			WHERE messages.conversation_id = ?
-			ORDER BY messages.created_at DESC
-		`,
-			[conversation.id]
-		)
+		const msgs = await tx
+			.select()
+			.from(messages)
+			.where(eq(messages.conversationId, conversation.id))
 
-		return messages.rows as MessageRow[]
+		return { conversation, messages: msgs }
 	})
-
-	return messages
-}
-
-export const getAllMessagesForConversation = async (
-	conversationPublicId: string
-) => {
-	const validatedConversationId = z.string().parse(conversationPublicId)
-
-	const result = await db.transaction(async (tx) => {
-		const conversation = (
-			await tx.execute(
-				`
-			SELECT conversations.*
-			FROM conversations
-			WHERE conversations.public_id = ?
-			LIMIT 1
-			`,
-				[validatedConversationId]
-			)
-		).rows[0] as undefined | ConversationRow
-
-		if (!conversation) {
-			throw new Error(
-				"No conversation found for public id: " + validatedConversationId
-			)
-		}
-
-		const messages = await db.execute(
-			`
-			SELECT messages.*
-			FROM messages
-			WHERE messages.conversation_id = ?
-			ORDER BY messages.created_at DESC
-		`,
-			[conversation.id]
-		)
-
-		return {
-			messages: messages.rows as MessageRow[],
-			conversation
-		}
-	})
-
-	return result
 }
 
 export const createSystemMessage = (
 	message: string,
-	conversationId: string
+	conversationId: number
 ) => {
 	const validatedMessage = z.string().parse(message)
 	const validatedConversationId = z.string().parse(conversationId)
 
-	return db.execute(
-		`
-	INSERT INTO messages (
-		sender_type,
-		content,
-		conversation_id,
-		public_id,
-	) VALUES (?, ?, ?, ?, ?)
-	`,
-		["system", validatedMessage, validatedConversationId, nanoid(12)]
-	)
+	return db
+		.insert(messages)
+		.values({
+			senderType: "system",
+			content: validatedMessage,
+			conversationId: Number(validatedConversationId),
+			publicId: nanoid(12)
+		})
+		.execute()
 }
 
 export const createUserMessage = (
 	message: string,
-	conversationId: string,
-	senderEmailAddress: string
+	conversationId: number,
+	userId: string
 ) => {
 	const validatedMessage = z.string().parse(message)
-	const validatedConversationId = z.string().parse(conversationId)
-	const validatedSenderEmailAddress = z.string().parse(senderEmailAddress)
+	const validatedConversationId = z.number().parse(conversationId)
+	const validatedSenderUserId = z.string().parse(userId)
 
-	return db.transaction(async (tx) => {
-		const user = await getUserByEmailAddress(validatedSenderEmailAddress, tx)
-
-		if (!user) {
-			throw new Error(
-				"User not found for email address: " + validatedSenderEmailAddress
-			)
-		}
-
-		return tx.execute(
-			`
-		INSERT INTO messages (
-			sender_type,
-			content,
-			conversation_id,
-			user_id,
-			public_id
-		) VALUES ('user', ?, ?, ?, ?)
-		`,
-			[validatedMessage, validatedConversationId, user.id, nanoid(12)]
-		)
+	return db.insert(messages).values({
+		senderType: "user",
+		content: validatedMessage,
+		conversationId: validatedConversationId,
+		userId: validatedSenderUserId,
+		publicId: nanoid(12)
 	})
 }

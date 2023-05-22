@@ -1,56 +1,48 @@
 import {
-	createConversationFromScratch,
 	createSystemMessage,
-	getAllMessagesForConversation
+	getMessagesForConversationByPublicIdUserId
 } from "@/lib/db/utils"
-import { OpenAIEdgeClient } from "@/lib/features/ai/openai/edge-client"
-import { readStreamedRequestBody } from "@/lib/utils/readRequestBodyStream"
-import { ensureRequestIsAuthenticated } from "@/lib/utils/requestGuard"
 import "@edge-runtime/ponyfill"
-import { decode } from "next-auth/jwt"
-import type { NextRequest } from "next/server"
-import { ChatCompletionRequestMessageRoleEnum } from "openai"
+import { NextApiRequest, NextApiResponse } from "next"
+
 import { z } from "zod"
 
 export const runtime = "edge"
 
-const OPENAI_SECRET = process.env.OPENAI_SECRET
-
-if (!OPENAI_SECRET) {
-	throw new Error("OPENAI_SECRET missing")
+interface ClerkRequest extends NextApiRequest {
+	auth: {
+		userId?: string | null
+		sessionId?: string | null
+	}
 }
 
-export default async function getConversation(request: NextRequest) {
-	const requestBodySchema = z.object({
-		email: z.string().email(),
-        conversationId: z.string()
-	})
+export default async function getConversation(
+	request: ClerkRequest,
+	response: NextApiResponse
+) {
+	const { userId } = request.auth
 
-	requestBodySchema.safeParse
-
-	const { errorResponse, successResponse } = await ensureRequestIsAuthenticated(
-		request,
-
-		requestBodySchema
-	)
-
-	if (errorResponse) {
-		return errorResponse
+	if (!userId) {
+		response.status(401)
+		return
 	}
 
-	const { email } = successResponse
+	const requestBodySchema = z.object({
+		conversationId: z.string()
+	})
+
+	const parsedRequestBody = requestBodySchema.parse(request.body)
 
 	try {
-		const { conversationId, publicId } = await getAllMessagesForConversation()
+		const result = await getMessagesForConversationByPublicIdUserId(
+			parsedRequestBody.conversationId,
+			userId
+		)
 
-		if (successResponse.systemMessage) {
-			await createSystemMessage(conversationId, successResponse.systemMessage)
-		}
-
-		return new Response(JSON.stringify({ conversationId, publicId }), {
+		return new Response(JSON.stringify(result), {
 			status: 200,
 			headers: {
-					"content-type": "application/json"
+				"content-type": "application/json"
 			}
 		})
 	} catch (e) {

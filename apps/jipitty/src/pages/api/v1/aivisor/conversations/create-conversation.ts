@@ -1,12 +1,12 @@
 import {
-	createConversationFromScratch,
+	createConversationForUserId,
 	createSystemMessage
 } from "@/lib/db/utils"
-import { createConversationResponseBodySchema, createConversationRequestBodySchema } from "@/lib/utils/aivisor-client/schemas"
-import { ensureRequestIsAuthenticated } from "@/lib/utils/requestGuard"
+import { createConversationResponseBodySchema } from "@/lib/utils/aivisor-client/schemas"
+import { withAuth } from "@clerk/nextjs/api"
+import { ServerGetToken } from "@clerk/types"
 import "@edge-runtime/ponyfill"
-import type { NextRequest } from "next/server"
-
+import { NextApiRequest, NextApiResponse } from "next"
 export const runtime = "edge"
 
 const OPENAI_SECRET = process.env.OPENAI_SECRET
@@ -15,47 +15,46 @@ if (!OPENAI_SECRET) {
 	throw new Error("OPENAI_SECRET missing")
 }
 
-export default async function createConversationPostEndpoint(request: NextRequest) {
-	const { errorResponse, successResponse } = await ensureRequestIsAuthenticated(
-		request,
-		createConversationRequestBodySchema
-	)
+interface ClerkRequest extends NextApiRequest {
+	auth: {
+		userId?: string | null
+		sessionId?: string | null
+		getToken: ServerGetToken
+	}
+}
 
-	if (errorResponse) {
-		return errorResponse
+async function createConversationPostEndpoint(
+	request: ClerkRequest,
+	response: NextApiResponse
+) {
+	const { userId, sessionId } = request.auth
+
+	if (!userId || !sessionId) {
+		response.status(401)
+		return
 	}
 
-	const { email } = successResponse
+	const { systemMessage } = request.body
 
 	try {
-		const { conversationId, publicId } = await createConversationFromScratch(
-			email,
+		const { conversationId, publicId } = await createConversationForUserId(
+			userId,
 			"private"
 		)
 
-		if (successResponse.systemMessage) {
-			await createSystemMessage(conversationId, successResponse.systemMessage)
+		if (systemMessage) {
+			await createSystemMessage(conversationId, systemMessage)
 		}
 
 		const responseJson = createConversationResponseBodySchema.parse({
-			conversationId,
 			publicId
 		})
 
-		return new Response(JSON.stringify(responseJson), {
-			status: 200,
-			headers: {
-				"content-type": "application/json"
-			}
-		})
+		response.json(responseJson)
 	} catch (e) {
-		const errorResponse = new Response(String(e), {
-			status: 500,
-			headers: {
-				"content-type": "application/json"
-			}
-		})
-
-		return errorResponse
+		console.error(e)
+		response.status(500)
 	}
 }
+
+export default withAuth(createConversationPostEndpoint)

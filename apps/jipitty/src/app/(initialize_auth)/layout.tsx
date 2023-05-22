@@ -2,8 +2,7 @@ import {
 	PrettyFloatingBlob,
 	PrettyFloatingBlob2
 } from "@/components/PrettyFloatingBlob"
-import { NEXT_AUTH_HANDLER_OPTIONS } from "@/lib/features/next-auth"
-import { getServerSession } from "next-auth"
+import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
 
 export default async function AuthLayout({
@@ -11,9 +10,9 @@ export default async function AuthLayout({
 }: {
 	children: React.ReactNode
 }) {
-	const session = await getServerSession(NEXT_AUTH_HANDLER_OPTIONS)
+	const { userId } = auth()
 
-	if (session) {
+	if (!userId) {
 		return redirect("/")
 	}
 

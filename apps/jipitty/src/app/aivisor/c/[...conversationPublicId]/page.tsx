@@ -1,43 +1,43 @@
 import ChatFeed from "@/components/Aivisor/ChatFeed"
 import { Routes } from "@/lib/constants/routes"
 import { getMessagesForConversationByPublicIdAndUserEmail } from "@/lib/db/utils"
-import { NEXT_AUTH_HANDLER_OPTIONS } from "@/lib/features/next-auth"
-import { getServerSession } from "next-auth"
+import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
 import AivisorConversationNotFound from "./404"
 
-export default async function AivisorConversation(props: React.PropsWithChildren<{
-    params: {
-        conversationPublicId: string[]
-    }
-}>) {
-    const session = await getServerSession(NEXT_AUTH_HANDLER_OPTIONS)
+export default async function AivisorConversation(
+	props: React.PropsWithChildren<{
+		params: {
+			conversationPublicId: string[]
+		}
+	}>
+) {
+	const { userId } = auth()
 
-    if (!session) {
-        return redirect(Routes.AIVISOR)
-    }
+	if (!userId) {
+		return redirect("/")
+	}
 
-    if (!session.user) {
-        return redirect(Routes.AIVISOR)
-    }
+	const publicIdForConversation = props.params.conversationPublicId[0]
 
-    if(!session.user.email) {
-        return redirect(Routes.AIVISOR)
-    }
+	if (!publicIdForConversation) {
+		return redirect(Routes.AIVISOR)
+	}
 
-    const publicIdForConversation = props.params.conversationPublicId[0]
+	const messages = await getMessagesForConversationByPublicIdAndUserEmail(
+		props.params.conversationPublicId[0],
+		userId
+	)
 
-    if (!publicIdForConversation) {
-        return redirect(Routes.AIVISOR)
-    }
-
-	const messages = await getMessagesForConversationByPublicIdAndUserEmail(props.params.conversationPublicId[0], session.user.email)
-
-    if (!messages) {
-        return <AivisorConversationNotFound />
-    }
+	if (!messages) {
+		return <AivisorConversationNotFound />
+	}
 
 	return (
-		<ChatFeed session={session}  initialMessages={messages} conversatioPublicId={publicIdForConversation}/>
+		<ChatFeed
+			userId={userId}
+			initialMessages={messages}
+			conversatioPublicId={publicIdForConversation}
+		/>
 	)
 }

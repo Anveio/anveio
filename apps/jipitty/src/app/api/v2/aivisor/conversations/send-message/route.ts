@@ -1,10 +1,18 @@
 import {
+	createConversationForUserId,
+	createSystemMessage,
 	createUserMessage,
 	getMessagesForConversationByPublicIdUserId
 } from "@/lib/db/utils"
 import { OpenAIEdgeClient } from "@/lib/features/ai/openai/edge-client"
-import "@edge-runtime/ponyfill"
-import { NextApiRequest, NextApiResponse } from "next"
+import {
+	createConversationRequestBodySchema,
+	createConversationResponseBodySchema,
+	sendMessageRequestBodySchema
+} from "@/lib/utils/aivisor-client"
+import { readStreamedRequestBody } from "@/lib/utils/readRequestBodyStream"
+import { auth } from "@clerk/nextjs"
+import { NextRequest, NextResponse } from "next/server"
 import { ChatCompletionRequestMessageRoleEnum } from "openai"
 
 export const runtime = "edge"
@@ -15,35 +23,21 @@ if (!OPENAI_SECRET) {
 	throw new Error("OPENAI_SECRET missing")
 }
 
-//Interface example with Clerk
-interface ClerkRequest extends NextApiRequest {
-	auth: {
-		userId?: string | null
-		sessionId?: string | null
-	}
-}
+export async function POST(request: NextRequest) {
+	const { userId } = auth()
+	if (!userId) return NextResponse.redirect("/sign-in")
 
-export default async function sendMessage(
-	request: ClerkRequest,
-	response: NextApiResponse
-) {
-	const { userId } = request.auth
+	console.log("🚀 ~ file: route.ts:12 ~ POST ~ userId:", userId)
 
-	if (!userId) {
-		response.status(401)
-		return
-	}
+	const parsedBody = await readStreamedRequestBody(request)
+	console.log("🚀 ~ file: route.ts:14 ~ POST ~ parsedBody:", parsedBody)
 
-	/**
-	 * From this point on, the user is who they say they are, it's safe to
-	 * make some DB reads and writes.
-	 */
-
-	const { conversationPublicId, message } = request.body
+	const safeBody = sendMessageRequestBodySchema.parse(parsedBody)
+	console.log("🚀 ~ file: route.ts:17 ~ POST ~ safeBody:", safeBody)
 
 	const { conversation, messages } =
 		await getMessagesForConversationByPublicIdUserId(
-			conversationPublicId,
+			safeBody.conversationPublicId,
 			userId
 		)
 
@@ -65,7 +59,7 @@ export default async function sendMessage(
 					})
 					.concat([
 						{
-							content: message,
+							content: safeBody.message,
 							role: ChatCompletionRequestMessageRoleEnum.User
 						}
 					])

@@ -3,9 +3,12 @@ import { SignUp } from "@clerk/nextjs"
 
 export default function Page() {
 	return (
-		<div>
-			<p>In here</p>
-			<SignUp />
-		</div>
+		<>
+			<div className="mt-10 sm:mx-auto sm:w-full sm:max-w-lg">
+				<div className="bg-white">
+					<SignUp />
+				</div>
+			</div>
+		</>
 	)
 }

@@ -1,17 +1,14 @@
 "use client"
 
+import { Routes } from "@/lib/constants/routes"
 import { Menu, Transition } from "@headlessui/react"
 import clsx from "clsx"
-import { signOut } from "next-auth/react"
 import Image from "next/image"
 import Link from "next/link"
 import { Fragment } from "react"
-import DefaultProfilePicture from "@/images/avatars/avatar-1.png"
-import { Session } from "next-auth"
-import { Routes } from "@/lib/constants/routes"
 
 interface Props {
-	session: Session
+	profileImageSrc?: string
 }
 
 export function TopNavigationBarMenu(props: Props) {
@@ -24,7 +21,7 @@ export function TopNavigationBarMenu(props: Props) {
 						width={32}
 						height={32}
 						className="h-8 w-8 rounded-full"
-						src={props.session.user?.image ?? ""}
+						src={props.profileImageSrc ?? ""}
 						alt=""
 					/>
 				</Menu.Button>
@@ -72,9 +69,7 @@ export function TopNavigationBarMenu(props: Props) {
 									active ? "bg-gray-100" : "",
 									"block w-full px-4 py-2 text-left text-sm text-gray-700"
 								)}
-								onClick={() => {
-									signOut()
-								}}
+								onClick={() => {}}
 							>
 								Sign out
 							</button>

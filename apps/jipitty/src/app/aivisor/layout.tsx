@@ -1,6 +1,4 @@
-import { Routes } from "@/lib/constants/routes"
-import { NEXT_AUTH_HANDLER_OPTIONS } from "@/lib/features/next-auth"
-import { getServerSession } from "next-auth"
+import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
 
 export default async function AivisorLayout(
@@ -10,10 +8,10 @@ export default async function AivisorLayout(
 		}
 	}>
 ) {
-	const session = await getServerSession(NEXT_AUTH_HANDLER_OPTIONS)
+	const { userId } = auth()
 
-	if (!session) {
-		return redirect(Routes.LOGIN)
+	if (!userId) {
+		return redirect("/")
 	}
 
 	return (

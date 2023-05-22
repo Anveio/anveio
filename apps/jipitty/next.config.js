@@ -24,7 +24,8 @@ const nextConfig = {
 		]
 	},
 	experimental: {
-		appDir: true
+		appDir: true,
+		serverComponentsExternalPackages: ["mysql2"]
 	},
 	redirects() {
 		try {

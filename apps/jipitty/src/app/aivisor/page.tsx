@@ -1,12 +1,12 @@
 import ChatFeed from "@/components/Aivisor/ChatFeed"
-import { NEXT_AUTH_HANDLER_OPTIONS } from "@/lib/features/next-auth"
-import { getServerSession } from "next-auth"
+import { auth } from "@clerk/nextjs"
+import { redirect } from "next/navigation"
 
 export default async function Aivisor() {
-	const session = await getServerSession(NEXT_AUTH_HANDLER_OPTIONS)
+	const { userId } = auth()
 
-	if (!session) {
-		return null
+	if (!userId) {
+		return redirect("/")
 	}
 
 	return (
@@ -14,7 +14,11 @@ export default async function Aivisor() {
 			<div className="flex">
 				<div className=" who knows"></div>
 				<div className="align-self-end">
-					<ChatFeed session={session} initialMessages={[]} conversatioPublicId={null} />
+					<ChatFeed
+						userId={userId}
+						initialMessages={[]}
+						conversatioPublicId={null}
+					/>
 				</div>
 			</div>
 		</main>

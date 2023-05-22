@@ -2,19 +2,18 @@
 
 import { MessageRow } from "@/lib/db"
 import { PaperClipIcon } from "@heroicons/react/20/solid"
-import { Session } from "next-auth"
 import Image from "next/image"
 import { ResponseCard } from "./ResponseCard"
 import { useChat } from "./use-chat"
 
 export default function ChatFeed(props: {
-	session: Session
+	userId: string
+	profileImageSrc?: string
 	initialMessages: MessageRow[]
 	conversatioPublicId: string | null
 }) {
-
 	const { state, updateDraftMessage, uploadMessage } = useChat(
-		props.session,
+		props.userId,
 		props.initialMessages,
 		props.conversatioPublicId,
 		(generatedConversationId) => {
@@ -28,7 +27,7 @@ export default function ChatFeed(props: {
 				<div className="flex-shrink-0">
 					<Image
 						className="inline-block h-10 w-10 rounded-full"
-						src={props.session?.user?.image || ""}
+						src={props.profileImageSrc || ""}
 						width={40}
 						height={40}
 						alt=""

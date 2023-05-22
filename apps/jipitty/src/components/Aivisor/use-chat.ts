@@ -3,19 +3,17 @@ import {
 	createConversation,
 	createMessageInConversation
 } from "@/lib/utils/aivisor-client"
-import { Session } from "next-auth"
 import * as React from "react"
 
 interface ChatMachineContext {
 	previousMessages: MessageRow[]
 	messageDraft: string
-	session: Session
 	responseStream: ReadableStream<Uint8Array> | null
 	streamedReplyFromAi: string
 }
 
 export const useChat = (
-	initialSession: Session,
+	userId: string,
 	initialChatHistory: ChatMachineContext["previousMessages"],
 	conversationPublicId: string | null,
 	onGenerateConversationPublicId?: (publicId: string) => void
@@ -25,43 +23,30 @@ export const useChat = (
 	const [state, setState] = React.useState<ChatMachineContext>({
 		previousMessages: initialChatHistory,
 		messageDraft: "Please type 2 sentences of lorem ipsum",
-		session: initialSession,
 		responseStream: null,
 		streamedReplyFromAi: ""
 	})
 
 	const generateConversationId = async () => {
-		if (!state.session.user?.email) {
-			throw new Error("No session user email:" + JSON.stringify(state.session))
-		}
-
 		const json = await createConversation({
-			email: state.session.user?.email
+			userId
 		})
 
 		if (onGenerateConversationPublicId) {
-			onGenerateConversationPublicId(json.publicId)
+			onGenerateConversationPublicId(json.conversationId)
 		}
 
 		return json
 	}
 
 	const uploadMessage = async () => {
-		if (!state.session) {
-			throw new Error("No session")
-		}
-
-		if (!state.session.user?.email) {
-			throw new Error("No session user email")
-		}
-
-		if (!currentConversationIdRef.current) {
-			currentConversationIdRef.current = (await generateConversationId()).publicId
-		}
+		let conversationId =
+			currentConversationIdRef.current ||
+			(await generateConversationId()).conversationId
 
 		const resultReader = await createMessageInConversation({
-			conversationPublicId: currentConversationIdRef.current,
-			email: state.session.user?.email,
+			conversationPublicId: conversationId,
+			userId: userId,
 			message: state.messageDraft
 		})
 

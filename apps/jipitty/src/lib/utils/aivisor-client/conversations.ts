@@ -1,57 +1,66 @@
 import { z } from "zod"
-import { createConversationResponseBodySchema, createConversationRequestBodySchema, sendMessageRequestBodySchema, sendMessageResponseBodySchema } from "./schemas"
+import {
+	createConversationResponseBodySchema,
+	createConversationRequestBodySchema,
+	sendMessageRequestBodySchema,
+	sendMessageResponseBodySchema
+} from "./schemas"
 
-export const createConversation = async (body: z.infer<typeof createConversationRequestBodySchema>) => {
-    
-    const safeBody = createConversationRequestBodySchema.parse(body)
-    
-    const response = await fetch("/api/v1/aivisor/conversations/create-conversation", {
-        method: "POST",
-        body: JSON.stringify(safeBody)
-    })
+export const createConversation = async (
+	body: z.infer<typeof createConversationRequestBodySchema>
+) => {
+	const safeBody = createConversationRequestBodySchema.parse(body)
 
-    const json = await response.json()
+	const response = await fetch(
+		"/api/v2/aivisor/conversations/create-conversation",
+		{
+			method: "POST",
+			body: JSON.stringify(safeBody)
+		}
+	)
 
-    const safeJson = createConversationResponseBodySchema.parse(json)
+	const json = await response.json()
 
-    return safeJson
+	const safeJson = createConversationResponseBodySchema.parse(json)
+
+	return safeJson
 }
 
 const textDecoderStreamRef = new TextDecoderStream()
 
-export const createMessageInConversation = async (body: z.infer<typeof sendMessageRequestBodySchema>) => {
-        
-        const safeBody = sendMessageRequestBodySchema.parse(body)
-        
-        const response = await fetch("/api/v1/aivisor/send-message", {
-            method: "POST",
-            body: JSON.stringify(safeBody)
-        })
+export const createMessageInConversation = async (
+	body: z.infer<typeof sendMessageRequestBodySchema>
+) => {
+	const safeBody = sendMessageRequestBodySchema.parse(body)
 
-        if (!response.body) {
-			throw new Error("No Response Body")
-		}
+	const response = await fetch("/api/v2/aivisor/conversations/send-message", {
+		method: "POST",
+		body: JSON.stringify(safeBody)
+	})
 
-		if (!response.ok) {
-			throw new Error("Response not ok")
-		}
+	if (!response.body) {
+		throw new Error("No Response Body")
+	}
 
-    
-        const reader = response.body.getReader()
+	if (!response.ok) {
+		throw new Error("Response not ok")
+	}
 
-		const readableStream = new ReadableStream<Uint8Array>({
-			async start(controller) {
-				for await (const chunk of readerToGenerator(reader)) {
-					controller.enqueue(chunk)
-				}
-				controller.close()
+	const reader = response.body.getReader()
+
+	const readableStream = new ReadableStream<Uint8Array>({
+		async start(controller) {
+			for await (const chunk of readerToGenerator(reader)) {
+				controller.enqueue(chunk)
 			}
-		})
+			controller.close()
+		}
+	})
 
-        const resultStream = readableStream.pipeThrough(textDecoderStreamRef)
-        const resultReader = resultStream.getReader()
+	const resultStream = readableStream.pipeThrough(textDecoderStreamRef)
+	const resultReader = resultStream.getReader()
 
-        return resultReader
+	return resultReader
 }
 
 async function* readerToGenerator(

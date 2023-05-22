@@ -3,5 +3,5 @@ export default async function ProfileLoading({
 }: {
 	children: React.ReactNode
 }) {
-	return <div className="h-full bg-gray-800"></div>
+	return <div className="h-full"></div>
 }

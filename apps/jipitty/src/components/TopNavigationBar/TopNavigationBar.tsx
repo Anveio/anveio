@@ -1,26 +1,47 @@
 import { Routes } from "@/lib/constants/routes"
-import { BellIcon } from "@heroicons/react/24/outline"
-import { Session } from "next-auth"
 import Link from "next/link"
-import { WithSessionOnly } from "../WithSessionOnly"
-import { TopNavigationBarMenu } from "./client/Menu"
+import { Button } from "../ShadCdn/button"
 import { MobileNavMenuOpener } from "./client/MobileNavMenuOpener"
-import { SearchField } from "./client/SearchField"
+import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 
-interface Props {
-	session: Session | null
-}
-
-export function TopNavigationBar(props: Props) {
+export function TopNavigationBar() {
 	return (
-		<div className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:hidden lg:w-full lg:px-8">
-			<MobileNavMenuOpener />
-			{/* Separator */}
-			<div className="h-6 w-px bg-gray-900/10 lg:hidden" aria-hidden="true" />
-			<div>
-				<Link href={Routes.SIGNUP}>Sign up</Link>
-				<Link href={Routes.SIGNUP}>Log in</Link>
+		<div className="sticky top-0 z-40 flex grid h-16 shrink-0 grid-cols-2 items-center gap-x-4 border-b border-gray-200 bg-gray-900 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:hidden lg:w-full lg:px-8">
+			<div className="grid grid-cols-[1fr_1px]">
+				<MobileNavMenuOpener />
+				{/* Separator */}
+				<div className="ml-3 h-6 bg-white/10" aria-hidden="true" />
 			</div>
+			<SignedOut>
+				<div className="grid max-w-sm grid-cols-2 gap-3 justify-self-end">
+					<Link href={Routes.LOGIN}>
+						<Button variant={"secondary"} className="h-full w-full">
+							Log in
+						</Button>
+					</Link>
+					<Link href={Routes.SIGNUP}>
+						<Button
+							variant={"default"}
+							className="h-full w-full bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+						>
+							Sign up
+						</Button>
+					</Link>
+				</div>
+			</SignedOut>
+			<SignedIn>
+				<UserButton
+					userProfileUrl={Routes.PROFILE}
+					userProfileMode="navigation"
+					appearance={{
+						elements: {
+							rootBox: "flex items-center p-2 justify-self-end",
+							userButtonOuterIdentifier: "text-current"
+						},
+						layout: {}
+					}}
+				/>
+			</SignedIn>
 		</div>
 	)
 }
