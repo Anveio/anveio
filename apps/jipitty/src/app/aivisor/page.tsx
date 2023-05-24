@@ -9,12 +9,14 @@ export default async function Aivisor() {
 			<div className="flex">
 				<div className=" who knows"></div>
 				<div className="align-self-end">
-					<ChatFeed
-						profileImageSrc={user?.experimental_imageUrl}
-						userId={userId}
-						initialMessages={[]}
-						conversatioPublicId={null}
-					/>
+					{userId ? (
+						<ChatFeed
+							profileImageSrc={user?.experimental_imageUrl}
+							userId={userId}
+							initialMessages={[]}
+							conversatioPublicId={null}
+						/>
+					) : null}
 				</div>
 			</div>
 		</main>
