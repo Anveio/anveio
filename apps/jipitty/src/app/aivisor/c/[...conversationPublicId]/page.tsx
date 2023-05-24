@@ -1,16 +1,18 @@
 import ChatFeed from "@/components/Aivisor/ChatFeed"
 import { Routes } from "@/lib/constants/routes"
-import { getMessagesForConversationByPublicIdAndUserEmail } from "@/lib/db/utils"
+import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/utils"
 import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
 import AivisorConversationNotFound from "./404"
 
+// props: React.PropsWithChildren<{
+// 	params: {
+// 		conversationPublicId: string
+// 	}
+// }>
+
 export default async function AivisorConversation(
-	props: React.PropsWithChildren<{
-		params: {
-			conversationPublicId: string[]
-		}
-	}>
+	
 ) {
 	const { userId } = auth()
 
@@ -18,25 +20,25 @@ export default async function AivisorConversation(
 		return redirect("/")
 	}
 
-	const publicIdForConversation = props.params.conversationPublicId[0]
+	const publicIdForConversation = ""
 
 	if (!publicIdForConversation) {
 		return redirect(Routes.AIVISOR)
 	}
 
-	const messages = await getMessagesForConversationByPublicIdAndUserEmail(
-		props.params.conversationPublicId[0],
+	const data = await getMessagesForConversationByPublicIdUserId(
+		publicIdForConversation,
 		userId
 	)
 
-	if (!messages) {
+	if (!data) {
 		return <AivisorConversationNotFound />
 	}
 
 	return (
 		<ChatFeed
 			userId={userId}
-			initialMessages={messages}
+			initialMessages={data.messages}
 			conversatioPublicId={publicIdForConversation}
 		/>
 	)

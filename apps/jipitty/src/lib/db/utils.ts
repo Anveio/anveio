@@ -92,12 +92,12 @@ export const getMessagesForConversationByPublicIdUserId = async (
 			)
 		}
 
-		const msgs = await tx
+		const m = await tx
 			.select()
 			.from(messages)
 			.where(eq(messages.conversationId, conversation.id))
 
-		return { conversation, messages: msgs }
+		return { conversation, messages: m }
 	})
 }
 

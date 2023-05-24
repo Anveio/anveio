@@ -9,7 +9,7 @@ import { useChat } from "./use-chat"
 export default function ChatFeed(props: {
 	userId: string
 	profileImageSrc?: string
-	initialMessages: MessageRow[]
+	initialMessages: Pick<MessageRow, 'id'>[]
 	conversatioPublicId: string | null
 }) {
 	const { state, updateDraftMessage, uploadMessage } = useChat(

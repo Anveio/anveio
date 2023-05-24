@@ -1,4 +1,4 @@
-import { SignedIn, UserProfile } from "@clerk/nextjs"
+import { SignIn, SignedIn, SignedOut, UserProfile } from "@clerk/nextjs"
 
 export default async function Profile() {
 	return (
@@ -8,7 +8,7 @@ export default async function Profile() {
 			</SignedIn>
 			<SignedOut>
 				<SignIn />
-				</SignedOut>
+			</SignedOut>
 		</>
 	)
 }

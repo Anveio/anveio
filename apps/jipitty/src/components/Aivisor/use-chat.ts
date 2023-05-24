@@ -6,7 +6,7 @@ import {
 import * as React from "react"
 
 interface ChatMachineContext {
-	previousMessages: MessageRow[]
+	previousMessages: Partial<MessageRow>[]
 	messageDraft: string
 	responseStream: ReadableStream<Uint8Array> | null
 	streamedReplyFromAi: string
