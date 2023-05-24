@@ -28,10 +28,18 @@ const nextConfig = {
 		serverComponentsExternalPackages: ["mysql2"]
 	},
 	redirects() {
+		const defaultRedirects = [
+			{
+				source: '/login',
+				destination: '/sign-in',
+				permanent: true
+			}
+		]
+
 		try {
-			return get("redirects")
+			return defaultRedirects.concat(get("redirects"))
 		} catch {
-			return []
+			return defaultRedirects
 		}
 	},
 	headers() {

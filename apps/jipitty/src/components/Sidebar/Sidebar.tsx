@@ -1,15 +1,13 @@
+import { getAllConversationsForUserByUserId } from "@/lib/db/utils"
 import { MobileSidebar } from "./MobileSidebar"
 import { SidebarCore } from "./SidebarCore"
 
 interface Props {
-	conversations: {
-		title: string | null
-		public_id: string
-	}[]
+	conversations: Awaited<ReturnType<typeof getAllConversationsForUserByUserId>>
 }
 
 export function Sidebar(props: Props) {
-	if (props.conversations) {
+	if (props.conversations.length) {
 		console.log("Found ocnversations", props.conversations.length)
 	}
 

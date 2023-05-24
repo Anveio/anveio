@@ -3,7 +3,7 @@ import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
 
 export default async function Aivisor() {
-	const { userId } = auth()
+	const { userId, user } = auth()
 
 	if (!userId) {
 		return redirect("/")
@@ -15,6 +15,7 @@ export default async function Aivisor() {
 				<div className=" who knows"></div>
 				<div className="align-self-end">
 					<ChatFeed
+						profileImageSrc={user?.experimental_imageUrl}
 						userId={userId}
 						initialMessages={[]}
 						conversatioPublicId={null}

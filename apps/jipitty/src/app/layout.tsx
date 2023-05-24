@@ -7,6 +7,7 @@ import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
 import { cn } from "@/lib/utils"
 import { inter } from "@/fonts"
+import { getAllConversationsForUserByUserId } from "@/lib/db/utils"
 
 export const metadata = {
 	title: "Jipitty - AI Chat, AI Art, AI Insights"
@@ -19,7 +20,10 @@ export default async function RootLayout({
 }) {
 	const session = auth()
 
-	let conversations: ConversationRow[] = []
+	const conversations = session.userId
+		? await getAllConversationsForUserByUserId(session.userId)
+		: []
+
 	return (
 		<ClerkProvider>
 			<html lang="en" className={cn(`bg-white`, inter.className)}>

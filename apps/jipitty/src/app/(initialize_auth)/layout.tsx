@@ -2,20 +2,12 @@ import {
 	PrettyFloatingBlob,
 	PrettyFloatingBlob2
 } from "@/components/PrettyFloatingBlob"
-import { auth } from "@clerk/nextjs"
-import { redirect } from "next/navigation"
 
 export default async function AuthLayout({
 	children
 }: {
 	children: React.ReactNode
 }) {
-	const { userId } = auth()
-
-	if (!userId) {
-		return redirect("/")
-	}
-
 	return (
 		<>
 			<PrettyFloatingBlob />

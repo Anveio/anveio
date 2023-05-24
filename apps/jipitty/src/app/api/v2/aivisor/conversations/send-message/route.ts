@@ -25,7 +25,7 @@ if (!OPENAI_SECRET) {
 
 export async function POST(request: NextRequest) {
 	const { userId } = auth()
-	if (!userId) return NextResponse.redirect("/sign-in")
+	if (!userId) return new NextResponse(undefined, { status: 401 })
 
 	console.log("🚀 ~ file: route.ts:12 ~ POST ~ userId:", userId)
 

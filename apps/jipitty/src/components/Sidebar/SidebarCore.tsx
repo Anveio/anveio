@@ -69,7 +69,7 @@ export function SidebarCore(props: Props) {
 
 			<div className="mt-auto grid gap-3 bg-inherit text-indigo-200">
 				<SignedOut>
-					<div className="mb-2 grid grid-cols-2 gap-3">
+					<div className="grid grid-cols-2 gap-3 p-3">
 						<Link href={Routes.LOGIN}>
 							<Button
 								variant={"secondary"}

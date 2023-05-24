@@ -1,9 +1,4 @@
-import {
-	RedirectToSignIn,
-	SignedIn,
-	SignedOut,
-	UserProfile
-} from "@clerk/nextjs"
+import { SignedIn, UserProfile } from "@clerk/nextjs"
 
 export default async function Profile() {
 	return (
@@ -12,8 +7,8 @@ export default async function Profile() {
 				<UserProfile />
 			</SignedIn>
 			<SignedOut>
-				<RedirectToSignIn />
-			</SignedOut>
+				<SignIn />
+				</SignedOut>
 		</>
 	)
 }
