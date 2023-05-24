@@ -5,33 +5,41 @@ import { auth } from "@clerk/nextjs"
 import { redirect } from "next/navigation"
 import AivisorConversationNotFound from "./404"
 
-export default async function AivisorConversation() {
-	const publicIdForConversation = "1"
-
-	if (!publicIdForConversation) {
-		return redirect(Routes.AIVISOR)
+export default async function AivisorConversation(props: {
+	params: {
+		conversationPublicId: string
 	}
-
+}) {
 	const { userId } = auth()
 
 	if (!userId) {
 		return redirect("/")
 	}
 
-	const data = await getMessagesForConversationByPublicIdUserId(
-		publicIdForConversation,
-		userId
-	)
+	const publicIdForConversation = props.params?.conversationPublicId
 
-	if (!data) {
-		return <AivisorConversationNotFound />
+	if (!publicIdForConversation) {
+		return redirect(Routes.AIVISOR)
 	}
 
-	return (
-		<ChatFeed
-			userId={userId}
-			initialMessages={data.messages}
-			conversatioPublicId={publicIdForConversation}
-		/>
-	)
+	try {
+		const data = await getMessagesForConversationByPublicIdUserId(
+			publicIdForConversation,
+			userId
+		)
+
+		if (!data) {
+			return <AivisorConversationNotFound />
+		}
+
+		return (
+			<ChatFeed
+				userId={userId}
+				initialMessages={data.messages}
+				conversatioPublicId={publicIdForConversation}
+			/>
+		)
+	} catch (error) {
+		return redirect(Routes.AIVISOR)
+	}
 }
