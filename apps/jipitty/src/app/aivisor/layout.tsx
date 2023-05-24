@@ -1,6 +1,3 @@
-import { auth } from "@clerk/nextjs"
-import { redirect } from "next/navigation"
-
 export default async function AivisorLayout(
 	props: React.PropsWithChildren<{
 		params?: {
@@ -8,12 +5,6 @@ export default async function AivisorLayout(
 		}
 	}>
 ) {
-	const { userId } = auth()
-
-	if (!userId) {
-		return redirect("/")
-	}
-
 	return (
 		<main className="h-full bg-gray-800">
 			<div className="sm:px6 mx-auto max-w-7xl px-3 lg:px-8">

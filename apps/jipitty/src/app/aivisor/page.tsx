@@ -1,13 +1,8 @@
 import ChatFeed from "@/components/Aivisor/ChatFeed"
 import { auth } from "@clerk/nextjs"
-import { redirect } from "next/navigation"
 
 export default async function Aivisor() {
 	const { userId, user } = auth()
-
-	if (!userId) {
-		return redirect("/")
-	}
 
 	return (
 		<main>
