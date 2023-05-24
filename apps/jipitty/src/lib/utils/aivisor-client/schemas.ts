@@ -20,3 +20,28 @@ export const sendMessageResponseBodySchema = z.object({
 	message: z.string(),
 	conversationId: z.string()
 })
+
+export const getConversationRequestBodySchema = z.object({
+	conversationPublicId: z.string()
+})
+
+export const getConversationResponseBodySchema = z.object({
+	conversationId: z.string(),
+	messages: z.array(
+		z.object({
+			userId: z.string().nullable(),
+			conversationId: z.number(),
+			id: z.number(),
+			createdAt: z.date().nullable(),
+			publicId: z.string(),
+			content: z.string(),
+			senderType: z
+				.union([
+					z.literal("user"),
+					z.literal("system"),
+					z.literal("gpt-3.5-turbo")
+				])
+				.nullable()
+		})
+	)
+})
