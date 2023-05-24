@@ -30,8 +30,8 @@ const nextConfig = {
 	redirects() {
 		const defaultRedirects = [
 			{
-				source: '/login',
-				destination: '/sign-in',
+				source: "/login",
+				destination: "/sign-in",
 				permanent: true
 			}
 		]
@@ -55,7 +55,11 @@ const nextConfig = {
 // https://nextjs.org/docs/advanced-features/security-headers
 const ContentSecurityPolicy = `
     default-src 'self' vercel.live ;
-    script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: cdn.vercel-insights.com vercel.live *.clerk.accounts.dev;
+    script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: cdn.vercel-insights.com vercel.live ${
+			process.env.NODE_ENV === "development"
+				? "*.clerk.accounts.dev"
+				: "clerk.jipitty.com"
+		};
     style-src 'self' 'unsafe-inline';
     img-src * blob: data:;
     media-src 'none';
