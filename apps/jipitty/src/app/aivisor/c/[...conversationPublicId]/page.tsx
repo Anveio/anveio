@@ -10,9 +10,9 @@ export default async function AivisorConversation(props: {
 		conversationPublicId: string
 	}
 }) {
-	const { userId } = auth()
+	const { userId, user } = auth()
 
-	if (!userId) {
+	if (!userId || !user) {
 		return redirect("/")
 	}
 
@@ -37,6 +37,7 @@ export default async function AivisorConversation(props: {
 				userId={userId}
 				initialMessages={data.messages}
 				conversatioPublicId={publicIdForConversation}
+				profileImageSrc={user.profileImageUrl}
 			/>
 		)
 	} catch (error) {

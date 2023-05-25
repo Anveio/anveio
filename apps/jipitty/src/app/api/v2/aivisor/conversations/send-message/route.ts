@@ -1,4 +1,5 @@
 import {
+	createAssistantMessage,
 	createConversationForUserId,
 	createSystemMessage,
 	createUserMessage,
@@ -42,6 +43,8 @@ export async function POST(request: NextRequest) {
 		)
 
 	try {
+		createUserMessage(safeBody.message, conversation.id, userId)
+
 		const responseStream = await OpenAIEdgeClient(
 			"chat",
 			{
@@ -71,9 +74,13 @@ export async function POST(request: NextRequest) {
 
 		const [clientStream, serverStream] = responseStream.tee()
 
-		processStreamedData(serverStream).then((result) => {
-			createUserMessage(result, conversation.id, userId)
-		})
+		processStreamedData(serverStream)
+			.then((result) => {
+				return createAssistantMessage(result, conversation.id)
+			})
+			.then((result) => {
+				console.log("Saved message", result.rowsAffected)
+			})
 
 		return new Response(clientStream)
 	} catch (e) {

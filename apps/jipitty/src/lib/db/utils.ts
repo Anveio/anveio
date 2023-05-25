@@ -136,3 +136,18 @@ export const createUserMessage = (
 		publicId: nanoid(12)
 	})
 }
+
+export const createAssistantMessage = (
+	message: string,
+	conversationId: number
+) => {
+	const validatedMessage = z.string().parse(message)
+	const validatedConversationId = z.number().parse(conversationId)
+
+	return db.insert(messages).values({
+		senderType: "gpt-3.5-turbo",
+		content: validatedMessage,
+		conversationId: validatedConversationId,
+		publicId: nanoid(12)
+	})
+}
