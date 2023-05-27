@@ -1,9 +1,5 @@
 export default async function AivisorLayout(
-	props: React.PropsWithChildren<{
-		params?: {
-			conversationPublicId: string
-		}
-	}>
+	props: React.PropsWithChildren<{}>
 ) {
 	return (
 		<main className="relative h-full bg-gray-800">

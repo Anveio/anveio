@@ -34,6 +34,8 @@ export default async function AivisorConversation(props: {
 			return <AivisorConversationNotFound />
 		}
 
+		console.log(data.messages)
+
 		return (
 			<ChatFeed
 				userId={userId}

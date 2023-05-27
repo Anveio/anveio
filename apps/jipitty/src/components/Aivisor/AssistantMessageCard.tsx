@@ -1,4 +1,7 @@
-import * as React from "react"
+"use client"
+
+import ChatGptLogo from "@/images/logos/chat-gpt.svg"
+import { getConversationResponseBodySchema } from "@/lib/utils"
 import { Menu, Transition } from "@headlessui/react"
 import {
 	CodeBracketIcon,
@@ -6,12 +9,13 @@ import {
 	FlagIcon,
 	StarIcon
 } from "@heroicons/react/20/solid"
-import ChatGptLogo from "@/images/logos/chat-gpt.svg"
-import Image from "next/image"
 import clsx from "clsx"
+import Image from "next/image"
+import * as React from "react"
+import { z } from "zod"
 
 interface Props {
-	responseString: string
+	message: z.infer<typeof getConversationResponseBodySchema>["messages"][number]
 }
 
 function formatDate(date: Date) {
@@ -26,14 +30,7 @@ function formatDate(date: Date) {
 	return date.toLocaleString("en-US", options)
 }
 
-const currentDate = new Date()
-const formattedDate = formatDate(currentDate)
-
-console.log(formattedDate)
-
-export function ResponseCard(props: Props) {
-	const mountedTimeRef = React.useRef(new Date())
-
+export function AssistantMessageCard(props: Props) {
 	return (
 		<div className="bg-white">
 			<div className="flex space-x-3 px-4 py-5 sm:px-6">
@@ -54,7 +51,7 @@ export function ResponseCard(props: Props) {
 					</p>
 					<p className="text-sm text-gray-500">
 						<a href="#" className="hover:underline">
-							{formatDate(mountedTimeRef.current)}
+							{formatDate(props.message.createdAt)}
 						</a>
 					</p>
 				</div>
@@ -141,7 +138,7 @@ export function ResponseCard(props: Props) {
 					</Menu>
 				</div>
 			</div>
-			<div className="px-4 pb-5 sm:px-6">{props.responseString}</div>
+			<div className="px-4 pb-5 sm:px-6">{props.message.content}</div>
 		</div>
 	)
 }

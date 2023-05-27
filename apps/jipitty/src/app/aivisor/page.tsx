@@ -4,11 +4,6 @@ import { auth } from "@clerk/nextjs"
 export default async function Aivisor() {
 	const { userId, user, actor, session } = auth()
 
-	console.log("user", user)
-	console.log("actor", actor)
-	console.log("session", session)
-	console.log("userId", userId)
-
 	return (
 		<main>
 			<div className="flex">

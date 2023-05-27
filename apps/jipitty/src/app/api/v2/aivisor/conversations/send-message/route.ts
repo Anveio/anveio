@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
 		)
 
 	try {
-		createUserMessage(safeBody.message, conversation.id, userId)
+		const x = createUserMessage(safeBody.message, conversation.id, userId)
 
 		const responseStream = await OpenAIEdgeClient(
 			"chat",
@@ -74,6 +74,8 @@ export async function POST(request: NextRequest) {
 			.then((result) => {
 				console.log("Saved message", result.rowsAffected)
 			})
+
+		await x
 
 		return new Response(clientStream)
 	} catch (e) {

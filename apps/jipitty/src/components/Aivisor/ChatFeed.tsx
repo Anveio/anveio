@@ -18,6 +18,8 @@ import { ResponseCard } from "./ResponseCard"
 import { useChat } from "./use-chat"
 import twitterIcon from "../../../public/images/icons/send-message-icon.svg"
 import Image from "next/image"
+import { UserMessageCard } from "./UserMessageCard"
+import { AssistantMessageCard } from "./AssistantMessageCard"
 export default function ChatFeed(props: {
 	userId: string
 	profileImageSrc?: string
@@ -38,9 +40,13 @@ export default function ChatFeed(props: {
 			<div className="flex-1 flex-grow">
 				{state.previousMessages.length > 0 ? (
 					state.previousMessages.map((message) => {
-						console.log("IN HERE", message)
-						return (
-							<ResponseCard responseString={message.content}></ResponseCard>
+						return message.senderType === "user" ? (
+							<UserMessageCard
+								key={message.id}
+								message={message}
+							></UserMessageCard>
+						) : (
+							<AssistantMessageCard key={message.id} message={message} />
 						)
 					})
 				) : (
@@ -73,30 +79,31 @@ export default function ChatFeed(props: {
 								</SelectGroup>
 							</SelectContent>
 						</Select> */}
-				<div className="h-full">
-					<motion.div className="relative flex flex-grow flex-col rounded-md border border-black/10 bg-white shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:border-gray-900/50 dark:bg-gray-700 dark:text-white dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
-						<textarea
-							rows={1}
-							style={{
-								resize: "none",
-								overflow: "auto",
-								height: "auto"
-							}}
-							className="w-full resize-none border-0 bg-transparent p-2 pl-2 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent "
-							value={state.messageDraft}
-							onChange={(e) => {
-								updateDraftMessage(e.target.value)
-							}}
-						/>
-						<button className="sticky bottom-1.5 end-[2%] h-[28px] w-[28px] rounded-md p-1 text-gray-500 hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-transparent dark:hover:bg-gray-900 enabled:dark:hover:text-gray-400 dark:disabled:hover:bg-transparent">
-							<Image
-								className="h-full w-full"
-								alt="Send Message"
-								src={twitterIcon}
-							></Image>
-						</button>
-					</motion.div>
-				</div>
+				<motion.div
+					className="relative grid h-auto  grid-cols-[1fr_28px] rounded-md border border-black/10 bg-white px-2 py-4 shadow-[0_0_10px_rgba(0,0,0,0.10)] 
+					dark:border-gray-900/50 dark:bg-gray-700 dark:text-white dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]"
+				>
+					<motion.textarea
+						style={{
+							resize: "none",
+							overflow: "auto",
+							overflowWrap: "break-word",
+							height: "auto"
+						}}
+						className="w-full resize-none border-0 bg-transparent px-2 py-0 focus:ring-0 focus-visible:ring-0 dark:bg-transparent "
+						value={state.messageDraft}
+						onChange={(e) => {
+							updateDraftMessage(e.target.value)
+						}}
+					/>
+					<button className="sticky bottom-1.5 end-[2%] h-[24px] w-[24px] self-end rounded-md text-gray-500 hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-transparent dark:hover:bg-gray-900 enabled:dark:hover:text-gray-400 dark:disabled:hover:bg-transparent">
+						<Image
+							className="h-full w-full"
+							alt="Send Message"
+							src={twitterIcon}
+						></Image>
+					</button>
+				</motion.div>
 			</form>
 		</div>
 	)

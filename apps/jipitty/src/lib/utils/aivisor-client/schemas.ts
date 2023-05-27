@@ -32,16 +32,14 @@ export const getConversationResponseBodySchema = z.object({
 			userId: z.string().nullable(),
 			conversationId: z.number(),
 			id: z.number(),
-			createdAt: z.date().nullable(),
+			createdAt: z.date(),
 			publicId: z.string(),
 			content: z.string(),
-			senderType: z
-				.union([
-					z.literal("user"),
-					z.literal("system"),
-					z.literal("gpt-3.5-turbo")
-				])
-				.nullable()
+			senderType: z.union([
+				z.literal("user"),
+				z.literal("system"),
+				z.literal("gpt-3.5-turbo")
+			])
 		})
 	)
 })

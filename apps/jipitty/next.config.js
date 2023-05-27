@@ -18,7 +18,7 @@ const nextConfig = {
 			},
 			{
 				protocol: "https",
-				hostname: "avatars.githubusercontent.com",
+				hostname: "www.gravatar.com",
 				pathname: "/**"
 			}
 		]

@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import { Menu, Transition } from "@headlessui/react"
 import {
@@ -9,9 +11,13 @@ import {
 import ChatGptLogo from "@/images/logos/chat-gpt.svg"
 import Image from "next/image"
 import clsx from "clsx"
+import { getConversationResponseBodySchema } from "@/lib/utils"
+import { z } from "zod"
+
+import { auth, useUser } from "@clerk/nextjs"
 
 interface Props {
-	responseString: string
+	message: z.infer<typeof getConversationResponseBodySchema>["messages"][number]
 }
 
 function formatDate(date: Date) {
@@ -26,13 +32,8 @@ function formatDate(date: Date) {
 	return date.toLocaleString("en-US", options)
 }
 
-const currentDate = new Date()
-const formattedDate = formatDate(currentDate)
-
-console.log(formattedDate)
-
-export function ResponseCard(props: Props) {
-	const mountedTimeRef = React.useRef(new Date())
+export function UserMessageCard(props: Props) {
+	const { user } = useUser()
 
 	return (
 		<div className="bg-white">
@@ -42,19 +43,19 @@ export function ResponseCard(props: Props) {
 						height={40}
 						width={40}
 						className="h-10 w-10 rounded-full"
-						src={ChatGptLogo}
+						src={user?.profileImageUrl ?? ""}
 						alt=""
 					/>
 				</div>
 				<div className="min-w-0 flex-1">
 					<p className="text-sm font-semibold text-gray-900">
 						<a href="#" className="hover:underline">
-							Assistant (GPT-3.5 Turbo)
+							{user?.firstName} {user?.lastName}
 						</a>
 					</p>
 					<p className="text-sm text-gray-500">
 						<a href="#" className="hover:underline">
-							{formatDate(mountedTimeRef.current)}
+							{formatDate(props.message.createdAt)}
 						</a>
 					</p>
 				</div>
@@ -141,7 +142,7 @@ export function ResponseCard(props: Props) {
 					</Menu>
 				</div>
 			</div>
-			<div className="px-4 pb-5 sm:px-6">{props.responseString}</div>
+			<div className="px-4 pb-5 sm:px-6">{props.message.content}</div>
 		</div>
 	)
 }
