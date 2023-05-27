@@ -19,6 +19,7 @@
 		"@huggingface/hub": "^0.7.4",
 		"@huggingface/inference": "^2.4.0",
 		"@planetscale/database": "^1.7.0",
+		"@radix-ui/react-select": "^1.2.2",
 		"@radix-ui/react-slot": "^1.0.1",
 		"@tailwindcss/forms": "^0.5.3",
 		"@tanstack/react-query": "^4.28.0",

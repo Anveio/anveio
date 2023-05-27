@@ -1,17 +1,14 @@
 import {
 	createAssistantMessage,
-	createConversationForUserId,
-	createSystemMessage,
 	createUserMessage,
 	getMessagesForConversationByPublicIdUserId
 } from "@/lib/db/utils"
 import { OpenAIEdgeClient } from "@/lib/features/ai/openai/edge-client"
+import { sendMessageRequestBodySchema } from "@/lib/utils/aivisor-client"
 import {
-	createConversationRequestBodySchema,
-	createConversationResponseBodySchema,
-	sendMessageRequestBodySchema
-} from "@/lib/utils/aivisor-client"
-import { readStreamedRequestBody } from "@/lib/utils/readRequestBodyStream"
+	processStreamedData,
+	readStreamedRequestBody
+} from "@/lib/utils/readRequestBodyStream"
 import { auth } from "@clerk/nextjs"
 import { NextRequest, NextResponse } from "next/server"
 import { ChatCompletionRequestMessageRoleEnum } from "openai"
@@ -28,13 +25,9 @@ export async function POST(request: NextRequest) {
 	const { userId } = auth()
 	if (!userId) return new NextResponse(undefined, { status: 401 })
 
-	console.log("🚀 ~ file: route.ts:12 ~ POST ~ userId:", userId)
-
 	const parsedBody = await readStreamedRequestBody(request)
-	console.log("🚀 ~ file: route.ts:14 ~ POST ~ parsedBody:", parsedBody)
 
 	const safeBody = sendMessageRequestBodySchema.parse(parsedBody)
-	console.log("🚀 ~ file: route.ts:17 ~ POST ~ safeBody:", safeBody)
 
 	const { conversation, messages } =
 		await getMessagesForConversationByPublicIdUserId(
@@ -93,48 +86,4 @@ export async function POST(request: NextRequest) {
 
 		return errorResponse
 	}
-}
-
-async function* readerToGenerator(
-	reader: ReadableStreamDefaultReader<Uint8Array>
-): AsyncGenerator<Uint8Array> {
-	while (true) {
-		const { done, value } = await reader.read()
-
-		if (done) {
-			break
-		}
-
-		yield value
-	}
-}
-
-async function processStreamedData(rootStream: ReadableStream<Uint8Array>) {
-	const reader = rootStream.getReader()
-	const textDecoderStreamRef = new TextDecoderStream()
-
-	const readableStream = new ReadableStream<Uint8Array>({
-		async start(controller) {
-			for await (const chunk of readerToGenerator(reader)) {
-				controller.enqueue(chunk)
-			}
-			controller.close()
-		}
-	})
-
-	let finalResult = ""
-
-	const resultStream = readableStream.pipeThrough(textDecoderStreamRef)
-	const resultReader = resultStream.getReader()
-
-	while (true) {
-		const { done, value } = await resultReader.read()
-		if (done) break
-
-		if (value) {
-			finalResult += value
-		}
-	}
-
-	return finalResult
 }

@@ -3,7 +3,9 @@ import {
 	createConversationResponseBodySchema,
 	createConversationRequestBodySchema,
 	sendMessageRequestBodySchema,
-	sendMessageResponseBodySchema
+	sendMessageResponseBodySchema,
+	getConversationTitleSuggestionRequestBodySchema,
+	getConversationTitleSuggestionResponseBodySchema
 } from "./schemas"
 
 export const createConversation = async (
@@ -27,6 +29,41 @@ export const createConversation = async (
 }
 
 const textDecoderStreamRef = new TextDecoderStream()
+
+export const generateConversationTitle = async (
+	body: z.infer<typeof getConversationTitleSuggestionRequestBodySchema>
+) => {
+	const safeBody = getConversationTitleSuggestionRequestBodySchema.parse(body)
+
+	const response = await fetch("/api/v2/aivisor/conversations/create-conversation-title", {
+		method: "POST",
+		body: JSON.stringify(safeBody)
+	})
+
+	if (!response.body) {
+		throw new Error("No Response Body")
+	}
+
+	if (!response.ok) {
+		throw new Error("Response not ok")
+	}
+
+	const reader = response.body.getReader()
+
+	const readableStream = new ReadableStream<Uint8Array>({
+		async start(controller) {
+			for await (const chunk of readerToGenerator(reader)) {
+				controller.enqueue(chunk)
+			}
+			controller.close()
+		}
+	})
+
+	const resultStream = readableStream.pipeThrough(textDecoderStreamRef)
+	const resultReader = resultStream.getReader()
+
+	return resultReader
+}
 
 export const createMessageInConversation = async (
 	body: z.infer<typeof sendMessageRequestBodySchema>

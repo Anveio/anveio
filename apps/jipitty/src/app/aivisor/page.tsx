@@ -2,7 +2,7 @@ import ChatFeed from "@/components/Aivisor/ChatFeed"
 import { auth } from "@clerk/nextjs"
 
 export default async function Aivisor() {
-	const { userId, user, actor, session,  } = auth()
+	const { userId, user, actor, session } = auth()
 
 	console.log("user", user)
 	console.log("actor", actor)
@@ -12,7 +12,6 @@ export default async function Aivisor() {
 	return (
 		<main>
 			<div className="flex">
-				<div className=" who knows"></div>
 				<div className="align-self-end">
 					{userId ? (
 						<ChatFeed

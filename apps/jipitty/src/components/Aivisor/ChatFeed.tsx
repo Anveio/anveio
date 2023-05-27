@@ -1,15 +1,27 @@
 "use client"
 
-import { MessageRow } from "@/lib/db"
-import { PaperClipIcon } from "@heroicons/react/20/solid"
-import Image from "next/image"
+import { SUPPORTED_LLM_MODEL } from "@/lib/constants"
+import { getConversationResponseBodySchema } from "@/lib/utils/aivisor-client"
+import { z } from "zod"
+import { motion } from "framer-motion"
+import { Input } from "../ShadCdn/input"
+import {
+	Select,
+	SelectContent,
+	SelectGroup,
+	SelectItem,
+	SelectLabel,
+	SelectTrigger,
+	SelectValue
+} from "../ShadCdn/select"
 import { ResponseCard } from "./ResponseCard"
 import { useChat } from "./use-chat"
-
+import twitterIcon from "../../../public/images/icons/send-message-icon.svg"
+import Image from "next/image"
 export default function ChatFeed(props: {
 	userId: string
 	profileImageSrc?: string
-	initialMessages: Pick<MessageRow, 'id'>[]
+	initialMessages: z.infer<typeof getConversationResponseBodySchema>["messages"]
 	conversatioPublicId: string | null
 }) {
 	const { state, updateDraftMessage, uploadMessage } = useChat(
@@ -22,77 +34,70 @@ export default function ChatFeed(props: {
 	)
 
 	return (
-		<div>
-			<div className="flex items-start space-x-4">
-				<div className="flex-shrink-0">
-					<Image
-						className="inline-block h-10 w-10 rounded-full"
-						src={props.profileImageSrc || ""}
-						width={40}
-						height={40}
-						alt=""
-					/>
-				</div>
-				<div className="min-w-0 flex-1">
-					<form
-						className="relative"
-						onSubmit={(e) => {
-							e.preventDefault()
-							uploadMessage()
-						}}
-					>
-						<div className="overflow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-indigo-600">
-							<label htmlFor="comment" className="sr-only">
-								Send a message.
-							</label>
-							<textarea
-								rows={2}
-								name="comment"
-								id="comment"
-								className="block w-full resize-none border-0 bg-transparent py-1.5 text-white placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-								placeholder="Type a message..."
-								value={state.messageDraft}
-								onChange={(event) => {
-									updateDraftMessage(event.target.value)
-								}}
-							/>
-
-							{/* Spacer element to match the height of the toolbar */}
-							<div className="py-2" aria-hidden="true">
-								{/* Matches height of button in toolbar (1px border + 36px content height) */}
-								<div className="py-px">
-									<div className="h-9" />
-								</div>
-							</div>
-						</div>
-
-						<div className="absolute inset-x-0 bottom-0 flex justify-between py-2 pl-3 pr-2">
-							<div className="flex items-center space-x-5">
-								<div className="flex items-center">
-									<button
-										type="button"
-										className="-m-2.5 flex h-10 w-10 items-center justify-center rounded-full text-gray-400 hover:text-gray-500"
-									>
-										<PaperClipIcon className="h-5 w-5" aria-hidden="true" />
-										<span className="sr-only">Attach a file</span>
-									</button>
-								</div>
-							</div>
-							<div className="flex-shrink-0">
-								<button
-									type="submit"
-									className="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-								>
-									Post
-								</button>
-							</div>
-						</div>
-					</form>
-				</div>
+		<div className="">
+			<div className="flex-1 flex-grow">
+				{state.previousMessages.length > 0 ? (
+					state.previousMessages.map((message) => {
+						console.log("IN HERE", message)
+						return (
+							<ResponseCard responseString={message.content}></ResponseCard>
+						)
+					})
+				) : (
+					<div>Chat history will appear here</div>
+				)}
+				{state.streamedReplyFromAi ? (
+					<ResponseCard responseString={state.streamedReplyFromAi} />
+				) : null}
 			</div>
-			{state.streamedReplyFromAi ? (
-				<ResponseCard responseString={state.streamedReplyFromAi} />
-			) : null}
+			<form
+				className="absolute bottom-4 left-0 w-full px-32"
+				onSubmit={(e) => {
+					e.preventDefault()
+					uploadMessage()
+				}}
+			>
+				{/* <Select value={state.selectedModel}>
+							<SelectTrigger className="w-[200px]">
+								<SelectValue placeholder="Model" />
+							</SelectTrigger>
+							<SelectContent>
+								<SelectGroup>
+									<SelectLabel>Model</SelectLabel>
+									<SelectItem value={SUPPORTED_LLM_MODEL.THREE_POINT_FIVE}>
+										GPT-3.5
+									</SelectItem>
+									<SelectItem disabled value={"gpt-4"}>
+										GPT-4
+									</SelectItem>
+								</SelectGroup>
+							</SelectContent>
+						</Select> */}
+				<div className="h-full">
+					<motion.div className="relative flex flex-grow flex-col rounded-md border border-black/10 bg-white shadow-[0_0_10px_rgba(0,0,0,0.10)] dark:border-gray-900/50 dark:bg-gray-700 dark:text-white dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]">
+						<textarea
+							rows={1}
+							style={{
+								resize: "none",
+								overflow: "auto",
+								height: "auto"
+							}}
+							className="w-full resize-none border-0 bg-transparent p-2 pl-2 pr-7 focus:ring-0 focus-visible:ring-0 dark:bg-transparent "
+							value={state.messageDraft}
+							onChange={(e) => {
+								updateDraftMessage(e.target.value)
+							}}
+						/>
+						<button className="sticky bottom-1.5 end-[2%] h-[28px] w-[28px] rounded-md p-1 text-gray-500 hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-transparent dark:hover:bg-gray-900 enabled:dark:hover:text-gray-400 dark:disabled:hover:bg-transparent">
+							<Image
+								className="h-full w-full"
+								alt="Send Message"
+								src={twitterIcon}
+							></Image>
+						</button>
+					</motion.div>
+				</div>
+			</form>
 		</div>
 	)
 }

@@ -7,16 +7,18 @@ import AivisorConversationNotFound from "./404"
 
 export default async function AivisorConversation(props: {
 	params: {
-		conversationPublicId: string
+		conversationPublicId: string[]
 	}
 }) {
 	const { userId, user } = auth()
 
-	if (!userId || !user) {
+	console.log(props.params, "Params")
+
+	if (!userId) {
 		return redirect("/")
 	}
 
-	const publicIdForConversation = props.params?.conversationPublicId
+	const publicIdForConversation = props.params?.conversationPublicId[0]
 
 	if (!publicIdForConversation) {
 		return redirect(Routes.AIVISOR)
@@ -37,7 +39,7 @@ export default async function AivisorConversation(props: {
 				userId={userId}
 				initialMessages={data.messages}
 				conversatioPublicId={publicIdForConversation}
-				profileImageSrc={user.profileImageUrl}
+				profileImageSrc={user?.profileImageUrl}
 			/>
 		)
 	} catch (error) {

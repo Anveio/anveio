@@ -45,3 +45,11 @@ export const getConversationResponseBodySchema = z.object({
 		})
 	)
 })
+
+export const getConversationTitleSuggestionRequestBodySchema = z.object({
+	conversationPublicId: z.string()
+})
+
+export const getConversationTitleSuggestionResponseBodySchema = z.object({
+	suggestedTitle: z.string()
+})

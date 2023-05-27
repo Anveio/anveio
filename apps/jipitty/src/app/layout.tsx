@@ -5,7 +5,7 @@ import "@/lib/features/toasts/toast-styles.css"
 import { ClerkProvider, auth } from "@clerk/nextjs"
 import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/cn"
 import { inter } from "@/fonts"
 import { getAllConversationsForUserByUserId } from "@/lib/db/utils"
 
@@ -28,9 +28,9 @@ export default async function RootLayout({
 		<ClerkProvider>
 			<html lang="en" className={cn(`bg-white`, inter.className)}>
 				<body>
-					<div className="static min-h-[100dvh] lg:grid lg:grid-cols-[15rem_1fr]">
+					<div className="static lg:grid lg:grid-cols-[15rem_1fr]">
 						<Sidebar conversations={conversations} />
-						<div className="grid grid-rows-[min-content_1fr] lg:grid-rows-1">
+						<div className="grid min-h-[100dvh] grid-rows-[min-content_1fr] lg:grid-rows-1">
 							<TopNavigationBar />
 							{children}
 						</div>

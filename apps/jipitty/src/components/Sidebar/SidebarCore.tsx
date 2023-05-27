@@ -11,14 +11,13 @@ import {
 	SidebarTeamLinks,
 	SidebarTopLevelNavLinks
 } from "./SidebarNavLink"
+import SidebarConversationListItem from "./SidebarConversationListItem/SidebarConversationListItem"
+import { ConversationRow } from "@/lib/db"
 
 interface Props {
 	className?: string
 	closeOnNavChange?: boolean
-	conversations?: {
-		title: string | null
-		public_id: string
-	}[]
+	conversations?: Pick<ConversationRow, "title" | "publicId">[]
 }
 
 export function SidebarCore(props: Props) {
@@ -30,9 +29,13 @@ export function SidebarCore(props: Props) {
 			)}
 		>
 			<div className="flex grow flex-col gap-y-5 overflow-y-auto  px-6 pb-4 ring-1 ring-white/10">
-				<div className="flex h-16 shrink-0 items-center">
-					<Link href="/">
+				<div className="flex h-16 items-center">
+					<Link
+						href="/"
+						className="group flex w-full gap-x-3 rounded-md p-2 text-lg font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white focus-visible:outline-blue-600 lg:text-sm"
+					>
 						<Image className="h-8 w-auto" src={CompanyLogoWhite} alt="" />
+						<span className="invisible text-white hover:visible">Home</span>
 					</Link>
 				</div>
 				<nav className="flex flex-1 flex-col">
@@ -42,14 +45,10 @@ export function SidebarCore(props: Props) {
 							{props.conversations && props.conversations.length > 0 ? (
 								<ul className="pb-3 pl-5 pt-1 text-white">
 									{props.conversations.map((conversation) => (
-										<li key={conversation.public_id}>
-											<Link
-												className=""
-												href={Routes.AIVISOR + "/c/" + conversation.public_id}
-											>
-												{conversation.title || "Untitled"}
-											</Link>
-										</li>
+										<SidebarConversationListItem
+											key={conversation.publicId}
+											conversation={conversation}
+										/>
 									))}
 								</ul>
 							) : null}

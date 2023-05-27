@@ -1,12 +1,18 @@
+import { SUPPORTED_LLM_MODEL } from "@/lib/constants"
 import { MessageRow } from "@/lib/db"
 import {
 	createConversation,
-	createMessageInConversation
+	createMessageInConversation,
+	getConversationResponseBodySchema
 } from "@/lib/utils/aivisor-client"
 import * as React from "react"
+import { z } from "zod"
 
 interface ChatMachineContext {
-	previousMessages: Partial<MessageRow>[]
+	previousMessages: z.infer<
+		typeof getConversationResponseBodySchema
+	>["messages"]
+	selectedModel: (typeof SUPPORTED_LLM_MODEL)[keyof typeof SUPPORTED_LLM_MODEL]
 	messageDraft: string
 	responseStream: ReadableStream<Uint8Array> | null
 	streamedReplyFromAi: string
@@ -22,6 +28,7 @@ export const useChat = (
 
 	const [state, setState] = React.useState<ChatMachineContext>({
 		previousMessages: initialChatHistory,
+		selectedModel: SUPPORTED_LLM_MODEL.THREE_POINT_FIVE,
 		messageDraft: "Please type 2 sentences of lorem ipsum",
 		responseStream: null,
 		streamedReplyFromAi: ""
@@ -31,6 +38,8 @@ export const useChat = (
 		const json = await createConversation({
 			userId
 		})
+
+		currentConversationIdRef.current = json.conversationId
 
 		if (onGenerateConversationPublicId) {
 			onGenerateConversationPublicId(json.conversationId)

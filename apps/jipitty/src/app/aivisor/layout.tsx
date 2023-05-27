@@ -6,7 +6,7 @@ export default async function AivisorLayout(
 	}>
 ) {
 	return (
-		<main className="h-full bg-gray-800">
+		<main className="relative h-full bg-gray-800">
 			<div className="sm:px6 mx-auto max-w-7xl px-3 lg:px-8">
 				<header className="tborder-b border-white/5 py-3">
 					<div className="md:flex md:items-center md:justify-between">

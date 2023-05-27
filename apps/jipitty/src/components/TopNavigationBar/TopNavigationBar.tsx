@@ -7,7 +7,7 @@ import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs"
 export function TopNavigationBar() {
 	return (
 		<div className="sticky top-0 z-40 flex grid h-16 shrink-0 grid-cols-2 items-center gap-x-4 border-b border-gray-200 bg-gray-900 px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:hidden lg:w-full lg:px-8">
-			<div className="grid grid-cols-[1fr_1px]">
+			<div className="grid grid-cols-[min-content_1px]">
 				<MobileNavMenuOpener />
 				{/* Separator */}
 				<div className="ml-3 h-6 bg-white/10" aria-hidden="true" />

@@ -1,9 +1,10 @@
-import { eq } from "drizzle-orm"
+import { desc, eq, not } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"
 import { db } from "./db"
 import { conversations, messages } from "./schema"
 import { ConversationRow, MessageRow } from "./types"
+import { DatabaseUserNotAuthorizedError } from "./db-error-types"
 
 type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
 
@@ -12,13 +13,13 @@ export const getAllConversationsForUserByUserId = async (userId: string) => {
 
 	return db
 		.select({
-			admin_id: conversations.adminId,
+			adminId: conversations.adminId,
 			title: conversations.title,
 			visibility: conversations.visibility,
-			created_at: conversations.createdAt,
-			updated_at: conversations.updatedAt,
-			public_id: conversations.publicId,
-			created_by_user_id: conversations.createdbyUserId
+			createdAt: conversations.createdAt,
+			updatedAt: conversations.updatedAt,
+			publicId: conversations.publicId,
+			createdByUserId: conversations.createdbyUserId
 		})
 		.from(conversations)
 		.where(eq(conversations.createdbyUserId, validatedUserId))
@@ -55,6 +56,46 @@ export const createConversationForUserId = async (
 		.execute()
 
 	return { conversationId: result.insertId, publicId }
+}
+
+export const getFirstMessageForConversation = async (
+	conversationPublicId: string
+) => {
+	const validatedPublicId = z.string().parse(conversationPublicId)
+
+	const result = await db.transaction(async (tx) => {
+		const conversationQueryResult = await tx
+			.select({
+				id: conversations.id
+			})
+			.from(conversations)
+			.where(eq(conversations.publicId, validatedPublicId))
+			.limit(1)
+			.execute()
+
+		const conversation = conversationQueryResult[0]
+
+		if (!conversation) {
+			throw new Error(
+				"No conversation found for public id: " + validatedPublicId
+			)
+		}
+
+		const m = await tx
+			.select({
+				content: messages.content
+			})
+			.from(messages)
+			.where(eq(messages.conversationId, conversation.id))
+			.where(eq(messages.senderType, "user"))
+			.orderBy(desc(messages.createdAt))
+			.limit(1)
+			.execute()
+
+		return { conversation, messages: m }
+	})
+
+	return result
 }
 
 export const getMessagesForConversationByPublicIdUserId = async (
@@ -149,5 +190,38 @@ export const createAssistantMessage = (
 		content: validatedMessage,
 		conversationId: validatedConversationId,
 		publicId: nanoid(12)
+	})
+}
+
+export const updateConversationWithTitle = (
+	newTitle: string,
+	userId: string,
+	conversationPublicId: number
+) => {
+	const validatedNewTitle = z.string().parse(newTitle)
+	const validatedConversationPublicId = z.string().parse(conversationPublicId)
+
+	return db.transaction(async (tx) => {
+		const conversationQueryResult = await tx
+			.select()
+			.from(conversations)
+			.where(eq(conversations.publicId, validatedConversationPublicId))
+			.limit(1)
+			.execute()
+
+		const isAllowedToUpdate = doesUserBelongToConversation(
+			userId,
+			conversationQueryResult[0]
+		)
+
+		if (!isAllowedToUpdate) {
+			throw new DatabaseUserNotAuthorizedError(
+				"UnauthorizedConversationTitleUpdate"
+			)
+		}
+
+		return tx.update(conversations).set({
+			title: validatedNewTitle
+		})
 	})
 }
