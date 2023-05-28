@@ -1,16 +1,14 @@
 import { SUPPORTED_LLM_MODEL } from "@/lib/constants"
-import { MessageRow } from "@/lib/db"
+import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/utils"
 import {
 	createConversation,
-	createMessageInConversation,
-	getConversationResponseBodySchema
+	createMessageInConversation
 } from "@/lib/utils/aivisor-client"
 import * as React from "react"
-import { z } from "zod"
 
 interface ChatMachineContext {
-	previousMessages: z.infer<
-		typeof getConversationResponseBodySchema
+	previousMessages: Awaited<
+		ReturnType<typeof getMessagesForConversationByPublicIdUserId>
 	>["messages"]
 	selectedModel: (typeof SUPPORTED_LLM_MODEL)[keyof typeof SUPPORTED_LLM_MODEL]
 	messageDraft: string

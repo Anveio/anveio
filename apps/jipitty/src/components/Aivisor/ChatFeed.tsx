@@ -20,10 +20,14 @@ import twitterIcon from "../../../public/images/icons/send-message-icon.svg"
 import Image from "next/image"
 import { UserMessageCard } from "./UserMessageCard"
 import { AssistantMessageCard } from "./AssistantMessageCard"
+import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/utils"
+
 export default function ChatFeed(props: {
 	userId: string
 	profileImageSrc?: string
-	initialMessages: z.infer<typeof getConversationResponseBodySchema>["messages"]
+	initialMessages: Awaited<
+		ReturnType<typeof getMessagesForConversationByPublicIdUserId>
+	>["messages"]
 	conversatioPublicId: string | null
 }) {
 	const { state, updateDraftMessage, uploadMessage } = useChat(

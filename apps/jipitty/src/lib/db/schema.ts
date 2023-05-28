@@ -19,7 +19,7 @@ export const conversations = mysqlTable("conversations", {
 		"url",
 		"shared"
 	]).default("private"),
-	createdAt: timestamp("created_at").defaultNow(),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
 	updatedAt: timestamp("updated_at").defaultNow(),
 	publicId: varchar("public_id", { length: 12 }).notNull()
 })
@@ -31,7 +31,11 @@ export const messages = mysqlTable("messages", {
 		.notNull(),
 	userId: varchar("user_id", { length: 64 }),
 	content: text("content").notNull(),
-	createdAt: timestamp("created_at").defaultNow(),
+	createdAt: timestamp("created_at").notNull().defaultNow(),
 	publicId: varchar("public_id", { length: 12 }).notNull(),
-	senderType: mysqlEnum("sender_type", ["user", "system", "gpt-3.5-turbo"])
+	senderType: mysqlEnum("sender_type", [
+		"user",
+		"system",
+		"gpt-3.5-turbo"
+	]).notNull()
 })

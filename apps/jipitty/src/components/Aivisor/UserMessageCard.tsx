@@ -1,6 +1,5 @@
 "use client"
 
-import * as React from "react"
 import { Menu, Transition } from "@headlessui/react"
 import {
 	CodeBracketIcon,
@@ -8,16 +7,17 @@ import {
 	FlagIcon,
 	StarIcon
 } from "@heroicons/react/20/solid"
-import ChatGptLogo from "@/images/logos/chat-gpt.svg"
-import Image from "next/image"
 import clsx from "clsx"
-import { getConversationResponseBodySchema } from "@/lib/utils"
-import { z } from "zod"
+import Image from "next/image"
+import * as React from "react"
 
-import { auth, useUser } from "@clerk/nextjs"
+import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/utils"
+import { useUser } from "@clerk/nextjs"
 
 interface Props {
-	message: z.infer<typeof getConversationResponseBodySchema>["messages"][number]
+	message: Awaited<
+		ReturnType<typeof getMessagesForConversationByPublicIdUserId>
+	>["messages"][number]
 }
 
 function formatDate(date: Date) {
