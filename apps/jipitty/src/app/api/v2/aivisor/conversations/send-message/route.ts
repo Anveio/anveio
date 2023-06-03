@@ -4,7 +4,7 @@ import {
 	getMessagesForConversationByPublicIdUserId
 } from "@/lib/db/queries"
 import { OpenAIEdgeClient } from "@/lib/features/ai/openai/edge-client"
-import { sendMessageRequestBodySchema } from "@/lib/utils/aivisor-client"
+import { AivisorClient } from "@/lib/utils/aivisor-client"
 import {
 	processStreamedData,
 	readStreamedRequestBody
@@ -27,7 +27,7 @@ export async function POST(request: NextRequest) {
 
 	const parsedBody = await readStreamedRequestBody(request)
 
-	const safeBody = sendMessageRequestBodySchema.parse(parsedBody)
+	const safeBody = AivisorClient.v2.schemas.sendMessageRequestBodySchema.parse(parsedBody)
 
 	const { conversation, messages } =
 		await getMessagesForConversationByPublicIdUserId(

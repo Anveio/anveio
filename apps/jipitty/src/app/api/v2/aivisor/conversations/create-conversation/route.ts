@@ -2,10 +2,7 @@ import {
 	createConversationForUserId,
 	createSystemMessage
 } from "@/lib/db/queries"
-import {
-	createConversationRequestBodySchema,
-	createConversationResponseBodySchema
-} from "@/lib/utils/aivisor-client"
+import { AivisorClient } from "@/lib/utils/aivisor-client"
 import { readStreamedRequestBody } from "@/lib/utils/readRequestBodyStream"
 import { auth } from "@clerk/nextjs"
 import { NextRequest, NextResponse } from "next/server"
@@ -30,7 +27,10 @@ export async function POST(request: NextRequest) {
 
 	const parsedBody = await readStreamedRequestBody(request)
 
-	const safeBody = createConversationRequestBodySchema.parse(parsedBody)
+	const safeBody =
+		AivisorClient.v2.schemas.createConversationRequestBodySchema.parse(
+			parsedBody
+		)
 
 	const { publicId, conversationId } = await createConversationForUserId(
 		userId,
@@ -41,9 +41,10 @@ export async function POST(request: NextRequest) {
 		await createSystemMessage(safeBody.systemMessage, Number(conversationId))
 	}
 
-	const response = createConversationResponseBodySchema.parse({
-		conversationId: publicId
-	})
+	const response =
+		AivisorClient.v2.schemas.createConversationResponseBodySchema.parse({
+			conversationId: publicId
+		})
 
 	return NextResponse.json(response)
 }
