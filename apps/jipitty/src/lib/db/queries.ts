@@ -1,10 +1,10 @@
-import { desc, eq, not } from "drizzle-orm"
+import { and, asc, desc, eq } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"
 import { db } from "./db"
-import { conversations, messages } from "./schema"
-import { ConversationRow, MessageRow } from "./types"
 import { DatabaseUserNotAuthorizedError } from "./db-error-types"
+import { conversations, messages } from "./schema"
+import { ConversationRow } from "./types"
 
 type Transaction = Parameters<Parameters<typeof db.transaction>[0]>[0]
 
@@ -27,7 +27,7 @@ export const getAllConversationsForUserByUserId = async (userId: string) => {
 
 function doesUserBelongToConversation(
 	userId: string,
-	conversation: ConversationRow
+	conversation: Pick<ConversationRow, "createdbyUserId" | "adminId">
 ): boolean {
 	return (
 		userId === conversation.createdbyUserId || userId === conversation.adminId
@@ -58,7 +58,7 @@ export const createConversationForUserId = async (
 	return { conversationId: result.insertId, publicId }
 }
 
-export const getFirstMessageForConversation = async (
+export const getConversationWithFirstUserMessage = async (
 	conversationPublicId: string
 ) => {
 	const validatedPublicId = z.string().parse(conversationPublicId)
@@ -81,6 +81,8 @@ export const getFirstMessageForConversation = async (
 			)
 		}
 
+		console.log("Found conversation for public id", conversation)
+
 		const m = await tx
 			.select({
 				content: messages.content
@@ -92,7 +94,9 @@ export const getFirstMessageForConversation = async (
 			.limit(1)
 			.execute()
 
-		return { conversation, messages: m }
+		console.log("Found messages for conversation", m)
+
+		return { conversation, message: m[0] }
 	})
 
 	return result
@@ -134,9 +138,17 @@ export const getMessagesForConversationByPublicIdUserId = async (
 		}
 
 		const m = await tx
-			.select()
+			.select({
+				content: messages.content,
+				createdAt: messages.createdAt,
+				senderType: messages.senderType,
+				publicId: messages.publicId,
+				userId: messages.userId,
+				conversationId: messages.conversationId
+			})
 			.from(messages)
 			.where(eq(messages.conversationId, conversation.id))
+			.orderBy(asc(messages.createdAt))
 
 		return { conversation, messages: m }
 	})
@@ -196,32 +208,38 @@ export const createAssistantMessage = (
 export const updateConversationWithTitle = (
 	newTitle: string,
 	userId: string,
-	conversationPublicId: number
+	conversationPublicId: string
 ) => {
-	const validatedNewTitle = z.string().parse(newTitle)
-	const validatedConversationPublicId = z.string().parse(conversationPublicId)
+	const validatedNewTitle = z
+		.string({
+			required_error: "Cannot update conversation title without a new title"
+		})
+		.parse(newTitle)
+	const validatedConversationPublicId = z
+		.string({
+			required_error:
+				"Cannot update conversation title without a conversation id"
+		})
+		.parse(conversationPublicId)
 
 	return db.transaction(async (tx) => {
-		const conversationQueryResult = await tx
-			.select()
-			.from(conversations)
-			.where(eq(conversations.publicId, validatedConversationPublicId))
-			.limit(1)
-			.execute()
-
-		const isAllowedToUpdate = doesUserBelongToConversation(
-			userId,
-			conversationQueryResult[0]
+		console.log(
+			`Updating conversation with public ID ${validatedConversationPublicId} with new title: ${validatedNewTitle}`
 		)
 
-		if (!isAllowedToUpdate) {
-			throw new DatabaseUserNotAuthorizedError(
-				"UnauthorizedConversationTitleUpdate"
+		const conversationUpdateQueryResult = await tx
+			.update(conversations)
+			.set({
+				title: validatedNewTitle
+			})
+			.where(
+				and(
+					eq(conversations.publicId, validatedConversationPublicId),
+					eq(conversations.createdbyUserId, userId)
+				)
 			)
-		}
+			.execute()
 
-		return tx.update(conversations).set({
-			title: validatedNewTitle
-		})
+		return conversationUpdateQueryResult
 	})
 }

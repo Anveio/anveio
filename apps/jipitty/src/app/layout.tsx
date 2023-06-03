@@ -1,13 +1,12 @@
 import { Sidebar } from "@/components/Sidebar"
 import { TopNavigationBar } from "@/components/TopNavigationBar"
-import { ConversationRow } from "@/lib/db"
+import { inter } from "@/fonts"
+import { cn } from "@/lib/cn"
+import { getAllConversationsForUserByUserId } from "@/lib/db/queries"
 import "@/lib/features/toasts/toast-styles.css"
 import { ClerkProvider, auth } from "@clerk/nextjs"
 import { Analytics } from "@vercel/analytics/react"
 import "./globals.css"
-import { cn } from "@/lib/cn"
-import { inter } from "@/fonts"
-import { getAllConversationsForUserByUserId } from "@/lib/db/utils"
 
 export const metadata = {
 	title: "Jipitty - AI Chat, AI Art, AI Insights"

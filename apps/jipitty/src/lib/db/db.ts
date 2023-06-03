@@ -1,7 +1,5 @@
 import { Client, connect } from "@planetscale/database"
-import { z } from "zod"
 import { drizzle } from "drizzle-orm/planetscale-serverless"
-import { migrate } from "drizzle-orm/mysql2/migrator"
 import {
 	DATABASE_HOST,
 	DATABASE_PASSWORD,

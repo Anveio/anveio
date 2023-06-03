@@ -16,4 +16,3 @@ export const DATABASE_PASSWORD = z
 		required_error: "DATABASE_PASSWORD missing"
 	})
 	.parse(process.env.DATABASE_PASSWORD)
-

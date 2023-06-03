@@ -1,9 +1,6 @@
 import { SUPPORTED_LLM_MODEL } from "@/lib/constants"
-import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/utils"
-import {
-	createConversation,
-	createMessageInConversation
-} from "@/lib/utils/aivisor-client"
+import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/queries"
+import { AivisorClient } from "@/lib/utils/aivisor-client"
 import * as React from "react"
 
 interface ChatMachineContext {
@@ -33,7 +30,7 @@ export const useChat = (
 	})
 
 	const generateConversationId = async () => {
-		const json = await createConversation({
+		const json = await AivisorClient.v2.conversations.createConversation({
 			userId
 		})
 
@@ -51,11 +48,12 @@ export const useChat = (
 			currentConversationIdRef.current ||
 			(await generateConversationId()).conversationId
 
-		const resultReader = await createMessageInConversation({
-			conversationPublicId: conversationId,
-			userId: userId,
-			message: state.messageDraft
-		})
+		const resultReader =
+			await AivisorClient.v2.conversations.createMessageInConversation({
+				conversationPublicId: conversationId,
+				userId: userId,
+				message: state.messageDraft
+			})
 
 		try {
 			while (true) {
@@ -87,7 +85,6 @@ export const useChat = (
 	return {
 		state,
 		uploadMessage,
-		updateDraftMessage,
-		createConversation
+		updateDraftMessage
 	}
 }

@@ -1,15 +1,6 @@
-import { getFirstMessageForConversation } from "@/lib/db/utils"
-import {
-	createConversationForUserId,
-	createSystemMessage,
-	updateConversationWithTitle
-} from "@/lib/db/utils"
+import { updateConversationWithTitle } from "@/lib/db/queries"
 import { OpenAIEdgeClient } from "@/lib/features/ai/openai/edge-client"
-import {
-	createConversationRequestBodySchema,
-	createConversationResponseBodySchema,
-	getConversationTitleSuggestionRequestBodySchema
-} from "@/lib/utils/aivisor-client"
+import { AivisorClient } from "@/lib/utils/aivisor-client"
 import {
 	processStreamedData,
 	readStreamedRequestBody
@@ -26,32 +17,29 @@ if (!OPENAI_SECRET) {
 }
 
 const createSystemPrompt = (messageContents: string) => {
-	return `Create a clever title, preferably a short pun, that fits into an 40 character limit for a conversation with an AI assistant given the following initial prompt:\n\n${messageContents}\n\nConversation title:`
+	return `Create a clever title, preferably a short pun, that fits into an 40 character limit for a conversation with an AI assistant given the following initial prompt:\n\n${messageContents}\n\nConversation title:\n`
 }
 
 export async function POST(request: NextRequest) {
+	console.log("Received request to generate conversation title")
+
 	const { userId } = auth()
 	if (!userId) return new NextResponse(undefined, { status: 401 })
 
 	const parsedBody = await readStreamedRequestBody(request)
 
 	const safeBody =
-		getConversationTitleSuggestionRequestBodySchema.parse(parsedBody)
-
-	const firstMessage = await getFirstMessageForConversation(
-		safeBody.conversationPublicId
-	)
-
-	if (!firstMessage) {
-		return new NextResponse(undefined, { status: 400 })
-	}
+		AivisorClient.v2.schemas.getConversationTitleSuggestionRequestBodySchema.parse(
+			parsedBody
+		)
 
 	const responseStream = await OpenAIEdgeClient(
 		"completions",
 		{
 			model: "text-davinci-003",
-			prompt: createSystemPrompt(firstMessage.messages[0].content),
-			temperature: 1.0
+			prompt: createSystemPrompt(safeBody.prompt),
+			temperature: 1.0,
+			max_tokens: 40
 		},
 		{
 			apiKey: OPENAI_SECRET
@@ -61,10 +49,11 @@ export async function POST(request: NextRequest) {
 	const [clientStream, serverStream] = responseStream.tee()
 
 	processStreamedData(serverStream).then((result) => {
+		console.log("Got result from OpenAI", result)
 		return updateConversationWithTitle(
 			result,
 			userId,
-			parsedBody.conversationPublicId
+			safeBody.conversationPublicId
 		)
 	})
 

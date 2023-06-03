@@ -13,7 +13,7 @@ export default async function Aivisor() {
 							profileImageSrc={user?.profileImageUrl}
 							userId={userId}
 							initialMessages={[]}
-							conversatioPublicId={null}
+							conversationPublicId={null}
 						/>
 					) : null}
 				</div>

@@ -1,7 +1,7 @@
 "use client"
 
 import ChatGptLogo from "@/images/logos/chat-gpt.svg"
-import { getConversationResponseBodySchema } from "@/lib/utils"
+import { getConversationResponseBodySchema } from "@/lib/utils/aivisor-client/schemas"
 import { Menu, Transition } from "@headlessui/react"
 import {
 	CodeBracketIcon,
@@ -18,18 +18,6 @@ interface Props {
 	message: z.infer<typeof getConversationResponseBodySchema>["messages"][number]
 }
 
-function formatDate(date: Date) {
-	const options = {
-		month: "long",
-		day: "numeric",
-		hour: "numeric",
-		minute: "numeric",
-		hour12: true
-	} as const
-
-	return date.toLocaleString("en-US", options)
-}
-
 export function AssistantMessageCard(props: Props) {
 	return (
 		<div className="bg-white">
@@ -43,18 +31,7 @@ export function AssistantMessageCard(props: Props) {
 						alt=""
 					/>
 				</div>
-				<div className="min-w-0 flex-1">
-					<p className="text-sm font-semibold text-gray-900">
-						<a href="#" className="hover:underline">
-							Assistant (GPT-3.5 Turbo)
-						</a>
-					</p>
-					<p className="text-sm text-gray-500">
-						<a href="#" className="hover:underline">
-							{formatDate(props.message.createdAt)}
-						</a>
-					</p>
-				</div>
+				<div className="min-w-0 flex-1"></div>
 				<div className="flex flex-shrink-0 self-center">
 					<Menu as="div" className="relative inline-block text-left">
 						<div>

@@ -1,11 +1,11 @@
 import { z } from "zod"
 import {
-	createConversationResponseBodySchema,
 	createConversationRequestBodySchema,
-	sendMessageRequestBodySchema,
-	sendMessageResponseBodySchema,
+	createConversationResponseBodySchema,
+	getConversationRequestBodySchema,
+	getConversationResponseBodySchema,
 	getConversationTitleSuggestionRequestBodySchema,
-	getConversationTitleSuggestionResponseBodySchema
+	sendMessageRequestBodySchema
 } from "./schemas"
 
 export const createConversation = async (
@@ -28,17 +28,57 @@ export const createConversation = async (
 	return safeJson
 }
 
-const textDecoderStreamRef = new TextDecoderStream()
+export const getConversation = async (
+	body: z.infer<typeof getConversationRequestBodySchema>
+) => {
+	const safeBody = getConversationRequestBodySchema.parse(body)
+
+	const searchParams = new URLSearchParams({
+		conversationPublicId: safeBody.conversationPublicId
+	})
+
+	const response = await fetch(
+		"/api/v2/aivisor/conversations/get-conversation?" + searchParams,
+		{
+			method: "GET"
+		}
+	)
+
+	const json = await response.json()
+
+	const formattedJson = {
+		...json,
+		messages: json.messages.map(
+			(
+				message: z.infer<
+					typeof getConversationResponseBodySchema
+				>["messages"][number]
+			) => {
+				return {
+					...message,
+					createdAt: new Date(message.createdAt)
+				}
+			}
+		)
+	}
+
+	const safeJson = getConversationResponseBodySchema.parse(formattedJson)
+
+	return safeJson
+}
 
 export const generateConversationTitle = async (
 	body: z.infer<typeof getConversationTitleSuggestionRequestBodySchema>
 ) => {
 	const safeBody = getConversationTitleSuggestionRequestBodySchema.parse(body)
 
-	const response = await fetch("/api/v2/aivisor/conversations/create-conversation-title", {
-		method: "POST",
-		body: JSON.stringify(safeBody)
-	})
+	const response = await fetch(
+		"/api/v2/aivisor/conversations/generate-conversation-title",
+		{
+			method: "POST",
+			body: JSON.stringify(safeBody)
+		}
+	)
 
 	if (!response.body) {
 		throw new Error("No Response Body")
@@ -59,7 +99,9 @@ export const generateConversationTitle = async (
 		}
 	})
 
-	const resultStream = readableStream.pipeThrough(textDecoderStreamRef)
+	const textDecoderStream = new TextDecoderStream()
+
+	const resultStream = readableStream.pipeThrough(textDecoderStream)
 	const resultReader = resultStream.getReader()
 
 	return resultReader
@@ -93,8 +135,8 @@ export const createMessageInConversation = async (
 			controller.close()
 		}
 	})
-
-	const resultStream = readableStream.pipeThrough(textDecoderStreamRef)
+	const textDecoderStream = new TextDecoderStream()
+	const resultStream = readableStream.pipeThrough(textDecoderStream)
 	const resultReader = resultStream.getReader()
 
 	return resultReader

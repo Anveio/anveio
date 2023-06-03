@@ -2,7 +2,7 @@ import {
 	createAssistantMessage,
 	createUserMessage,
 	getMessagesForConversationByPublicIdUserId
-} from "@/lib/db/utils"
+} from "@/lib/db/queries"
 import { OpenAIEdgeClient } from "@/lib/features/ai/openai/edge-client"
 import { sendMessageRequestBodySchema } from "@/lib/utils/aivisor-client"
 import {

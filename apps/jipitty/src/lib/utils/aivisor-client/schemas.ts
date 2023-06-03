@@ -31,7 +31,6 @@ export const getConversationResponseBodySchema = z.object({
 		z.object({
 			userId: z.string().nullable(),
 			conversationId: z.number(),
-			id: z.number(),
 			createdAt: z.date(),
 			publicId: z.string(),
 			content: z.string(),
@@ -45,6 +44,8 @@ export const getConversationResponseBodySchema = z.object({
 })
 
 export const getConversationTitleSuggestionRequestBodySchema = z.object({
+	prompt: z.string(),
+	response: z.string(),
 	conversationPublicId: z.string()
 })
 

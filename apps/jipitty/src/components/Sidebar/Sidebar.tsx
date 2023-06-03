@@ -1,4 +1,4 @@
-import { getAllConversationsForUserByUserId } from "@/lib/db/utils"
+import { getAllConversationsForUserByUserId } from "@/lib/db/queries"
 import { MobileSidebar } from "./MobileSidebar"
 import { SidebarCore } from "./SidebarCore"
 
@@ -7,16 +7,16 @@ interface Props {
 }
 
 export function Sidebar(props: Props) {
-	if (props.conversations.length) {
-		console.log("Found ocnversations", props.conversations.length)
-	}
-
 	return (
 		<div>
 			<MobileSidebar>
-				<SidebarCore conversations={props.conversations} />
+				<SidebarCore
+					conversations={props.conversations}
+					shouldGenerateConversationTitles={false}
+				/>
 			</MobileSidebar>
 			<SidebarCore
+				shouldGenerateConversationTitles={true}
 				conversations={props.conversations}
 				className="hidden lg:flex"
 			/>

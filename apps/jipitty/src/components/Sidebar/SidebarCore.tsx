@@ -15,6 +15,7 @@ import SidebarConversationListItem from "./SidebarConversationListItem/SidebarCo
 import { ConversationRow } from "@/lib/db"
 
 interface Props {
+	shouldGenerateConversationTitles: boolean
 	className?: string
 	closeOnNavChange?: boolean
 	conversations?: Pick<ConversationRow, "title" | "publicId">[]
@@ -46,6 +47,9 @@ export function SidebarCore(props: Props) {
 								<ul className="pb-3 pl-5 pt-1 text-white">
 									{props.conversations.map((conversation) => (
 										<SidebarConversationListItem
+											shouldAutomaticallyGenerateTitle={
+												props.shouldGenerateConversationTitles
+											}
 											key={conversation.publicId}
 											conversation={conversation}
 										/>

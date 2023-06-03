@@ -1,26 +1,13 @@
 "use client"
 
-import { SUPPORTED_LLM_MODEL } from "@/lib/constants"
-import { getConversationResponseBodySchema } from "@/lib/utils/aivisor-client"
-import { z } from "zod"
+import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/queries"
 import { motion } from "framer-motion"
-import { Input } from "../ShadCdn/input"
-import {
-	Select,
-	SelectContent,
-	SelectGroup,
-	SelectItem,
-	SelectLabel,
-	SelectTrigger,
-	SelectValue
-} from "../ShadCdn/select"
-import { ResponseCard } from "./ResponseCard"
-import { useChat } from "./use-chat"
-import twitterIcon from "../../../public/images/icons/send-message-icon.svg"
 import Image from "next/image"
-import { UserMessageCard } from "./UserMessageCard"
+import twitterIcon from "../../../public/images/icons/send-message-icon.svg"
 import { AssistantMessageCard } from "./AssistantMessageCard"
-import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/utils"
+import { ResponseCard } from "./ResponseCard"
+import { UserMessageCard } from "./UserMessageCard"
+import { useChat } from "./use-chat"
 
 export default function ChatFeed(props: {
 	userId: string
@@ -28,29 +15,29 @@ export default function ChatFeed(props: {
 	initialMessages: Awaited<
 		ReturnType<typeof getMessagesForConversationByPublicIdUserId>
 	>["messages"]
-	conversatioPublicId: string | null
+	conversationPublicId: string | null
 }) {
 	const { state, updateDraftMessage, uploadMessage } = useChat(
 		props.userId,
 		props.initialMessages,
-		props.conversatioPublicId,
+		props.conversationPublicId,
 		(generatedConversationId) => {
 			window.history.pushState({}, "", `/aivisor/c/${generatedConversationId}`)
 		}
 	)
 
 	return (
-		<div className="">
+		<div className="w-full">
 			<div className="flex-1 flex-grow">
 				{state.previousMessages.length > 0 ? (
 					state.previousMessages.map((message) => {
 						return message.senderType === "user" ? (
 							<UserMessageCard
-								key={message.id}
+								key={message.publicId}
 								message={message}
 							></UserMessageCard>
 						) : (
-							<AssistantMessageCard key={message.id} message={message} />
+							<AssistantMessageCard key={message.publicId} message={message} />
 						)
 					})
 				) : (
@@ -61,7 +48,7 @@ export default function ChatFeed(props: {
 				) : null}
 			</div>
 			<form
-				className="absolute bottom-4 left-0 w-full px-32"
+				className="max-w-24 absolute bottom-4 left-0 w-full px-32"
 				onSubmit={(e) => {
 					e.preventDefault()
 					uploadMessage()

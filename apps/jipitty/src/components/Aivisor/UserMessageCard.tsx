@@ -11,9 +11,9 @@ import clsx from "clsx"
 import Image from "next/image"
 import * as React from "react"
 
-import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/utils"
+import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/queries"
 import { useUser } from "@clerk/nextjs"
-
+import DefaultProfilePicture from "../../../public/default-profile-picture.avif"
 interface Props {
 	message: Awaited<
 		ReturnType<typeof getMessagesForConversationByPublicIdUserId>
@@ -43,21 +43,12 @@ export function UserMessageCard(props: Props) {
 						height={40}
 						width={40}
 						className="h-10 w-10 rounded-full"
-						src={user?.profileImageUrl ?? ""}
+						src={user?.profileImageUrl ?? DefaultProfilePicture}
 						alt=""
 					/>
 				</div>
-				<div className="min-w-0 flex-1">
-					<p className="text-sm font-semibold text-gray-900">
-						<a href="#" className="hover:underline">
-							{user?.firstName} {user?.lastName}
-						</a>
-					</p>
-					<p className="text-sm text-gray-500">
-						<a href="#" className="hover:underline">
-							{formatDate(props.message.createdAt)}
-						</a>
-					</p>
+				<div className="w-full flex-1 px-4 pb-5 sm:px-6">
+					{props.message.content}
 				</div>
 				<div className="flex flex-shrink-0 self-center">
 					<Menu as="div" className="relative inline-block text-left">
@@ -142,7 +133,6 @@ export function UserMessageCard(props: Props) {
 					</Menu>
 				</div>
 			</div>
-			<div className="px-4 pb-5 sm:px-6">{props.message.content}</div>
 		</div>
 	)
 }
