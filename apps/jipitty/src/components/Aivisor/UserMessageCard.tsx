@@ -13,7 +13,8 @@ import * as React from "react"
 
 import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/queries"
 import { useUser } from "@clerk/nextjs"
-import DefaultProfilePicture from "../../../public/default-profile-picture.avif"
+import DefaultProfilePicture from "../../../public/svg/default-profile-picture.svg"
+
 interface Props {
 	message: Awaited<
 		ReturnType<typeof getMessagesForConversationByPublicIdUserId>
