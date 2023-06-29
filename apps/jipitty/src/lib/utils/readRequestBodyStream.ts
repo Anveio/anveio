@@ -3,8 +3,10 @@ import { NextRequest } from "next/server"
 
 export const readStreamedRequestBody = async (request: NextRequest) => {
 	if (!request.body) {
-		return null
+		return {}
 	}
+
+	console.log("READING REQUEST BODY", request.body)
 
 	const reader = request.body.getReader()
 	const decoder = new TextDecoder()
@@ -19,10 +21,13 @@ export const readStreamedRequestBody = async (request: NextRequest) => {
 	}
 
 	body += decoder.decode() // Flush the remaining bytes
+
+	if (!body) {
+		return {}
+	}
+
 	return JSON.parse(body)
 }
-
-
 
 export async function* readerToGenerator(
 	reader: ReadableStreamDefaultReader<Uint8Array>
@@ -38,7 +43,9 @@ export async function* readerToGenerator(
 	}
 }
 
-export async function processStreamedData(rootStream: ReadableStream<Uint8Array>) {
+export async function processStreamedData(
+	rootStream: ReadableStream<Uint8Array>
+) {
 	const reader = rootStream.getReader()
 	const textDecoderStreamRef = new TextDecoderStream()
 

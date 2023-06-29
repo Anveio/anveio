@@ -14,23 +14,10 @@ import * as React from "react"
 import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/queries"
 import { useUser } from "@clerk/nextjs"
 import DefaultProfilePicture from "../../../public/svg/default-profile-picture.svg"
+import { Message } from "ai"
 
 interface Props {
-	message: Awaited<
-		ReturnType<typeof getMessagesForConversationByPublicIdUserId>
-	>["messages"][number]
-}
-
-function formatDate(date: Date) {
-	const options = {
-		month: "long",
-		day: "numeric",
-		hour: "numeric",
-		minute: "numeric",
-		hour12: true
-	} as const
-
-	return date.toLocaleString("en-US", options)
+	message: Message
 }
 
 export function UserMessageCard(props: Props) {

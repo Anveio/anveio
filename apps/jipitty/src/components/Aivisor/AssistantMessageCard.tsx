@@ -9,13 +9,13 @@ import {
 	FlagIcon,
 	StarIcon
 } from "@heroicons/react/20/solid"
+import { Message } from "ai"
 import clsx from "clsx"
 import Image from "next/image"
 import * as React from "react"
-import { z } from "zod"
 
 interface Props {
-	message: z.infer<typeof getConversationResponseBodySchema>["messages"][number]
+	message: Message
 }
 
 export function AssistantMessageCard(props: Props) {

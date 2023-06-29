@@ -9,6 +9,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { Ratelimit } from "@upstash/ratelimit"
 import { Redis } from "@upstash/redis"
 
+export const runtime = "edge"
 const ratelimit = new Ratelimit({
 	redis: Redis.fromEnv(),
 	limiter: Ratelimit.slidingWindow(5, "1 m"),
@@ -37,7 +38,7 @@ export async function POST(request: NextRequest) {
 		"private"
 	)
 
-	if (safeBody.systemMessage) {
+	if (safeBody && safeBody.systemMessage) {
 		await createSystemMessage(safeBody.systemMessage, Number(conversationId))
 	}
 

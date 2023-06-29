@@ -1,13 +1,16 @@
 "use client"
 
 import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/queries"
+import { convertDbMessageToVercelAiMessage } from "@/lib/utils/aivisor-client/common"
+import { createConversationResponseBodySchema } from "@/lib/utils/aivisor-client/schemas"
+import { Message, UseChatHelpers, useChat } from "ai/react"
 import { motion } from "framer-motion"
 import Image from "next/image"
+import { useRouter } from "next/navigation"
+import * as React from "react"
 import twitterIcon from "../../../public/images/icons/send-message-icon.svg"
 import { AssistantMessageCard } from "./AssistantMessageCard"
-import { ResponseCard } from "./ResponseCard"
 import { UserMessageCard } from "./UserMessageCard"
-import { useChat } from "./use-chat"
 
 export default function ChatFeed(props: {
 	userId: string
@@ -17,64 +20,91 @@ export default function ChatFeed(props: {
 	>["messages"]
 	conversationPublicId: string | null
 }) {
-	const { state, updateDraftMessage, uploadMessage } = useChat(
-		props.userId,
-		props.initialMessages,
-		props.conversationPublicId,
-		(generatedConversationId) => {
-			window.history.pushState({}, "", `/aivisor/c/${generatedConversationId}`)
-		}
+	const { push } = useRouter()
+
+	const lastMessageRef = React.useRef<Message | null>(null)
+	const conversationPublicIdRef = React.useRef<string | null>(
+		props.conversationPublicId
 	)
+
+	const [messageToSend, setMessagesToSend] = React.useState<Message>(
+		convertDbMessageToVercelAiMessage(
+			props.initialMessages[props.initialMessages.length - 1]
+		)
+	)
+
+	const { messages, input, handleInputChange, handleSubmit } = useChat({
+		initialMessages: props.initialMessages.map(
+			convertDbMessageToVercelAiMessage
+		),
+		api: "/api/v2/aivisor/conversations/send-message",
+		body: {
+			message: messageToSend,
+			conversationPublicId: conversationPublicIdRef.current
+		},
+		id: conversationPublicIdRef.current ?? undefined
+	})
+
+	React.useEffect(() => {
+		setMessagesToSend(messages[messages.length - 0])
+	}, [messages])
+
+	React.useEffect(() => {
+		lastMessageRef.current = messages[messages.length - 1]
+	}, [messages])
 
 	return (
 		<div className="w-full">
 			<div className="flex-1 flex-grow">
-				{state.previousMessages.length > 0 ? (
-					state.previousMessages.map((message) => {
-						return message.senderType === "user" ? (
+				{messages.length > 0 ? (
+					messages.map((message) => {
+						return message.role === "user" ? (
 							<UserMessageCard
-								key={message.publicId}
+								key={message.id}
 								message={message}
 							></UserMessageCard>
 						) : (
-							<AssistantMessageCard key={message.publicId} message={message} />
+							<AssistantMessageCard key={message.id} message={message} />
 						)
 					})
 				) : (
 					<div>Chat history will appear here</div>
 				)}
-				{state.streamedReplyFromAi ? (
-					<ResponseCard responseString={state.streamedReplyFromAi} />
-				) : null}
 			</div>
 			<form
 				className="max-w-24 absolute bottom-4 left-0 w-full px-32"
-				onSubmit={(e) => {
+				onSubmit={async (e) => {
 					e.preventDefault()
-					uploadMessage()
+
+					if (!conversationPublicIdRef.current) {
+						const res = await fetch(
+							"/api/v2/aivisor/conversations/create-conversation",
+							{
+								method: "POST",
+								credentials: "include"
+							}
+						)
+
+						const unsafeResponseBody = await res.json()
+
+						const parsedSafeResponseBody =
+							createConversationResponseBodySchema.parse(unsafeResponseBody)
+
+						conversationPublicIdRef.current =
+							parsedSafeResponseBody.conversationId
+
+						push(`/aivisor/c/${parsedSafeResponseBody.conversationId}`)
+					}
+
+					handleSubmit(e)
 				}}
 			>
-				{/* <Select value={state.selectedModel}>
-							<SelectTrigger className="w-[200px]">
-								<SelectValue placeholder="Model" />
-							</SelectTrigger>
-							<SelectContent>
-								<SelectGroup>
-									<SelectLabel>Model</SelectLabel>
-									<SelectItem value={SUPPORTED_LLM_MODEL.THREE_POINT_FIVE}>
-										GPT-3.5
-									</SelectItem>
-									<SelectItem disabled value={"gpt-4"}>
-										GPT-4
-									</SelectItem>
-								</SelectGroup>
-							</SelectContent>
-						</Select> */}
 				<motion.div
-					className="relative grid h-auto  grid-cols-[1fr_28px] rounded-md border border-black/10 bg-white px-2 py-4 shadow-[0_0_10px_rgba(0,0,0,0.10)] 
+					className="relative grid h-auto grid-cols-[1fr_28px] rounded-md border border-black/10 bg-white px-2 py-4 shadow-[0_0_10px_rgba(0,0,0,0.10)] 
 					dark:border-gray-900/50 dark:bg-gray-700 dark:text-white dark:shadow-[0_0_15px_rgba(0,0,0,0.10)]"
 				>
-					<motion.textarea
+					<motion.input
+						required
 						style={{
 							resize: "none",
 							overflow: "auto",
@@ -82,10 +112,8 @@ export default function ChatFeed(props: {
 							height: "auto"
 						}}
 						className="w-full resize-none border-0 bg-transparent px-2 py-0 focus:ring-0 focus-visible:ring-0 dark:bg-transparent "
-						value={state.messageDraft}
-						onChange={(e) => {
-							updateDraftMessage(e.target.value)
-						}}
+						value={input}
+						onChange={handleInputChange}
 					/>
 					<button className="sticky bottom-1.5 end-[2%] h-[24px] w-[24px] self-end rounded-md text-gray-500 hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-transparent dark:hover:bg-gray-900 enabled:dark:hover:text-gray-400 dark:disabled:hover:bg-transparent">
 						<Image
@@ -99,3 +127,9 @@ export default function ChatFeed(props: {
 		</div>
 	)
 }
+
+type UseChatOptions =
+	| {
+			// ... <original UseChatOptions
+	  }
+	| ((valueState: UseChatHelpers) => UseChatOptions)
