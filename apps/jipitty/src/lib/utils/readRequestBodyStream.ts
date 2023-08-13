@@ -6,8 +6,6 @@ export const readStreamedRequestBody = async (request: NextRequest) => {
 		return {}
 	}
 
-	console.log("READING REQUEST BODY", request.body)
-
 	const reader = request.body.getReader()
 	const decoder = new TextDecoder()
 	let body = ""

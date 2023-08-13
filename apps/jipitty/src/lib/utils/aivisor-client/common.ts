@@ -51,15 +51,3 @@ export const handleCreateChatCompletion = async (
 	return new StreamingTextResponse(stream)
 }
 
-export const convertDbMessageToVercelAiMessage = (
-	message: Awaited<
-		ReturnType<typeof getMessagesForConversationByPublicIdUserId>
-	>["messages"][number]
-): Message => {
-	return {
-		createdAt: new Date(message.createdAt),
-		id: message.publicId,
-		role: message.senderType === "user" ? "user" : "assistant",
-		content: message.content
-	}
-}

@@ -7,6 +7,23 @@ import {
 	getConversationTitleSuggestionRequestBodySchema,
 	sendMessageRequestBodySchema
 } from "./schemas"
+import { Message } from "ai/react"
+import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/queries"
+
+export const convertDbMessageToVercelAiMessage = (
+	message: Awaited<
+		ReturnType<typeof getMessagesForConversationByPublicIdUserId>
+	>["messages"][number]
+): Message => {
+
+	return {
+		createdAt: new Date(message.createdAt),
+		id: message.publicId,
+		role: message.senderType === "user" ? "user" : "assistant",
+		content: message.content
+	}
+}
+
 
 export const createConversation = async (
 	body: z.infer<typeof createConversationRequestBodySchema>

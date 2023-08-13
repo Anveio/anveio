@@ -1,18 +1,20 @@
 "use client"
 
 import { getMessagesForConversationByPublicIdUserId } from "@/lib/db/queries"
-import { convertDbMessageToVercelAiMessage } from "@/lib/utils/aivisor-client/common"
 import { createConversationResponseBodySchema } from "@/lib/utils/aivisor-client/schemas"
 import { Message, UseChatHelpers, useChat } from "ai/react"
 import { motion } from "framer-motion"
 import Image from "next/image"
-import { useRouter } from "next/navigation"
 import * as React from "react"
 import twitterIcon from "../../../public/images/icons/send-message-icon.svg"
 import { AssistantMessageCard } from "./AssistantMessageCard"
 import { UserMessageCard } from "./UserMessageCard"
+import { useRouter } from "next/navigation"
+import { convertDbMessageToVercelAiMessage } from "@/lib/utils/aivisor-client/conversations"
+import { nanoid } from "ai"
 
 export default function ChatFeed(props: {
+	
 	userId: string
 	profileImageSrc?: string
 	initialMessages: Awaited<
@@ -27,10 +29,8 @@ export default function ChatFeed(props: {
 		props.conversationPublicId
 	)
 
-	const [messageToSend, setMessagesToSend] = React.useState<Message>(
-		convertDbMessageToVercelAiMessage(
-			props.initialMessages[props.initialMessages.length - 1]
-		)
+	const [messageToSend, setMessageToSend] = React.useState<string>(
+		""
 	)
 
 	const { messages, input, handleInputChange, handleSubmit } = useChat({
@@ -40,14 +40,14 @@ export default function ChatFeed(props: {
 		api: "/api/v2/aivisor/conversations/send-message",
 		body: {
 			message: messageToSend,
-			conversationPublicId: conversationPublicIdRef.current
+			conversationPublicId: props.conversationPublicId || conversationPublicIdRef.current
 		},
 		id: conversationPublicIdRef.current ?? undefined
 	})
 
 	React.useEffect(() => {
-		setMessagesToSend(messages[messages.length - 0])
-	}, [messages])
+		setMessageToSend(input)
+	}, [input])
 
 	React.useEffect(() => {
 		lastMessageRef.current = messages[messages.length - 1]
@@ -96,7 +96,14 @@ export default function ChatFeed(props: {
 						push(`/aivisor/c/${parsedSafeResponseBody.conversationId}`)
 					}
 
-					handleSubmit(e)
+					handleSubmit(e, {
+						options: {
+							body: {
+								conversationPublicId: conversationPublicIdRef.current,
+								message: messageToSend,
+							}
+						}
+					})
 				}}
 			>
 				<motion.div
@@ -115,7 +122,7 @@ export default function ChatFeed(props: {
 						value={input}
 						onChange={handleInputChange}
 					/>
-					<button className="sticky bottom-1.5 end-[2%] h-[24px] w-[24px] self-end rounded-md text-gray-500 hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-transparent dark:hover:bg-gray-900 enabled:dark:hover:text-gray-400 dark:disabled:hover:bg-transparent">
+					<button type="submit" className="sticky bottom-1.5 end-[2%] h-[24px] w-[24px] self-end rounded-md text-gray-500 hover:bg-gray-100 disabled:opacity-40 disabled:hover:bg-transparent dark:hover:bg-gray-900 enabled:dark:hover:text-gray-400 dark:disabled:hover:bg-transparent">
 						<Image
 							className="h-full w-full"
 							alt="Send Message"
