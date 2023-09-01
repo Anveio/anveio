@@ -12,12 +12,11 @@ export const metadata = {
 	title: "Jipitty - AI Chat, AI Art, AI Insights"
 }
 
-export default async function RootLayout({
-	children
-}: {
-	children: React.ReactNode
-}) {
+export default async function RootLayout(props: React.PropsWithChildren<{}>,
+	params: Record<string, string>) {
+	console.log("🚀 ~ file: layout.tsx:17 ~ params:", params)
 	const session = auth()
+
 
 	const conversations = session.userId
 		? await getAllConversationsForUserByUserId(session.userId)
@@ -31,7 +30,7 @@ export default async function RootLayout({
 						<Sidebar conversations={conversations} />
 						<div className="grid min-h-[100dvh] grid-rows-[min-content_1fr] lg:grid-rows-1">
 							<TopNavigationBar />
-							{children}
+							{props.children}
 						</div>
 					</div>
 					<Analytics />

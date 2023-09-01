@@ -8,7 +8,7 @@ if (!OPENAI_SECRET) {
 	throw new Error("OPENAI_SECRET missing")
 }
 const config = new Configuration({
-	apiKey: OPENAI_SECRET
+	apiKey: OPENAI_SECRET,
 })
 
 /**

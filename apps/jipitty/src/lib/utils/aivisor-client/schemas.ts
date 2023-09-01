@@ -44,9 +44,7 @@ export const getConversationResponseBodySchema = z.object({
 })
 
 export const getConversationTitleSuggestionRequestBodySchema = z.object({
-	prompt: z.string(),
-	response: z.string(),
-	conversationPublicId: z.string()
+	conversationPublicId: z.string({ required_error: "conversationPublicId missing" })
 })
 
 export const getConversationTitleSuggestionResponseBodySchema = z.object({

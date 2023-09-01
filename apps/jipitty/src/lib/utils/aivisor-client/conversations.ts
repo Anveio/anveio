@@ -87,6 +87,9 @@ export const getConversation = async (
 export const generateConversationTitle = async (
 	body: z.infer<typeof getConversationTitleSuggestionRequestBodySchema>
 ) => {
+	console.log("🚀 ~ file: conversations.ts:90 ~ searchParams:", body)
+	
+
 	const safeBody = getConversationTitleSuggestionRequestBodySchema.parse(body)
 
 	const response = await fetch(
@@ -102,7 +105,7 @@ export const generateConversationTitle = async (
 	}
 
 	if (!response.ok) {
-		throw new Error("Response not ok")
+		throw new Error(response.status.toString())
 	}
 
 	const reader = response.body.getReader()

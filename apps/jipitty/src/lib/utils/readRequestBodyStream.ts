@@ -1,7 +1,7 @@
 import "@edge-runtime/ponyfill"
-import { NextRequest } from "next/server"
+import { NextRequest, NextResponse } from "next/server"
 
-export const readStreamedRequestBody = async (request: NextRequest) => {
+export const readBodyFromStream = async (request: NextRequest | NextResponse | Response | Request) => {
 	if (!request.body) {
 		return {}
 	}

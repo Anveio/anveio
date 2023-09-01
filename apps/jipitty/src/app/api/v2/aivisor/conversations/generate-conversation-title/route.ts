@@ -1,61 +1,99 @@
-import { updateConversationWithTitle } from "@/lib/db/queries"
+import { getMessagesForConversationByPublicIdUserId, updateConversationWithTitle } from "@/lib/db/queries"
 import { OpenAIEdgeClient } from "@/lib/features/ai/openai/edge-client"
 import { AivisorClient } from "@/lib/utils/aivisor-client"
 import {
 	processStreamedData,
-	readStreamedRequestBody
+	readBodyFromStream
 } from "@/lib/utils/readRequestBodyStream"
 import { auth } from "@clerk/nextjs"
+import { OpenAIStream, StreamingTextResponse } from "ai"
 import { NextRequest, NextResponse } from "next/server"
 
 export const runtime = "edge"
 
-const OPENAI_SECRET = process.env.OPENAI_SECRET
-
-if (!OPENAI_SECRET) {
-	throw new Error("OPENAI_SECRET missing")
-}
-
-const createSystemPrompt = (messageContents: string) => {
-	return `Create a clever title, preferably a short pun, that fits into an 40 character limit for a conversation with an AI assistant given the following initial prompt:\n\n${messageContents}\n\nConversation title:\n`
+const createSystemPrompt = (prompt: string, response: string) => {
+	return `Create a clever title, preferably a short pun, that fits into an 40 character limit for a conversation with an AI assistant given the following initial prompt:\n\n${prompt}\n and the following response: \n${response}\nConversation title:\n`
 }
 
 export async function POST(request: NextRequest) {
-	console.log("Received request to generate conversation title")
-
 	const { userId } = auth()
 	if (!userId) return new NextResponse(undefined, { status: 401 })
 
-	const parsedBody = await readStreamedRequestBody(request)
+	const parsedBody = await readBodyFromStream(request)
+	console.log("🚀 ~ file: route.ts:23 ~ POST ~ parsedBody:", parsedBody)
 
-	const safeBody =
-		AivisorClient.v2.schemas.getConversationTitleSuggestionRequestBodySchema.parse(
-			parsedBody
-		)
+	try {
+		const safeBody =
+			AivisorClient.v2.schemas.getConversationTitleSuggestionRequestBodySchema.parse(
+				parsedBody
+			)
 
-	const responseStream = await OpenAIEdgeClient(
-		"completions",
-		{
-			model: "text-davinci-003",
-			prompt: createSystemPrompt(safeBody.prompt),
-			temperature: 1.0,
-			max_tokens: 40
-		},
-		{
-			apiKey: OPENAI_SECRET
+
+
+		const { conversationPublicId } = safeBody
+
+		if (!conversationPublicId) {
+			return new NextResponse(undefined, { status: 400 })
 		}
-	)
 
-	const [clientStream, serverStream] = responseStream.tee()
+		const { messages } =
+			await getMessagesForConversationByPublicIdUserId(
+				conversationPublicId,
+				userId
+			)
 
-	processStreamedData(serverStream).then((result) => {
-		console.log("Got result from OpenAI", result)
-		return updateConversationWithTitle(
-			result,
-			userId,
-			safeBody.conversationPublicId
-		)
-	})
+		if (messages.length < 2) {
+			return NextResponse.json({ status: 304 })
+		}
 
-	return new Response(clientStream)
+		const initialPrompt = messages[0].content
+		const initialResponse = messages[1].content
+
+		try {
+			const response = await OpenAIEdgeClient.createChatCompletion(
+				{
+					model: "gpt-3.5-turbo",
+					messages: [
+						{
+							role: "system",
+							content: createSystemPrompt(initialPrompt, initialResponse),
+						}
+					],
+					temperature: 1.0,
+				},
+				
+			)
+
+			const stream = OpenAIStream(response, {
+				onToken: async (token) => {
+					console.log("Token", token)
+				},
+				onCompletion: async (result) => {
+					console.log("NEW TITLE", result)
+
+					await updateConversationWithTitle(
+						result,
+						userId,
+						safeBody.conversationPublicId
+					)
+				}
+			})
+
+
+			return new StreamingTextResponse(stream)
+		} catch (e) {
+			console.error(e)
+			return new NextResponse(undefined, { status: 500 })
+		}
+	} catch (e) {
+		console.log("🚀 ~ file: route.ts:23 ~ POST ~ e:", e)
+		const errorResponse = new Response(String(e), {
+			status: 400,
+			headers: {
+				"content-type": "application/json"
+			}
+		})
+
+		return errorResponse
+	}
 }

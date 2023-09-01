@@ -19,7 +19,7 @@ export const handleCreateChatCompletion = async (
 		)
 
 	const responseStream = await OpenAIEdgeClient.createChatCompletion({
-		model: "gpt-3.5-turbo",
+		model: "gpt-4",
 		stream: true,
 		messages: messages
 			.map((el) => {

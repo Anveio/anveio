@@ -27,8 +27,6 @@ export default async function AivisorConversation(props: {
 			publicIdForConversation,
 			userId
 		)
-		console.log("🚀 ~ file: page.tsx:30 ~ data:", data)
-
 		if (!data) {
 			return <AivisorConversationNotFound />
 		}

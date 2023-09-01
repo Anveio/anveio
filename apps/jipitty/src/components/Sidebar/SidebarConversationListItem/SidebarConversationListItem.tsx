@@ -16,30 +16,20 @@ export default function SidebarConversationListItem(props: Props) {
 		props.conversation.title || ""
 	)
 
+	const publicIdForConversation = props.conversation.publicId
+
 	React.useEffect(() => {
 		async function handleGenerateTitleIfNone() {
 			if (
 				!props.conversation.title &&
 				!titleToDisplay &&
-				props.conversation.publicId
+				publicIdForConversation
 			) {
 				console.log("Generating title for conversation: ", props.conversation)
 
-				const { messages } =
-					await AivisorClient.v2.conversations.getConversation({
-						conversationPublicId: props.conversation.publicId
-					})
-
-				if (messages.length < 2) {
-					console.log("No messages found for conversation")
-					return
-				}
-
 				const resultReader =
 					await AivisorClient.v2.conversations.generateConversationTitle({
-						prompt: messages[0].content,
-						response: messages[1].content,
-						conversationPublicId: props.conversation.publicId
+						conversationPublicId: publicIdForConversation
 					})
 
 				try {

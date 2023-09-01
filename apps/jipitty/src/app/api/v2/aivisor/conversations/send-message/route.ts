@@ -5,7 +5,7 @@ import {
 } from "@/lib/db/queries"
 import { OpenAIEdgeClient } from "@/lib/features/ai/openai/edge-client"
 import { AivisorClient } from "@/lib/utils/aivisor-client"
-import { readStreamedRequestBody } from "@/lib/utils/readRequestBodyStream"
+import { readBodyFromStream } from "@/lib/utils/readRequestBodyStream"
 import { auth } from "@clerk/nextjs"
 import { NextRequest, NextResponse } from "next/server"
 import { ChatCompletionRequestMessageRoleEnum } from "openai"
@@ -32,7 +32,7 @@ export async function POST(request: NextRequest) {
 		return new NextResponse("Rate limit exceeded", { status: 429 })
 	}
 
-	const parsedBody = await readStreamedRequestBody(request)
+	const parsedBody = await readBodyFromStream(request)
 
 	const safeBody =
 		AivisorClient.v2.schemas.sendMessageRequestBodySchema.parse(parsedBody)
