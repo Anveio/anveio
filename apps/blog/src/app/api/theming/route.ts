@@ -1,11 +1,10 @@
 import { readStreamedRequestBody } from "@/lib/utils.edge";
-import { NextApiRequest, NextApiResponse } from "next";
 import { cookies } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 export const runtime = "edge";
 
-export const POST = async (req: NextApiRequest, res: NextApiResponse) => {
+export const POST = async (req: NextRequest, res: NextResponse) => {
   const body = await readStreamedRequestBody(req);
   const { theme } = body;
 
