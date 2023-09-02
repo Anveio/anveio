@@ -1,11 +1,1 @@
-<svg width="200" height="200" xmlns="http://www.w3.org/2000/svg">
-  <defs>
-    <linearGradient id="metal-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:rgb(169,169,169);stop-opacity:1" />
-      <stop offset="50%" style="stop-color:rgb(192,192,192);stop-opacity:1" />
-      <stop offset="100%" style="stop-color:rgb(169,169,169);stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  <polyline points="50,20 100,20 70,100 120,100 90,180 140,180" stroke="url(#metal-gradient)" fill="none" stroke-width="4"/>
-  <line x1="0" y1="0" x2="200" y2="200" stroke="black" stroke-width="2"/>
-</svg>
+<svg fill="currentColor" version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 230 230" xml:space="preserve"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M172.069,179.817l9.392-4.251l-17.772-39.262h9.194v5.154h11.453v-21.763h-11.453v5.154h-14.379l-15.296-33.79h6.653V63.27 h-3.827c2.132-4.47,3.328-9.467,3.328-14.74c0-16.995-12.406-31.14-28.636-33.875V0h-11.453v14.655 C93.044,17.39,80.638,31.535,80.638,48.53c0,5.273,1.196,10.271,3.328,14.74h-3.827v27.79h6.653l-15.296,33.79H57.117v-5.154H45.664 v21.763h11.453v-5.154h9.194l-17.772,39.262l9.392,4.252L38.026,223.79L51.743,230l19.903-43.974l4.321,1.956l23.394-51.678h9.912 v5.154h11.453v-5.154h9.912l23.393,51.678l4.321-1.956L178.257,230l13.717-6.21L172.069,179.817z M97.481,63.27 c-3.36-3.987-5.391-9.13-5.391-14.74c0-10.654,7.313-19.633,17.183-22.182V63.27H97.481z M120.727,124.85v-5.154h-11.453v5.154 h-4.727L115,101.758l10.454,23.092H120.727z M132.519,63.27h-11.792V26.348c9.87,2.549,17.183,11.528,17.183,22.182 C137.909,54.14,135.879,59.283,132.519,63.27z"></path> </g></svg>
