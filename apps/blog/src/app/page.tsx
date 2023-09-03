@@ -1,9 +1,15 @@
-"use client";
-
-import { CollaborativeApp, WithRoom } from "./Room";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { getSaying } from "@/lib/sayings";
+import { CollaborativeApp, WithRoom } from "./Room";
 
-import React, { useId } from "react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export default function Home() {
   return (
@@ -26,6 +32,41 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <section className="mx-auto mt-10 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none ">
+          <div
+            className="grid grid-cols-1 md:grid-cols-2 
+        lg:grid-cols-3 gap-4"
+          >
+            <BlogPost
+              title={
+                "Easily fixing security vulnerabilities in transitive dependencies with Yarn"
+              }
+              content={
+                "It's 4:30 on a Friday and GitHub hits you with one of these. How do you make this go away and still get home on time?"
+              }
+            />
+            <BlogPost
+              title={"Writing Type-safe Defaults with TypeScript's Pick Type"}
+              content={
+                "A common pattern I use when writing TypeScript applications is creating default objects and overwriting some or all of those defaults with data provided by the user. But there's a common mistake when implementing this pattern that can be fixed with a little knowledge of TypeScript's built in utilities."
+              }
+            />
+            <BlogPost
+              title={"Using Absolute Imports with Jest in Create React App"}
+              content={
+                "You've written your create-react-app application using absolute imports resolved from e.g. a folder named src but when you run your tests you get a message like this:"
+              }
+            />
+            <BlogPost
+              title={
+                "Easily fixing security vulnerabilities in transitive dependencies with Yarn"
+              }
+              content={
+                "It's 4:30 on a Friday and GitHub hits you with one of these. How do you make this go away and still get home on time?"
+              }
+            />
+          </div>
+        </section>
       </main>
       <WithRoom roomId="blog-home">
         <CollaborativeApp />
@@ -33,3 +74,19 @@ export default function Home() {
     </>
   );
 }
+
+const BlogPost = (props: { title: string; content: string }) => {
+  return (
+    <Link href="/wip">
+      <Card>
+        <CardHeader>
+          <CardTitle>{props.title}</CardTitle>
+          <CardDescription>{props.content}</CardDescription>
+        </CardHeader>
+        <CardFooter className="justify-end align-self-end">
+          <Button>Read</Button>
+        </CardFooter>
+      </Card>
+    </Link>
+  );
+};
