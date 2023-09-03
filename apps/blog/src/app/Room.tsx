@@ -11,11 +11,14 @@ interface RoomProps {
 export const WithRoom = (props: React.PropsWithChildren<RoomProps>) => {
   return (
     <RoomProvider id={props.roomId} initialPresence={{}}>
-      <div className="text-white fixed z-50 right-2 bottom-0">
-        <div className="inline-flex items-center rounded-t-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border-t border-x border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground h-9 px-4 py-2">
-          <div className="flex items-center justify-center justify-between min-w-[100px]">
+      <div className="text-white fixed z-50 right-0 bottom-0">
+        <div className="inline-flex items-center rounded-t-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 border-t border-x border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground w-screen divide-x">
+          <div className="flex items-center space-x-2 px-4 py-2 flex-1">
+            <span className="text-slate-400">Chat...</span>
+          </div>
+          <div className="flex items-center justify-center justify-between min-w-[50px] px-4">
             <LiveStatusIndicator />
-            <div className="grid grid-cols-2 space-x-2 items-center translate-x-2">
+            <div className="grid grid-cols-2 space-x-2 items-center translate-x-2 py-2">
               <svg
                 viewBox="0 0 24 24"
                 width={20}
