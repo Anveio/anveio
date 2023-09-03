@@ -2,6 +2,7 @@ import { ToggleThemeButton } from "@/components/custom/stuff";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 import "./globals.css";
+import "@/lib/toasts/toast-styles.css";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -19,6 +20,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { ToasterButtons } from "@/components/Toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 

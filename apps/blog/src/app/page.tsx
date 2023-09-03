@@ -10,6 +10,7 @@ import { CollaborativeApp, WithRoom } from "./Room";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { ToasterButtons } from "@/components/Toaster";
 
 export default function Home() {
   return (
@@ -32,6 +33,9 @@ export default function Home() {
             </div>
           </div>
         </div>
+        <section className="flex justify-center space-x-3">
+          <ToasterButtons />
+        </section>
         <section className="mx-auto mt-10 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none ">
           <div
             className="grid grid-cols-1 md:grid-cols-2 
