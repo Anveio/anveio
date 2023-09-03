@@ -16,11 +16,28 @@ export default function Home() {
   return (
     <>
       <main className="min-h-screen antialiased bg-background overflow-hidden relative">
-        <div className="pt-28 md:pt-52 pb-10 md:pb-24 px-8 relative z-40">
+        <div className="pt-12 pb-10 md:pt-24 md:pb-24 px-8 relative z-40">
           <div className="max-w-7xl mx-auto flex flex-col items-center">
             <div className="z-50 opacity-100">
               <div className="w-full flex justify-center">
-                <div className="py-1 flex items-center space-x-2 border rounded-full border-[#8C8C8C]/[0.4] w-fit px-4 bg-gradient-to-b from-[#8C8C8C]/[0.4] to-[#8C8C8C]/[0.25] shadow-[0px_1px_4px_0px_rgba(255,255,255,.12)]) mb-8">
+                <div className="py-1 flex items-center space-x-1 border rounded-full border-[#8C8C8C]/[0.4] w-fit px-4 bg-gradient-to-b from-[#8C8C8C]/[0.4] to-[#8C8C8C]/[0.25] shadow-[0px_1px_4px_0px_rgba(255,255,255,.12)]) mb-8">
+                  <svg
+                    stroke="currentColor"
+                    fill="currentColor"
+                    stroke-width="0"
+                    viewBox="0 0 20 20"
+                    aria-hidden="true"
+                    className="relative -left-1 opacity-80 text-dark-warning-text-active"
+                    height={"12px"}
+                    width={"12px"}
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
                   <span className="text-neutral-200">{getSaying(0)}</span>
                 </div>
               </div>
@@ -33,7 +50,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <section className="flex justify-center space-x-3">
+        <section className="grid grid-cols-2 gap-3">
           <ToasterButtons />
         </section>
         <section className="mx-auto mt-10 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none ">

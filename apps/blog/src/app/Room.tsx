@@ -62,10 +62,6 @@ export const CollaborativeApp = () => {
 
 const LiveStatusIndicator = () => {
   const liveStatus = useStatus();
-  console.log(
-    "🚀 ~ file: Room.tsx:38 ~ LiveStatusIndicator ~ liveStatus:",
-    liveStatus
-  );
 
   let colorIndicator: string;
 

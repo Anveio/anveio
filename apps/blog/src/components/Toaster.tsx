@@ -42,7 +42,11 @@ export const ToasterButtons = () => {
       <Button
         variant="outline"
         onClick={() => {
-          createToast("Warning Toast", { type: "warning", timeout: 5000 });
+          createToast("Warning Toast", {
+            type: "warning",
+            timeout: 5000,
+            cancel: "OK",
+          });
         }}
       >
         Warning Toast

@@ -128,7 +128,11 @@ export class Toast {
     this.stopTimer();
 
     setTimeout(() => {
-      container.removeChild(el);
+      try {
+        container.removeChild(el);
+      } catch (e) {
+        // Ignore
+      }
       instances.delete(this);
       sortToast();
     }, 150);
