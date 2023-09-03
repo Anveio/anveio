@@ -11,7 +11,7 @@ interface RoomProps {
 export const WithRoom = (props: React.PropsWithChildren<RoomProps>) => {
   return (
     <RoomProvider id={props.roomId} initialPresence={{}}>
-      <div className="text-white fixed z-50 bottom-0 max-w-7xl w-full mx-auto right-0 px-2">
+      <div className="text-white fixed z-50 bottom-0 w-full mx-auto right-0 px-2">
         <div className="flex items-center justify-stretch rounded-t-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring border-t border-x border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground divide-x">
           <div className="flex items-center space-x-2 px-4 py-2 flex-1">
             <span className="text-slate-400">Chat...</span>
