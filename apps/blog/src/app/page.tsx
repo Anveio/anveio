@@ -1,4 +1,9 @@
-import { getRandomSaying } from "@/lib/sayings";
+"use client";
+
+import { CollaborativeApp, WithRoom } from "./Room";
+import { getSaying } from "@/lib/sayings";
+
+import React, { useId } from "react";
 
 export default function Home() {
   return (
@@ -8,7 +13,7 @@ export default function Home() {
           <div className="z-50 opacity-100">
             <div className="w-full flex justify-center">
               <div className="py-1 flex items-center space-x-2 border rounded-full border-[#8C8C8C]/[0.4] w-fit px-4 bg-gradient-to-b from-[#8C8C8C]/[0.4] to-[#8C8C8C]/[0.25] shadow-[0px_1px_4px_0px_rgba(255,255,255,.12)]) mb-8">
-                <span className="text-neutral-200">{getRandomSaying()}</span>
+                <span className="text-neutral-200">{getSaying(0)}</span>
               </div>
             </div>
           </div>
@@ -20,6 +25,9 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <WithRoom roomId="blog-home">
+        <CollaborativeApp />
+      </WithRoom>
     </main>
   );
 }
