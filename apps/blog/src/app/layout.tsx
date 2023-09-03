@@ -61,7 +61,7 @@ export default function RootLayout({
                 </g>
               </svg>
 
-              <span className="textLg text-[#CCCCCC] font-medium">
+              <span className="textLg text-white font-medium">
                 Shovon Hasan
               </span>
             </Link>
@@ -94,7 +94,7 @@ export default function RootLayout({
                 href="/api/auth/login"
                 className="text-sm font-medium text-[#FFFFFF]/[0.64]"
               >
-                Sign in
+                WIP
               </Link>
               <button className="group relative rounded-full p-px text-[0.8125rem] font-semibold leading-6 shadow-xl shadow-zinc-950 text-white">
                 <span className="absolute inset-0 overflow-hidden rounded-full">
