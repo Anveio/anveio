@@ -15,14 +15,10 @@ const liveblocks = new Liveblocks({
 
 export async function POST(request: NextRequest) {
   const x = auth();
-  const { userId, user } = x;
+  const { userId } = x;
 
-  console.log("userId", userId);
-  console.log("s", x);
-
-  if (!userId || !user) {
+  if (!userId) {
     const randomId = nanoid();
-    console.log("Generated random ID for unauthenticated user", randomId);
 
     const session = liveblocks.prepareSession(
       randomId,
@@ -43,14 +39,7 @@ export async function POST(request: NextRequest) {
     return new Response(body, { status });
   }
 
-  const session = liveblocks.prepareSession(
-    userId,
-    {
-      userInfo: {
-        username: user.firstName,
-      },
-    } // Optional
-  );
+  const session = liveblocks.prepareSession(userId);
 
   // Implement your own security, and give the user access to the room
   const { room } = await request.json();
