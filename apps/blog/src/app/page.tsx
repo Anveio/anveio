@@ -89,9 +89,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <WithRoom roomId="blog-home">
-        <CollaborativeApp />
-      </WithRoom>
     </>
   );
 }

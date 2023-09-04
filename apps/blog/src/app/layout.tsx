@@ -1,26 +1,13 @@
+import { ManageAccountMenu } from "@/components/ManageAccountMenu";
 import { Button } from "@/components/ui/button";
-import { ClerkProvider, auth } from "@clerk/nextjs";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuPortal,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
 import "@/lib/toasts/toast-styles.css";
 import { cn } from "@/lib/utils";
+import { ClerkProvider, auth } from "@clerk/nextjs";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 import Link from "next/link";
 import "./globals.css";
-import { ManageAccountMenu } from "@/components/ManageAccountMenu";
+import { CollaborativeApp, WithRoom } from "./Room";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -127,6 +114,9 @@ export default function RootLayout({
           <div className="text-white max-w-7xl mx-auto px-4 roundedLg w-[95%] mt-[100px]">
             {children}
           </div>
+          <WithRoom roomId="blog-home">
+            <CollaborativeApp />
+          </WithRoom>
         </body>
       </html>
     </ClerkProvider>
