@@ -13,7 +13,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Shovon Hasan - Blog",
-  description: "The internet should feel alive",
+  description: "Thoughts on software ngineering culture, and science",
 };
 
 export default function RootLayout({
