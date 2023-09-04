@@ -53,9 +53,7 @@ export default function RootLayout({
                   </g>
                 </svg>
 
-                <span className="textLg text-white font-medium">
-                  Shovon Hasan
-                </span>
+                <span className="textLg text-white font-medium">Home</span>
               </Link>
               <div className="hidden xs:block flex absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 py-2 space-x-6 rounded-full bg-[#25272C] border border-[#FFFFFF]/[0.05] text-sm items-center justify-center px-6 font-medium overflow-hidden">
                 <Link
@@ -106,7 +104,7 @@ export default function RootLayout({
                     </Link>
                   </div>
                 ) : (
-                  <ManageAccountMenu />
+                  <ManageAccountMenu userId={session.userId} />
                 )}
               </div>
             </div>

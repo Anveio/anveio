@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import * as React from "react";
 
-export default function WipPage() {
+export default function ArticlesPage() {
   return (
     <main className="min-h-screen antialiased bg-background overflow-hidden relative">
       <div className="pt-12 md:pt-52 pb-10 md:pb-24 px-8 relative z-40">

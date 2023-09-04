@@ -24,7 +24,7 @@ export default function Home() {
                   <svg
                     stroke="currentColor"
                     fill="currentColor"
-                    stroke-width="0"
+                    strokeWidth="0"
                     viewBox="0 0 20 20"
                     aria-hidden="true"
                     className="relative -left-1 opacity-80 text-dark-warning-text-active"
@@ -33,9 +33,9 @@ export default function Home() {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      fill-rule="evenodd"
+                      fillRule="evenodd"
                       d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732l-3.354 1.935-1.18 4.455a1 1 0 01-1.933 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732l3.354-1.935 1.18-4.455A1 1 0 0112 2z"
-                      clip-rule="evenodd"
+                      clipRule="evenodd"
                     ></path>
                   </svg>
                   <span className="text-neutral-200">{getSaying(0)}</span>
@@ -43,7 +43,7 @@ export default function Home() {
               </div>
             </div>
             <h1 className="text-white text-center text-3xl md:text-6xl mb-4 font-bold">
-              Shovon Hasan
+              The Internet should feel alive.
             </h1>
             <div>
               <p className="text-center font-medium text-base md:text-lg text-[#FFFFFF]/[.48] mb-8"></p>
@@ -75,7 +75,7 @@ export default function Home() {
             <BlogPost
               title={"Using Absolute Imports with Jest in Create React App"}
               content={
-                "You've written your create-react-app application using absolute imports resolved from e.g. a folder named src but when you run your tests you get a message like this:"
+                "You've written your createReact-app application using absolute imports resolved from e.g. a folder named src but when you run your tests you get a message like this:"
               }
             />
             <BlogPost
@@ -95,7 +95,7 @@ export default function Home() {
 
 const BlogPost = (props: { title: string; content: string }) => {
   return (
-    <Link href="/wip">
+    <Link href="/articles/article-id">
       <Card>
         <CardHeader>
           <CardTitle>{props.title}</CardTitle>
