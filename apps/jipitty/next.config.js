@@ -59,7 +59,7 @@ const ContentSecurityPolicy = `
     script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: cdn.vercel-insights.com vercel.live ${
 			process.env.NODE_ENV === "development"
 				? "*.clerk.accounts.dev"
-				: "clerk.jipitty.com"
+				: "clerk.shovonhasan.com"
 		};
     style-src 'self' 'unsafe-inline';
     img-src * blob: data:;
