@@ -8,6 +8,7 @@ import { cookies } from "next/headers";
 import Link from "next/link";
 import "./globals.css";
 import { CollaborativeApp, WithRoom } from "./Room";
+import * as React from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -30,8 +31,8 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={cn(inter.className, theme?.value)}>
-          <header className="">
-            <div className="flex justify-between text-white max-w-7xl mx-auto gap-4 border border-[#FFFFFF]/[0.16] px-4 py-2 roundedLg fixed w-[95%] inset-x-2 top-2 lg:top-8 backdrop-blur-md z-50">
+          <WithRoom currentPageId="home" roomId="blog-home">
+            <header className="flex justify-between text-white max-w-7xl mx-auto gap-4 border border-[#FFFFFF]/[0.16] px-4 py-2 roundedLg fixed w-[95%] inset-x-2 top-2 lg:top-8 backdrop-blur-md z-50">
               <Link
                 className="flex items-center space-x-2 flex-shrink-0 relative z-50"
                 href="/"
@@ -107,12 +108,10 @@ export default function RootLayout({
                   <ManageAccountMenu userId={session.userId} />
                 )}
               </div>
+            </header>
+            <div className="text-white max-w-7xl mx-auto px-4 roundedLg w-[95%] mt-[100px]">
+              {children}
             </div>
-          </header>
-          <div className="text-white max-w-7xl mx-auto px-4 roundedLg w-[95%] mt-[100px]">
-            {children}
-          </div>
-          <WithRoom roomId="blog-home">
             <CollaborativeApp />
           </WithRoom>
         </body>

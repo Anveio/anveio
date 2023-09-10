@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardDescription,
@@ -6,20 +8,32 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getSaying } from "@/lib/sayings";
-import { CollaborativeApp, WithRoom } from "./Room";
 
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ToasterButtons } from "@/components/Toaster";
+import Image from "next/image";
+import { WithRoom } from "./Room";
+import React from "react";
+import { useOthers } from "@/lib/liveblocks.client";
+import { WithGuaranteedRoomProvider } from "@/components/custom/WithGuaranteedRoomProvider";
 
 export default function Home() {
   return (
     <>
+      <Image
+        src={"/bghero.webp"}
+        alt=""
+        width={1000}
+        height={1000}
+        className="pointer-events-none absolute left-0 -right-20 z-50 h-full w-full select-none md:block"
+        style={{ color: "transparent" }}
+      />
       <main className="min-h-screen antialiased bg-background overflow-hidden relative">
-        <div className="pt-12 pb-10 md:pt-24 md:pb-24 px-8 relative z-40">
+        <div className="lg:pt-36 lg:pb-36 py-8 py-8 px-8 relative z-40">
           <div className="max-w-7xl mx-auto flex flex-col items-center">
             <div className="z-50 opacity-100">
-              <div className="w-full flex justify-center">
+              <div className="w-full flex justify-center clip-reveal delay-1000">
                 <div className="py-1 flex items-center space-x-1 border rounded-full border-[#8C8C8C]/[0.4] w-fit px-4 bg-gradient-to-b from-[#8C8C8C]/[0.4] to-[#8C8C8C]/[0.25] shadow-[0px_1px_4px_0px_rgba(255,255,255,.12)]) mb-8">
                   <svg
                     stroke="currentColor"
@@ -38,12 +52,18 @@ export default function Home() {
                       clipRule="evenodd"
                     ></path>
                   </svg>
-                  <span className="text-neutral-200">{getSaying(0)}</span>
+                  <span className="text-neutral-200">
+                    You are now connected
+                  </span>
                 </div>
               </div>
             </div>
-            <h1 className="text-white text-center text-3xl md:text-6xl mb-4 font-bold">
-              The Internet should feel alive.
+
+            <h1 className="text-white text-center text-4xl md:text-6xl mb-4 font-bold hero-fade-up-enter-active delay-75">
+              The Internet should{" "}
+              <span className="inline leading-[0] bg-gradient-to-br bg-clip-text text-transparent from-[#FFFF92] to-[#EE8912]">
+                feel alive.
+              </span>
             </h1>
             <div>
               <p className="text-center font-medium text-base md:text-lg text-[#FFFFFF]/[.48] mb-8"></p>
@@ -58,34 +78,16 @@ export default function Home() {
             className="grid grid-cols-1 md:grid-cols-2 
         lg:grid-cols-3 gap-4"
           >
-            <BlogPost
-              title={
-                "Easily fixing security vulnerabilities in transitive dependencies with Yarn"
-              }
-              content={
-                "It's 4:30 on a Friday and GitHub hits you with one of these. How do you make this go away and still get home on time?"
-              }
-            />
-            <BlogPost
-              title={"Writing Type-safe Defaults with TypeScript's Pick Type"}
-              content={
-                "A common pattern I use when writing TypeScript applications is creating default objects and overwriting some or all of those defaults with data provided by the user. But there's a common mistake when implementing this pattern that can be fixed with a little knowledge of TypeScript's built in utilities."
-              }
-            />
-            <BlogPost
-              title={"Using Absolute Imports with Jest in Create React App"}
-              content={
-                "You've written your createReact-app application using absolute imports resolved from e.g. a folder named src but when you run your tests you get a message like this:"
-              }
-            />
-            <BlogPost
-              title={
-                "Easily fixing security vulnerabilities in transitive dependencies with Yarn"
-              }
-              content={
-                "It's 4:30 on a Friday and GitHub hits you with one of these. How do you make this go away and still get home on time?"
-              }
-            />
+            {Object.values(BLOG_POSTS).map((post) => {
+              return (
+                <LiveBlogPostCard
+                  key={post.slug}
+                  content={post.content}
+                  title={post.title}
+                  id={post.slug}
+                />
+              );
+            })}
           </div>
         </section>
       </main>
@@ -93,18 +95,94 @@ export default function Home() {
   );
 }
 
-const BlogPost = (props: { title: string; content: string }) => {
+const BLOG_POSTS: Record<
+  string,
+  {
+    slug: string;
+    title: string;
+    content: string;
+  }
+> = {
+  "easily-fixing-security-vulnerabilities-in-transitive-dependencies-with-yarn":
+    {
+      slug: "easily-fixing-security-vulnerabilities-in-transitive-dependencies-with-yarn",
+      content: `It's 4:30 on a Friday and GitHub hits you with one of these. How do you make this go away and still get home on time?`,
+      title: `Easily fixing security vulnerabilities in transitive dependencies with Yarn`,
+    },
+  "writing-type-safe-defaults-with-typescripts-pick-type": {
+    slug: "writing-type-safe-defaults-with-typescripts-pick-type",
+    content: `A common pattern I use when writing TypeScript applications is creating default objects and overwriting some or all of those defaults with data provided by the user. But there's a common mistake when implementing this pattern that can be fixed with a little knowledge of TypeScript's built in utilities.`,
+    title: `Writing Type-safe Defaults with TypeScript's Pick Type`,
+  },
+  "using-absolute-imports-with-jest-in-create-react-app": {
+    slug: "using-absolute-imports-with-jest-in-create-react-app",
+    content: `You've written your createReact-app application using absolute imports resolved from e.g. a folder named src but when you run your tests you get a message like this:`,
+    title: `Using Absolute Imports with Jest in Create React App`,
+  },
+  "using-promises-with-filereader": {
+    slug: "using-promises-with-filereader",
+    content:
+      "Using `await` to handle FileReader's asynchronicity can be a lot simpler than dealing with events.",
+    title: "Using Promises with FileReader",
+  },
+  "time-space-complexity-of-array-sort-in-v8": {
+    slug: "time-space-complexity-of-array-sort-in-v8",
+    content:
+      "If you've ever looked at the syntax for sorting an array in JavaScript, you may have wondered how it works under the hood.",
+    title: "Time & Space Complexity of Array.sort() in V8",
+  },
+  "greedy-solution-to-an-array-balancing-problem": {
+    slug: "greedy-solution-to-an-array-balancing-problem",
+    content:
+      "A few weeks ago on reddit I read a question that asked for a solution to a fairly simple looking array balancing problem. But it turns out that a satisfactory solution isn't easy to come by.",
+    title: "Greedy Solution to an Array Balancing Problem",
+  },
+  "never-use-array-from-to-convert-strings-to-arrays": {
+    slug: "never-use-array-from-to-convert-strings-to-arrays",
+    content:
+      "Splitting a string into an array is about 70 times faster with 'a string'.split('')",
+    title: "Never Use Array.from() to Convert Strings to Arrays",
+  },
+  "simulating-an-ability-in-world-of-warcraft": {
+    slug: "simulating-an-ability-in-world-of-warcraft",
+    content: `After working through Gordon Zhu's fantastic "Practical JavaScript" course, I wanted to make an app to put my newfound knowledge to the test.`,
+    title: "Simulating an Ability in World of Warcraft",
+  },
+} as const;
+
+const LiveBlogPostCard = (props: {
+  title: string;
+  content: string;
+  id: string;
+}) => {
   return (
-    <Link href="/articles/article-id">
+    <Link href={`/articles/${props.id}`}>
       <Card>
         <CardHeader>
           <CardTitle>{props.title}</CardTitle>
           <CardDescription>{props.content}</CardDescription>
         </CardHeader>
-        <CardFooter className="justify-end align-self-end">
+        <CardFooter className="justify-between align-self-end">
+          <div>
+            <OtherUsersReadingBlogWidget articleId={props.id} />
+          </div>
           <Button>Read</Button>
         </CardFooter>
       </Card>
     </Link>
+  );
+};
+
+const OtherUsersReadingBlogWidget = (props: { articleId: string }) => {
+  const othersViewingArticle = useOthers((others) =>
+    others.filter((other) => {
+      return other.presence.currentlyViewedPage?.id === props.articleId;
+    })
+  );
+
+  return (
+    <div className="flex items-center justify-center">
+      {othersViewingArticle.length}
+    </div>
   );
 };

@@ -1,8 +1,14 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import * as React from "react";
+import { ArticlePresenceUpdater } from "./ArticlePresenceUpdater";
+import { WithRoom } from "@/app/Room";
 
-export default function Home() {
+export default function Home(props: {
+  params: {
+    ["article-id"]: string[];
+  };
+}) {
+  const articleId = props.params["article-id"][0];
+
   return (
     <div className="min-h-screen antialiased bg-background overflow-hidden relative">
       <article className="pt-6 relative z-40 mx-auto max-w-2xl">
@@ -51,6 +57,7 @@ export default function Home() {
           </p>
         </main>
       </article>
+      <ArticlePresenceUpdater articleId={articleId} />
     </div>
   );
 }
