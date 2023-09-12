@@ -14,20 +14,17 @@ const liveblocks = new Liveblocks({
 });
 
 export async function POST(request: NextRequest) {
-  const x = auth();
-  const { userId } = x;
+  const requestSession = auth();
+  const { userId } = requestSession;
 
   if (!userId) {
     const randomId = nanoid();
 
-    const session = liveblocks.prepareSession(
-      randomId,
-      {
-        userInfo: {
-          username: "Anonymous-" + randomId,
-        },
-      } // Optional
-    );
+    const session = liveblocks.prepareSession(randomId, {
+      userInfo: {
+        username: "Anonymous-" + randomId,
+      },
+    });
 
     const { room } = await request.json();
     if (room) {

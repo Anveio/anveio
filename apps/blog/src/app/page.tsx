@@ -7,20 +7,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { getSaying } from "@/lib/sayings";
-
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ToasterButtons } from "@/components/Toaster";
 import Image from "next/image";
-import { WithRoom } from "./Room";
+import { CollaborativeApp, WithRoom } from "./Room";
 import React from "react";
 import { useOthers } from "@/lib/liveblocks.client";
-import { WithGuaranteedRoomProvider } from "@/components/custom/WithGuaranteedRoomProvider";
 
 export default function Home() {
   return (
-    <>
+    <WithRoom currentPageId="home" roomId="blog-home">
       <Image
         src={"/bghero.webp"}
         alt=""
@@ -91,7 +88,8 @@ export default function Home() {
           </div>
         </section>
       </main>
-    </>
+      <CollaborativeApp />
+    </WithRoom>
   );
 }
 

@@ -23,8 +23,6 @@ export function Cursors() {
    */
   const others = useOthers();
 
-  console.log(others);
-
   React.useEffect(() => {
     // If element, add live cursor listeners
     const updateCursor = (event: PointerEvent) => {

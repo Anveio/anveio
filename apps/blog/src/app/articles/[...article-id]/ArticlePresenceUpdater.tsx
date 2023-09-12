@@ -16,8 +16,6 @@ export const ArticlePresenceUpdater = (props: Props) => {
       return;
     }
 
-    console.log("UPDATING PRESENCE", articleId);
-
     updateMyPresence({
       currentlyViewedPage: {
         id: articleId,

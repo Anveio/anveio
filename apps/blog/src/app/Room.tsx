@@ -34,7 +34,7 @@ export const WithRoom = (props: React.PropsWithChildren<RoomProps>) => {
       initialStorage={{ notes: new LiveMap() }}
     >
       {props.children}
-      <ClientSideSuspense fallback={<span>Loading...</span>}>
+      <ClientSideSuspense fallback={null}>
         {() => {
           return (
             <>

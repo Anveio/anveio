@@ -8,8 +8,6 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
   const body = await readStreamedRequestBody(req);
   const { theme } = body;
 
-  console.log("Incoming theme", theme);
-
   const cookieStore = cookies();
 
   cookieStore.set("theme", theme, { secure: true, sameSite: "strict" });
