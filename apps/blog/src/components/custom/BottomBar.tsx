@@ -1,18 +1,17 @@
 "use client";
 
-import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { TooltipArrow } from "@radix-ui/react-tooltip";
-import { Cursors } from "./Cursors";
 import { useOthers, useStatus } from "@/lib/liveblocks.client";
-import { Input } from "../ui/input";
 import { ClientSideSuspense } from "@liveblocks/react";
+import { TooltipArrow } from "@radix-ui/react-tooltip";
+import { AnimatePresence, motion } from "framer-motion";
+import * as React from "react";
+import { Input } from "../ui/input";
 
 export const BottomBar = () => {
   const [chatWidgetIsExpaded, setChatWidgetIsExpanded] = React.useState(false);
@@ -96,26 +95,10 @@ export const BottomBar = () => {
                 </Tooltip>
               </TooltipProvider>
             </div>
-            <CursorCanvas />
           </>
         );
       }}
     </ClientSideSuspense>
-  );
-};
-
-const CursorCanvas = () => {
-  return (
-    <div
-      style={{
-        minHeight: "100vh",
-        position: "absolute",
-        top: 0,
-        left: 0,
-      }}
-    >
-      <Cursors />
-    </div>
   );
 };
 

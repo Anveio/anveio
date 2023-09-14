@@ -1,16 +1,15 @@
-import { ManageAccountMenu } from "@/components/ManageAccountMenu";
-import { Button } from "@/components/ui/button";
+import { BottomBar } from "@/components/custom/BottomBar";
+import { CursorCanvas } from "@/components/custom/Cursors";
+import { NavBar } from "@/components/custom/NavBar";
+import { WithRoom } from "@/components/custom/Room";
 import "@/lib/toasts/toast-styles.css";
 import { cn } from "@/lib/utils";
-import { ClerkProvider, auth } from "@clerk/nextjs";
+import { ClerkProvider } from "@clerk/nextjs";
+import { ClientSideSuspense } from "@liveblocks/react";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
-import Link from "next/link";
 import * as React from "react";
 import "./globals.css";
-import { WithRoom } from "@/components/custom/Room";
-import { BottomBar } from "@/components/custom/BottomBar";
-import { NavBar } from "@/components/custom/NavBar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,7 +44,10 @@ export default function RootLayout({
               </div>
             </div>
 
-            <div className="flex-grow py-16">{children}</div>
+            <div className="flex-grow py-16">
+              <CursorCanvas />
+              {children}
+            </div>
             <div className="fixed bottom-0 left-0 right-0 ">
               <BottomBar />
             </div>
