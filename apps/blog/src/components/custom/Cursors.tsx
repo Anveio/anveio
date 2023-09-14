@@ -65,8 +65,6 @@ function Cursors() {
   const updateMyPresence = useUpdateMyPresence();
   const [myPresence] = useMyPresence();
 
-  console.log(myPresence, "mypresence");
-
   /**
    * Return all the other users in the room and their presence (a cursor position in this case)
    */

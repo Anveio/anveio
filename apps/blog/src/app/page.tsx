@@ -1,20 +1,7 @@
-"use client";
-
-import {
-  Card,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { ToasterButtons } from "@/components/Toaster";
-import Image from "next/image";
-import React from "react";
-import { useOthers } from "@/lib/liveblocks.client";
-import { ClientSideSuspense } from "@liveblocks/react";
+import { LiveBlogPostCard } from "@/components/custom/LiveBlogPostCard";
 import { PagePresenceUpdater } from "@/components/custom/PagePresenceUpdater";
+import Image from "next/image";
 
 export default function Home() {
   return (
@@ -148,44 +135,3 @@ const BLOG_POSTS: Record<
     title: "Simulating an Ability in World of Warcraft",
   },
 } as const;
-
-const LiveBlogPostCard = (props: {
-  title: string;
-  content: string;
-  id: string;
-}) => {
-  return (
-    <Link href={`/articles/${props.id}`}>
-      <Card>
-        <CardHeader>
-          <CardTitle>{props.title}</CardTitle>
-          <CardDescription>{props.content}</CardDescription>
-        </CardHeader>
-        <CardFooter className="justify-between align-self-end">
-          <div>
-            <ClientSideSuspense fallback={null}>
-              {() => {
-                return <OtherUsersReadingBlogWidget articleId={props.id} />;
-              }}
-            </ClientSideSuspense>
-          </div>
-          <Button>Read</Button>
-        </CardFooter>
-      </Card>
-    </Link>
-  );
-};
-
-const OtherUsersReadingBlogWidget = (props: { articleId: string }) => {
-  const othersViewingArticle = useOthers((others) =>
-    others.filter((other) => {
-      return other.presence.currentlyViewedPage?.id === props.articleId;
-    })
-  );
-
-  return (
-    <div className="flex items-center justify-center">
-      {othersViewingArticle.length}
-    </div>
-  );
-};
