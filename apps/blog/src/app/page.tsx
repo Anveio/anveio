@@ -11,25 +11,26 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ToasterButtons } from "@/components/Toaster";
 import Image from "next/image";
-import { CollaborativeApp, WithRoom } from "./Room";
 import React from "react";
 import { useOthers } from "@/lib/liveblocks.client";
+import { ClientSideSuspense } from "@liveblocks/react";
+import { PagePresenceUpdater } from "@/components/custom/PagePresenceUpdater";
 
 export default function Home() {
   return (
-    <WithRoom currentPageId="home" roomId="blog-home">
-      <Image
-        src={"/bghero.webp"}
-        alt=""
-        width={1000}
-        height={1000}
-        className="pointer-events-none absolute left-0 -right-20 z-50 h-full w-full select-none md:block"
-        style={{ color: "transparent" }}
-      />
-      <main className="min-h-screen antialiased bg-background overflow-hidden relative">
-        <div className="lg:pt-36 lg:pb-36 py-8 py-8 px-8 relative z-40">
-          <div className="max-w-7xl mx-auto flex flex-col items-center">
-            <div className="z-50 opacity-100">
+    <>
+      <main className="bg-background relative">
+        <Image
+          src={"/bghero.webp"}
+          alt=""
+          width={1000}
+          height={1000}
+          className="pointer-events-none absolute left-0 -right-20 h-full w-full select-none md:block"
+          style={{ color: "transparent" }}
+        />
+        <div className="lg:pt-36 mx-auto lg:pb-36 py-8 py-8 px-8 relative max-w-7xl">
+          <div className="mx-auto flex flex-col items-center">
+            <div className="opacity-100">
               <div className="w-full flex justify-center clip-reveal delay-1000">
                 <div className="py-1 flex items-center space-x-1 border rounded-full border-[#8C8C8C]/[0.4] w-fit px-4 bg-gradient-to-b from-[#8C8C8C]/[0.4] to-[#8C8C8C]/[0.25] shadow-[0px_1px_4px_0px_rgba(255,255,255,.12)]) mb-8">
                   <svg
@@ -66,30 +67,30 @@ export default function Home() {
               <p className="text-center font-medium text-base md:text-lg text-[#FFFFFF]/[.48] mb-8"></p>
             </div>
           </div>
-        </div>
-        <section className="grid grid-cols-2 gap-3">
-          <ToasterButtons />
-        </section>
-        <section className="mx-auto mt-10 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none ">
-          <div
-            className="grid grid-cols-1 md:grid-cols-2 
+          <section className="grid grid-cols-2 gap-3">
+            <ToasterButtons />
+          </section>
+          <section className="mx-auto mt-10 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none ">
+            <div
+              className="grid grid-cols-1 md:grid-cols-2 
         lg:grid-cols-3 gap-4"
-          >
-            {Object.values(BLOG_POSTS).map((post) => {
-              return (
-                <LiveBlogPostCard
-                  key={post.slug}
-                  content={post.content}
-                  title={post.title}
-                  id={post.slug}
-                />
-              );
-            })}
-          </div>
-        </section>
+            >
+              {Object.values(BLOG_POSTS).map((post) => {
+                return (
+                  <LiveBlogPostCard
+                    key={post.slug}
+                    content={post.content}
+                    title={post.title}
+                    id={post.slug}
+                  />
+                );
+              })}
+            </div>
+          </section>
+        </div>
       </main>
-      <CollaborativeApp />
-    </WithRoom>
+      <PagePresenceUpdater pageId="home" />
+    </>
   );
 }
 
@@ -162,7 +163,11 @@ const LiveBlogPostCard = (props: {
         </CardHeader>
         <CardFooter className="justify-between align-self-end">
           <div>
-            <OtherUsersReadingBlogWidget articleId={props.id} />
+            <ClientSideSuspense fallback={null}>
+              {() => {
+                return <OtherUsersReadingBlogWidget articleId={props.id} />;
+              }}
+            </ClientSideSuspense>
           </div>
           <Button>Read</Button>
         </CardFooter>

@@ -4,24 +4,28 @@ import { useUpdateMyPresence } from "@/lib/liveblocks.client";
 import * as React from "react";
 
 interface Props {
-  articleId: string;
+  pageId: string;
 }
 
-export const ArticlePresenceUpdater = (props: Props) => {
-  const { articleId } = props;
+export const PagePresenceUpdater = (props: Props) => {
+  const { pageId: pageId } = props;
   const updateMyPresence = useUpdateMyPresence();
 
   React.useEffect(() => {
-    if (!articleId) {
-      return;
+    if (!pageId) {
+      updateMyPresence({
+        currentlyViewedPage: {
+          id: "home",
+        },
+      });
     }
 
     updateMyPresence({
       currentlyViewedPage: {
-        id: articleId,
+        id: pageId,
       },
     });
-  }, [props.articleId]);
+  }, [props.pageId]);
 
   return null;
 };
