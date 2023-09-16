@@ -22,3 +22,5 @@ export const MotionCard = React.forwardRef<HTMLDivElement, MotionCardProps>(
     );
   }
 );
+
+MotionCard.displayName = "MotionCard";

@@ -25,7 +25,7 @@ export const PagePresenceUpdater = (props: Props) => {
         id: pageId,
       },
     });
-  }, [props.pageId]);
+  }, [pageId, updateMyPresence]);
 
   return null;
 };
