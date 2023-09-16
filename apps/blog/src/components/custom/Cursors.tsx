@@ -50,6 +50,10 @@ function Cursor({ x, y, color, name, className, style, ...props }: Props) {
   );
 }
 
+const lerp = (start: number, end: number, alpha: number) => {
+  return start * (1 - alpha) + end * alpha;
+};
+
 /**
  * This file shows you how to create a reusable live cursors component for your product.
  * The component takes a reference to another element ref `element` and renders
@@ -73,6 +77,18 @@ function Cursors() {
       (other) =>
         other.presence.currentlyViewedPage.id ===
         myPresence.currentlyViewedPage.id
+    )
+  );
+
+  const [interpolatedCursors, setInterpolatedCursors] = React.useState<
+    Record<string, { x: number; y: number } | null>
+  >(
+    others.reduce<Record<string, { x: number; y: number } | null>>(
+      (acc, cur) => {
+        acc[cur.connectionId] = cur.presence.cursor;
+        return acc;
+      },
+      {}
     )
   );
 
@@ -122,6 +138,35 @@ function Cursors() {
     };
   }, [updateMyPresence]);
 
+  
+
+  React.useEffect(() => {
+    const animate = () => {
+      const newInterpolatedCursors: Record<string, { x: number; y: number }> =
+        {};
+
+      others.forEach(({ connectionId, presence }) => {
+        if (!presence || !presence.cursor) return;
+
+        const oldPosition = interpolatedCursors[connectionId] || {
+          x: presence.cursor.x,
+          y: presence.cursor.y,
+        };
+
+        // Linear interpolation for smoothness
+        const newX = lerp(oldPosition.x, presence.cursor.x, 0.1);
+        const newY = lerp(oldPosition.y, presence.cursor.y, 0.1);
+
+        newInterpolatedCursors[connectionId] = { x: newX, y: newY };
+      });
+
+      setInterpolatedCursors(newInterpolatedCursors);
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+  }, [others, interpolatedCursors]);
+
   return (
     <>
       {
@@ -133,6 +178,11 @@ function Cursors() {
             return null;
           }
 
+          const currentPosition = interpolatedCursors[connectionId] || {
+            x: presence.cursor.x,
+            y: presence.cursor.y,
+          };
+
           return (
             <Cursor
               color={info?.color || "chartreuse"}
@@ -140,8 +190,8 @@ function Cursors() {
               // connectionId is an integer that is incremented at every new connections
               // Assigning a color with a modulo makes sure that a specific user has the same colors on every clients
               name={"Anonymous"}
-              x={presence.cursor.x}
-              y={presence.cursor.y}
+              x={currentPosition.x}
+              y={currentPosition.y}
             />
           );
         })
