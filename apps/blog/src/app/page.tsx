@@ -9,6 +9,7 @@ export default function Home() {
       <main className="bg-background relative">
         <Image
           src={"/bghero.webp"}
+          priority
           alt=""
           width={1000}
           height={1000}
@@ -17,7 +18,7 @@ export default function Home() {
         />
         <div className="lg:pt-36 mx-auto lg:pb-36 py-8 py-8 px-8 relative max-w-7xl">
           <div className="mx-auto flex flex-col items-center">
-            <div className="opacity-100">
+            {/* <div className="opacity-100">
               <div className="w-full flex justify-center clip-reveal delay-1000">
                 <div className="py-1 flex items-center space-x-1 border rounded-full border-[#8C8C8C]/[0.4] w-fit px-4 bg-gradient-to-b from-[#8C8C8C]/[0.4] to-[#8C8C8C]/[0.25] shadow-[0px_1px_4px_0px_rgba(255,255,255,.12)]) mb-8">
                   <svg
@@ -42,7 +43,7 @@ export default function Home() {
                   </span>
                 </div>
               </div>
-            </div>
+            </div> */}
 
             <h1 className="text-white text-center text-4xl md:text-6xl mb-4 font-bold hero-fade-up-enter-active delay-75">
               The Internet should{" "}

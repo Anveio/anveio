@@ -51,7 +51,7 @@ const BlogPostCardWithWidget = (props: Props) => {
   React.useEffect(() => {
     // Check if count has changed
     if (
-      nextOthersViewingArticleCount.current > 0 &&
+      othersViewingArticleCount > 0 &&
       othersViewingArticleCount !== nextOthersViewingArticleCount.current
     ) {
       // Trigger the bounce animation

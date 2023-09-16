@@ -9,7 +9,6 @@ type MotionCardProps = HTMLMotionProps<"div"> &
 
 export const MotionCard = React.forwardRef<HTMLDivElement, MotionCardProps>(
   ({ className, ...props }, ref) => {
-    console.log(`animate, props.animate`, props.animate);
     return (
       <motion.div
         ref={ref}

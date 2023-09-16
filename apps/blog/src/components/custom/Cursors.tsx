@@ -6,7 +6,7 @@ import {
   useOthers,
   useUpdateMyPresence,
 } from "@/lib/liveblocks.client";
-import { ClientSideSuspense } from "@liveblocks/react";
+import { ClientSideSuspense, shallow } from "@liveblocks/react";
 import { getContrastingColor } from "@/lib/getContrastingColor";
 import { cn } from "@/lib/utils";
 import styles from "./Cursor.module.css";
@@ -23,8 +23,6 @@ function Cursor({ x, y, color, name, className, style, ...props }: Props) {
     () => (color ? getContrastingColor(color) : undefined),
     [color]
   );
-
-  console.log(`Rendering at position: ${x}, ${y}`);
 
   return (
     <div
@@ -59,7 +57,75 @@ const lerp = (start: number, end: number, alpha: number) => {
  * The component takes a reference to another element ref `element` and renders
  * cursors according to the location and scroll position of this panel.
  */
-function Cursors() {
+const Cursors = React.memo((props: { currentlyViewedPageId: string }) => {
+  const otherCursors = useOtherCursors(props.currentlyViewedPageId);
+
+  console.log("OTHER CURSORS", otherCursors);
+
+  return (
+    <>
+      {
+        /**
+         * Iterate over other users and display a cursor based on their presence
+         */
+        otherCursors.map((cursor, i) => {
+          if (!cursor) {
+            return null;
+          }
+
+          return (
+            <Cursor
+              color={"chartreuse"}
+              key={`cursor-${i}`}
+              // connectionId is an integer that is incremented at every new connections
+              // Assigning a color with a modulo makes sure that a specific user has the same colors on every clients
+              name={"Anonymous"}
+              x={cursor.x}
+              y={cursor.y}
+            />
+          );
+        })
+      }
+    </>
+  );
+});
+
+const useOtherCursors = (currentlyViewedPageId: string) => {
+  const others = useOthers(
+    (others) =>
+      others.filter(
+        (other) =>
+          other.presence.currentlyViewedPage.id === currentlyViewedPageId
+      ),
+    shallow
+  );
+
+  const otherCursorsMemoized = React.useMemo(() => {
+    return others;
+  }, [others]);
+
+  return otherCursorsMemoized.map((el) => el.presence.cursor);
+};
+
+export const CursorCanvas = () => {
+  return (
+    <ClientSideSuspense fallback={null}>
+      {() => {
+        return <CursorCanvasWithLiveBlocksLoaded />;
+      }}
+    </ClientSideSuspense>
+  );
+};
+
+const CursorCanvasWithLiveBlocksLoaded = () => {
+  const [myPresence] = useMyPresence();
+
+  useUpdateMyCursor();
+
+  return <Cursors currentlyViewedPageId={myPresence.currentlyViewedPage.id} />;
+};
+
+export const useUpdateMyCursor = () => {
   /**
    * useMyPresence returns a function to update  the current user's presence.
    * updateMyPresence is different to the setState function returned by the useState hook from React.
@@ -67,31 +133,6 @@ function Cursors() {
    * See https://liveblocks.io/docs/api-reference/liveblocks-react#useUpdateMyPresence for more information
    */
   const updateMyPresence = useUpdateMyPresence();
-  const [myPresence] = useMyPresence();
-
-  /**
-   * Return all the other users in the room and their presence (a cursor position in this case)
-   */
-  const others = useOthers((others) =>
-    others.filter(
-      (other) =>
-        other.presence.currentlyViewedPage.id ===
-        myPresence.currentlyViewedPage.id
-    )
-  );
-
-  const [interpolatedCursors, setInterpolatedCursors] = React.useState<
-    Record<string, { x: number; y: number } | null>
-  >(
-    others.reduce<Record<string, { x: number; y: number } | null>>(
-      (acc, cur) => {
-        acc[cur.connectionId] = cur.presence.cursor;
-        return acc;
-      },
-      {}
-    )
-  );
-
   React.useEffect(() => {
     // If element, add live cursor listeners
     const updateCursor = (event: PointerEvent) => {
@@ -137,75 +178,4 @@ function Cursors() {
       );
     };
   }, [updateMyPresence]);
-
-  
-
-  React.useEffect(() => {
-    const animate = () => {
-      const newInterpolatedCursors: Record<string, { x: number; y: number }> =
-        {};
-
-      others.forEach(({ connectionId, presence }) => {
-        if (!presence || !presence.cursor) return;
-
-        const oldPosition = interpolatedCursors[connectionId] || {
-          x: presence.cursor.x,
-          y: presence.cursor.y,
-        };
-
-        // Linear interpolation for smoothness
-        const newX = lerp(oldPosition.x, presence.cursor.x, 0.1);
-        const newY = lerp(oldPosition.y, presence.cursor.y, 0.1);
-
-        newInterpolatedCursors[connectionId] = { x: newX, y: newY };
-      });
-
-      setInterpolatedCursors(newInterpolatedCursors);
-      requestAnimationFrame(animate);
-    };
-
-    animate();
-  }, [others, interpolatedCursors]);
-
-  return (
-    <>
-      {
-        /**
-         * Iterate over other users and display a cursor based on their presence
-         */
-        others.map(({ connectionId, presence, info }) => {
-          if (presence == null || presence.cursor == null) {
-            return null;
-          }
-
-          const currentPosition = interpolatedCursors[connectionId] || {
-            x: presence.cursor.x,
-            y: presence.cursor.y,
-          };
-
-          return (
-            <Cursor
-              color={info?.color || "chartreuse"}
-              key={`cursor-${connectionId}`}
-              // connectionId is an integer that is incremented at every new connections
-              // Assigning a color with a modulo makes sure that a specific user has the same colors on every clients
-              name={"Anonymous"}
-              x={currentPosition.x}
-              y={currentPosition.y}
-            />
-          );
-        })
-      }
-    </>
-  );
-}
-
-export const CursorCanvas = () => {
-  return (
-    <ClientSideSuspense fallback={null}>
-      {() => {
-        return <Cursors />;
-      }}
-    </ClientSideSuspense>
-  );
 };
