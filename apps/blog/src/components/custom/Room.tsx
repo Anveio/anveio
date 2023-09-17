@@ -1,10 +1,9 @@
 "use client";
 
+import { RoomProvider } from "@/lib/liveblocks.client";
 import * as React from "react";
-import { Input } from "@/components/ui/input";
-import { RoomProvider, useOthers, useStatus } from "@/lib/liveblocks.client";
-import { ClientSideSuspense } from "@liveblocks/react";
 
+import { AVATAR_POINTER } from "@/lib/constants/avatars";
 import { LiveMap } from "@liveblocks/client";
 interface RoomProps {
   roomId: string;
@@ -17,6 +16,7 @@ export const WithRoom = (props: React.PropsWithChildren<RoomProps>) => {
       id={props.roomId}
       initialPresence={{
         cursor: null,
+        avatar: AVATAR_POINTER,
         currentlyViewedPage: {
           id: "home",
         },

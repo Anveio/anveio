@@ -3,7 +3,7 @@
 import { LiveObject, createClient, shallow } from "@liveblocks/client";
 import { createRoomContext } from "@liveblocks/react";
 import * as React from "react";
-import { Avatar } from "../constants/avatars";
+import { AvatarId } from "../constants/avatars";
 
 const client = createClient({
   authEndpoint: "/api/liveblocks-auth",
@@ -14,7 +14,7 @@ const client = createClient({
 // `user.presence` property. Must be JSON-serializable.
 export type Presence = {
   cursor: { x: number; y: number } | null;
-  avatar: Avatar | null;
+  avatar: AvatarId | null;
   currentlyViewedPage: {
     id: string;
   };

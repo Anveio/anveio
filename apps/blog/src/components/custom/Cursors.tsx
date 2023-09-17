@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { ClientSideSuspense } from "@liveblocks/react";
 import * as React from "react";
 import styles from "./Cursor.module.css";
+import { MousePointer2 } from "lucide-react";
 
 interface Props extends Omit<React.ComponentProps<"div">, "color"> {
   color: string;
@@ -25,20 +26,16 @@ function Cursor({ x, y, color, name, className, style, ...props }: Props) {
       style={{ transform: `translate(${x}px, ${y}px`, zIndex: 51, ...style }}
       {...props}
     >
-      <svg
+      <MousePointer2
         className={styles.pointer}
-        fill="none"
+        color={color}
+        stroke={"black"}
+        strokeWidth={1}
+        fill={color}
         height="44"
         viewBox="0 0 24 36"
         width="32"
-      >
-        <path
-          d="M0.928548 2.18278C0.619075 1.37094 1.42087 0.577818 2.2293 0.896107L14.3863 5.68247C15.2271 6.0135 15.2325 7.20148 14.3947 7.54008L9.85984 9.373C9.61167 9.47331 9.41408 9.66891 9.31127 9.91604L7.43907 14.4165C7.09186 15.2511 5.90335 15.2333 5.58136 14.3886L0.928548 2.18278Z"
-          fill={color}
-          stroke="black" // Add this line for the black outline
-          strokeWidth="0.5" // Add this line to specify the outline thickness
-        />
-      </svg>
+      />
     </div>
   );
 }
@@ -65,8 +62,8 @@ const Cursors = React.memo((props: { currentlyViewedPageId: string }) => {
             return null;
           }
 
-          const cursorColor = avatar?.avatarId
-            ? AVATAR_ID_TO_DISPLAY_META[avatar.avatarId].iconColor
+          const cursorColor = avatar
+            ? AVATAR_ID_TO_DISPLAY_META[avatar].iconColor
             : "chartreuse";
 
           return (

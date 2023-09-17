@@ -24,7 +24,7 @@ import {
   useMyPresence,
   useUpdateMyPresence,
 } from "@/lib/liveblocks.client";
-import { AVATARS, AvatarId } from "@/lib/constants/avatars";
+import { AVATAR_IDS, AvatarId } from "@/lib/constants/avatars";
 
 export const AvatarSelector = () => {
   return (
@@ -43,10 +43,10 @@ export const AvatarSelector = () => {
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
                 <div className="grid grid-cols-3">
-                  {Object.entries(AVATARS).map(([avatarId]) => {
+                  {AVATAR_IDS.map((avatarId) => {
                     return (
                       <AvatarSelectorButton
-                        avatarId={avatarId as AvatarId}
+                        avatarId={avatarId}
                         key={avatarId}
                       />
                     );
@@ -75,6 +75,8 @@ const AvatarSelectorButton = (props: AvatarSelectorButtonProps) => {
 
   const buttonHasIntent = useHasIntent(buttonElementRef);
 
+  console.log(props.avatarId);
+
   const meta = AVATAR_ID_TO_DISPLAY_META[props.avatarId];
 
   const IconComponent = meta.iconComponent;
@@ -82,14 +84,11 @@ const AvatarSelectorButton = (props: AvatarSelectorButtonProps) => {
   const updateMyPresence = useUpdateMyPresence();
   const [myPresence] = useMyPresence();
 
-  const buttonIsalreadySelected =
-    myPresence?.avatar?.avatarId === props.avatarId;
+  const buttonIsalreadySelected = myPresence?.avatar === props.avatarId;
 
   const handleClick = () => {
     updateMyPresence({
-      avatar: {
-        avatarId: props.avatarId,
-      },
+      avatar: props.avatarId,
     });
   };
 

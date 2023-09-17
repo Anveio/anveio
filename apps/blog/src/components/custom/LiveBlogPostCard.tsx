@@ -17,6 +17,8 @@ import { motion, useAnimation } from "framer-motion";
 import { MotionCard } from "./MotionCard";
 import { notEmpty } from "@/lib/utils";
 import { AVATAR_ID_TO_DISPLAY_META } from "@/lib/features/avatars.client/avatars";
+import { Avatar } from "../ui/avatar";
+import { AvatarFallback } from "@radix-ui/react-avatar";
 
 interface Props {
   id: string;
@@ -65,7 +67,7 @@ const BlogPostCardWithWidget = (props: Props) => {
   const otherColors = othersOnPage
     .map((el) => el.presence.avatar)
     .filter(notEmpty)
-    .map((avatar) => AVATAR_ID_TO_DISPLAY_META[avatar.avatarId].iconColor);
+    .map((avatar) => AVATAR_ID_TO_DISPLAY_META[avatar].iconColor);
 
   return (
     <Link href={`/articles/${props.id}`}>
@@ -115,16 +117,35 @@ const BlogPostCard = (
 };
 
 const OtherUsersReadingBlogWidget = (props: { articleId: string }) => {
-  const othersViewingArticleCount = useOthers(
-    (others) =>
-      others.filter((other) => {
-        return other.presence.currentlyViewedPage?.id === props.articleId;
-      }).length
-  );
+  const othersViewingArticle = useOthersOnPage(props.articleId);
 
   return (
     <div className="flex items-center justify-center">
-      {othersViewingArticleCount}
+      {othersViewingArticle.map((el) => {
+        const avatarMeta = el.presence.avatar
+          ? AVATAR_ID_TO_DISPLAY_META[el.presence.avatar]
+          : null;
+
+        const AvatarIcon = avatarMeta ? avatarMeta.iconComponent : null;
+
+        const ringStyle = {
+          backgroundColor: "white",
+          "--tw-ring-color": avatarMeta?.iconColor,
+        };
+
+        return (
+          <div
+            className="rounded-full ring-inset ring-2 h-8 w-8 flex items-center justify-center"
+            style={ringStyle}
+          >
+            {AvatarIcon ? (
+              <AvatarIcon className="h-5 w-5" stroke={avatarMeta?.iconColor} />
+            ) : (
+              "hi"
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 };
