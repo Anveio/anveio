@@ -135,6 +135,7 @@ const OtherUsersReadingBlogWidget = (props: { articleId: string }) => {
 
         return (
           <div
+            key={el.connectionId}
             className="rounded-full ring-inset ring-2 h-8 w-8 flex items-center justify-center"
             style={ringStyle}
           >

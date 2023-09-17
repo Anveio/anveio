@@ -25,7 +25,7 @@ export const useHasIntent = (ref: React.RefObject<HTMLElement>): boolean => {
       element?.removeEventListener("touchstart", handleTouchStart);
       element?.removeEventListener("touchend", handleTouchEnd);
     };
-  }, [ref]);
+  }, [ref, handleTouchStart, handleTouchEnd]);
 
   return isPressed || elementIsBeingHovered;
 };
