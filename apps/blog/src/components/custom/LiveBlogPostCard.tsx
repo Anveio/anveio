@@ -11,10 +11,12 @@ import {
 } from "@/components/ui/card";
 import { ClientSideSuspense } from "@liveblocks/react";
 import { Button } from "../ui/button";
-import { Presence, useOthers } from "@/lib/liveblocks.client";
+import { Presence, useOthers, useOthersOnPage } from "@/lib/liveblocks.client";
 import { User, BaseUserMeta } from "@liveblocks/client";
 import { motion, useAnimation } from "framer-motion";
 import { MotionCard } from "./MotionCard";
+import { notEmpty } from "@/lib/utils";
+import { AVATAR_ID_TO_DISPLAY_META } from "@/lib/features/avatars.client/avatars";
 
 interface Props {
   id: string;
@@ -37,22 +39,17 @@ export const LiveBlogPostCard = (props: Props) => {
 };
 
 const BlogPostCardWithWidget = (props: Props) => {
-  const othersViewingArticleCount = useOthers(
-    (others) =>
-      others.filter((other) => {
-        return other.presence.currentlyViewedPage?.id === props.id;
-      }).length
-  );
+  const othersOnPage = useOthersOnPage(props.id);
 
-  const nextOthersViewingArticleCount = React.useRef(othersViewingArticleCount);
+  const nextOthersViewingArticleCount = React.useRef(othersOnPage.length);
 
   const controls = useAnimation();
 
   React.useEffect(() => {
     // Check if count has changed
     if (
-      othersViewingArticleCount > 0 &&
-      othersViewingArticleCount !== nextOthersViewingArticleCount.current
+      othersOnPage.length > 0 &&
+      othersOnPage.length !== nextOthersViewingArticleCount.current
     ) {
       // Trigger the bounce animation
       controls.start({
@@ -62,12 +59,20 @@ const BlogPostCardWithWidget = (props: Props) => {
         },
       });
     }
-    nextOthersViewingArticleCount.current = othersViewingArticleCount;
-  }, [othersViewingArticleCount]);
+    nextOthersViewingArticleCount.current = othersOnPage.length;
+  }, [othersOnPage]);
+
+  const otherColors = othersOnPage
+    .map((el) => el.presence.avatar)
+    .filter(notEmpty)
+    .map((avatar) => AVATAR_ID_TO_DISPLAY_META[avatar.avatarId].iconColor);
 
   return (
     <Link href={`/articles/${props.id}`}>
-      <AppendRingIfLive numberWatchingLive={othersViewingArticleCount}>
+      <AppendRingIfLive
+        numberWatchingLive={othersOnPage.length}
+        colors={otherColors}
+      >
         <MotionCard animate={controls}>
           <CardHeader>
             <CardTitle>{props.title}</CardTitle>
@@ -126,16 +131,24 @@ const OtherUsersReadingBlogWidget = (props: { articleId: string }) => {
 
 interface AppendOutlineProps {
   children: React.ReactElement | React.ReactElement[];
+  colors: string[];
   numberWatchingLive: number;
 }
 
+interface StyleProperties extends React.CSSProperties {
+  ["--tw-ring-color"]: string;
+}
+
 const AppendRingIfLive: React.FC<AppendOutlineProps> = (props) => {
+  const colorToUse = props.colors[0];
+
   return (
     <>
       {React.Children.map<
         React.ReactNode,
         React.ReactElement<{
           className?: string;
+          style: StyleProperties;
         }>
       >(props.children, (child) => {
         if (React.isValidElement(child)) {
@@ -145,13 +158,16 @@ const AppendRingIfLive: React.FC<AppendOutlineProps> = (props) => {
 
           // Create a new className by appending "outline" to the existing one
           const newClassName = `${existingClassName} ${
-            props.numberWatchingLive > 0
-              ? "ring-inset ring-4 ring-emerald-400"
-              : ""
+            props.numberWatchingLive > 0 ? "ring-inset ring-4" : ""
           }`;
 
           // Clone the element with the new className
-          return React.cloneElement(child, { className: newClassName });
+          return React.cloneElement(child, {
+            className: newClassName,
+            style: {
+              "--tw-ring-color": colorToUse,
+            },
+          });
         }
         return child;
       })}

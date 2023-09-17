@@ -1,16 +1,15 @@
 "use client";
 
-import * as React from "react";
+import { AVATAR_ID_TO_DISPLAY_META } from "@/lib/features/avatars.client/avatars";
 import {
   useMyPresence,
-  useOthers,
   useOthersOnPage,
   useUpdateMyPresence,
 } from "@/lib/liveblocks.client";
-import { ClientSideSuspense, shallow } from "@liveblocks/react";
 import { cn } from "@/lib/utils";
+import { ClientSideSuspense } from "@liveblocks/react";
+import * as React from "react";
 import styles from "./Cursor.module.css";
-import { AVATAR_ID_TO_DISPLAY_META } from "@/lib/features/avatars.client/avatars";
 
 interface Props extends Omit<React.ComponentProps<"div">, "color"> {
   color: string;
@@ -43,10 +42,6 @@ function Cursor({ x, y, color, name, className, style, ...props }: Props) {
     </div>
   );
 }
-
-const lerp = (start: number, end: number, alpha: number) => {
-  return start * (1 - alpha) + end * alpha;
-};
 
 /**
  * This file shows you how to create a reusable live cursors component for your product.
