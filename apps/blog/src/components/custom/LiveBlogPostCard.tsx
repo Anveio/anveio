@@ -13,7 +13,7 @@ import { ClientSideSuspense } from "@liveblocks/react";
 import { Button } from "../ui/button";
 import { Presence, useOthers, useOthersOnPage } from "@/lib/liveblocks.client";
 import { User, BaseUserMeta } from "@liveblocks/client";
-import { motion, useAnimation } from "framer-motion";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
 import { MotionCard } from "./MotionCard";
 import { notEmpty } from "@/lib/utils";
 import { AVATAR_ID_TO_DISPLAY_META } from "@/lib/features/avatars.client/avatars";
@@ -116,37 +116,52 @@ const BlogPostCard = (
   );
 };
 
+const OVERLAP_PIXELS = 25;
+
 const OtherUsersReadingBlogWidget = (props: { articleId: string }) => {
   const othersViewingArticle = useOthersOnPage(props.articleId);
 
   return (
-    <div className="flex items-center justify-center">
-      {othersViewingArticle.map((el) => {
-        const avatarMeta = el.presence.avatar
-          ? AVATAR_ID_TO_DISPLAY_META[el.presence.avatar]
-          : null;
+    <div className="grid place-items-center grid-cols-5 grid-gap-[-5px]">
+      <AnimatePresence>
+        {othersViewingArticle.map((el, index) => {
+          const avatarMeta = el.presence.avatar
+            ? AVATAR_ID_TO_DISPLAY_META[el.presence.avatar]
+            : null;
 
-        const AvatarIcon = avatarMeta ? avatarMeta.iconComponent : null;
+          const AvatarIcon = avatarMeta ? avatarMeta.iconComponent : null;
 
-        const ringStyle = {
-          backgroundColor: "white",
-          "--tw-ring-color": avatarMeta?.iconColor,
-        };
+          const ringStyle = {
+            backgroundColor: "white",
+            "--tw-ring-color": avatarMeta?.iconColor,
+            marginLeft: `-${OVERLAP_PIXELS * index}px`,
+            zIndex: index,
+          };
 
-        return (
-          <div
-            key={el.connectionId}
-            className="rounded-full ring-inset ring-2 h-8 w-8 flex items-center justify-center"
-            style={ringStyle}
-          >
-            {AvatarIcon ? (
-              <AvatarIcon className="h-5 w-5" stroke={avatarMeta?.iconColor} />
-            ) : (
-              "hi"
-            )}
-          </div>
-        );
-      })}
+          return (
+            <motion.div
+              initial={{ opacity: 0, x: 10 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -10 }}
+              transition={{
+                duration: 0.2,
+              }}
+              key={el.connectionId}
+              className="rounded-full ring-inset ring-2 h-8 w-8 flex items-center justify-center"
+              style={ringStyle}
+            >
+              {AvatarIcon ? (
+                <AvatarIcon
+                  className="h-5 w-5"
+                  stroke={avatarMeta?.iconColor}
+                />
+              ) : (
+                "hi"
+              )}
+            </motion.div>
+          );
+        })}
+      </AnimatePresence>
     </div>
   );
 };

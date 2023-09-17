@@ -75,8 +75,6 @@ const AvatarSelectorButton = (props: AvatarSelectorButtonProps) => {
 
   const buttonHasIntent = useHasIntent(buttonElementRef);
 
-  console.log(props.avatarId);
-
   const meta = AVATAR_ID_TO_DISPLAY_META[props.avatarId];
 
   const IconComponent = meta.iconComponent;
