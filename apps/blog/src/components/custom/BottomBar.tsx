@@ -12,7 +12,7 @@ import { TooltipArrow } from "@radix-ui/react-tooltip";
 import { AnimatePresence, motion } from "framer-motion";
 import * as React from "react";
 import { Input } from "../ui/input";
-import { LiveSettingsMenu } from "./LiveSettingsMenu";
+import { AvatarSelector } from "./AvatarSelector";
 
 export const BottomBar = () => {
   const [chatWidgetIsExpaded, setChatWidgetIsExpanded] = React.useState(false);
@@ -86,7 +86,7 @@ export const BottomBar = () => {
                     </div>
                   </TooltipTrigger>
                   <div>
-                    <LiveSettingsMenu />
+                    <AvatarSelector />
                   </div>
                 </div>
                 <TooltipContent className="bg-accent text-accent-foreground">

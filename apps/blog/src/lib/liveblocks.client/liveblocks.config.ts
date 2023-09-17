@@ -1,7 +1,9 @@
 "use client";
 
-import { LiveObject, createClient } from "@liveblocks/client";
+import { LiveObject, createClient, shallow } from "@liveblocks/client";
 import { createRoomContext } from "@liveblocks/react";
+import * as React from "react";
+import { Avatar } from "../constants/avatars";
 
 const client = createClient({
   authEndpoint: "/api/liveblocks-auth",
@@ -12,6 +14,7 @@ const client = createClient({
 // `user.presence` property. Must be JSON-serializable.
 export type Presence = {
   cursor: { x: number; y: number } | null;
+  avatar: Avatar | null;
   currentlyViewedPage: {
     id: string;
   };
@@ -50,6 +53,22 @@ type UserMeta = {
 type RoomEvent = {
   // type: "NOTIFICATION",
   // ...
+};
+
+export const useOthersOnPage = (pageId: string) => {
+  const others = useOthers(
+    (others) =>
+      others.filter(
+        (other) => other.presence.currentlyViewedPage.id === pageId
+      ),
+    shallow
+  );
+
+  const otherCursorsMemoized = React.useMemo(() => {
+    return others;
+  }, [others]);
+
+  return otherCursorsMemoized;
 };
 
 export const {

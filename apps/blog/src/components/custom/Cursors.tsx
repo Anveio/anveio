@@ -4,12 +4,13 @@ import * as React from "react";
 import {
   useMyPresence,
   useOthers,
+  useOthersOnPage,
   useUpdateMyPresence,
 } from "@/lib/liveblocks.client";
 import { ClientSideSuspense, shallow } from "@liveblocks/react";
-import { getContrastingColor } from "@/lib/getContrastingColor";
 import { cn } from "@/lib/utils";
 import styles from "./Cursor.module.css";
+import { AVATAR_ID_TO_DISPLAY_META } from "@/lib/features/avatars.client/avatars";
 
 interface Props extends Omit<React.ComponentProps<"div">, "color"> {
   color: string;
@@ -19,11 +20,6 @@ interface Props extends Omit<React.ComponentProps<"div">, "color"> {
 }
 
 function Cursor({ x, y, color, name, className, style, ...props }: Props) {
-  const textColor = React.useMemo(
-    () => (color ? getContrastingColor(color) : undefined),
-    [color]
-  );
-
   return (
     <div
       className={cn(className, styles.cursor)}
@@ -58,9 +54,7 @@ const lerp = (start: number, end: number, alpha: number) => {
  * cursors according to the location and scroll position of this panel.
  */
 const Cursors = React.memo((props: { currentlyViewedPageId: string }) => {
-  const otherCursors = useOtherCursors(props.currentlyViewedPageId);
-
-  console.log("OTHER CURSORS", otherCursors);
+  const otherPresences = useOthersOnPage(props.currentlyViewedPageId);
 
   return (
     <>
@@ -68,14 +62,21 @@ const Cursors = React.memo((props: { currentlyViewedPageId: string }) => {
         /**
          * Iterate over other users and display a cursor based on their presence
          */
-        otherCursors.map((cursor, i) => {
+        otherPresences.map((other, i) => {
+          const cursor = other.presence.cursor;
+          const avatar = other.presence.avatar;
+
           if (!cursor) {
             return null;
           }
 
+          const cursorColor = avatar?.avatarId
+            ? AVATAR_ID_TO_DISPLAY_META[avatar.avatarId].iconColor
+            : "chartreuse";
+
           return (
             <Cursor
-              color={"chartreuse"}
+              color={cursorColor}
               key={`cursor-${i}`}
               // connectionId is an integer that is incremented at every new connections
               // Assigning a color with a modulo makes sure that a specific user has the same colors on every clients
@@ -89,23 +90,6 @@ const Cursors = React.memo((props: { currentlyViewedPageId: string }) => {
     </>
   );
 });
-
-const useOtherCursors = (currentlyViewedPageId: string) => {
-  const others = useOthers(
-    (others) =>
-      others.filter(
-        (other) =>
-          other.presence.currentlyViewedPage.id === currentlyViewedPageId
-      ),
-    shallow
-  );
-
-  const otherCursorsMemoized = React.useMemo(() => {
-    return others;
-  }, [others]);
-
-  return otherCursorsMemoized.map((el) => el.presence.cursor);
-};
 
 export const CursorCanvas = () => {
   return (

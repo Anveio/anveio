@@ -55,9 +55,6 @@ export default function Home() {
               <p className="text-center font-medium text-base md:text-lg text-[#FFFFFF]/[.48] mb-8"></p>
             </div>
           </div>
-          <section className="grid grid-cols-2 gap-3">
-            <ToasterButtons />
-          </section>
           <section className="mx-auto mt-10 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none ">
             <div
               className="grid grid-cols-1 md:grid-cols-2 
