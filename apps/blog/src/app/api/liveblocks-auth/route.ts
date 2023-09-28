@@ -18,22 +18,7 @@ export async function POST(request: NextRequest) {
   const { userId } = requestSession;
 
   if (!userId) {
-    const randomId = nanoid();
-
-    const session = liveblocks.prepareSession(randomId, {
-      userInfo: {
-        username: "Anonymous-" + randomId,
-      },
-    });
-
-    const { room } = await request.json();
-    if (room) {
-      session.allow(room, session.READ_ACCESS);
-    }
-
-    // Authorize the user and return the result
-    const { status, body } = await session.authorize();
-    return new Response(body, { status });
+    return new Response(undefined, { status: 403 });
   }
 
   const session = liveblocks.prepareSession(userId);

@@ -23,9 +23,6 @@ const nextConfig = {
       },
     ],
   },
-  experimental: {
-    appDir: true,
-  },
   redirects() {
     const defaultRedirects = [
       {
