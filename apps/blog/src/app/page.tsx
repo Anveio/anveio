@@ -6,7 +6,7 @@ import Image from "next/image";
 export default function Home() {
   return (
     <>
-      <main className="bg-background relative">
+      <main className="bg-background">
         <Image
           src={"/bghero.webp"}
           priority
@@ -16,7 +16,7 @@ export default function Home() {
           className="pointer-events-none absolute left-0 -right-20 h-full w-full select-none md:block"
           style={{ color: "transparent" }}
         />
-        <div className="lg:pt-36 mx-auto lg:pb-36 py-8 py-8 px-8 relative max-w-7xl">
+        <div className="lg:pt-36 mx-auto lg:pb-36 py-8 py-8 px-8 max-w-7xl">
           <div className="mx-auto flex flex-col items-center">
             {/* <div className="opacity-100">
               <div className="w-full flex justify-center clip-reveal delay-1000">

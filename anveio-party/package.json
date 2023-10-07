@@ -1,0 +1,17 @@
+{
+  "name": "anveio-party",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "partykit dev",
+    "deploy": "partykit deploy"
+  },
+  "dependencies": {
+    "inngest": "^3.0.2",
+    "partysocket": "0.0.8"
+  },
+  "devDependencies": {
+    "partykit": "0.0.28",
+    "typescript": "^5.2.2"
+  }
+}
