@@ -3,6 +3,16 @@ const { exec } = require("child_process");
 function runCommand(command) {
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
+      // Handle yum specific case where package is already installed
+      if (
+        command.includes("yum") &&
+        (stdout.includes("Nothing to do") ||
+          stdout.includes("already installed"))
+      ) {
+        resolve(stdout);
+        return;
+      }
+
       if (error) {
         // Check for permission errors
         if (
@@ -10,13 +20,12 @@ function runCommand(command) {
           error.message.includes("EACCES")
         ) {
           console.error(
-            "\x1b[31mPermissionDeniedError: The script needs to be run with the right permissions for non-yum environments.\x1b[0m"
+            "\x1b[31mERROR: The script needs to be run with the right permissions for non-yum environments.\x1b[0m"
           ); // Red color
           process.exit(1); // Exit with an error code
         }
         reject(error);
       } else if (stderr && !stdout) {
-        // Only reject if there's stderr and no stdout, because some commands write to stderr even on successful execution.
         reject(stderr);
       } else {
         resolve(stdout);
