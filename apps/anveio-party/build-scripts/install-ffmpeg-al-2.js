@@ -4,8 +4,19 @@ function runCommand(command) {
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (error) {
+        // Check for permission errors
+        if (
+          error.message.includes("Permission denied") ||
+          error.message.includes("EACCES")
+        ) {
+          console.error(
+            "\x1b[31mPermissionDeniedError: The script needs to be run with the right permissions for non-yum environments.\x1b[0m"
+          ); // Red color
+          process.exit(1); // Exit with an error code
+        }
         reject(error);
-      } else if (stderr) {
+      } else if (stderr && !stdout) {
+        // Only reject if there's stderr and no stdout, because some commands write to stderr even on successful execution.
         reject(stderr);
       } else {
         resolve(stdout);
@@ -14,43 +25,86 @@ function runCommand(command) {
   });
 }
 
-async function installFFmpeg() {
-  try {
-    // 1. Update the repository lists
-    await runCommand("yum -y update");
-
-    // 2. Add the EPEL repository
-    await runCommand("amazon-linux-extras install epel -y");
-
-    // 3. Install FFmpeg
-    await runCommand("yum install ffmpeg -y");
-
-    console.log("FFmpeg installation was successful!");
-  } catch (error) {
-    console.error("Error during FFmpeg installation:", error);
-  }
-}
-
 function checkSupport(item, categoryOutput) {
   if (categoryOutput.includes(item)) {
     console.log(`\x1b[32m✓ ${item} is supported.\x1b[0m`); // Green color
-    return true;
+    return { [item]: true };
   } else {
     console.log(`\x1b[31m✗ ${item} is not supported.\x1b[0m`); // Red color
-    return false;
+    return { [item]: false };
   }
+}
+
+async function getPackageManager() {
+  const managers = ["yum", "apt", "dnf", "zypper"];
+
+  for (const manager of managers) {
+    try {
+      await runCommand(`which ${manager}`);
+      return manager;
+    } catch (error) {
+      // Continue searching
+    }
+  }
+
+  throw new Error("No recognized package manager found.");
+}
+
+async function installFFmpegWithPackageManager() {
+  const packageManager = await getPackageManager();
+
+  switch (packageManager) {
+    case "yum":
+      await runCommand("yum -y install ffmpeg");
+      break;
+    case "apt":
+      await runCommand("apt-get update && apt-get -y install ffmpeg");
+      break;
+    case "dnf":
+      await runCommand("dnf -y install ffmpeg");
+      break;
+    case "zypper":
+      await runCommand("zypper refresh && sudo zypper install -y ffmpeg");
+      break;
+    default:
+      throw new Error(`Unsupported package manager: ${packageManager}`);
+  }
+
+  console.log(`FFmpeg installed using ${packageManager}`);
 }
 
 async function validateFFmpeg() {
   try {
     const formats = await runCommand("ffmpeg -formats");
+    console.log("********");
     const codecs = await runCommand("ffmpeg -codecs");
+    console.log("}||||||||||||||||");
     const filters = await runCommand("ffmpeg -filters");
+    console.log("3[[[[[[[[[[[[[[[[[[");
+
+    const support = {
+      ...checkSupport("mp4", formats),
+      ...checkSupport("h264", codecs),
+      ...checkSupport("scale", filters),
+      ...checkSupport("crop", filters),
+    };
 
     console.log("Validating FFmpeg support:\n");
+    console.log(support);
 
-    // Formats checklist
-    console.log("Formats:");
+    /**
+     * If any values in `support` are false, throw an error
+     */
+    if (Object.values(support).includes(false)) {
+      throw new Error(
+        `Missing support for one or more FFmpeg features.\n${JSON.stringify(
+          support,
+          null,
+          2
+        )}`
+      );
+    }
+
     const isMP4Supported = checkSupport("mp4", formats);
 
     // Codecs checklist
@@ -70,7 +124,7 @@ async function validateFFmpeg() {
         isCropSupported
       )
     ) {
-      process.exit(1); // Exit with error code
+      throw new Error();
     }
   } catch (error) {
     console.error("Error during FFmpeg validation:", error);
@@ -78,5 +132,6 @@ async function validateFFmpeg() {
   }
 }
 
-await installFFmpeg();
-await validateFFmpeg();
+installFFmpegWithPackageManager().then(() => {
+  validateFFmpeg();
+});
