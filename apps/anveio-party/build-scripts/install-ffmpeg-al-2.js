@@ -78,5 +78,5 @@ async function validateFFmpeg() {
   }
 }
 
-installFFmpeg();
-validateFFmpeg();
+await installFFmpeg();
+await validateFFmpeg();
