@@ -6,8 +6,8 @@ function runCommand(command) {
       // Handle yum specific case where package is already installed
       if (
         command.includes("yum") &&
-        (stdout.includes("Nothing to do") ||
-          stdout.includes("already installed"))
+        (error.message.includes("Nothing to do") ||
+          error.message.includes("already installed"))
       ) {
         resolve(stdout);
         return;
