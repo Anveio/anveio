@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "partykit dev",
+    "build": "",
     "deploy": "partykit deploy"
   },
   "dependencies": {

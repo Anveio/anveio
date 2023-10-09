@@ -1,4 +1,3 @@
-import { auth } from "@clerk/nextjs";
 import Link from "next/link";
 import * as React from "react";
 import { Button } from "../ui/button";
@@ -7,7 +6,9 @@ import styles from "./NavBar.module.css";
 import { cn } from "@/lib/utils";
 
 export const NavBar = () => {
-  const session = auth();
+  let session = {
+    userId: "s",
+  };
   return (
     <nav className="sticky top-0 flex px-3 h-[62px] left-0 right-0 ">
       <div className={cn(styles.glass, "absolute")}>

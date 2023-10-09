@@ -1,4 +1,5 @@
 import { ToasterButtons } from "@/components/Toaster";
+import { SendMessageForm } from "@/components/custom/Form";
 import { LiveBlogPostCard } from "@/components/custom/LiveBlogPostCard";
 import { PagePresenceUpdater } from "@/components/custom/PagePresenceUpdater";
 import Image from "next/image";
@@ -73,6 +74,7 @@ export default function Home() {
             </div>
           </section>
         </div>
+        <SendMessageForm />
       </main>
       <PagePresenceUpdater pageId="home" />
     </>

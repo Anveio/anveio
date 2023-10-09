@@ -50,7 +50,7 @@ const nextConfig = {
 
 // https://nextjs.org/docs/advanced-features/security-headers
 const ContentSecurityPolicy = `
-    default-src 'self' vercel.live challenges.cloudflare.com;
+    default-src 'self' vercel.live challenges.cloudflare.com thrall.anveio.com;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: cdn.vercel-insights.com vercel.live ${
       process.env.NODE_ENV === "development"
         ? "*.clerk.accounts.dev"
@@ -72,7 +72,7 @@ const securityHeaders = [
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Referrer-Policy
   {
     key: "Referrer-Policy",
-    value: "origin-when-cross-origin",
+    value: "strict-origin-when-cross-origin",
   },
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-Frame-Options
   {

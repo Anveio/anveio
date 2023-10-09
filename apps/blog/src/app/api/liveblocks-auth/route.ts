@@ -1,7 +1,6 @@
 import { auth } from "@clerk/nextjs";
 import { Liveblocks } from "@liveblocks/node";
-import { NextRequest, NextResponse } from "next/server";
-import { nanoid } from "nanoid";
+import { NextRequest } from "next/server";
 
 const LIVEBLOCKS_SECRET = process.env.LIVEBLOCKS_SECRET_KEY;
 
