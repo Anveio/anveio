@@ -17,13 +17,13 @@ function runCommand(command) {
 async function installFFmpeg() {
   try {
     // 1. Update the repository lists
-    await runCommand("sudo yum -y update");
+    await runCommand("yum -y update");
 
     // 2. Add the EPEL repository
-    await runCommand("sudo amazon-linux-extras install epel -y");
+    await runCommand("amazon-linux-extras install epel -y");
 
     // 3. Install FFmpeg
-    await runCommand("sudo yum install ffmpeg -y");
+    await runCommand("yum install ffmpeg -y");
 
     console.log("FFmpeg installation was successful!");
   } catch (error) {
