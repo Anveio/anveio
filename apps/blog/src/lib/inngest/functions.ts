@@ -5,7 +5,7 @@ export const sendChatMessageGlobalChat = inngest.createFunction(
   { id: "chat-global-message-send" },
   { event: "chat/global.message-send" },
   async ({ event, step }) => {
-    await step.sleep("wait-a-moment", "1s");
+    await step.run("wait-a-moment", "1s");
     return { event, body: "Hello, World!" };
   }
 );

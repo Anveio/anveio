@@ -1,5 +1,5 @@
 import { Client, connect } from "@planetscale/database"
-import { drizzle } from "drizzle-orm/planetscale-serverless"
+import { drizzle} from "drizzle-orm/planetscale-serverless"
 import {
 	DATABASE_HOST,
 	DATABASE_PASSWORD,
@@ -20,5 +20,3 @@ export const createDatabaseConnection = () => {
 	const connection = new Client(config).connection()
 	return connection
 }
-
-// await migrate(db as any, { migrationsFolder: "drizzle" });
