@@ -2,8 +2,9 @@ import { LiveBlogPostCard } from "@/components/custom/LiveBlogPostCard";
 import { PagePresenceUpdater } from "@/components/custom/PagePresenceUpdater";
 import { headers } from "next/headers";
 import Image from "next/image";
+import { PageProps } from "../../.next/types/app/page";
 
-export default async function Home() {
+export default async function Home(props: PageProps) {
   const origin = headers().get("x-origin");
 
   console.log(origin);
@@ -11,10 +12,7 @@ export default async function Home() {
   if (origin && process.env.NODE_ENV === "production") {
     const url = new URL(`${origin}/api/record-event`);
 
-    fetch(url.href, {
-      method: "post",
-      body: JSON.stringify({ pageId: "home" }),
-    });
+   
   }
 
   return (
