@@ -1,10 +1,20 @@
-import { ToasterButtons } from "@/components/Toaster";
-import { SendMessageForm } from "@/components/custom/Form";
 import { LiveBlogPostCard } from "@/components/custom/LiveBlogPostCard";
 import { PagePresenceUpdater } from "@/components/custom/PagePresenceUpdater";
+import { headers } from "next/headers";
 import Image from "next/image";
 
-export default function Home() {
+export default async function Home() {
+  const origin = headers().get("x-origin");
+
+  if (origin && process.env.NODE_ENV === "production") {
+    const url = new URL(`${origin}/api/record-event`);
+
+    fetch(url.href, {
+      method: "post",
+      body: JSON.stringify({ pageId: "home" }),
+    });
+  }
+
   return (
     <>
       <main className="bg-background">
@@ -17,7 +27,7 @@ export default function Home() {
           className="pointer-events-none absolute left-0 -right-20 h-full w-full select-none md:block"
           style={{ color: "transparent" }}
         />
-        <div className="lg:pt-36 mx-auto lg:pb-36 py-8 py-8 px-8 max-w-7xl">
+        <div className="lg:pt-36 mx-auto lg:pb-36 py-8 px-8 max-w-7xl">
           <div className="mx-auto flex flex-col items-center">
             {/* <div className="opacity-100">
               <div className="w-full flex justify-center clip-reveal delay-1000">
@@ -57,10 +67,7 @@ export default function Home() {
             </div>
           </div>
           <section className="mx-auto mt-10 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none ">
-            <div
-              className="grid grid-cols-1 md:grid-cols-2 
-        lg:grid-cols-3 gap-4"
-            >
+            <div className="grid grid-cols-1 gap-4">
               {Object.values(BLOG_POSTS).map((post) => {
                 return (
                   <LiveBlogPostCard

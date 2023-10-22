@@ -1,16 +1,16 @@
 import { type ClassValue, clsx } from "clsx";
+import { NextRequest } from "next/server";
 import { twMerge } from "tailwind-merge";
-import { string, parse } from "valibot";
+import { z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 export const PUBLIC_API_KEYS = {
-  LiveBlocks: parse(
-    string(),
-    process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_API_KEY
-  ),
+  LiveBlocks: z
+    .string()
+    .parse(process.env.NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_API_KEY),
 } as const;
 
 export function notEmpty<TValue>(

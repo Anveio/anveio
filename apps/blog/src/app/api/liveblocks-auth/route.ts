@@ -1,4 +1,3 @@
-import { auth } from "@clerk/nextjs";
 import { Liveblocks } from "@liveblocks/node";
 import { NextRequest } from "next/server";
 
@@ -11,6 +10,12 @@ if (!LIVEBLOCKS_SECRET) {
 const liveblocks = new Liveblocks({
   secret: LIVEBLOCKS_SECRET,
 });
+
+const auth = () => {
+  return {
+    userId: undefined,
+  };
+};
 
 export async function POST(request: NextRequest) {
   const requestSession = auth();

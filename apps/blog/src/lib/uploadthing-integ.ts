@@ -1,7 +1,12 @@
-import { auth } from "@clerk/nextjs";
 import { FileRouter, createUploadthing } from "uploadthing/next";
 
 const f = createUploadthing();
+
+const auth = () => {
+  return {
+    userId: undefined,
+  };
+};
 
 // FileRouter for your app, can contain multiple FileRoutes
 export const uploadThingFileRouter = {

@@ -1,18 +1,7 @@
 import { z } from "zod";
 
-export const DATABASE_HOST = z
+export const DATABASE_URL = z
   .string({
-    required_error: "DATABASE_HOST missing",
+    required_error: "DATABASE_URL missing",
   })
-  .parse(process.env.DATABASE_HOST);
-export const DATABASE_USERNAME = z
-  .string({
-    required_error: "DATABASE_USERNAME missing",
-  })
-  .parse(process.env.DATABASE_USERNAME);
-
-export const DATABASE_PASSWORD = z
-  .string({
-    required_error: "DATABASE_PASSWORD missing",
-  })
-  .parse(process.env.DATABASE_PASSWORD);
+  .parse(process.env.DATABASE_URL);

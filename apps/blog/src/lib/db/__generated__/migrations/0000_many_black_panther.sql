@@ -1,0 +1,20 @@
+CREATE TABLE `blog_events` (
+	`id` serial AUTO_INCREMENT NOT NULL,
+	`page_id` varchar(50) NOT NULL,
+	`ip_address` varchar(39),
+	`city` varchar(30),
+	`country` varchar(30),
+	`flag` varchar(4),
+	`region` varchar(30),
+	`country_region` varchar(30),
+	`latitude` varchar(30),
+	`longitude` varchar(30),
+	`browser_name` varchar(50),
+	`browser_version` varchar(30),
+	`rendering_engine_name` varchar(30),
+	`device_type` varchar(15),
+	`device_vendor` varchar(50),
+	`device_model` varchar(50),
+	`created_at` timestamp NOT NULL DEFAULT (now()),
+	CONSTRAINT `blog_events_id` PRIMARY KEY(`id`)
+);

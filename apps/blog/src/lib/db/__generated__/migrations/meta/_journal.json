@@ -1,0 +1,13 @@
+{
+  "version": "5",
+  "dialect": "mysql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1697996641355,
+      "tag": "0000_many_black_panther",
+      "breakpoints": true
+    }
+  ]
+}
