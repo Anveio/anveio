@@ -15,7 +15,6 @@ const requestBodySchema = z.object({
 
 const ratelimit = new Ratelimit({
   redis: kv,
-  // 5 requests from the same IP in 10 seconds
   limiter: Ratelimit.slidingWindow(1, "5 s"),
 });
 
