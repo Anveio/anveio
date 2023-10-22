@@ -9,4 +9,6 @@ export const EventRecorder = (props: { pageId: string }) => {
       body: JSON.stringify({ pageId: props.pageId }),
     });
   }, [props.pageId]);
+
+  return null;
 };
