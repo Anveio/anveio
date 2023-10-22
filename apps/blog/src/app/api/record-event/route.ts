@@ -7,6 +7,8 @@ import { z } from "zod";
 import { Ratelimit } from "@upstash/ratelimit";
 import { kv } from "@vercel/kv";
 
+export const runtime = "edge";
+
 const requestBodySchema = z.object({
   pageId: z.string(),
 });
