@@ -6,6 +6,8 @@ import Image from "next/image";
 export default async function Home() {
   const origin = headers().get("x-origin");
 
+  console.log(origin);
+
   if (origin && process.env.NODE_ENV === "production") {
     const url = new URL(`${origin}/api/record-event`);
 
