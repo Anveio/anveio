@@ -2,9 +2,8 @@ import { EventRecorder } from "@/components/custom/EventRecorder";
 import { LiveBlogPostCard } from "@/components/custom/LiveBlogPostCard";
 import { PagePresenceUpdater } from "@/components/custom/PagePresenceUpdater";
 import Image from "next/image";
-import { EventRecorder } from "../components/custom/EventRecorder";
 
-export default async function Home(props: PageProps) {
+export default async function Home() {
   return (
     <>
       <main className="bg-background">
