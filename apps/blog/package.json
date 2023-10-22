@@ -52,8 +52,7 @@
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
     "uploadthing": "^5.6.1",
-    "valibot": "^0.15.0",
-    "zustand": "^4.3.9"
+    "valibot": "^0.15.0"
   },
   "devDependencies": {
     "@types/node": "20.3.2",

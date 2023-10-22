@@ -1,7 +1,6 @@
 "use client";
 
 import {} from "@radix-ui/react-dropdown-menu";
-import { useClerk } from "@clerk/clerk-react";
 import {
   DropdownMenu,
   DropdownMenuItem,
@@ -24,8 +23,6 @@ interface Props {
 }
 
 export const ManageAccountMenu = (props: Props) => {
-  const { signOut } = useClerk();
-
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -80,7 +77,7 @@ export const ManageAccountMenu = (props: Props) => {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           onClick={() => {
-            signOut();
+            // signOut();
           }}
         >
           Log out

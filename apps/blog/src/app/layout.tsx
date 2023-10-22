@@ -4,7 +4,6 @@ import { NavBar } from "@/components/custom/NavBar";
 import { WithRoom } from "@/components/custom/Room";
 import "@/lib/toasts/toast-styles.css";
 import { cn } from "@/lib/utils";
-import { ClerkProvider } from "@clerk/nextjs";
 import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
@@ -27,22 +26,18 @@ export default function RootLayout({
   const theme = cookieStore.get("theme");
 
   return (
-    <ClerkProvider>
-      <html lang="en">
-        <WithRoom roomId="blog-home" currentPageId="/">
-          <body className={cn(inter.className, theme?.value, "text-white")}>
-            <NavBar />
+    <html lang="en">
+      <WithRoom roomId="blog-home" currentPageId="/">
+        <body className={cn(inter.className, theme?.value, "text-white")}>
+          <div className="">
+            <CursorCanvas />
+            {children}
+          </div>
 
-            <div className="">
-              <CursorCanvas />
-              {children}
-            </div>
-
-            <BottomBar />
-            <Analytics />
-          </body>
-        </WithRoom>
-      </html>
-    </ClerkProvider>
+          <BottomBar />
+          <Analytics />
+        </body>
+      </WithRoom>
+    </html>
   );
 }

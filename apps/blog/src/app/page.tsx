@@ -74,7 +74,6 @@ export default function Home() {
             </div>
           </section>
         </div>
-        <SendMessageForm />
       </main>
       <PagePresenceUpdater pageId="home" />
     </>
