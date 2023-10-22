@@ -4,8 +4,17 @@ import { db } from "@/lib/db/db";
 import { events } from "@/lib/db/schema";
 import { z } from "zod";
 
+import { Ratelimit } from "@upstash/ratelimit";
+import { kv } from "@vercel/kv";
+
 const requestBodySchema = z.object({
   pageId: z.string(),
+});
+
+const ratelimit = new Ratelimit({
+  redis: kv,
+  // 5 requests from the same IP in 10 seconds
+  limiter: Ratelimit.slidingWindow(1, "5 s"),
 });
 
 export const POST = async (request: NextRequest) => {
@@ -24,7 +33,18 @@ export const POST = async (request: NextRequest) => {
 
   const ua = userAgentFromString(userAgent || undefined);
   const geo = geolocation(request);
-  const ip = ipAddress(request);
+  const ip = ipAddress(request) ?? "127.0.0.1";
+
+  const { success, pending, limit, reset, remaining } = await ratelimit.limit(
+    `${ip}-${pageId}}`
+  );
+
+  if (!success) {
+    console.error(
+      `Rate limit exceeded for ${ipAddress} on page ${pageId}. Ignoring`
+    );
+    return Response.json({}, { status: 200 });
+  }
 
   await db
     .insert(events)
