@@ -35,9 +35,7 @@ export const POST = async (request: NextRequest) => {
   const geo = geolocation(request);
   const ip = ipAddress(request) ?? "127.0.0.1";
 
-  const { success, pending, limit, reset, remaining } = await ratelimit.limit(
-    `${ip}-${pageId}}`
-  );
+  const { success } = await ratelimit.limit(`${ip}-${pageId}}`);
 
   if (!success) {
     console.error(
