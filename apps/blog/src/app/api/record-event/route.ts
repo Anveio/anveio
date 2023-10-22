@@ -28,7 +28,7 @@ export const POST = async (request: NextRequest) => {
 
   if (!parseResult.success) {
     console.error(`Failed to record event`, parseResult.error);
-    return Response.json(parseResult.error, { status: 200 });
+    return new Response(undefined, { status: 200 });
   }
 
   const { pageId } = parseResult.data;
@@ -43,7 +43,7 @@ export const POST = async (request: NextRequest) => {
     console.error(
       `Rate limit exceeded for ${ipAddress} on page ${pageId}. Ignoring`
     );
-    return Response.json({}, { status: 200 });
+    return new Response(undefined, { status: 200 });
   }
 
   await db
