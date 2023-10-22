@@ -1,20 +1,10 @@
+import { EventRecorder } from "@/components/custom/EventRecorder";
 import { LiveBlogPostCard } from "@/components/custom/LiveBlogPostCard";
 import { PagePresenceUpdater } from "@/components/custom/PagePresenceUpdater";
-import { headers } from "next/headers";
 import Image from "next/image";
-import { PageProps } from "../../.next/types/app/page";
+import { EventRecorder } from "../components/custom/EventRecorder";
 
 export default async function Home(props: PageProps) {
-  const origin = headers().get("x-origin");
-
-  console.log(origin);
-
-  if (origin && process.env.NODE_ENV === "production") {
-    const url = new URL(`${origin}/api/record-event`);
-
-   
-  }
-
   return (
     <>
       <main className="bg-background">
@@ -82,6 +72,7 @@ export default async function Home(props: PageProps) {
           </section>
         </div>
       </main>
+      <EventRecorder pageId="home" />
       <PagePresenceUpdater pageId="home" />
     </>
   );
