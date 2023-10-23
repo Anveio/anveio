@@ -26,10 +26,11 @@ export default function RootLayout({
   const theme = cookieStore.get("theme");
 
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <WithRoom roomId="blog-home" currentPageId="/">
         <body className={cn(inter.className, theme?.value, "text-white")}>
-          <div className="">
+          <NavBar />
+          <div>
             <CursorCanvas />
             {children}
           </div>

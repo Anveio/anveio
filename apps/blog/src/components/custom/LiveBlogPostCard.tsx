@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-import * as React from "react";
 import {
   Card,
   CardDescription,
@@ -9,24 +7,32 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { ClientSideSuspense } from "@liveblocks/react";
-import { Button } from "../ui/button";
-import { Presence, useOthers, useOthersOnPage } from "@/lib/liveblocks.client";
-import { User, BaseUserMeta } from "@liveblocks/client";
-import { AnimatePresence, motion, useAnimation } from "framer-motion";
-import { MotionCard } from "./MotionCard";
-import { notEmpty } from "@/lib/utils";
 import { AVATAR_ID_TO_DISPLAY_META } from "@/lib/features/avatars.client/avatars";
-import { Avatar } from "../ui/avatar";
-import { AvatarFallback } from "@radix-ui/react-avatar";
+import { useOthersOnPage } from "@/lib/liveblocks.client";
+import { cn, notEmpty } from "@/lib/utils";
+import { ClientSideSuspense } from "@liveblocks/react";
+import { AnimatePresence, motion, useAnimation } from "framer-motion";
+import Link from "next/link";
+import * as React from "react";
+import { Button } from "../ui/button";
+import { MotionCard } from "./MotionCard";
+import Image from "next/image";
 
 interface Props {
   id: string;
   title: string;
   content: string;
+  slug: string;
+  imageHref: string;
 }
 
+let IS_USING_MULTIPLAYER = false;
+
 export const LiveBlogPostCard = (props: Props) => {
+  if (!IS_USING_MULTIPLAYER) {
+    return <BlogPostCard {...props} />;
+  }
+
   return (
     <ClientSideSuspense
       fallback={
@@ -70,15 +76,17 @@ const BlogPostCardWithWidget = (props: Props) => {
     .map((avatar) => AVATAR_ID_TO_DISPLAY_META[avatar].iconColor);
 
   return (
-    <Link href={`/articles/${props.id}`}>
+    <Link href={`/articles/${props.slug}`}>
       <AppendRingIfLive
         numberWatchingLive={othersOnPage.length}
         colors={otherColors}
       >
         <MotionCard animate={controls}>
           <CardHeader>
-            <CardTitle>{props.title}</CardTitle>
-            <CardDescription>{props.content}</CardDescription>
+            <CardTitle className="">{props.title}</CardTitle>
+            <CardDescription className="px-2 md:px-4">
+              {props.content}
+            </CardDescription>
           </CardHeader>
           <CardFooter className="justify-between align-self-end">
             <div>
@@ -101,15 +109,31 @@ const BlogPostCard = (
   >
 ) => {
   return (
-    <Link href={`/articles/${props.id}`}>
-      <Card className={props.className}>
+    <Link href={`/blog/${props.slug}`}>
+      <Card className={cn(props.className, "")}>
         <CardHeader>
-          <CardTitle>{props.title}</CardTitle>
-          <CardDescription>{props.content}</CardDescription>
+          <CardTitle className="text-xl md:text-2xl xl:text-4xl text-center">
+            {props.title}
+          </CardTitle>
         </CardHeader>
-        <CardFooter className="justify-between align-self-end">
+        <CardDescription className="px-2 md:px-4">
+          {props.content}
+        </CardDescription>
+        <div className="relative">
+          <Image
+            src={props.imageHref}
+            priority
+            alt=""
+            width={1086}
+            height={800}
+            objectFit="cover"
+            className="pointer-events-none select-none rounded-b-xl"
+            style={{ color: "transparent" }}
+          />
+          <Button className="absolute bottom-2 right-2">Read</Button>
+        </div>
+        <CardFooter className="p-0 justify-between align-self-end">
           {props.children}
-          <Button>Read</Button>
         </CardFooter>
       </Card>
     </Link>
