@@ -1,5 +1,3 @@
-import { PagePresenceUpdater } from "@/components/custom/PagePresenceUpdater";
-import * as React from "react";
 
 export default function Home(props: {
   params: {
@@ -56,7 +54,7 @@ export default function Home(props: {
           </p>
         </main>
       </article>
-      <PagePresenceUpdater pageId={articleId} />
+      {/* <PagePresenceUpdater pageId={articleId} /> */}
     </div>
   );
 }

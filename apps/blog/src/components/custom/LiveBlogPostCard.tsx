@@ -17,6 +17,12 @@ import * as React from "react";
 import { Button } from "../ui/button";
 import { MotionCard } from "./MotionCard";
 import Image from "next/image";
+import { AnalyticsEvent } from "@/lib/analytics/types";
+import { enqueueAnalyticsEvent } from "./Analytics";
+
+type StartsWith<S extends string, T extends string> = T extends `${S}${infer _}`
+  ? T
+  : never;
 
 interface Props {
   id: string;
@@ -24,6 +30,7 @@ interface Props {
   content: string;
   slug: string;
   imageHref: string;
+  eventType: StartsWith<"click", AnalyticsEvent["eventType"]>;
 }
 
 let IS_USING_MULTIPLAYER = false;
@@ -92,7 +99,15 @@ const BlogPostCardWithWidget = (props: Props) => {
             <div>
               <OtherUsersReadingBlogWidget articleId={props.id} />
             </div>
-            <Button className="hover:text-black hover:bg-slate-200">
+            <Button
+              className="hover:text-black hover:bg-slate-200"
+              onClick={() => {
+                console.log("1111");
+                enqueueAnalyticsEvent({
+                  eventType: props.eventType,
+                });
+              }}
+            >
               Read
             </Button>
           </CardFooter>

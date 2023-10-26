@@ -10,6 +10,7 @@ import { cookies } from "next/headers";
 import * as React from "react";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
+import { CustomAnalytics } from "@/components/custom/Analytics";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default function RootLayout({
         <div>{children}</div>
         <Toaster />
         <Analytics />
+        <CustomAnalytics />
       </body>
     </html>
   );

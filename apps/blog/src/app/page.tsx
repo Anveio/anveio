@@ -1,9 +1,9 @@
-import { EventRecorderOnPropsChange } from "@/components/custom/EventRecorder";
+import { RecordEventOnMount } from "@/components/custom/Analytics";
 import { LiveBlogPostCard } from "@/components/custom/LiveBlogPostCard";
-import { PagePresenceUpdater } from "@/components/custom/PagePresenceUpdater";
+import { AnalyticsEvent } from "@/lib/analytics/types";
 import Image from "next/image";
 
-export default async function Home() {
+export default function Home() {
   return (
     <>
       <main className="bg-background">
@@ -39,6 +39,7 @@ export default async function Home() {
                     id={post.slug}
                     slug={post.slug}
                     imageHref={post.imageHref}
+                    eventType="click:vercel_edge_analytics"
                   />
                 );
               })}
@@ -46,8 +47,8 @@ export default async function Home() {
           </section>
         </div>
       </main>
-      <EventRecorderOnPropsChange event_type="page_view_home" />
-      <PagePresenceUpdater pageId="home" />
+      {/* <PagePresenceUpdater pageId="home" /> */}
+      <RecordEventOnMount event={analyticsEvent} />
     </>
   );
 }
@@ -68,4 +69,8 @@ const BLOG_POSTS: Record<
     functions and Planetscale's free tier instead`,
     imageHref: `/blog-assets/vercel-edge-analytics/cover.webp`,
   },
+} as const;
+
+const analyticsEvent: AnalyticsEvent = {
+  eventType: "view:home",
 } as const;
