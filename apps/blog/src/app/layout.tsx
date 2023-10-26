@@ -9,6 +9,7 @@ import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 import * as React from "react";
 import "./globals.css";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,18 +28,11 @@ export default function RootLayout({
 
   return (
     <html lang="en" className="dark">
-      <WithRoom roomId="blog-home" currentPageId="/">
-        <body className={cn(inter.className, theme?.value, "text-white")}>
-          <NavBar />
-          <div>
-            <CursorCanvas />
-            {children}
-          </div>
-
-          <BottomBar />
-          <Analytics />
-        </body>
-      </WithRoom>
+      <body className={cn(inter.className, theme?.value, "dark:text-slate-50")}>
+        <div>{children}</div>
+        <Toaster />
+        <Analytics />
+      </body>
     </html>
   );
 }

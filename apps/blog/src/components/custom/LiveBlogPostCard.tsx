@@ -92,7 +92,9 @@ const BlogPostCardWithWidget = (props: Props) => {
             <div>
               <OtherUsersReadingBlogWidget articleId={props.id} />
             </div>
-            <Button>Read</Button>
+            <Button className="hover:text-black hover:bg-slate-200">
+              Read
+            </Button>
           </CardFooter>
         </MotionCard>
       </AppendRingIfLive>

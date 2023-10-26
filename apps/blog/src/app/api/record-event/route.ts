@@ -10,7 +10,7 @@ import { kv } from "@vercel/kv";
 export const runtime = "edge";
 
 const requestBodySchema = z.object({
-  pageId: z.string(),
+  event_type: z.string(),
 });
 
 const ratelimit = new Ratelimit({
@@ -30,17 +30,17 @@ export const POST = async (request: NextRequest) => {
     return new Response(undefined, { status: 200 });
   }
 
-  const { pageId } = parseResult.data;
+  const { event_type } = parseResult.data;
 
   const ua = userAgentFromString(userAgent || undefined);
   const geo = geolocation(request);
   const ip = ipAddress(request) ?? "127.0.0.1";
 
-  const { success } = await ratelimit.limit(`${ip}-${pageId}}`);
+  const { success } = await ratelimit.limit(`${ip}-${event_type}}`);
 
   if (!success) {
     console.error(
-      `Rate limit exceeded for ${ipAddress} on page ${pageId}. Ignoring`
+      `Rate limit exceeded for ${ipAddress} on page ${event_type}. Ignoring`
     );
     return new Response(undefined, { status: 200 });
   }
@@ -48,7 +48,7 @@ export const POST = async (request: NextRequest) => {
   await db
     .insert(events)
     .values({
-      pageId: pageId,
+      event_type: event_type,
       ipAddress: ip,
       city: geo?.city,
       country: geo?.country,

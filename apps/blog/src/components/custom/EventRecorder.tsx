@@ -2,13 +2,13 @@
 
 import React from "react";
 
-export const EventRecorder = (props: { pageId: string }) => {
+export const EventRecorderOnPropsChange = (props: { event_type: string }) => {
   React.useEffect(() => {
     fetch(`/api/record-event`, {
       method: "post",
-      body: JSON.stringify({ pageId: props.pageId }),
+      body: JSON.stringify({ event_type: props.event_type }),
     });
-  }, [props.pageId]);
+  }, [props.event_type]);
 
   return null;
 };

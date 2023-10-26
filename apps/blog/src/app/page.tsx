@@ -1,4 +1,4 @@
-import { EventRecorder } from "@/components/custom/EventRecorder";
+import { EventRecorderOnPropsChange } from "@/components/custom/EventRecorder";
 import { LiveBlogPostCard } from "@/components/custom/LiveBlogPostCard";
 import { PagePresenceUpdater } from "@/components/custom/PagePresenceUpdater";
 import Image from "next/image";
@@ -46,7 +46,7 @@ export default async function Home() {
           </section>
         </div>
       </main>
-      <EventRecorder pageId="home" />
+      <EventRecorderOnPropsChange event_type="page_view_home" />
       <PagePresenceUpdater pageId="home" />
     </>
   );
@@ -63,8 +63,9 @@ const BLOG_POSTS: Record<
 > = {
   "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-directory": {
     slug: "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-directory",
-    content: `Free events for up to 10 million impressions a month and you can query your own data however you like with SQL. It turns out you can use Vercel to beat Vercel. Thanks Vercel! `,
-    title: `Saving $400 a month on Vercel analytics by using Vercel Edge functions and Planetscale instead.`,
+    content: `Free analytics for up to 10 million events a month and you can query your own data however you like with SQL. It turns out you can use Vercel to beat Vercel. Thanks Vercel! `,
+    title: `How to not pay $400/month for Vercel Analytics by using Vercel Edge
+    functions and Planetscale's free tier instead`,
     imageHref: `/blog-assets/vercel-edge-analytics/cover.webp`,
   },
 } as const;

@@ -1,13 +1,24 @@
-import {
-  mysqlTable,
-  serial,
-  varchar,
-  timestamp,
-  json,
-} from "drizzle-orm/mysql-core";
+import { Codeblock } from "@/components/custom/Codeblock";
+import Link from "next/link";
+import * as React from "react";
 
-export const events = mysqlTable("blog_events", {
-  id: serial("id").primaryKey().autoincrement(),
+export default function VercelAnalyticsBlogPost() {
+  return (
+    <div className="max-w-6xl m-auto bg-zinc-950">
+      <div className="py-4">
+        <Link href="/">{"<-"} Home</Link>
+      </div>
+      <h1 className="text-center text-2xl">
+        How to not pay $400/month for Vercel Analytics by using Vercel Edge
+        functions and Planetscale's free 10 million writes/month instead
+      </h1>
+      <div className="py-12">
+        <p>Stuff placeholder</p>
+        <Codeblock
+          language="tsx"
+          filename="schemas.ts"
+          text={`export const events = mysqlTable("blog_events", {
+  id: serial("id").primaryKey(),
   event_type: varchar("event_type", { length: 50 }).notNull(),
   ipAddress: varchar("ip_address", { length: 39 }),
   city: varchar("city", { length: 30 }),
@@ -23,6 +34,10 @@ export const events = mysqlTable("blog_events", {
   device_type: varchar("device_type", { length: 15 }),
   device_vendor: varchar("device_vendor", { length: 50 }),
   device_model: varchar("device_model", { length: 50 }),
-  metadata: json("metadata"),
   created_at: timestamp("created_at").notNull().defaultNow(),
-});
+});`}
+        />
+      </div>
+    </div>
+  );
+}
