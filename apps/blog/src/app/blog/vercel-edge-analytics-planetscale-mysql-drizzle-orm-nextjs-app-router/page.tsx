@@ -61,8 +61,8 @@ export default function VercelAnalyticsBlogPost() {
             <Image
               alt="Planetscale UI showing some analytics events"
               src={"/blog-assets/vercel-edge-analytics/table.webp"}
-              width={1152}
-              height={648}
+              width={896}
+              height={274}
             />
             <p className="italic text-center">
               A glimpse of the analytics table we'll be building
@@ -243,7 +243,7 @@ export default function VercelAnalyticsBlogPost() {
                   src="/blog-assets/vercel-edge-analytics/planetscale-dev-branch.webp"
                   alt="Planetscale UI: Branch name = dev, base branch = main, region = us-east-2 (Ohio)"
                   width={400}
-                  height={400}
+                  height={313}
                 />
               </div>
               <p>
@@ -262,7 +262,7 @@ export default function VercelAnalyticsBlogPost() {
                   src="/blog-assets/vercel-edge-analytics/planetscale-password.webp"
                   alt="Planetscale UI: Connect button"
                   width={800}
-                  height={800}
+                  height={647}
                 />
               </div>
               <p>
