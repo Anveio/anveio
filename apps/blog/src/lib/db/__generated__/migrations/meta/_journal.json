@@ -15,6 +15,13 @@
       "when": 1698290570614,
       "tag": "0001_wonderful_sabra",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1698302150108,
+      "tag": "0002_slow_legion",
+      "breakpoints": true
     }
   ]
 }

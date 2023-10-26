@@ -10,7 +10,7 @@ import { cookies } from "next/headers";
 import * as React from "react";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
-import { CustomAnalytics } from "@/components/custom/Analytics";
+import { CustomAnalytics } from "@/lib/analytics/analytics.client";
 
 const inter = Inter({ subsets: ["latin"] });
 

@@ -18,7 +18,7 @@ import { Button } from "../ui/button";
 import { MotionCard } from "./MotionCard";
 import Image from "next/image";
 import { AnalyticsEvent } from "@/lib/analytics/types";
-import { enqueueAnalyticsEvent } from "./Analytics";
+import { enqueueAnalyticsEvent } from "@/lib/analytics/analytics.client";
 
 type StartsWith<S extends string, T extends string> = T extends `${S}${infer _}`
   ? T

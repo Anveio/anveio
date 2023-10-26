@@ -1,4 +1,4 @@
-import { RecordEventOnMount } from "@/components/custom/Analytics";
+import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
 import { LiveBlogPostCard } from "@/components/custom/LiveBlogPostCard";
 import { AnalyticsEvent } from "@/lib/analytics/types";
 import { BLOG_POSTS } from "@/lib/blog/posts";

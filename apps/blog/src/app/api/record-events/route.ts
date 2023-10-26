@@ -22,6 +22,7 @@ const requestBodySchema = z.array(
         required_error: "Event type not provided",
       }
     ),
+    clientRecordedAtUtcMillis: z.number(),
     metadata: z.record(z.any()).optional(),
   })
 );
@@ -88,6 +89,7 @@ export const POST = async (request: NextRequest) => {
           device_vendor: ua.device.vendor,
           device_model: ua.device.model,
           metadata: event.metadata,
+          client_recorded_at: new Date(event.clientRecordedAtUtcMillis),
         })
         .execute();
     });

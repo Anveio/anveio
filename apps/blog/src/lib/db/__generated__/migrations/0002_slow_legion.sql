@@ -1,0 +1,1 @@
+ALTER TABLE `blog_events` ADD `client_recorded_at` timestamp NOT NULL;
