@@ -1,6 +1,7 @@
 import { RecordEventOnMount } from "@/components/custom/Analytics";
 import { LiveBlogPostCard } from "@/components/custom/LiveBlogPostCard";
 import { AnalyticsEvent } from "@/lib/analytics/types";
+import { BLOG_POSTS } from "@/lib/blog/posts";
 import Image from "next/image";
 
 export default function Home() {
@@ -52,24 +53,6 @@ export default function Home() {
     </>
   );
 }
-
-const BLOG_POSTS: Record<
-  string,
-  {
-    slug: string;
-    title: string;
-    content: string;
-    imageHref: string;
-  }
-> = {
-  "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-directory": {
-    slug: "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-directory",
-    content: `Free analytics for up to 10 million events a month and you can query your own data however you like with SQL. It turns out you can use Vercel to beat Vercel. Thanks Vercel! `,
-    title: `How to not pay $400/month for Vercel Analytics by using Vercel Edge
-    functions and Planetscale's free tier instead`,
-    imageHref: `/blog-assets/vercel-edge-analytics/cover.webp`,
-  },
-} as const;
 
 const analyticsEvent: AnalyticsEvent = {
   eventType: "view:home",

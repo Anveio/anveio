@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer base {
+  h1 {
+    orphans: 4;
+  }
+
   :root {
     --tw-bg-opacity: 1;
     --background: rgb(7 10 15 / var(--tw-bg-opacity));
