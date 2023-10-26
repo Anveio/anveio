@@ -140,7 +140,6 @@ const BlogPostCard = (
             alt=""
             width={1086}
             height={800}
-            objectFit="cover"
             className="pointer-events-none select-none rounded-b-xl"
             style={{ color: "transparent" }}
           />

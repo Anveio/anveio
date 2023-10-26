@@ -41,8 +41,8 @@ export default function VercelAnalyticsBlogPost() {
         <div className="py-4">
           <Link href="/">{"<-"} Home</Link>
         </div>
-        <article>
-          <div className="space-y-3 pb-6">
+        <article className="">
+          <div className="space-y-3">
             <p className="italic text-center">
               Published{" "}
               {formatDateWithSuffix(
@@ -69,18 +69,17 @@ export default function VercelAnalyticsBlogPost() {
             </p>
           </div>
 
-          <div className="py-12">
-            <div></div>
-            <section className="py-3 space-y-4">
+          <div className="py-12 space-y-8">
+            <section className="space-y-6">
               <p>
                 Vercel Analytics'{" "}
                 <Blink href="https://vercel.com/docs/analytics/limits-and-pricing">
                   free tier
                 </Blink>{" "}
-                gives you 2,500 events a month, which is pretty stingy! Its most
-                efficient tier costs $20 per 500k events before you they make
-                you pick up the phone and call them for a better price. But you
-                can set up an endpoint hosted on Vercel using the new{" "}
+                gives you 2,500 events a month, which isn't a lot. Its most
+                efficient tier costs $20 per 500k events before you have to pick
+                the phone and call for a better price. But you can set up an
+                endpoint hosted on Vercel using the new{" "}
                 <Blink href="https://nextjs.org/docs/pages/api-reference/edge">
                   Edge Runtime
                 </Blink>{" "}
@@ -90,43 +89,46 @@ export default function VercelAnalyticsBlogPost() {
                 </Blink>{" "}
                 for free and use that endpoint to write up to{" "}
                 <Blink href="https://planetscale.com/pricing">
-                  10 million analytics events per-month
+                  10 million free analytics events per-month
                 </Blink>{" "}
-                for free using Planetscale.
+                using Planetscale (I'm not affiliated in any way). The next 40
+                million events will cost you $29.
               </p>
 
               <p>
                 You can of course use any database you like but Planetscale is
-                as cheap as it gets. We're also going to be using Drizzle ORM in
-                this tutorial because it makes the code simpler, safer, compiles
-                down to regular SQL so it mostly avoids the classic ORM slowness
-                and if you want to bring your own database all you' have to do
-                is <span className="italic">delete</span> a line of code.
+                the cheapest managed solution. We're also going to be using
+                Drizzle ORM in this tutorial because it makes the code simpler,
+                safer, compiles down to regular SQL and if you want to bring
+                your own database all you' have to do is{" "}
+                <span className="italic">delete</span> a line of code. We'll
+                also be using Vercel KV to do rate limiting.
               </p>
               <p>
-                The geolocation data Vercel provides is impressively precise. I
-                had to fake the geolocation data for this tutorial to avoid
-                accidentally giving out the exact building I live in as it seems
-                to, in some cases, be accurate to within 50 feet. Quite scary!
+                The geolocation data Vercel provides is impressively precise,
+                accurate to within 50 feet in some cases. I had to fake the
+                geolocation data for this tutorial to avoid giving out the exact
+                building I live in. Quite scary!
               </p>
               <p>
-                If you're adding analytics this way to a project using this
-                exact tech stack already I expect it'll take just a few minutes
-                to get this set up. If you're starting a project fresh, this
-                entire tutorial will likely take just 30 minutes.
+                If you're adding analytics to a project using this exact tech
+                stack already I expect it'll take just a few minutes to get this
+                set up. If you're starting a project fresh, this entire tutorial
+                will likely take just 30 minutes.
               </p>
             </section>
-            <section>
-              <h2 className="text-xl font-bold pt-6 pb-4">
-                The high-level components
-              </h2>
+            <section className="space-y-6">
+              <h2 className="text-xl font-bold">The high-level components</h2>
               <ol className="list-decimal">
                 <li className="list-item">A table for our analytics events</li>
                 <li>
                   An edge function deployed on Vercel that collects the user's
-                  IP and Geolocation data
+                  IP and Geolocation data and writes the data to the table
                 </li>
-                <li>A lil' frontend app that pings this edge function</li>
+                <li>
+                  A lil' frontend app that pings this edge function from the
+                  user's browser.
+                </li>
               </ol>
               <p className="py-3">
                 Each of these components can be deployed independently but the
@@ -141,13 +143,12 @@ export default function VercelAnalyticsBlogPost() {
               </p>
             </section>
 
-            <section>
-              <h2 className="text-xl font-bold pt-6 pb-4">
-                Step 1: Install bun
-              </h2>
-              <p className="py-3">
-                Vercel supports it now so may as well to speed up deployments
-                and local development. You can use it alongside npm when Bun has
+            <section className="space-y-6">
+              <h2 className="text-xl font-bold">1. Install bun</h2>
+              <p>
+                If you'd rather use npm or yarn you can skip this. Vercel
+                supports Bun now so may as well to speed up deployments and
+                local development. You can use it alongside npm when Bun has
                 some gap in feature parity.
               </p>
               <p>
@@ -155,14 +156,24 @@ export default function VercelAnalyticsBlogPost() {
                 <Blink href="https://bun.sh/docs/installation">
                   https://bun.sh/docs/installation
                 </Blink>{" "}
-                so you can follow along with the rest of the tutorial. If you're
-                rather not feel free to use npm in place of bun.
+                to install it.
+              </p>
+              <p>
+                It also helps to have the Vercel CLI to manage environment
+                variables automatically, and you can install it with
+              </p>
+              <Codeblock
+                language="shell"
+                filename="install-vercel-cli.sh"
+                text={"bun install --global vercel"}
+              />
+              <p>
+                But you can choose to copy paste environment variables manually
+                if you prefer.
               </p>
             </section>
-            <section>
-              <h2 className="text-xl font-bold pt-6 pb-4">
-                Step 2: Create the Next.js app
-              </h2>
+            <section className="space-y-6">
+              <h2 className="text-xl font-bold">2. Create the Next.js app</h2>
               <p className="py-3">
                 Run the below command from your command line to create a Next.js
                 app using the App Router, Bun, and the{" "}
@@ -210,11 +221,122 @@ export default function VercelAnalyticsBlogPost() {
                 ></Codeblock>
               </div>
             </section>
-            <Codeblock
-              language="tsx"
-              filename="src/lib/db/schemas.ts"
-              text={SchemasCodeSnippet}
-            />
+            <section className="space-y-6">
+              <h2 className="text-xl font-semibold">3. Set up the DB</h2>
+              <p>
+                Ok this section is a lot of boring hooking stuff up and copying
+                around credentials but the good thing is you only have to do it
+                once. Managing environment variables is the most tedious part of
+                programming.
+              </p>
+              <p>
+                To get started create an account on{" "}
+                <Blink href="https://auth.planetscale.com/sign-in">
+                  Planetscale
+                </Blink>{" "}
+                and create a table with a branch name of "dev". We'll connect to
+                the dev branch for local development and the main branch for
+                production.
+              </p>
+              <div className="flex justify-center">
+                <Image
+                  src="/blog-assets/vercel-edge-analytics/planetscale-dev-branch.webp"
+                  alt="Planetscale UI: Branch name = dev, base branch = main, region = us-east-2 (Ohio)"
+                  width={400}
+                  height={400}
+                />
+              </div>
+              <p>
+                Then, from the overview tab, click connect on the top right and
+                then "new password" on the top right of the modal that pops up.
+                This will give you a connection string that includes the
+                username, password, branch, and URL of the database. It's the
+                only credential we need to connect to the DB from our app. Do
+                this once for the "main" branch and once for the "dev" branch
+                and make sure to copy the DATABASE_URL string for both as you
+                won't be able to see it after creation. Next step is to copy
+                these into Vercel
+              </p>
+              <div className="flex justify-center">
+                <Image
+                  src="/blog-assets/vercel-edge-analytics/planetscale-password.webp"
+                  alt="Planetscale UI: Connect button"
+                  width={800}
+                  height={800}
+                />
+              </div>
+              <p>
+                (Skipping past setting up a project in Vercel, using git, and
+                pushing to Github...) Navigate to the Environment Variables
+                section in your project's settings, Uncheck "Preview" and
+                "Development" and paste in the `DATABASE_URL="..."`environment
+                variable using the credentials for the "main" branch of your
+                Planetscale Database into the text fields and hit save. Do the
+                same for the "dev" branch but uncheck "Production" and "Preview"
+                before hitting save.
+              </p>
+              <p>
+                Now from a terminal somewhere in your project run the following
+                commands to pull in the development environment variables into
+                your local filesystem.
+              </p>
+              <Codeblock
+                language="shell"
+                filename="link-vercel-and-pull.sh"
+                text={`vercel link\nvercel env pull`}
+              />
+              <p>
+                Next, we'll start writing some code. First make files we'll put
+                our core DB code in.
+              </p>
+              <Codeblock
+                language="shell"
+                filename="create-db-folder.sh"
+                text={CreateDbFolderSnippet}
+              />
+              <p>
+                In src/lib/db/db.ts we'll put the core code to initialize our DB
+                and export the db connection to the rest of the codebase.
+              </p>
+              <Codeblock
+                language="tsx"
+                filename="src/lib/db/db.ts"
+                text={ConnectDbSnippet}
+              />
+              <p>
+                In the above codeblock we make sure we have DATABASE_URL set,
+                and ensure it throws at build time if it's not. We also set up
+                logging while in development mode but you can disable that
+                entirely or even enable it in production. We export default a
+                config that's read by Drizzle Kit so that it knows where to find
+                our schemas to generate migrations and push DB changes.
+              </p>
+              <p>Next, let's set up the schema for our analytics table:</p>
+              <Codeblock
+                language="tsx"
+                filename="src/lib/db/schemas.ts"
+                text={SchemasCodeSnippet}
+              />
+              <p>
+                To be honest, I haven't found "flagEmoji" to be a particularly
+                useful column as it seems redundant with the country column, but
+                I include it for exhaustiveness. Feel free to remove it for your
+                project.
+              </p>
+              <p>
+                The API for our analytics event is that events have an
+                "event_type" and "metadata". We can enforce the presence or lack
+                of metadata for some events as the API layer and get some
+                type-safety at build time with TypeScript.
+              </p>
+              <p>
+                Feel free to play around with the character lengths of these
+                columns. I'm using 50 for the event_type column as I plan to
+                stuff as much information into a structured event_type string as
+                possible, but if you prefer a different approach you can get
+                away with a smaller character allocation.
+              </p>
+            </section>
           </div>
         </article>
       </div>
@@ -234,6 +356,47 @@ const dateFormatter = new Intl.DateTimeFormat("en-US", {
 const formatDateWithSuffix = (date: Date) => {
   return dateFormatter.format(date);
 };
+
+const CreateDbFolderSnippet = `mkdir -p src/lib/db
+touch src/lib/db/db.ts src/lib/db/schema.ts
+`;
+
+const ConnectDbSnippet = `import { connect } from "@planetscale/database";
+import { drizzle } from "drizzle-orm/planetscale-serverless";
+import { Config } from "drizzle-kit";
+
+import { z } from "zod";
+
+export const DATABASE_URL = z
+  .string({
+    required_error: "DATABASE_URL missing",
+  })
+  .parse(process.env.DATABASE_URL);
+
+const connection = connect({
+  url: DATABASE_URL,
+});
+
+export const db = drizzle(
+  connection,
+  process.env.NODE_ENV === "development"
+    ? {
+        logger: {
+          logQuery: console.log,
+        },
+      }
+    : undefined
+);
+
+export default {
+  schema: "./src/lib/db/schema.ts",
+  driver: "mysql2",
+  dbCredentials: {
+    connectionString: DATABASE_URL,
+  },
+  out: "./src/lib/db/__generated__/migrations",
+} satisfies Config;
+`;
 
 const SchemasCodeSnippet = `
 export const events = mysqlTable("blog_events", {
