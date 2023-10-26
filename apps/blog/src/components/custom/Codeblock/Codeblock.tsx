@@ -32,7 +32,7 @@ export const Codeblock = (props: Props) => {
           <CopyCodeButton {...props} />
         </div>
       </div>
-      <div className="py-5 bg-zinc-900">
+      <div className="py-5 bg-zinc-900 overflow-x-scroll">
         <React.Suspense>
           <SyntaxHighlightedText text={props.text} language={props.language} />
         </React.Suspense>

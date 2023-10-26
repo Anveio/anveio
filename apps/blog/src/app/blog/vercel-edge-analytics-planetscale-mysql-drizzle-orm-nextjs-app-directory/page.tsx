@@ -27,7 +27,7 @@ const SchemasCodeSnippet = `export const events = mysqlTable("blog_events", {
 
 export default function VercelAnalyticsBlogPost() {
   return (
-    <>
+    <div className="py-3 sm:py-4 px-3 sm:px-3">
       <div className="max-w-4xl m-auto bg-zinc-950">
         <div className="py-4">
           <Link href="/">{"<-"} Home</Link>
@@ -49,7 +49,7 @@ export default function VercelAnalyticsBlogPost() {
         </div>
       </div>
       <RecordEventOnMount event={analyticsEvent} />
-    </>
+    </div>
   );
 }
 
