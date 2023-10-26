@@ -6,7 +6,6 @@ import { z } from "zod";
 
 import { Ratelimit } from "@upstash/ratelimit";
 import { kv } from "@vercel/kv";
-import { sql } from "drizzle-orm";
 
 export const runtime = "edge";
 
