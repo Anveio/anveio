@@ -2,21 +2,11 @@ import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
 import { LiveBlogPostCard } from "@/components/custom/LiveBlogPostCard";
 import { AnalyticsEvent } from "@/lib/analytics/types";
 import { BLOG_POSTS } from "@/lib/blog/posts";
-import Image from "next/image";
 
 export default function Home() {
   return (
     <>
       <main className="bg-background">
-        <Image
-          src={"/bghero.webp"}
-          priority
-          alt=""
-          width={1000}
-          height={1000}
-          className="pointer-events-none absolute z-10 left-0 -right-20 h-full w-full select-none md:block"
-          style={{ color: "transparent" }}
-        />
         <div className="lg:pt-36 mx-auto lg:pb-36 py-8 px-2 md:py-4 lg:px-8 max-w-6xl">
           <div className="mx-auto flex flex-col items-center">
             <h1 className="text-white text-center text-4xl md:text-6xl mb-4 font-bold hero-fade-up-enter-active delay-75">

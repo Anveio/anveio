@@ -88,30 +88,27 @@ const BlogPostCardWithWidget = (props: Props) => {
         numberWatchingLive={othersOnPage.length}
         colors={otherColors}
       >
-        <MotionCard animate={controls}>
-          <CardHeader>
-            <CardTitle className="">{props.title}</CardTitle>
-            <CardDescription className="px-2 md:px-4">
-              {props.content}
-            </CardDescription>
-          </CardHeader>
-          <CardFooter className="justify-between align-self-end">
-            <div>
-              <OtherUsersReadingBlogWidget articleId={props.id} />
-            </div>
-            <Button
-              className="hover:text-black hover:bg-slate-200"
-              onClick={() => {
-                console.log("1111");
-                enqueueAnalyticsEvent({
-                  eventType: props.eventType,
-                });
-              }}
-            >
-              Read
-            </Button>
-          </CardFooter>
-        </MotionCard>
+        <CardHeader>
+          <CardTitle className="text-2xl">{props.title}</CardTitle>
+          <CardDescription className="px-2 md:px-4">
+            {props.content}
+          </CardDescription>
+        </CardHeader>
+        <CardFooter className="justify-between align-self-end">
+          <div>
+            <OtherUsersReadingBlogWidget articleId={props.id} />
+          </div>
+          <Button
+            className="hover:text-black"
+            onClick={() => {
+              enqueueAnalyticsEvent({
+                eventType: props.eventType,
+              });
+            }}
+          >
+            Read
+          </Button>
+        </CardFooter>
       </AppendRingIfLive>
     </Link>
   );
@@ -147,7 +144,9 @@ const BlogPostCard = (
             className="pointer-events-none select-none rounded-b-xl"
             style={{ color: "transparent" }}
           />
-          <Button className="absolute bottom-2 right-2">Read</Button>
+          <Button className="absolute bottom-2 right-2 dark:hover:bg-slate-800">
+            Read
+          </Button>
         </div>
         <CardFooter className="p-0 justify-between align-self-end">
           {props.children}

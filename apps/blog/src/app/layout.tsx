@@ -11,7 +11,7 @@ import * as React from "react";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { CustomAnalytics } from "@/lib/analytics/analytics.client";
-
+import Image from "next/image";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -30,6 +30,15 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className={cn(inter.className, theme?.value, "dark:text-slate-50")}>
+        <Image
+          src={"/bghero.webp"}
+          priority
+          alt=""
+          width={1000}
+          height={1000}
+          className="pointer-events-none absolute left-0 -right-20 h-full w-full select-none md:block"
+          style={{ color: "transparent" }}
+        />
         <div>{children}</div>
         <Toaster />
         <Analytics />

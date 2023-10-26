@@ -17,7 +17,11 @@ export const metadata = {
     "Step by step tutorial on how to implement production ready analytics for large scale applications for free using Vercel, Vercel's Edge Runtime, Planetscale, TypeScript, Next.js App Router, Drizzle ORM, React, and TypeScript",
 };
 
-const LiB = (props: React.ComponentProps<typeof Link>) => {
+/**
+ * For external links that should open in a new tab and be underlined.
+ * @returns
+ */
+const Blink = (props: React.ComponentProps<typeof Link>) => {
   return (
     <Link
       {...props}
@@ -67,45 +71,49 @@ export default function VercelAnalyticsBlogPost() {
 
           <div className="py-12">
             <div></div>
-            <section className="py-3">
+            <section className="py-3 space-y-4">
               <p>
-                As of 2023, Vercel Analytics'{" "}
-                <LiB href="https://vercel.com/docs/analytics/limits-and-pricing">
+                Vercel Analytics'{" "}
+                <Blink href="https://vercel.com/docs/analytics/limits-and-pricing">
                   free tier
-                </LiB>{" "}
-                gives you 2,500 events a nonth, and its most efficient tier
-                costs $20 per 500k events before you they make you pick up the
-                phone and call them for a better price. But you can set up an
-                endpoint hosted on Vercel using the new{" "}
-                <LiB href="https://nextjs.org/docs/pages/api-reference/edge">
+                </Blink>{" "}
+                gives you 2,500 events a month, which is pretty stingy! Its most
+                efficient tier costs $20 per 500k events before you they make
+                you pick up the phone and call them for a better price. But you
+                can set up an endpoint hosted on Vercel using the new{" "}
+                <Blink href="https://nextjs.org/docs/pages/api-reference/edge">
                   Edge Runtime
-                </LiB>{" "}
+                </Blink>{" "}
                 to get{" "}
-                <LiB href="https://vercel.com/docs/functions/edge-functions/usage-and-pricing">
+                <Blink href="https://vercel.com/docs/functions/edge-functions/usage-and-pricing">
                   half-a-million invocations per-month
-                </LiB>{" "}
+                </Blink>{" "}
                 for free and use that endpoint to write up to{" "}
-                <LiB href="https://planetscale.com/pricing">
+                <Blink href="https://planetscale.com/pricing">
                   10 million analytics events per-month
-                </LiB>{" "}
+                </Blink>{" "}
                 for free using Planetscale.
               </p>
 
-              <p className="py-4">
+              <p>
                 You can of course use any database you like but Planetscale is
                 as cheap as it gets. We're also going to be using Drizzle ORM in
-                this tutorial because it's fantastic. It makes the code simpler
+                this tutorial because it makes the code simpler, safer, compiles
+                down to regular SQL so it mostly avoids the classic ORM slowness
                 and if you want to bring your own database all you' have to do
-                is <span className="italic">delete</span> a line of code. That's
-                it.
+                is <span className="italic">delete</span> a line of code.
               </p>
               <p>
-                From the data I've collected so far it turns out the geolocation
-                data Vercel let's you collect is quite impressively precise. I
-                had to modify the example data for this tutorial to fake
-                latitude and longitudes to avoid accidentally giving out the
-                exact building I live in since it's accurate to within 50 feet.
-                Quite scary!
+                The geolocation data Vercel provides is impressively precise. I
+                had to fake the geolocation data for this tutorial to avoid
+                accidentally giving out the exact building I live in as it seems
+                to, in some cases, be accurate to within 50 feet. Quite scary!
+              </p>
+              <p>
+                If you're adding analytics this way to a project using this
+                exact tech stack already I expect it'll take just a few minutes
+                to get this set up. If you're starting a project fresh, this
+                entire tutorial will likely take just 30 minutes.
               </p>
             </section>
             <section>
@@ -144,9 +152,9 @@ export default function VercelAnalyticsBlogPost() {
               </p>
               <p>
                 Follow the instructions at{" "}
-                <LiB href="https://bun.sh/docs/installation">
+                <Blink href="https://bun.sh/docs/installation">
                   https://bun.sh/docs/installation
-                </LiB>{" "}
+                </Blink>{" "}
                 so you can follow along with the rest of the tutorial. If you're
                 rather not feel free to use npm in place of bun.
               </p>
@@ -165,6 +173,41 @@ export default function VercelAnalyticsBlogPost() {
                   filename="create-next-app.sh"
                   text={`bunx create-next-app@latest --ts --app --src-dir --use-bun`}
                 />
+              </div>
+              <div className="space-y-3">
+                <p>
+                  Now let's install the dependencies we'll need for the first
+                  iteration of our analytics.
+                </p>
+                <p>
+                  @vercel/edge includes the utilities to pull the ip and
+                  geolocation from requests.
+                </p>
+                <p>
+                  drizzle-kit wil let us perform migrations and push migrations
+                  to the connected database
+                </p>
+                <p>
+                  drizzle-orm will allow us to write typesafe queries and take
+                  some boilerpalte out of the picture. It compiles down to SQL
+                  so there's no runtime cost to using it.
+                </p>
+                <p>
+                  Zod will allow us to get some type safety on the server and
+                  discard invalid requests.
+                </p>
+                <p>
+                  @planetscale/database exports a function that allows drizzle
+                  to create a connection to the Planetscale database, it's a set
+                  and forget config thing.
+                </p>
+              </div>
+              <div className="py-6">
+                <Codeblock
+                  language="shell"
+                  filename="install-initial-dependencies.sh"
+                  text={`bun i @vercel/edge drizzle-kit drizzle-orm zod @planetscale/database`}
+                ></Codeblock>
               </div>
             </section>
             <Codeblock
