@@ -124,7 +124,7 @@ export default function VercelAnalyticsBlogPost() {
                 IP addres and geolocation of a request and save it to a
                 database. It handles rate limiting IP's per unique event type
                 using a 5 second sliding window and validating the request body
-                against a list of known events. 
+                against a list of known events.
               </p>
               <Codeblock
                 filename="src/app/api/record-events/route.ts"
@@ -472,6 +472,9 @@ import { kv } from "@vercel/kv";
 
 export const runtime = "edge";
 
+/**
+ * Set up the expected request JSON schema
+ */
 const requestBodySchema = z.array(
   z.object({
     eventType: z.enum(
@@ -500,13 +503,23 @@ export const POST = async (request: NextRequest) => {
     return new Response(undefined, { status: 200 });
   }
 
+  /**
+   * Pull the user agent out from the request headers
+   */
   const userAgent = request.headers.get("user-agent");
 
+  /**
+   * Parse the request JSON
+   */
   const json = await request.json();
 
   const parseResult = requestBodySchema.safeParse(json);
 
   if (!parseResult.success) {
+    /**
+     * Return a 200 because the client doesn't necessarily need to know this failed
+     * but make sure we log it for our own purposes.
+     */
     console.error(\`Failed to record event\`, parseResult.error);
     return new Response(undefined, { status: 200 });
   }
@@ -515,10 +528,17 @@ export const POST = async (request: NextRequest) => {
   const geo = geolocation(request);
   const ip = ipAddress(request);
 
-  const filteredEvents = await Promise.all(
+  /**
+   * We're making this a batch API so that callers can minimize the amount of
+   * times they need to call this and we save ourselves some bandwidth.
+   */
+  const eventsUnderRateLimit = await Promise.all(
     parseResult.data.filter(async (event) => {
       const redisResponse = ratelimit.limit(\`\${ip}-\${event.eventType}}\`);
 
+      /**
+       * Ensure that emitting none of these events exceeds the rate limit
+       */
       if (!(await redisResponse).success) {
         console.error(
           \`Rate limit exceeded for \${ipAddress} for eventL \${event.eventType}. Ignoring\`
@@ -530,14 +550,17 @@ export const POST = async (request: NextRequest) => {
     })
   );
 
-  if (filteredEvents.length === 0) {
+  if (eventsUnderRateLimit.length === 0) {
     console.error(\`Rate limit exceeded for all events. Ignoring\`);
     return new Response(undefined, { status: 200 });
   }
 
-  db.transaction(async (db) => {
-    const transactions = filteredEvents.map(async (event) => {
-      return db
+  db.transaction(async (tx) => {
+    for (let event of eventsUnderRateLimit) {
+      /**
+       * We can't do concurrent writes so do these writes serially.
+       */
+      await tx
         .insert(events)
         .values({
           event_type: event.eventType,
@@ -559,11 +582,8 @@ export const POST = async (request: NextRequest) => {
           client_recorded_at: new Date(event.clientRecordedAtUtcMillis),
         })
         .execute();
-    });
-
-    return Promise.all(transactions);
+    }
   });
 
   return new Response(undefined, { status: 200 });
-};
-`;
+};`;
