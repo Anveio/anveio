@@ -69,7 +69,7 @@ export default function VercelAnalyticsBlogPost() {
             </p>
           </div>
 
-          <div className="py-12 space-y-8">
+          <div className="py-12 space-y-12">
             <section className="space-y-6">
               <p>
                 Vercel Analytics'{" "}
@@ -115,6 +115,30 @@ export default function VercelAnalyticsBlogPost() {
                 stack already I expect it'll take just a few minutes to get this
                 set up. If you're starting a project fresh, this entire tutorial
                 will likely take just 30 minutes.
+              </p>
+            </section>
+            <section className="space-y-6">
+              <h2 className="text-xl font-bold">Just give me the code</h2>
+              <p>
+                Here's the code for a Next.js Route Handler that will read the
+                IP addres and geolocation of a request and save it to a
+                database. It handles rate limiting IP's per unique event type
+                using a 5 second sliding window and validating the request body
+                against a list of known events. 
+              </p>
+              <Codeblock
+                filename="src/app/api/record-events/route.ts"
+                language="typescript"
+                text={RouteHandlerCodeSnippet}
+              />
+              <p>
+                if you use this code in your project don't forget to modify your
+                next.config.js to protect this route with CORs so it doesn't get
+                spammed from non-visitors. You also have the option to wall off
+                recording events to authenticated users only by reading, e.g. a
+                session token from the request using the cookie function
+                exported from Next.js and mapping the session token to a user.
+                The route handler above treats events as anonymous.
               </p>
             </section>
             <section className="space-y-6">
@@ -435,4 +459,111 @@ export const events = mysqlTable("blog_events", {
   metadata: json("metadata"),
   created_at: timestamp("created_at").notNull().defaultNow(),
 });
+`;
+
+const RouteHandlerCodeSnippet = `import { NextRequest, userAgentFromString } from "next/server";
+import { geolocation, ipAddress } from "@vercel/edge";
+import { db } from "@/lib/db/db";
+import { events } from "@/lib/db/schema";
+import { z } from "zod";
+
+import { Ratelimit } from "@upstash/ratelimit";
+import { kv } from "@vercel/kv";
+
+export const runtime = "edge";
+
+const requestBodySchema = z.array(
+  z.object({
+    eventType: z.enum(
+      [
+        "view:home",
+        "view:blog:my_blog_post",
+        "click:blog:my_blog_post",
+      ],
+      {
+        invalid_type_error: "Invalid event type",
+        required_error: "Event type not provided",
+      }
+    ),
+    clientRecordedAtUtcMillis: z.number(),
+    metadata: z.record(z.any()).optional(),
+  })
+);
+
+const ratelimit = new Ratelimit({
+  redis: kv,
+  limiter: Ratelimit.slidingWindow(1, "5 s"),
+});
+
+export const POST = async (request: NextRequest) => {
+  if (process.env.NODE_ENV === "development") {
+    return new Response(undefined, { status: 200 });
+  }
+
+  const userAgent = request.headers.get("user-agent");
+
+  const json = await request.json();
+
+  const parseResult = requestBodySchema.safeParse(json);
+
+  if (!parseResult.success) {
+    console.error(\`Failed to record event\`, parseResult.error);
+    return new Response(undefined, { status: 200 });
+  }
+
+  const ua = userAgentFromString(userAgent || undefined);
+  const geo = geolocation(request);
+  const ip = ipAddress(request);
+
+  const filteredEvents = await Promise.all(
+    parseResult.data.filter(async (event) => {
+      const redisResponse = ratelimit.limit(\`\${ip}-\${event.eventType}}\`);
+
+      if (!(await redisResponse).success) {
+        console.error(
+          \`Rate limit exceeded for \${ipAddress} for eventL \${event.eventType}. Ignoring\`
+        );
+        return true;
+      } else {
+        return false;
+      }
+    })
+  );
+
+  if (filteredEvents.length === 0) {
+    console.error(\`Rate limit exceeded for all events. Ignoring\`);
+    return new Response(undefined, { status: 200 });
+  }
+
+  db.transaction(async (db) => {
+    const transactions = filteredEvents.map(async (event) => {
+      return db
+        .insert(events)
+        .values({
+          event_type: event.eventType,
+          ipAddress: ip,
+          city: geo?.city,
+          country: geo?.country,
+          latitude: geo?.latitude,
+          longitude: geo?.longitude,
+          region: geo?.region,
+          countryRegion: geo?.countryRegion,
+          flagEmoji: geo?.flag,
+          browser_version: ua.browser.version,
+          browser_name: ua.browser.name,
+          rendering_engine_name: ua.engine.name,
+          device_type: ua.device.type,
+          device_vendor: ua.device.vendor,
+          device_model: ua.device.model,
+          metadata: event.metadata,
+          client_recorded_at: new Date(event.clientRecordedAtUtcMillis),
+        })
+        .execute();
+    });
+
+    return Promise.all(transactions);
+  });
+
+  return new Response(undefined, { status: 200 });
+};
 `;
