@@ -5,15 +5,29 @@ import { BLOG_POSTS } from "@/lib/blog/posts";
 import Image from "next/image";
 import Link from "next/link";
 import * as React from "react";
+import { cn } from "@/lib/utils";
 
 export const metadata = {
   title:
     "Shovon Hasan - " +
     BLOG_POSTS[
-      "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-directory"
+      "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-router"
     ].title,
   description:
-    "Step by step tutorial on how to implement production ready analytics for large scale applications for free using Vercel, Vercel's Edge Runtime, Planetscale, TypeScript, Next.js App Directory, Drizzle ORM, React, and TypeScript",
+    "Step by step tutorial on how to implement production ready analytics for large scale applications for free using Vercel, Vercel's Edge Runtime, Planetscale, TypeScript, Next.js App Router, Drizzle ORM, React, and TypeScript",
+};
+
+const LiB = (props: React.ComponentProps<typeof Link>) => {
+  return (
+    <Link
+      {...props}
+      className={cn(props.className, "text-underline dark:text-blue-400")}
+      target="_blank"
+      rel="noreferrer"
+    >
+      {props.children}
+    </Link>
+  );
 };
 
 export default function VercelAnalyticsBlogPost() {
@@ -29,14 +43,14 @@ export default function VercelAnalyticsBlogPost() {
               Published{" "}
               {formatDateWithSuffix(
                 BLOG_POSTS[
-                  "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-directory"
+                  "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-router"
                 ].publishedAt
               )}
             </p>
             <h1 className="text-center text-2xl font-semibold">
               {
                 BLOG_POSTS[
-                  "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-directory"
+                  "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-router"
                 ].title
               }
             </h1>
@@ -56,36 +70,24 @@ export default function VercelAnalyticsBlogPost() {
             <section className="py-3">
               <p>
                 As of 2023, Vercel Analytics'{" "}
-                <Link
-                  href="https://vercel.com/docs/analytics/limits-and-pricing"
-                  className="text-underline dark:text-blue-400"
-                >
+                <LiB href="https://vercel.com/docs/analytics/limits-and-pricing">
                   free tier
-                </Link>{" "}
+                </LiB>{" "}
                 gives you 2,500 events a nonth, and its most efficient tier
                 costs $20 per 500k events before you they make you pick up the
                 phone and call them for a better price. But you can set up an
                 endpoint hosted on Vercel using the new{" "}
-                <Link
-                  href="https://nextjs.org/docs/pages/api-reference/edge"
-                  className="text-underline dark:text-blue-400"
-                >
+                <LiB href="https://nextjs.org/docs/pages/api-reference/edge">
                   Edge Runtime
-                </Link>{" "}
+                </LiB>{" "}
                 to get{" "}
-                <Link
-                  href="https://vercel.com/docs/functions/edge-functions/usage-and-pricing"
-                  className="text-underline dark:text-blue-400"
-                >
+                <LiB href="https://vercel.com/docs/functions/edge-functions/usage-and-pricing">
                   half-a-million invocations per-month
-                </Link>{" "}
+                </LiB>{" "}
                 for free and use that endpoint to write up to{" "}
-                <Link
-                  href="https://planetscale.com/pricing"
-                  className="text-underline dark:text-blue-400"
-                >
+                <LiB href="https://planetscale.com/pricing">
                   10 million analytics events per-month
-                </Link>{" "}
+                </LiB>{" "}
                 for free using Planetscale.
               </p>
 
@@ -108,26 +110,62 @@ export default function VercelAnalyticsBlogPost() {
             </section>
             <section>
               <h2 className="text-xl font-bold pt-6 pb-4">
-                The high-level approach
+                The high-level components
               </h2>
               <ol className="list-decimal">
-                <li className="list-item">
-                  Create a table for our analytics events
-                </li>
+                <li className="list-item">A table for our analytics events</li>
                 <li>
-                  Deploy an edge function on Vercel that collects the user's IP
-                  and Geolocation data
+                  An edge function deployed on Vercel that collects the user's
+                  IP and Geolocation data
                 </li>
-                <li>
-                  Create a lil' frontend app that pings this edge function
-                </li>
+                <li>A lil' frontend app that pings this edge function</li>
               </ol>
-
-              <p>
-                We'll also need to rate limit events per user and per event type
-                and batch events on the client so that we minimize the total
-                number of edge functio invocations.
+              <p className="py-3">
+                Each of these components can be deployed independently but the
+                example code will use a single Next.js app using the new App
+                Directory to manage the database, the API, and the frontend.
               </p>
+              <p className="py-3">
+                To get this production ready wee'll also need to rate limit
+                events per user and per event type and batch events on the
+                client so that we minimize the total number of edge function
+                invocations.
+              </p>
+            </section>
+
+            <section>
+              <h2 className="text-xl font-bold pt-6 pb-4">
+                Step 1: Install bun
+              </h2>
+              <p className="py-3">
+                Vercel supports it now so may as well to speed up deployments
+                and local development. You can use it alongside npm when Bun has
+                some gap in feature parity.
+              </p>
+              <p>
+                Follow the instructions at{" "}
+                <LiB href="https://bun.sh/docs/installation">
+                  https://bun.sh/docs/installation
+                </LiB>{" "}
+                so you can follow along with the rest of the tutorial. If you're
+                rather not feel free to use npm in place of bun.
+              </p>
+            </section>
+            <section>
+              <h2 className="text-xl font-bold pt-6 pb-4">
+                Step 2: Create the Next.js app
+              </h2>
+              <p className="py-3">
+                Run the below command from your command line to create a Next.js
+                app using the App Router, Bun, and the{" "}
+              </p>
+              <div className="py-6">
+                <Codeblock
+                  language="shell"
+                  filename="create-next-app.sh"
+                  text={`bunx create-next-app@latest --ts --app --src-dir --use-bun`}
+                />
+              </div>
             </section>
             <Codeblock
               language="tsx"

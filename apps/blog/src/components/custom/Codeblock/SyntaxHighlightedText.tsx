@@ -4,7 +4,7 @@ import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
 import { Prism } from "react-syntax-highlighter";
 interface Props {
   text: string;
-  language: "typescript" | "tsx";
+  language: string;
 }
 
 /**
@@ -28,7 +28,11 @@ const PRISM_STYLE = {
 
 export const SyntaxHighlightedText = (props: Props) => {
   return (
-    <Prism showLineNumbers language={props.language} style={PRISM_STYLE as any}>
+    <Prism
+      showLineNumbers={props.language === "shell" ? false : true}
+      language={props.language}
+      style={PRISM_STYLE as any}
+    >
       {props.text}
     </Prism>
   );
