@@ -65,7 +65,13 @@ export const POST = async (request: NextRequest) => {
   const geo = geolocation(request);
   const ip = ipAddress(request);
 
-  console.log(`Logging event for: ${ip}, geo ${geo}, ua ${ua}`);
+  console.log(
+    `Logging event for: ${ip}, geo ${JSON.stringify(
+      geo,
+      null,
+      2
+    )}, ua ${JSON.stringify(ua, null, 2)}`
+  );
 
   /**
    * We're making this a batch API so that callers can minimize the amount of
@@ -92,6 +98,8 @@ export const POST = async (request: NextRequest) => {
   if (eventsUnderRateLimit.length === 0) {
     console.warn(`Rate limit exceeded for all events. Ignoring`);
     return new Response(undefined, { status: 200 });
+  } else {
+    console.log(`Logging ${eventsUnderRateLimit.length} events`);
   }
 
   db.transaction(async (tx) => {
@@ -121,6 +129,8 @@ export const POST = async (request: NextRequest) => {
           client_recorded_at: new Date(event.clientRecordedAtUtcMillis),
         })
         .execute();
+
+      console.log(`Committed to DB: ${event.eventType}`);
     }
   });
 
