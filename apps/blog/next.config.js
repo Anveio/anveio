@@ -50,11 +50,9 @@ const nextConfig = {
 
 // https://nextjs.org/docs/advanced-features/security-headers
 const ContentSecurityPolicy = `
-    default-src 'self' vercel.live challenges.cloudflare.com thrall.anveio.com;
+    default-src 'self' vercel.live challenges.cloudflare.com shovonhasan.com anveio.com;
     script-src 'self' 'unsafe-eval' 'unsafe-inline' blob: cdn.vercel-insights.com vercel.live ${
-      process.env.NODE_ENV === "development"
-        ? "*.clerk.accounts.dev"
-        : "clerk.shovonhasan.com"
+      process.env.NODE_ENV === "development" ? "va.vercel-scripts.com" : ""
     };
     style-src 'self' 'unsafe-inline';
     img-src * blob: data:;

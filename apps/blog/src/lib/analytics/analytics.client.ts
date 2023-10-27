@@ -14,11 +14,13 @@ async function flushAnalyticsEventQueue() {
   if (events.length === 0) return;
 
   try {
+    console.log("Doing analytics flush");
     await fetch("/api/record-events", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(events),
     });
+    console.log("Done");
     localStorage.setItem(KEY, JSON.stringify([]));
   } catch (err) {
     // Swallow error for now

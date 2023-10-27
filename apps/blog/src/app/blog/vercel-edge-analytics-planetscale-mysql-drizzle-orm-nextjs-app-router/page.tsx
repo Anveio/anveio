@@ -301,7 +301,7 @@ export default function VercelAnalyticsBlogPost() {
               <p>
                 (Skipping past setting up a project in Vercel, using git, and
                 pushing to Github...) Navigate to the Environment Variables
-                section in your project's settings, Uncheck "Preview" and
+                section in your Vercel project's settings, Uncheck "Preview" and
                 "Development" and paste in the `DATABASE_URL="..."`environment
                 variable using the credentials for the "main" branch of your
                 Planetscale Database into the text fields and hit save. Do the
@@ -428,8 +428,7 @@ export default {
     connectionString: DATABASE_URL,
   },
   out: "./src/lib/db/__generated__/migrations",
-} satisfies Config;
-`;
+} satisfies Config;`;
 
 const SchemasCodeSnippet = `
 export const events = mysqlTable("blog_events", {
