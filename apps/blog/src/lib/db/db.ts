@@ -14,16 +14,11 @@ const connection = connect({
   url: DATABASE_URL,
 });
 
-export const db = drizzle(
-  connection,
-  process.env.NODE_ENV === "development"
-    ? {
-        logger: {
-          logQuery: console.log,
-        },
-      }
-    : undefined
-);
+export const db = drizzle(connection, {
+  logger: {
+    logQuery: console.log,
+  },
+});
 
 export default {
   schema: "./src/lib/db/schema.ts",
