@@ -488,8 +488,8 @@ const requestBodySchema = z.array(
     eventType: z.enum(
       [
         "view:home",
-        "view:blog:my_blog_post",
-        "click:blog:my_blog_post",
+        "view:blog:vercel_edge_analytics",
+        "click:vercel_edge_analytics",
       ],
       {
         invalid_type_error: "Invalid event type",
@@ -559,11 +559,13 @@ export const POST = async (request: NextRequest) => {
   );
 
   if (eventsUnderRateLimit.length === 0) {
-    console.error(\`Rate limit exceeded for all events. Ignoring\`);
+    console.warn(\`Rate limit exceeded for all events. Ignoring\`);
     return new Response(undefined, { status: 200 });
+  } else {
+    console.log(\`Logging \${eventsUnderRateLimit.length} events\`);
   }
 
-  db.transaction(async (tx) => {
+  await db.transaction(async (tx) => {
     for (let event of eventsUnderRateLimit) {
       /**
        * We can't do concurrent writes so do these writes serially.
@@ -573,7 +575,7 @@ export const POST = async (request: NextRequest) => {
         .values({
           event_type: event.eventType,
           ipAddress: ip,
-          city: geo?.city,
+          city: geo && geo.city ? decodeURIComponent(geo.city) : undefined,
           country: geo?.country,
           latitude: geo?.latitude,
           longitude: geo?.longitude,
