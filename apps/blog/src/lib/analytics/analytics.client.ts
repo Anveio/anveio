@@ -57,7 +57,7 @@ export const RecordEventOnMount = (props: {
 }): React.ReactNode => {
   React.useEffect(() => {
     enqueueAnalyticsEvent(props.event);
-  }, []);
+  }, [props.event]);
 
   return null;
 };
