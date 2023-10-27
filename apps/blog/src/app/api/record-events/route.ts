@@ -65,6 +65,8 @@ export const POST = async (request: NextRequest) => {
   const geo = geolocation(request);
   const ip = ipAddress(request);
 
+  console.log(`Logging event for: ${ip}, geo ${geo}, ua ${ua}`);
+
   /**
    * We're making this a batch API so that callers can minimize the amount of
    * times they need to call this and we save ourselves some bandwidth.
@@ -88,7 +90,7 @@ export const POST = async (request: NextRequest) => {
   );
 
   if (eventsUnderRateLimit.length === 0) {
-    console.error(`Rate limit exceeded for all events. Ignoring`);
+    console.warn(`Rate limit exceeded for all events. Ignoring`);
     return new Response(undefined, { status: 200 });
   }
 
@@ -102,7 +104,7 @@ export const POST = async (request: NextRequest) => {
         .values({
           event_type: event.eventType,
           ipAddress: ip,
-          city: geo?.city,
+          city: geo && geo.city ? decodeURIComponent(geo.city) : undefined,
           country: geo?.country,
           latitude: geo?.latitude,
           longitude: geo?.longitude,

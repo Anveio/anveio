@@ -65,6 +65,6 @@ export const RecordEventOnMount = (props: {
 };
 
 export const CustomAnalytics = () => {
-  useInterval(flushAnalyticsEventQueue, 3000);
+  useInterval(flushAnalyticsEventQueue, 10_000);
   return null;
 };
