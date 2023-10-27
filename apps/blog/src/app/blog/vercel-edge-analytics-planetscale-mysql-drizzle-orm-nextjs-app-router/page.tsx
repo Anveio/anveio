@@ -110,21 +110,18 @@ export default function VercelAnalyticsBlogPost() {
                 geolocation data for this tutorial to avoid giving out the exact
                 building I live in. Quite scary!
               </p>
-              <p>
-                If you're adding analytics to a project using this exact tech
-                stack already I expect it'll take just a few minutes to get this
-                set up. If you're starting a project fresh, this entire tutorial
-                will likely take just 30 minutes.
-              </p>
             </section>
             <section className="space-y-6">
               <h2 className="text-xl font-bold">Just give me the code</h2>
               <p>
-                Here's the code for a Next.js Route Handler that will read the
-                IP addres and geolocation of a request and save it to a
-                database. It handles rate limiting IP's per unique event type
-                using a 5 second sliding window and validating the request body
-                against a list of known events.
+                Here's the code for a{" "}
+                <Blink href="https://nextjs.org/docs/app/building-your-application/routing/route-handlers">
+                  Next.js Route Handler
+                </Blink>{" "}
+                that will read the IP addres and geolocation of a request and
+                save it to a database. It handles rate limiting IP's per unique
+                event type using a 5 second sliding window and validating the
+                request body against a list of known events.
               </p>
               <Codeblock
                 filename="src/app/api/record-events/route.ts"
@@ -133,12 +130,24 @@ export default function VercelAnalyticsBlogPost() {
               />
               <p>
                 if you use this code in your project don't forget to modify your
-                next.config.js to protect this route with CORs so it doesn't get
+                next.config.js to protect this route with CORS so it doesn't get
                 spammed from non-visitors. You also have the option to wall off
-                recording events to authenticated users only by reading, e.g. a
+                recording events to authenticated-users-only by reading, e.g. a
                 session token from the request using the cookie function
-                exported from Next.js and mapping the session token to a user.
-                The route handler above treats events as anonymous.
+                exported from <pre className="inline">next/server</pre> and
+                mapping the session token to a user. The route handler above
+                does not do that and treats events as anonymous.
+              </p>
+              <p>
+                If you want to know more about how to set up the full tech stack
+                used in that example, including Drizzle ORM and Planetscale to
+                get 10 million free events a month, read on.
+              </p>
+              <p>
+                If you're adding analytics to a project using this exact tech
+                stack already I expect it'll take just a few minutes to get this
+                set up. If you're starting a project fresh, this entire tutorial
+                will likely take just 30 minutes.
               </p>
             </section>
             <section className="space-y-6">
