@@ -90,7 +90,7 @@ const BlogPostCardWithWidget = (props: Props) => {
       >
         <CardHeader>
           <CardTitle className="text-2xl">{props.title}</CardTitle>
-          <CardDescription className="px-2 md:px-4">
+          <CardDescription className="px-2 md:px-4 text-xl text-center">
             {props.content}
           </CardDescription>
         </CardHeader>
@@ -126,11 +126,11 @@ const BlogPostCard = (
     <Link href={`/blog/${props.slug}`}>
       <Card className={cn(props.className, "")}>
         <CardHeader>
-          <CardTitle className="text-xl md:text-2xl xl:text-4xl text-center">
+          <CardTitle className="text-2xl xl:text-4xl text-center">
             {props.title}
           </CardTitle>
         </CardHeader>
-        <CardDescription className="px-2 md:px-4">
+        <CardDescription className="px-2 md:px-4 text-base py-4">
           {props.content}
         </CardDescription>
         <div className="relative">
@@ -143,7 +143,7 @@ const BlogPostCard = (
             className="pointer-events-none select-none rounded-b-xl"
             style={{ color: "transparent" }}
           />
-          <Button className="absolute bottom-2 right-2 dark:hover:bg-slate-800">
+          <Button variant={"outline"} className="absolute bottom-2 right-2 dark:hover:bg-slate-800">
             Read
           </Button>
         </div>

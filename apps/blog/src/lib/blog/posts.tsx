@@ -7,4 +7,21 @@ export const BLOG_POSTS = {
     publishedAt: new Date("2023-10-27"),
     majorUpdateDates: [],
   },
+  "algorithmic-loot-generation-sucks": {
+    slug: "algorithmic-loot-generation-sucks",
+    content:
+      "The loot we find are foundational to the stories we form of our time playing games. Who decided this needed to automated?",
+    title: `What did we gain from algorithmic loot generation? More than we lost.`,
+    imageHref: `/blog-assets/algorithmic-loot-generation-sucks/cover.webp`,
+    publishedAt: new Date("2023-10-28"),
+    majorUpdateDates: [],
+  },
 } as const;
+
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
+  dateStyle: "long", // Date as "October 25, 2023"
+});
+
+export const formatDateWithSuffix = (date: Date) => {
+  return dateFormatter.format(date);
+};

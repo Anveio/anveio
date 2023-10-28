@@ -20,20 +20,22 @@ export default function Home() {
             </div>
           </div>
           <section className="mx-auto mt-10 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none ">
-            <div className="grid grid-cols-1 gap-4">
-              {Object.values(BLOG_POSTS).map((post) => {
-                return (
-                  <LiveBlogPostCard
-                    key={post.slug}
-                    content={post.content}
-                    title={post.title}
-                    id={post.slug}
-                    slug={post.slug}
-                    imageHref={post.imageHref}
-                    eventType="click:vercel_edge_analytics"
-                  />
-                );
-              })}
+            <div className="grid grid-cols-1 gap-12">
+              {Object.values(BLOG_POSTS)
+                .sort((a, b) => Number(b.publishedAt) - Number(a.publishedAt))
+                .map((post) => {
+                  return (
+                    <LiveBlogPostCard
+                      key={post.slug}
+                      content={post.content}
+                      title={post.title}
+                      id={post.slug}
+                      slug={post.slug}
+                      imageHref={post.imageHref}
+                      eventType="click:vercel_edge_analytics"
+                    />
+                  );
+                })}
             </div>
           </section>
         </div>
