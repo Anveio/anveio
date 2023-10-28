@@ -4,7 +4,7 @@ import Image from "next/image";
 export const metadata = {
   title: BLOG_POSTS["algorithmic-loot-generation-sucks"].title,
   description:
-    "Step by step tutorial on how to implement production ready analytics for large scale applications for free using Vercel, Vercel's Edge Runtime, Planetscale, TypeScript, Next.js App Router, Drizzle ORM, React, and TypeScript",
+    "A rant on how algorithmic loot generation has ruined the stories we form of our time playing games.",
 };
 
 export default function Post() {
