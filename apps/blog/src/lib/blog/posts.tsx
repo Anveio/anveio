@@ -10,7 +10,7 @@ export const BLOG_POSTS = {
   "algorithmic-loot-generation-sucks": {
     slug: "algorithmic-loot-generation-sucks",
     content:
-      "The loot we find are foundational to the stories we form of our time playing games. Who decided this needed to automated?",
+      "Loot we find in games are foundational to the stories we form of our time playing them. Who decided this needed to automated?",
     title: `What did we gain from algorithmic loot generation? More than we lost.`,
     imageHref: `/blog-assets/algorithmic-loot-generation-sucks/cover.webp`,
     publishedAt: new Date("2023-10-28"),

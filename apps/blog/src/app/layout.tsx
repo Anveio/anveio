@@ -15,8 +15,10 @@ import Image from "next/image";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Shovon Hasan - Blog",
-  description: "Thoughts on software ngineering culture, and science",
+  title: "Anveio - Shovon Hasan - Blog",
+  description:
+    "Thoughts on software engineering, culture, and science from Shovon Hasan (Anveio).",
+  "view-transition": "same-origin",
 };
 
 export default function RootLayout({

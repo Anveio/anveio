@@ -140,10 +140,13 @@ const BlogPostCard = (
             alt=""
             width={1086}
             height={800}
-            className="pointer-events-none select-none rounded-b-xl"
+            className="pointer-events-none select-none rounded-b-xl blog-post-cover-image"
             style={{ color: "transparent" }}
           />
-          <Button variant={"outline"} className="absolute bottom-2 right-2 dark:hover:bg-slate-800">
+          <Button
+            variant={"outline"}
+            className="absolute bottom-2 right-2 dark:hover:bg-slate-800"
+          >
             Read
           </Button>
         </div>

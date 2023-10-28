@@ -25,6 +25,7 @@ export default function Post() {
         <Image
           alt="Decorative box art of an imaginary RPG game"
           src={"/blog-assets/algorithmic-loot-generation-sucks/cover.webp"}
+          className="blog-post-cover-image"
           width={896}
           height={660}
         />
