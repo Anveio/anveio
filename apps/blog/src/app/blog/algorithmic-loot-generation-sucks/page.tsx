@@ -24,7 +24,7 @@ export default function Post() {
           alt="Decorative box art of an imaginary RPG game"
           src={"/blog-assets/algorithmic-loot-generation-sucks/cover.webp"}
           width={896}
-          height={274}
+          height={660}
         />
         <p className="italic text-center">
           We would have been better off algorithmically generating the stories.
