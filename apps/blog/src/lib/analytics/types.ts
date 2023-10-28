@@ -2,16 +2,12 @@ export type AnalyticsEvent = {
   eventType:
     | `view:home`
     | `view:blog:vercel_edge_analytics`
+    | `view:blog:algorithmic-loot-generation-sucks`
     | `click:vercel_edge_analytics`;
   metadata?: Partial<EventMeta>;
 };
 
-export type AnalyticsEventWithClientRecordedTimestamp = {
-  eventType:
-    | `view:home`
-    | `view:blog:vercel_edge_analytics`
-    | `click:vercel_edge_analytics`;
-  metadata?: Partial<EventMeta>;
+export type AnalyticsEventWithClientRecordedTimestamp = AnalyticsEvent & {
   clientRecordedAtUtcMillis: number;
 };
 

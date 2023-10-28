@@ -349,7 +349,7 @@ export default function VercelAnalyticsBlogPost() {
   );
 }
 
-const analyticsEvent = {
+const analyticsEvent: AnalyticsEvent = {
   eventType: "view:blog:vercel_edge_analytics",
 } as const;
 

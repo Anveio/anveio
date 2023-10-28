@@ -1,3 +1,5 @@
+import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
+import { AnalyticsEvent } from "@/lib/analytics/types";
 import { BLOG_POSTS, formatDateWithSuffix } from "@/lib/blog/posts";
 import Image from "next/image";
 
@@ -100,6 +102,11 @@ export default function Post() {
           away?
         </p>
       </section>
+      <RecordEventOnMount event={analyticsEvent} />
     </article>
   );
 }
+
+const analyticsEvent: AnalyticsEvent = {
+  eventType: "view:blog:algorithmic-loot-generation-sucks",
+} as const;
