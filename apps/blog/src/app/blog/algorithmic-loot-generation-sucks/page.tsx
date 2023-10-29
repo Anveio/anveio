@@ -44,20 +44,20 @@ export default function Post() {
           You're playing an RPG at your computer on a rainy Friday evening. You
           enter the Cave of Despair with your ragtag group to rescue a child
           kidnapped from the village nearby. After failing to convince the
-          bandit chieftan who's holed up in the cave with his clan you're forced
-          to kill him. You spend the next hour struggling and trying different
-          different strategies until finally his head falls. Upon opening his
-          treasure chest you find the Bow of Silent Ends, a magical artifact
-          that the chieftan had stolen but could not appreciate the power of.
-          You drag it into the weapon slot of one of your party members and
-          right click the nearest enemy. Your brain floods with happy chemicals
-          as you discover that your archer now does four times as much damage as
-          he used to and you can take on the Lizard King at the top of Mythical
-          Mountain, who you failed to beat after hours of trying last night.
-          You're filled with determination and excitement as you head back up
-          the mountain, glad for this hard-won turn of the tide in your favor
-          and your mind buzzes with possibilities at what loot The Lizard King
-          will drop next.
+          bandit chieftan inside to let the child go you're forced to kill him
+          and his entire clan. You spend the next hour struggling and trying
+          different different strategies until finally his head falls. Upon
+          opening his treasure chest you find the Bow of Silent Ends, a magical
+          artifact that the chieftan had stolen but could not appreciate the
+          power of. You drag it into the weapon slot of one of your party
+          members and right click the nearest enemy. Your brain floods with
+          happy chemicals as you discover that your archer now does four times
+          as much damage as he used to and you can take on the Lizard King at
+          the top of Mythical Mountain, who you failed to beat after hours of
+          trying last night. You're filled with determination and excitement as
+          you head back up the mountain, glad for this hard-won turn of the tide
+          in your favor and your mind buzzes with possibilities at what loot The
+          Lizard King will drop next.
         </p>
       </section>
       <section className="space-y-4">
