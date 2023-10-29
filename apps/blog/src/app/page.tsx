@@ -23,7 +23,7 @@ export default function Home() {
             <div className="grid grid-cols-1 gap-12">
               {Object.values(BLOG_POSTS)
                 .sort((a, b) => Number(b.publishedAt) - Number(a.publishedAt))
-                .map((post) => {
+                .map((post, index) => {
                   return (
                     <LiveBlogPostCard
                       key={post.slug}
@@ -33,6 +33,7 @@ export default function Home() {
                       slug={post.slug}
                       imageHref={post.imageHref}
                       eventType="click:vercel_edge_analytics"
+                      priority={index === 0 ? true : undefined}
                     />
                   );
                 })}

@@ -14,12 +14,14 @@ async function flushAnalyticsEventQueue() {
   if (events.length === 0) return;
 
   try {
-    await fetch("/api/record-events", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(events),
-    });
-    localStorage.setItem(KEY, JSON.stringify([]));
+    const sendBeaconResult = navigator.sendBeacon(
+      "/api/record-events",
+      JSON.stringify(events)
+    );
+
+    if (sendBeaconResult) {
+      localStorage.setItem(KEY, JSON.stringify([]));
+    }
   } catch (err) {
     // Swallow error for now
   }

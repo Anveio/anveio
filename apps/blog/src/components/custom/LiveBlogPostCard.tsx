@@ -31,6 +31,7 @@ interface Props {
   slug: string;
   imageHref: string;
   eventType: StartsWith<"click", AnalyticsEvent["eventType"]>;
+  priority?: boolean;
 }
 
 let IS_USING_MULTIPLAYER = false;
@@ -141,7 +142,6 @@ const BlogPostCard = (
             width={1086}
             height={800}
             className="pointer-events-none select-none rounded-b-xl blog-post-cover-image"
-            style={{ color: "transparent" }}
           />
           <Button
             variant={"outline"}
