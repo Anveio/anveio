@@ -36,12 +36,12 @@ const ratelimit = new Ratelimit({
 });
 
 export const POST = async (request: NextRequest) => {
-  // if (process.env.NODE_ENV === "development") {
-  //   /**
-  //    * Don't bother recording events in development
-  //    */
-  //   return new Response(undefined, { status: 200 });
-  // }
+  if (process.env.NODE_ENV === "development") {
+    /**
+     * Don't bother recording events in development
+     */
+    return new Response(undefined, { status: 200 });
+  }
 
   /**
    * Pull the user agent out from the request headers
@@ -81,7 +81,7 @@ export const POST = async (request: NextRequest) => {
        */
       if (!(await redisResponse).success) {
         console.error(
-          `Rate limit exceeded for ${ipAddress} for eventL ${event.eventType}. Ignoring`
+          `Rate limit exceeded for ${ip} for event ${event.eventType}. Ignoring`
         );
         return true;
       } else {

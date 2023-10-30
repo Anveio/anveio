@@ -28,6 +28,7 @@ export default function Post() {
           className="blog-post-cover-image"
           width={896}
           height={660}
+          priority
         />
         <p className="italic text-center">
           We would have been better off algorithmically generating the stories.

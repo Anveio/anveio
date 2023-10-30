@@ -40,6 +40,7 @@ export default function VercelAnalyticsBlogPost() {
           src={"/blog-assets/vercel-edge-analytics/table.webp"}
           width={896}
           height={274}
+          priority
         />
         <p className="italic text-center">
           A glimpse of the analytics table we'll be building
