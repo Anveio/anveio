@@ -1,4 +1,4 @@
-import { readStreamedRequestBody } from "@/lib/utils.edge";
+import { readStreamedRequestBody } from "@/lib/utils.edge.server";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 

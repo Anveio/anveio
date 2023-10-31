@@ -1,4 +1,4 @@
-import { readStreamedRequestBody } from "@/lib/utils.edge";
+import { readStreamedRequestBody } from "@/lib/utils.edge.server";
 import S3 from "aws-sdk/clients/s3";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";

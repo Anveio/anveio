@@ -4,6 +4,8 @@ import {
   varchar,
   timestamp,
   json,
+  bigint,
+  uniqueIndex,
 } from "drizzle-orm/mysql-core";
 
 export const events = mysqlTable("blog_events", {
@@ -41,4 +43,60 @@ export const events = mysqlTable("blog_events", {
   client_recorded_at: timestamp("client_recorded_at").notNull(),
   metadata: json("metadata"),
   created_at: timestamp("created_at").notNull().defaultNow(),
+  session_id: bigint("session_id", {
+    mode: "number",
+  }),
 });
+
+export const emailVerificationTokens = mysqlTable(
+  "email_verification_tokens",
+  {
+    id: serial("id").primaryKey().autoincrement(),
+    userId: bigint("user_id", {
+      mode: "number",
+    }).notNull(),
+    email: varchar("email", { length: 319 }).notNull(),
+    token: varchar("token", { length: 255 }).notNull().unique(),
+    expiresAt: timestamp("expires_at").notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+  },
+  (emailVerificationTokens) => ({
+    tokenIndex: uniqueIndex("token_idx").on(emailVerificationTokens.token),
+    emailIndex: uniqueIndex("email_idx").on(emailVerificationTokens.email),
+  })
+);
+
+export const sessions = mysqlTable("sessions", {
+  id: serial("id").primaryKey(),
+  userId: bigint("user_id", {
+    mode: "number",
+  }).notNull(),
+  sessionLocationId: bigint("session_location_id", {
+    mode: "number",
+  }),
+  sessionToken: varchar("session_token", { length: 255 }).notNull(),
+  expiresAt: timestamp("expires_at").notNull(),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const users = mysqlTable(
+  "users",
+  {
+    id: serial("id").primaryKey().autoincrement(),
+    publicId: varchar("public_id", { length: 12 }).notNull(),
+    email: varchar("email", { length: 319 }).notNull().unique(),
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow(),
+    /**
+     * The most efficient MySQL type for a bcrypt password hash is varchar(60).
+     */
+    passwordHash: varchar("password_hash", {
+      length: 200,
+    }),
+    emailVerifiedAt: timestamp("email_verified_at"),
+  },
+  (users) => ({
+    emailIndex: uniqueIndex("email_idx").on(users.email),
+    publicId: uniqueIndex("public_id_idx").on(users.publicId),
+  })
+);
