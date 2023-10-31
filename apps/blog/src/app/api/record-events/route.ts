@@ -1,11 +1,13 @@
 import { NextRequest, userAgentFromString } from "next/server";
 import { geolocation, ipAddress } from "@vercel/edge";
 import { db } from "@/lib/db/db";
-import { events } from "@/lib/db/schema";
+import { events, sessions } from "@/lib/db/schema";
 import { z } from "zod";
 
 import { Ratelimit } from "@upstash/ratelimit";
 import { kv } from "@vercel/kv";
+import { cookies } from "next/headers";
+import { eq } from "drizzle-orm";
 
 export const runtime = "edge";
 
@@ -97,7 +99,22 @@ export const POST = async (request: NextRequest) => {
     console.log(`Logging ${eventsUnderRateLimit.length} events`);
   }
 
+  const { get } = cookies();
+
+  const sessionTokenCookie = get("sessionToken");
+
+  const sessionToken = sessionTokenCookie?.value;
+
   await db.transaction(async (tx) => {
+    const [sessionTokenId] = sessionToken
+      ? await tx
+          .select({ id: sessions.id })
+          .from(sessions)
+          .where(eq(sessions.sessionToken, sessionToken))
+          .limit(1)
+          .execute()
+      : [null];
+
     for (let event of eventsUnderRateLimit) {
       /**
        * We can't do concurrent writes so do these writes serially.
@@ -122,6 +139,7 @@ export const POST = async (request: NextRequest) => {
           device_model: ua.device.model,
           metadata: event.metadata,
           client_recorded_at: new Date(event.clientRecordedAtUtcMillis),
+          session_id: sessionTokenId?.id ?? null,
         })
         .execute();
     }

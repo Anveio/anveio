@@ -8,7 +8,7 @@ import {
   uniqueIndex,
 } from "drizzle-orm/mysql-core";
 
-export const events = mysqlTable("blog_events", {
+export const events = mysqlTable("events", {
   /**
    * autoincrement() is a helper function that adds the `AUTO_INCREMENT` keyword
    */
@@ -42,7 +42,7 @@ export const events = mysqlTable("blog_events", {
    */
   client_recorded_at: timestamp("client_recorded_at").notNull(),
   metadata: json("metadata"),
-  created_at: timestamp("created_at").notNull().defaultNow(),
+  created_at: timestamp("created_at").defaultNow(),
   session_id: bigint("session_id", {
     mode: "number",
   }),
@@ -71,9 +71,6 @@ export const sessions = mysqlTable("sessions", {
   userId: bigint("user_id", {
     mode: "number",
   }).notNull(),
-  sessionLocationId: bigint("session_location_id", {
-    mode: "number",
-  }),
   sessionToken: varchar("session_token", { length: 255 }).notNull(),
   expiresAt: timestamp("expires_at").notNull(),
   createdAt: timestamp("created_at").defaultNow(),
