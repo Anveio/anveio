@@ -22,6 +22,13 @@ export default function Home() {
           <section className="mx-auto mt-10 pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none ">
             <div className="grid grid-cols-1 gap-12">
               {Object.values(BLOG_POSTS)
+                .filter((post) => {
+                  if (process.env.NODE_ENV === "development") {
+                    return true;
+                  }
+
+                  return post.readyForProduction;
+                })
                 .sort((a, b) => Number(b.publishedAt) - Number(a.publishedAt))
                 .map((post, index) => {
                   return (

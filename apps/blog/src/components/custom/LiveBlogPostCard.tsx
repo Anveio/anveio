@@ -90,7 +90,7 @@ const BlogPostCardWithWidget = (props: Props) => {
         colors={otherColors}
       >
         <CardHeader>
-          <CardTitle className="text-2xl">{props.title}</CardTitle>
+          <CardTitle className="text-2xl lg:py-4">{props.title}</CardTitle>
           <CardDescription className="px-2 md:px-4 text-xl text-center">
             {props.content}
           </CardDescription>
@@ -127,7 +127,7 @@ const BlogPostCard = (
     <Link href={`/blog/${props.slug}`}>
       <Card className={cn(props.className, "")}>
         <CardHeader>
-          <CardTitle className="text-2xl xl:text-4xl text-center">
+          <CardTitle className="text-2xl xl:text-4xl text-center lg:pt-8 lg:pb-6">
             {props.title}
           </CardTitle>
         </CardHeader>

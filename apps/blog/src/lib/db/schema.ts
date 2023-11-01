@@ -97,3 +97,30 @@ export const users = mysqlTable(
     publicId: uniqueIndex("public_id_idx").on(users.publicId),
   })
 );
+
+export const userRawUploads = mysqlTable(
+  "user_raw_uploads",
+  {
+    id: serial("id").primaryKey().autoincrement(),
+    userId: bigint("user_id", {
+      mode: "number",
+    }).notNull(),
+    object_key: varchar("object_key", { length: 255 }).notNull(),
+    bucket_name: varchar("bucket_name", { length: 255 }).notNull(),
+    bucket_region: varchar("bucket_region", { length: 50 }).notNull(),
+    mime_type: varchar("mime_type", { length: 50 }).notNull(),
+    file_size: bigint("file_size", { mode: "number" }).notNull(),
+    uploaded_at: timestamp("uploaded_at").notNull(),
+    last_accessed_at: timestamp("last_accessed_at"),
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow(),
+  },
+  (userRawUploads) => ({
+    userIdIndex: uniqueIndex("raw_upload_user_id_idx").on(
+      userRawUploads.userId
+    ),
+    objectKeyIndex: uniqueIndex("raw_upload_object_key_idx").on(
+      userRawUploads.object_key
+    ),
+  })
+);

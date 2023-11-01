@@ -12,6 +12,8 @@ import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { CustomAnalytics } from "@/lib/analytics/analytics.client";
 import Image from "next/image";
+import { UserProvider } from "@/components/custom/Auth/UserProvider";
+import { getUserForSessionToken } from "@/lib/auth/sign-in";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -21,13 +23,19 @@ export const metadata = {
   "view-transition": "same-origin",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const cookieStore = cookies();
   const theme = cookieStore.get("theme");
+
+  const sessionTokenCookie = cookieStore.get("sessionToken")?.value;
+
+  const maybeUser = sessionTokenCookie
+    ? await getUserForSessionToken(sessionTokenCookie)
+    : undefined;
 
   return (
     <html lang="en" className="dark">
@@ -41,10 +49,14 @@ export default function RootLayout({
           className="pointer-events-none absolute left-0 -right-20 h-full w-full select-none md:block"
           style={{ color: "transparent" }}
         />
-        <div>{children}</div>
-        <Toaster />
-        <Analytics />
-        <CustomAnalytics />
+        <React.Suspense>
+          <UserProvider user={maybeUser}>
+            <div>{children}</div>
+            <Toaster />
+            <Analytics />
+            <CustomAnalytics />
+          </UserProvider>
+        </React.Suspense>
       </body>
     </html>
   );
