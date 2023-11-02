@@ -1,19 +1,15 @@
-import { BottomBar } from "@/components/custom/BottomBar";
-import { CursorCanvas } from "@/components/custom/Cursors";
-import { NavBar } from "@/components/custom/NavBar";
-import { WithRoom } from "@/components/custom/Room";
+import { UserProvider } from "@/components/custom/Auth/UserProvider";
+import { Toaster } from "@/components/ui/toaster";
+import { CustomAnalytics } from "@/lib/analytics/analytics.client";
+import { getUserForSessionToken } from "@/lib/auth/sign-in";
 import "@/lib/toasts/toast-styles.css";
 import { cn } from "@/lib/utils";
 import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
+import Image from "next/image";
 import * as React from "react";
 import "./globals.css";
-import { Toaster } from "@/components/ui/toaster";
-import { CustomAnalytics } from "@/lib/analytics/analytics.client";
-import Image from "next/image";
-import { UserProvider } from "@/components/custom/Auth/UserProvider";
-import { getUserForSessionToken } from "@/lib/auth/sign-in";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {

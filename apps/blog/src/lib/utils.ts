@@ -7,6 +7,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function toPusherKey(key: string) {
+  return key.replace(/:/g, "__");
+}
+
 export const PUBLIC_API_KEYS = {
   LiveBlocks: z
     .string()

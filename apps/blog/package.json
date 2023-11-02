@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "concurrently \"partykit dev\" \"next dev --turbo\" --kill-others",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -32,6 +32,8 @@
     "@radix-ui/react-toast": "^1.1.5",
     "@radix-ui/react-tooltip": "^1.0.6",
     "@react-email/components": "^0.0.10",
+    "@syncedstore/core": "^0.6.0",
+    "@syncedstore/react": "^0.6.0",
     "@types/lodash.throttle": "^4.1.7",
     "@types/react-syntax-highlighter": "^15.5.9",
     "@uploadthing/react": "^5.6.1",
@@ -42,7 +44,7 @@
     "@vercel/edge-config": "^0.2.1",
     "@vercel/kv": "^0.2.3",
     "@vercel/og": "^0.5.13",
-    "ai": "^2.2.14",
+    "ai": "^2.2.20",
     "argon2": "^0.31.1",
     "autoprefixer": "10.4.14",
     "aws-sdk": "^2.1467.0",
@@ -56,8 +58,10 @@
     "inngest": "^3.4.1",
     "lodash.throttle": "^4.1.1",
     "lucide-react": "^0.277.0",
+    "nanoid": "^5.0.2",
     "next": "13.5.5",
     "npm": "^10.2.1",
+    "partysocket": "^0.0.12",
     "postcss": "8.4.29",
     "react": "18.2.0",
     "react-dom": "18.2.0",
@@ -71,15 +75,17 @@
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
     "vercel": "latest",
+    "y-partykit": "^0.0.10",
     "zod": "^3.22.4"
   },
   "devDependencies": {
     "@types/node": "20.3.2",
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
+    "concurrently": "^8.2.2",
     "eslint": "8.43.0",
     "eslint-config-next": "13.4.7",
-    "typescript": "5.1.6",
-    "partykit": "0.0.23"
+    "partykit": "^0.0.32",
+    "typescript": "5.1.6"
   }
 }

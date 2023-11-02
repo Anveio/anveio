@@ -46,7 +46,6 @@ export const getUserForSessionToken = async (sessionToken: string) => {
       .select({
         id: users.publicId,
         email: users.email,
-        emailVerifiedAt: users.emailVerifiedAt,
       })
       .from(users)
       .where(eq(users.id, dbSessionToken.userId))
