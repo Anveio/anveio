@@ -54,9 +54,9 @@ export default function Post() {
           If you were in Dhaka that morning watching West Pakistan's tanks roll
           through the city streets you'd be justified in thinking the battle for
           Bangladesh's independence was lost and that its people were doomed to
-          another 30 years of subjugation and exploitation by West Pakistan. But
-          mere months from then Bangladesh would actually win and become a
-          globally recognized independent state, and the forces of West Pakistan
+          another 30 years of subjugation and exploitation by West Pakistan.
+          But, mere months from then, Bangladesh would actually win and become a
+          globally recognized independent state and the forces of West Pakistan
           would surrender to India and leave the country, never to return. The
           events leading up to this genocide and the events leading to the
           defeat of its perpetrators are a blueprint for how to achieve
@@ -257,16 +257,16 @@ export default function Post() {
           Prior to 1949, Bangladesh wasn't a country. It was a remarkably
           fertile bit of land about the size of Illinois known colloquially as
           Bangal and inhabited by tens of millions of farmers with little else
-          going on. The British (of course) came and "civilized" the area,
-          established something resembling a government, and when they
-          decolonized gifted it to West Pakistan (now known as just Pakistan).
+          going on. The British (of course it's them) came and "civilized" the
+          area, established something resembling a government and, when they
+          decolonized, gifted it to West Pakistan (now known as just Pakistan).
           Pakistan treated Bangladesh as its bread basket in a way similar to
-          Stalin's treatment of Ukraine, exercising its military and political
-          strength gained from being a vassal of the British government to force
-          food and wealth to be exported to Pakistan, leading to the deaths of
-          at least several hundred thousand people from starvation. I guess West
-          Pakistan also picked up some tips from their colonizer's treatment of
-          the Irish.
+          Stalin's relationship with Ukraine. It exercised its military and
+          political strength gained from being a vassal of the British
+          government to force food and wealth to be exported to Pakistan,
+          leading to the deaths of at least several hundred thousand people from
+          starvation. I guess West Pakistan also picked up some tips from their
+          colonizer's treatment of the Irish.
         </p>
 
         <p>
@@ -374,15 +374,15 @@ export default function Post() {
           Bangladesh's victory in Operation Searchlight isn't complicated
           either. West Pakistan's brutality during the military campaign was
           motivated by the fact that they could not afford a protracted
-          resistance and they hoped to pacify the resistance within months. But
-          Bangladesh had gained the sympathy of the world, and especially India,
-          the major power in the region. India was supplying Bangladesh's
-          resistance and Pakistan, in a panic, attacked India in early December
-          1971. They unconditionally surrendered to India about a week later.
-          The United States continued to provide support for West Pakistan
-          throughout the operation but this became a politically untenable
-          position and they halted their military alliance with West Pakistan
-          and recognized Bangladesh as an independent country shortly after.
+          resistance and they hoped to pacify it within months. But Bangladesh
+          had gained the sympathy of the world and especially India, the major
+          power in the region. India was supplying the resistance and Pakistan,
+          in a panic, attacked India in early December 1971. They
+          unconditionally surrendered to India about a week later. The United
+          States continued to provide support for West Pakistan throughout the
+          operation but this soon became a politically untenable position and
+          they halted their military alliance with West Pakistan and recognized
+          Bangladesh as an independent country shortly after.
         </p>
         <div className="space-y-6">
           <p>Establishing a few axioms about the situation in Palestine:</p>
