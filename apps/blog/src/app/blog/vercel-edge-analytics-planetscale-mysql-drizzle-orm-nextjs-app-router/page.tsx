@@ -1,11 +1,9 @@
-import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
 import { Codeblock } from "@/components/custom/Codeblock/Codeblock";
+import { Blink } from "@/components/custom/ExternalInlineLink";
+import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
 import { AnalyticsEvent } from "@/lib/analytics/types";
 import { BLOG_POSTS, formatDateWithSuffix } from "@/lib/blog/posts";
 import Image from "next/image";
-import Link from "next/link";
-import * as React from "react";
-import { Blink } from "@/components/custom/ExternalInlineLink";
 
 export const metadata = {
   title:
