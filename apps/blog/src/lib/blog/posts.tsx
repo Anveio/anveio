@@ -21,9 +21,9 @@ export const BLOG_POSTS = {
   "the-genocide-isnt-complicated-actually": {
     slug: "the-genocide-isnt-complicated-actually",
     content:
-      "The perpetrators of genocide never think they're doing something evil, they'll always point to some violence done by their victims to justify continuing the death and suffering.",
+      "The perpetrators of genocide never think they're doing something evil, they'll always point to some violence done by their victims to justify continuing the death and suffering and its morally okay, in my view, to ignore the noise in favor of pursuing an end to the violence in its totality. So let's talk solutions",
     imageHref: `/blog-assets/the-genocide-isnt-complicated-actually/cover.webp`,
-    title: "The Genocide isn't Complicated, Actually",
+    title: "The Genocide Isn't Complicated, Actually",
     publishedAt: new Date("2023-10-31"),
     majorUpdateDates: [],
     readyForProduction: false,
