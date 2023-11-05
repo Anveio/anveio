@@ -12,6 +12,7 @@ import {
   Section,
   Tailwind,
   Text,
+  renderAsync,
 } from "@react-email/components";
 import { ResendClient } from "./resend";
 
@@ -104,10 +105,12 @@ export const sendAccountVerificationEmail = async ({
     from: "Anveio <welcome@webm.anveio.com>",
     to: [destinationEmailAddress],
     subject: "Confirm your email for Webm",
-    react: EmailTemplate({
-      destinationEmailAddress,
-      verificationToken,
-    }) as React.ReactElement,
+    react: await renderAsync(
+      EmailTemplate({
+        destinationEmailAddress,
+        verificationToken,
+      }) as React.ReactElement
+    ),
     tags: [
       {
         name: "category",
