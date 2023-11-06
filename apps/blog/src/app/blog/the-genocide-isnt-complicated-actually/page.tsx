@@ -16,9 +16,9 @@ export const metadata = {
     siteName: "Anveio",
     images: [
       {
-        url: "https://anveio.com/blog-assets/the-genocide-isnt-complicated-actually/cover.webp",
-        width: 800,
-        height: 600,
+        url: "https://anveio.com/blog-assets/the-genocide-isnt-complicated-actually/opengraph.png",
+        width: 871,
+        height: 408,
       },
       {
         url: "https://anveio.com/blog-assets/the-genocide-isnt-complicated-actually/1953.webp",
