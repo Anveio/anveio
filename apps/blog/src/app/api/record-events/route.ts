@@ -21,6 +21,8 @@ const requestBodySchema = z.array(
         "view:home",
         "view:blog:vercel_edge_analytics",
         "click:vercel_edge_analytics",
+        "view:blog:the-genocide-isnt-complicated-actually",
+        "view:blog:algorithmic-loot-generation-sucks",
       ],
       {
         invalid_type_error: "Invalid event type",

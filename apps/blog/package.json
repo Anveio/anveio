@@ -48,6 +48,7 @@
     "argon2": "^0.31.1",
     "autoprefixer": "10.4.14",
     "aws-sdk": "^2.1467.0",
+    "bright": "^0.8.4",
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
     "date-fns": "^2.30.0",
