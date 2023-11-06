@@ -8,6 +8,28 @@ export const metadata = {
   title: BLOG_POSTS["the-genocide-isnt-complicated-actually"].title,
   description:
     "An essay on how the Palestinian people can achieve peace within the next 10 years.",
+  openGraph: {
+    title: BLOG_POSTS["the-genocide-isnt-complicated-actually"].title,
+    description:
+      "An essay on how the Palestinian people can achieve peace within the next 10 years.",
+    url: "https://anveio.com",
+    siteName: "Anveio",
+    images: [
+      {
+        url: "https://anveio.com/blog-assets/the-genocide-isnt-complicated-actually/cover.webp",
+        width: 800,
+        height: 600,
+      },
+      {
+        url: "https://anveio.com/blog-assets/the-genocide-isnt-complicated-actually/1953.webp",
+        width: 800,
+        height: 555,
+        alt: "",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default function Post() {

@@ -33,9 +33,7 @@ export const Codeblock = (props: Props) => {
         </div>
       </div>
       <div className=" bg-zinc-900 overflow-x-auto">
-        <React.Suspense>
-          <SyntaxHighlightedText text={props.text} language={props.language} />
-        </React.Suspense>
+        <SyntaxHighlightedText text={props.text} language={props.language} />
       </div>
     </div>
   );

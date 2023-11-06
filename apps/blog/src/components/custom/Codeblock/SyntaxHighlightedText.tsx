@@ -15,8 +15,8 @@ export const SyntaxHighlightedText = (props: Props) => {
         marginTop: 0,
         marginBottom: 0,
       }}
-      codeClassName="bg-zinc-900 my-0"
-      code={props.text}
-    />
+    >
+      {props.text}
+    </Code>
   );
 };
