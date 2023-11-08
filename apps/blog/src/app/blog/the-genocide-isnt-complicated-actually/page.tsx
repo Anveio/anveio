@@ -50,7 +50,7 @@ export default function Post() {
           src={"/blog-assets/the-genocide-isnt-complicated-actually/cover.webp"}
           className="blog-post-cover-image"
           width={896}
-          height={660}
+          height={896}
           priority
         />
         <p className="italic text-center">
@@ -76,23 +76,29 @@ export default function Post() {
           If you were in Dhaka that morning watching West Pakistan's tanks roll
           through the city streets you'd be justified in thinking the battle for
           Bangladesh's independence was lost and that its people were doomed to
-          another 30 years of subjugation and exploitation by West Pakistan.
-          But, mere months from then, Bangladesh would actually win and become a
-          globally recognized independent state and the forces of West Pakistan
-          would surrender to India and leave the country, never to return. The
-          events leading up to this genocide and the events leading to the
-          defeat of its perpetrators are a blueprint for how to achieve
-          liberation for the Palestinian people.
+          another 30 years of subjugation and exploitation. But, mere months
+          from then, Bangladesh would actually win and become a globally
+          recognized independent state and the forces of West Pakistan would
+          surrender to India and leave the country, never to return. The events
+          leading up to this genocide and the events leading to the defeat of
+          its perpetrators are a blueprint for how the Palestinian people can
+          escape their current situation.
         </p>
         <p>
-          How? Non-violent protests, a revolutionary electoral win, the
-          political will to declare independence, and a millions-strong general
-          strike are how Bangladesh got from vassal state to tenuous
-          independence. Western support for the perpetrators evaporating in
-          light of media coverage of the atrocity, military support from
-          regional powers for the victims, and just enough resistance fighting
-          to stay alive are how it got from foreign tanks in the capital to
-          globally recognized statehood.
+          How? Non-violent protests, a revolutionary election, the political
+          will to declare independence, and a millions-strong general strike are
+          how Bangladesh got from vassal state to tenuous independence. Western
+          support for the perpetrators evaporating in light of media coverage of
+          the atrocity, military support from regional powers for the victims,
+          and just enough resistance fighting to stay alive are how it got from
+          foreign tanks in the capital to globally recognized statehood.
+        </p>
+        <p>
+          None of this requires impotent screaming at Biden to suddenly start
+          doing the right thing or praying that the Israeli government sees the
+          error of their ways or other similar magical thinking. History has
+          taught us there is a path out from oppression and it's up to the
+          Palestinian people to carve it.
         </p>
         <p>Listen:</p>
       </section>
@@ -115,22 +121,21 @@ export default function Post() {
           <figcaption className="text-sm text-center py-4">
             Days before the Operation Searchlight began, Bangladesh police
             refused orders from the West Pakistan government to fire on student
-            protestors outside of Gazipur Ordnance Factory. This directly led to
-            West Pakistan forces getting involved in crushing the protests
-            directly and Operation Searchlight soon followed.
+            protestors outside of Gazipur Ordnance Factory. West Pakistan's
+            response: "Fine, I'll do it myself."
           </figcaption>
         </figure>
         <p>
           In 2015 I traveled to my birthplace of Khulna, the second largest city
           in Bangladesh, and wandered the streets searching for book vendors. On
-          the plane over I had learned from my grandfather small bits and pieces
-          of Bangladesh's war for indepence and I was enchanted: I hadn't even
-          known there was one. At that time the Wikipedia page for the war was
-          just a few paragraphs long. I was convinced the real story of what
-          happened in 1971 could only be found here, in Bangladesh, through the
-          oral tradition of those who had lived through it and from the small
-          percentage of Bengalis who could read and write and therefore tell
-          their stories.
+          the plane over I had learned from my grandfather stories from his
+          perspective on Bangladesh's war for independence and I was enchanted:
+          I hadn't even known there was one. At that time the Wikipedia page for
+          the war was just a few paragraphs long. I was convinced the real story
+          of what happened in 1971 could only be found here, in Bangladesh,
+          through the oral tradition of those who had lived through it and from
+          the small percentage of Bengalis who could read and write and
+          therefore tell their stories.
         </p>
         <p>
           I squeezed through dark and dingy hallways in Khulna's New Market
@@ -162,7 +167,7 @@ export default function Post() {
           and understood how they had been orchestrating mass starvation in
           Bangladesh by stealing the country's harvest had no idea that this
           degree of brutal retaliation was even possible, and news traveled too
-          slowly for them back then to be able to effectively prepare.
+          slowly back then for them to be able to effectively prepare.
         </p>
         <p>
           There's "complications" in these stories too. The Bihari people of
@@ -177,7 +182,7 @@ export default function Post() {
           moaned. Just kidding, the sick fuck probably never changed his
           underwear.
         </p>
-        <figure className="py-16">
+        <figure className="py-16 space-y-4">
           <blockquote
             className={`text-2xl text-center font-semibold before:content-['“'] after:content-['”']`}
           >
@@ -255,8 +260,8 @@ export default function Post() {
         <p>
           Or Sheikh Rahman (more on him later). The independence of Bangladesh
           was achieved through the most peaceful and well-executed non-violent
-          protest, election, and general strike in human history following the
-          model established by Gandhi.
+          protest, election, and general strike in human history. And it
+          followed the model established by Gandhi.
         </p>
         <p className="italic">
           <span className="font-semibold">
@@ -264,26 +269,25 @@ export default function Post() {
             learn about the milestones in Bangladesh's unlikely path to
             independence and see some parallels to the situation in Gaza)
           </span>
-          : Bangladesh carved a path to independence through decades of
-          non-violent protest. Gandhi had proven that protesting is a checkmate:
-          either give in to the demands of the protestors and lose control now
-          or crush it violently and lose control a bit later. These protests
-          sparked the creation of a united coalition to fight for independence
-          and that coalition won in a landslide election and a declaration of
+          : Bangladesh achieved independence through decades of non-violent
+          protest. Gandhi had proven that protesting is a checkmate: either give
+          in to the demands of the protestors and lose control now or crush it
+          violently and lose control a bit later. These protests sparked the
+          creation of a united political party to fight for independence and
+          that party won in a landslide election and a declaration of
           independence soon followed which triggered West Pakistan's genocide.
           Their brutality against Bangladesh's peaceful protests was not
           un-noticed by the rest of the world either, which is a fact that would
           be instrumental in Bangladesh's victory during Operation Searchlight.
         </p>
         <p>
-          Prior to 1949, Bangladesh wasn't a country. It was a remarkably
-          fertile bit of land about the size of Illinois known colloquially as
-          Bangal and inhabited by tens of millions of farmers with little else
-          going on. The British (of course it's them) came and "civilized" the
-          area, established something resembling a government and, when they
-          decolonized, gifted it to West Pakistan (now known as just Pakistan).
-          Pakistan treated Bangladesh as its bread basket in a way similar to
-          Stalin's relationship with Ukraine. It exercised its military and
+          In 1949, Bangladesh wasn't a country. It was a remarkably fertile bit
+          of land about the size of Illinois known colloquially as Bangal and
+          inhabited by tens of millions of decentralized farmers with little
+          else going on. The British (of course it's them) came and "civilized"
+          the area. They established a government and, when they decolonized,
+          gifted it to West Pakistan (now known as just Pakistan). West Pakistan
+          treated Bangladesh as its bread basket. It exercised its military and
           political strength gained from being a vassal of the British
           government to force food and wealth to be exported to Pakistan,
           leading to the deaths of at least several hundred thousand people from
@@ -293,22 +297,22 @@ export default function Post() {
 
         <p>
           In 1952 police under Pakistan authority fired on thousands of students
-          advocating for the recognition of Bangladesh's native language by West
-          pakistan. Many of the students died, which laid the seeds for a
+          making a humble demand: recognition of Bangladesh's native language by
+          West Pakistan. Many students died that day, which laid the seeds for a
           political party led by the surviving students to later take power.
         </p>
         <p>
-          By 1970, it had been a few generations of this cycle of exploitation,
-          protest, and beatdown. Things were bad enough that there was only one
-          political idea that now mattered in Bangladesh: independence. So the
+          By 1970, it had been quite a few iterations of this cycle of
+          exploitation, protest, and beatdown. Things were bad enough that there
+          was only one political idea that now mattered: independence. So the
           people of Bangladesh used the tools the British unknowingly provided
           them to flip the script on West Pakistan in a way no one expected.
           See, the British had set up a single government for both countries and
           allocated seats according to each country's population. Bangladesh was
           far more populous and was allocated 162 seats -- ostensibly fair --
-          but had failed to assemble a coalition to stand against the 138 seats
-          of West Pakistan, likely due to a rigged system, election meddling,
-          and West Pakistan's superior political experience.
+          but had failed to assemble a unified coalition to stand against the
+          138 seats of West Pakistan, likely due to a rigged system, election
+          meddling, and West Pakistan's superior political experience.
         </p>
         <p>
           That year, Bengali people voted overwhelmingly for the Awami League
