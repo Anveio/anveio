@@ -101,16 +101,18 @@ export const sendAccountVerificationEmail = async ({
 }: EmailTemplateProps) => {
   console.log(`Sending email to ${destinationEmailAddress}`);
 
+  const html = await renderAsync(
+    EmailTemplate({
+      destinationEmailAddress,
+      verificationToken,
+    }) as React.ReactElement
+  );
+
   return ResendClient.emails.send({
     from: "Anveio <welcome@webm.anveio.com>",
     to: [destinationEmailAddress],
     subject: "Confirm your email for Webm",
-    react: await renderAsync(
-      EmailTemplate({
-        destinationEmailAddress,
-        verificationToken,
-      }) as React.ReactElement
-    ),
+    html,
     tags: [
       {
         name: "category",
