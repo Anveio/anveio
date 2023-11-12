@@ -124,37 +124,51 @@ const BlogPostCard = (
   >
 ) => {
   return (
-    <Link href={`/blog/${props.slug}`}>
-      <Card className={cn(props.className, "")}>
-        <CardHeader>
-          <CardTitle className="text-2xl xl:text-4xl text-center lg:pt-8 lg:pb-6">
+    <div className="flex flex-col rounded-xl border">
+      <div className="py-8 ">
+        <Link tabIndex={-1} href={`/blog/${props.slug}`}>
+          <h2 className="text-3xl hover:underline text-brand font-semibold sm:text-4xl text-center">
             {props.title}
-          </CardTitle>
-        </CardHeader>
-        <CardDescription className="px-2 md:px-4 text-base py-4">
-          {props.content}
-        </CardDescription>
-        <div className="relative">
-          <Image
-            src={props.imageHref}
-            priority
-            alt=""
-            width={1086}
-            height={800}
-            className="pointer-events-none select-none rounded-b-xl blog-post-cover-image"
-          />
-          <Button
-            variant={"outline"}
-            className="absolute bottom-2 right-2 dark:hover:bg-slate-800"
-          >
-            Read
-          </Button>
+          </h2>
+        </Link>
+      </div>
+      <Link
+        href={`/blog/${props.slug}`}
+        className="mx-auto border-t py-8 blog-post-link"
+      >
+        <div className="flex flex-col sm:flex-row w-full px-8">
+          <div className="sm:w-1/2">
+            <Image
+              src={props.imageHref}
+              priority
+              alt=""
+              width={550}
+              height={550}
+              className="pointer-events-none select-none rounded-b-xl blog-post-cover-image pt-2 w-full h-full object-cover "
+            />
+          </div>
+          <div className="sm:pl-8 sm:w-1/2 text-slate-300 ">
+            <div className="flex flex-col sm:h-full sm:pt-0 pt-8 sm:justify-between sm:space-y-0 space-y-8">
+              <p className="md:text-lg text-base text-slate-300">
+                {props.content}
+              </p>
+              <Button
+                tabIndex={-1}
+                variant={"outline"}
+                className="blog-post-button"
+                onClick={() => {
+                  enqueueAnalyticsEvent({
+                    eventType: props.eventType,
+                  });
+                }}
+              >
+                <span className="blog-post-button-text">Read</span>
+              </Button>
+            </div>
+          </div>
         </div>
-        <CardFooter className="p-0 justify-between align-self-end">
-          {props.children}
-        </CardFooter>
-      </Card>
-    </Link>
+      </Link>
+    </div>
   );
 };
 

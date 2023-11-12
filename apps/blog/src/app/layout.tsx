@@ -33,10 +33,6 @@ export default async function RootLayout({
     ? await getUserForSessionToken(sessionTokenCookie)
     : undefined;
 
-  if (!maybeUser && sessionTokenCookie) {
-    cookieStore.delete("sessionToken");
-  }
-
   return (
     <html lang="en" className="dark">
       <body className={cn(inter.className, theme?.value, "dark:text-slate-50")}>

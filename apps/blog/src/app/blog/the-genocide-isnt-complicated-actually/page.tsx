@@ -2,9 +2,10 @@ import { Blink } from "@/components/custom/ExternalInlineLink";
 import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
 import { AnalyticsEvent } from "@/lib/analytics/types";
 import { BLOG_POSTS, formatDateWithSuffix } from "@/lib/blog/posts";
+import { Metadata } from "next";
 import Image from "next/image";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: BLOG_POSTS["the-genocide-isnt-complicated-actually"].title,
   description:
     "An essay on how the Palestinian people can achieve peace within the next 10 years.",
@@ -30,6 +31,7 @@ export const metadata = {
     locale: "en_US",
     type: "website",
   },
+  metadataBase: new URL("https://anveio.com"),
 };
 
 export default function Post() {

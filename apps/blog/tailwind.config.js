@@ -17,6 +17,10 @@ module.exports = {
     },
     extend: {
       colors: {
+        brand: {
+          DEFAULT: "oklch(72.38% 0.165 60.74",
+          foreground: "hsl(var(--brand-foreground))",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
