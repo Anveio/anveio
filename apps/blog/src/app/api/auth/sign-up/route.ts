@@ -1,6 +1,6 @@
 import { hashPassword } from "@/lib/auth/argon2";
-import { db } from "@/lib/db/db";
-import { emailVerificationTokens, users } from "@/lib/db/schema";
+import { db } from "db";
+import { emailVerificationTokens, users } from "db/schema";
 import { sendAccountVerificationEmail } from "@/lib/emails/joining";
 import { generate256BitToken } from "@/lib/utils.server";
 import addDays from "date-fns/addDays";

@@ -1,13 +1,13 @@
 import { NextRequest, userAgentFromString } from "next/server";
 import { geolocation, ipAddress } from "@vercel/edge";
-import { db } from "@/lib/db/db";
-import { events, sessions } from "@/lib/db/schema";
+import { db } from "db";
+import { events, sessions } from "db/schema";
 import { z } from "zod";
 
 import { Ratelimit } from "@upstash/ratelimit";
 import { kv } from "@vercel/kv";
 import { cookies } from "next/headers";
-import { eq } from "drizzle-orm";
+import { eq } from "db/drizzle-orm";
 
 export const runtime = "edge";
 
@@ -110,11 +110,11 @@ export const POST = async (request: NextRequest) => {
   await db.transaction(async (tx) => {
     const [sessionTokenId] = sessionToken
       ? await tx
-          .select({ id: sessions.id })
-          .from(sessions)
-          .where(eq(sessions.sessionToken, sessionToken))
-          .limit(1)
-          .execute()
+        .select({ id: sessions.id })
+        .from(sessions)
+        .where(eq(sessions.sessionToken, sessionToken))
+        .limit(1)
+        .execute()
       : [null];
 
     for (let event of eventsUnderRateLimit) {

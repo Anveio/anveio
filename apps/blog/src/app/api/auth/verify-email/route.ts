@@ -1,8 +1,8 @@
 import { createSessionForUser } from "@/lib/auth/sign-in";
-import { db } from "@/lib/db/db";
-import { emailVerificationTokens, users } from "@/lib/db/schema";
 import isPast from "date-fns/isPast";
-import { eq } from "drizzle-orm";
+import { db } from "db";
+import { emailVerificationTokens, users } from "db/schema";
+import { and, eq } from "db/drizzle-orm";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
@@ -129,8 +129,7 @@ const getVerificationTokenForEmail = async (
       email: emailVerificationTokens.email,
     })
     .from(emailVerificationTokens)
-    .where(eq(emailVerificationTokens.email, email))
-    .where(eq(emailVerificationTokens.token, verificationToken))
+    .where(and(eq(emailVerificationTokens.email, email), eq(emailVerificationTokens.token, verificationToken)))
     .limit(1)
     .execute();
 

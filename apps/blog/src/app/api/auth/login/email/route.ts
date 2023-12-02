@@ -1,11 +1,11 @@
 import { doesPasswordMatchHash } from "@/lib/auth/argon2";
 import { createSessionForUser } from "@/lib/auth/sign-in";
-import { db } from "@/lib/db/db";
-import { users } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { db } from 'db'
+import { eq } from 'db/drizzle-orm'
+import { users } from 'db/schema'
 
 const requestSchema = z.object({
   email: z.string().email(),

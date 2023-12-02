@@ -20,7 +20,7 @@ export default {
   schema: "./src/lib/db/schema.ts",
   driver: "mysql2",
   dbCredentials: {
-    connectionString: DATABASE_URL,
+    uri: DATABASE_URL,
   },
   out: "./src/lib/db/__generated__/migrations",
 } satisfies Config;

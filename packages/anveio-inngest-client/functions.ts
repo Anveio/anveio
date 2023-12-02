@@ -1,6 +1,6 @@
-import { inngest } from "./inngest-client";
+import { AnveioInngestClient } from "./anveio-inngest-client";
 
-export const sendChatMessageGlobalChat = inngest.createFunction(
+export const sendChatMessageGlobalChat = AnveioInngestClient.createFunction(
   { id: "chat-global-message-send" },
   { event: "chat/global.message-send" },
   async ({ event, step }) => {
@@ -13,7 +13,7 @@ export const sendChatMessageGlobalChat = inngest.createFunction(
   }
 );
 
-export const uploadImageToVercelBlobStorage = inngest.createFunction(
+export const uploadImageToVercelBlobStorage = AnveioInngestClient.createFunction(
   { id: "upload-image-to-vercel-blob-storage" },
   { event: "upload/image-to-vercel-blob-storage" },
   async ({ event, step }) => {

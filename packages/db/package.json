@@ -1,0 +1,25 @@
+{
+  "name": "db",
+  "version": "0.0.0",
+  "private": true,
+  "main": "db.ts",
+  "dependencies": {
+    "@planetscale/database": "^1.11.0",
+    "drizzle-kit": "^0.20.6",
+    "drizzle-orm": "^0.29.1",
+    "zod": "^3.22.4"
+  },
+  "exports": {
+    "drizzle-orm": {
+      "require": "./drizzle-orm",
+      "import": "./drizzle-orm"
+    },
+    "schema": {
+      "require": "./schema",
+      "import": "./schema"
+    }
+  },
+  "publishConfig": {
+    "access": "restricted"
+  }
+}

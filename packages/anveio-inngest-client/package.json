@@ -1,0 +1,27 @@
+{
+  "name": "anveio-inngest-client",
+  "version": "0.0.0",
+  "private": true,
+  "main": "./anveio-inngest-client.ts",
+  "publishConfig": {
+    "access": "restricted"
+  },
+  "exports": {
+    "functions": {
+      "require": "./functions",
+      "import": "./functions"
+    },
+    "inngest": {
+      "require": "./inngest",
+      "import": "./inngest"
+    },
+    "inngest/next": {
+      "require": "./inngest/next",
+      "import": "./inngest/next"
+    }
+  },
+  "dependencies": {
+    "ai": "2.2.27",
+    "inngest": "^3.6.1"
+  }
+}
