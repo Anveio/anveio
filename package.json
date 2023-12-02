@@ -1,0 +1,23 @@
+{
+  "name": "anveio",
+  "private": true,
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "dev-turbo": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "devDependencies": {
+    "eslint": "^8.55.0",
+    "eslint-config-next": "^14.0.3",
+    "prettier": "^3.1.0",
+    "tsconfig": "workspace:*",
+    "turbo": "1.10.16",
+    "typescript": "^5.3.2"
+  }
+}

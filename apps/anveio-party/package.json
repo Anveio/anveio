@@ -4,15 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "partykit dev",
-    "build": "node ./build-scripts/install-ffmpeg-al-2.js",
     "deploy": "partykit deploy"
   },
   "dependencies": {
-    "inngest": "^3.0.2",
-    "partysocket": "0.0.8"
+    "inngest": "^3.6.2",
+    "partysocket": "0.0.16",
+    "partykit": "0.0.39"
   },
   "devDependencies": {
-    "partykit": "0.0.28",
     "typescript": "^5.2.2"
   }
 }

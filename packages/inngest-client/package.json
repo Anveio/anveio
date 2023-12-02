@@ -1,0 +1,14 @@
+{
+  "name": "inngest-client",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "./inngest-client.ts",
+  "publishConfig": {
+    "access": "public"
+  },
+  "dependencies": {
+    "ai": "2.2.27",
+    "inngest": "^3.6.1"
+  }
+}
