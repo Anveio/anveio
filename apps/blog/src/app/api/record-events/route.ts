@@ -19,8 +19,8 @@ const requestBodySchema = z.array(
     eventType: z.enum(
       [
         "view:home",
-        "view:blog:vercel_edge_analytics",
         "click:vercel_edge_analytics",
+        "view:blog:vercel_edge_analytics",
         "view:blog:the-genocide-isnt-complicated-actually",
         "view:blog:algorithmic-loot-generation-sucks",
       ],

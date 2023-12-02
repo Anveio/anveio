@@ -15,8 +15,6 @@ export async function POST(request: Request) {
 
   const redirectUrl = new URL(`${requestUrl.origin}/logged-out`);
 
-  console.log("🚀 ~ file: route.ts:15 ~ POST ~ redirectUrl:", redirectUrl);
-
   if (!sessionToken) {
     redirect(requestUrl.origin);
   }

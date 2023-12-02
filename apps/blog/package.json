@@ -10,8 +10,13 @@
     "db:push": "drizzle-kit push:mysql --config ./src/lib/db/db.ts",
     "db:migrate": "drizzle-kit generate:mysql --config ./src/lib/db/db.ts"
   },
-  "trustedDependencies": ["argon2"],
+  "trustedDependencies": [
+    "argon2"
+  ],
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.456.0",
+    "@aws-sdk/s3-presigned-post": "^3.456.0",
+    "@aws-sdk/signature-v4-crt": "^3.451.0",
     "@clerk/clerk-react": "^4.26.3",
     "@clerk/nextjs": "^4.25.3",
     "@edge-runtime/ponyfill": "^2.4.0",
@@ -40,11 +45,12 @@
     "@uploadthing/react": "^5.6.1",
     "@upstash/ratelimit": "^0.4.4",
     "@vercel/analytics": "^1.0.2",
-    "@vercel/blob": "^0.14.1",
+    "@vercel/blob": "^0.15.1",
     "@vercel/edge": "^1.1.0",
     "@vercel/edge-config": "^0.2.1",
     "@vercel/kv": "^0.2.3",
     "@vercel/og": "^0.5.13",
+    "@xstate/react": "^3.2.2",
     "ai": "^2.2.20",
     "argon2": "^0.31.1",
     "autoprefixer": "10.4.14",
@@ -57,7 +63,7 @@
     "drizzle-orm": "^0.28.6",
     "encoding": "^0.1.13",
     "framer-motion": "^10.16.4",
-    "inngest": "^3.4.1",
+    "inngest": "^3.6.1",
     "lodash.throttle": "^4.1.1",
     "lucide-react": "^0.277.0",
     "nanoid": "^5.0.2",
@@ -67,6 +73,7 @@
     "postcss": "8.4.29",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-dropzone": "^14.2.3",
     "react-hook-form": "^7.47.0",
     "react-syntax-highlighter": "^15.5.0",
     "react-use": "^17.4.0",
@@ -77,6 +84,7 @@
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
     "vercel": "latest",
+    "xstate": "^4.38.3",
     "y-partykit": "^0.0.10",
     "zod": "^3.22.4"
   },

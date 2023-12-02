@@ -97,45 +97,16 @@
 .blog-post-link:hover .blog-post-button,
 .blog-post-link:focus .blog-post-button,
 .blog-post-link:active .blog-post-button {
-  background-image: linear-gradient(
+  border-color: currentColor;
+  color: linear-gradient(
     to right bottom,
     oklch(72.38% 0.165 60.74),
     oklch(97.73% 0.13173438813453797 108.6082179405142)
   );
 }
 
-.blog-post-link:hover .blog-post-button-text,
-.blog-post-link:focus .blog-post-button-text,
-.blog-post-link:active .blog-post-button-text {
-  color: black;
-}
-
 .blog-post-button-text {
   transition: color 0.2s ease-in-out;
-}
-
-.blog-post-button {
-  animation: shiftBackground linear infinite;
-}
-
-@keyframes shiftBackground {
-  0%,
-  100% {
-    background-position: -100% -100%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-}
-
-/* .blog-post-card:hover, .blog-post-card:active {
-  border-width: 4px;
-  border-style: solid;
-  border-image: linear-gradient(to bottom right, oklch(97.73% 0.13173438813453797 108.6082179405142), darkorchid) 1;
-} */
-
-.blog-post-cover-image {
-  view-transition-name: blog-post-cover-image-view-transition;
 }
 
 @keyframes fade-in {
@@ -148,14 +119,6 @@
   to {
     opacity: 0;
   }
-}
-
-::view-transition-old(root) {
-  animation: 90ms cubic-bezier(0.4, 0, 1, 1) both fade-out;
-}
-
-::view-transition-new(root) {
-  animation: 210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in;
 }
 
 .hero-fade-up-enter-active {
