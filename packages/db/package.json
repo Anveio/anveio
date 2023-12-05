@@ -6,17 +6,20 @@
   "dependencies": {
     "@planetscale/database": "^1.11.0",
     "drizzle-kit": "^0.20.6",
-    "drizzle-orm": "^0.29.1",
-    "zod": "^3.22.4"
+    "drizzle-orm": "^0.29.1"
   },
   "exports": {
-    "drizzle-orm": {
-      "require": "./drizzle-orm",
-      "import": "./drizzle-orm"
+    ".": {
+      "require": "./db.ts",
+      "import": "./db.ts"
     },
-    "schema": {
-      "require": "./schema",
-      "import": "./schema"
+    "./drizzle-orm": {
+      "require": "./drizzle-orm.ts",
+      "import": "./drizzle-orm.ts"
+    },
+    "./schema": {
+      "require": "./schema.ts",
+      "import": "./schema.ts"
     }
   },
   "publishConfig": {

@@ -1,4 +1,4 @@
-import { AnveioInngestClient } from "./anveio-inngest-client";
+import { AnveioInngestClient } from "./inngest-client";
 
 export const sendChatMessageGlobalChat = AnveioInngestClient.createFunction(
   { id: "chat-global-message-send" },

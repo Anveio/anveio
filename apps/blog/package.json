@@ -59,6 +59,7 @@
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
     "date-fns": "^2.30.0",
+    "db": "workspace:*",
     "encoding": "^0.1.13",
     "framer-motion": "^10.16.4",
     "lodash.throttle": "^4.1.1",

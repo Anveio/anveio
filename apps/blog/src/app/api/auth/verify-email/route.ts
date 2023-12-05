@@ -97,9 +97,9 @@ export async function GET(request: NextRequest) {
   /**
    * At this point, we know that the token is valid and we should verify the user's email.
    */
-  const user = await verifyEmail(token.id, email);
+  await verifyEmail(token.id, email);
 
-  const session = await createSessionForUser(user.emailAddress, request);
+  const session = await createSessionForUser(email, request);
 
   console.log(`Email verified: ${email}`);
 

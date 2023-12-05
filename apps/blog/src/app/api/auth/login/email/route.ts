@@ -20,8 +20,6 @@ export const POST = async (request: NextRequest) => {
   const emailUnsafe = String(formData.get("email"));
   const passwordUnsafe = String(formData.get("password"));
 
-  console.log(request.headers.get("User-Agent"));
-
   const parseResult = requestSchema.safeParse({
     email: emailUnsafe,
     password: passwordUnsafe,
@@ -48,8 +46,23 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-  const { email, passwordHash, publicId } =
-    await getPasswordHashForUserByEmailAddress(parseResult.data.email);
+
+  const user = await getPasswordHashForUserByEmailAddress(parseResult.data.email);
+
+  if (!user) {
+    return NextResponse.json(
+      {
+        error: {
+          email: "No user found with that email address",
+        },
+      },
+      {
+        status: 401,
+      }
+    );
+  }
+
+  const { email, passwordHash, publicId } = user
 
   if (!passwordHash) {
     return NextResponse.json(
@@ -113,7 +126,10 @@ const getPasswordHashForUserByEmailAddress = async (emailAddress: string) => {
     })
     .from(users)
     .where(eq(users.email, emailAddress))
+    .limit(1)
     .execute();
 
-  return results[0];
+  const firstRow = results[0];
+
+  return firstRow
 };

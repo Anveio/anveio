@@ -2,13 +2,11 @@ import { connect } from "@planetscale/database";
 import { drizzle } from "drizzle-orm/planetscale-serverless";
 import { Config } from "drizzle-kit";
 
-import { z } from "zod";
+const DATABASE_URL = process.env.DATABASE_URL;
 
-export const DATABASE_URL = z
-  .string({
-    required_error: "DATABASE_URL missing",
-  })
-  .parse(process.env.DATABASE_URL);
+if (!DATABASE_URL) {
+  throw new Error("DATABASE_URL missing");
+}
 
 const connection = connect({
   url: DATABASE_URL,
@@ -17,10 +15,13 @@ const connection = connect({
 export const db = drizzle(connection, {});
 
 export default {
-  schema: "./src/lib/db/schema.ts",
+  schema: "./schema.ts",
   driver: "mysql2",
   dbCredentials: {
     uri: DATABASE_URL,
   },
-  out: "./src/lib/db/__generated__/migrations",
+  out: "./__generated__/migrations",
 } satisfies Config;
+
+export * from './schema'
+export * from './drizzle-orm'
