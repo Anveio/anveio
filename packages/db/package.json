@@ -6,16 +6,12 @@
   "dependencies": {
     "@planetscale/database": "^1.11.0",
     "drizzle-kit": "^0.20.6",
-    "drizzle-orm": "^0.29.1"
+    "drizzle-orm": "*"
   },
   "exports": {
     ".": {
       "require": "./db.ts",
       "import": "./db.ts"
-    },
-    "./drizzle-orm": {
-      "require": "./drizzle-orm.ts",
-      "import": "./drizzle-orm.ts"
     },
     "./schema": {
       "require": "./schema.ts",

@@ -1,5 +1,5 @@
-import { inngest } from "@/lib/inngest/client";
 import type { Message } from "ai";
+import { AnveioInngestClient } from "inngest-client";
 
 export const runtime = "edge";
 
@@ -10,7 +10,7 @@ export async function POST(req: Request) {
 
   // const requestId = nanoid();
 
-  await inngest.send({
+  await AnveioInngestClient.send({
     name: "chat/global.message-send",
     data: {
       messages: messages as Message[],

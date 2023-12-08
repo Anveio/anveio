@@ -2,7 +2,7 @@ import { createSessionForUser } from "@/lib/auth/sign-in";
 import isPast from "date-fns/isPast";
 import { db } from "db";
 import { emailVerificationTokens, users } from "db/schema";
-import { and, eq } from "db/drizzle-orm";
+import { and, eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";

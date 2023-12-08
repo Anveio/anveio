@@ -24,4 +24,3 @@ export default {
 } satisfies Config;
 
 export * from './schema'
-export * from './drizzle-orm'

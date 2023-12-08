@@ -7,7 +7,7 @@ import { z } from "zod";
 import { Ratelimit } from "@upstash/ratelimit";
 import { kv } from "@vercel/kv";
 import { cookies } from "next/headers";
-import { eq } from "db/drizzle-orm";
+import { eq } from "drizzle-orm";
 
 export const runtime = "edge";
 

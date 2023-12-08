@@ -4,7 +4,7 @@ import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { db } from 'db'
-import { eq } from 'db/drizzle-orm'
+import { eq } from 'drizzle-orm'
 import { users } from 'db/schema'
 
 const requestSchema = z.object({
@@ -125,7 +125,9 @@ const getPasswordHashForUserByEmailAddress = async (emailAddress: string) => {
       publicId: users.publicId,
     })
     .from(users)
-    .where(eq(users.email, emailAddress))
+    .where(
+      eq(users.email, emailAddress)
+    )
     .limit(1)
     .execute();
 

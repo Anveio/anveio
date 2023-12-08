@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic";
 import { db } from "db";
 import { sessions } from "db/schema";
-import { eq } from "db/drizzle-orm";
+import { eq } from "drizzle-orm";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 

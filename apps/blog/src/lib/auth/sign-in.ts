@@ -1,5 +1,5 @@
 import { add, isPast } from "date-fns";
-import { eq } from "db/drizzle-orm";
+import { eq } from "drizzle-orm";
 import { NextRequest } from "next/server";
 import { db } from "db";
 import { emailVerificationTokens, sessions, users } from "db/schema";
@@ -75,7 +75,9 @@ export const validateSessionToken = async (
         expiresAt: sessions.expiresAt,
       })
       .from(sessions)
-      .where(eq(sessions.sessionToken, sessionToken))
+      .where(
+        eq(sessions.sessionToken, sessionToken)
+      )
       .limit(1)
       .execute();
 

@@ -233,7 +233,7 @@ interface StyleProperties extends React.CSSProperties {
 }
 
 const AppendRingIfLive: React.FC<AppendOutlineProps> = (props) => {
-  const colorToUse = props.colors[0];
+  const colorToUse = props.colors[0] || "red";
 
   return (
     <>
