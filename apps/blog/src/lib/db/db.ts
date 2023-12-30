@@ -8,9 +8,11 @@ if (!DATABASE_URL) {
   throw new Error("DATABASE_URL missing");
 }
 
-const connection = connect({
+const config = {
   url: DATABASE_URL,
-});
+}
+
+const connection = connect(config);
 
 export const db = drizzle(connection, {});
 
