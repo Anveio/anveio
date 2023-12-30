@@ -7,24 +7,18 @@ import Image from "next/image";
 export const metadata: Metadata = {
   title: BLOG_POSTS["how-to-be-good-at-sex-guide-for-straight-men"].title,
   description:
-    "An essay on how the Palestinian people can achieve peace within the next 10 years.",
+    "An essay on finding yourself and as a positive consequence, becoming magnetically sexy.",
   openGraph: {
     title: BLOG_POSTS["how-to-be-good-at-sex-guide-for-straight-men"].title,
     description:
-      "An essay on how the Palestinian people can achieve peace within the next 10 years.",
+      "An essay on finding yourself and as a positive consequence, becoming magnetically sexy.",
     url: "https://anveio.com",
     siteName: "Anveio",
     images: [
       {
-        url: "https://anveio.com/blog-assets/how-to-be-good-at-sex-guide-for-straight-men/opengraph.png",
-        width: 871,
-        height: 408,
-      },
-      {
-        url: "https://anveio.com/blog-assets/how-to-be-good-at-sex-guide-for-straight-men/1953.webp",
-        width: 800,
-        height: 555,
-        alt: "",
+        url: "https://anveio.com/blog-assets/how-to-be-good-at-sex-guide-for-straight-men/opengraph-image.jpg",
+        width: 1080,
+        height: 1080,
       },
     ],
     locale: "en_US",
