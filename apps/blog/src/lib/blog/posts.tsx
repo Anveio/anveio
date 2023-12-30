@@ -42,12 +42,12 @@ export const BLOG_POSTS = {
     title: "How to Be Good at Sex: A Guide For Straight Men",
     slug: "how-to-be-good-at-sex-guide-for-straight-men",
     content:
-      "We have, all of us, participated in a narrowing of our relationship to the act of sex. But with a little deprogramming and getting back in touch with our humanity we can get back to baseline, which sadly will put you in something like the top 0.1%.",
+      "We have, all of us, participated in a narrowing of our relationship to sex. But with a little deprogramming and getting back in touch with our humanity we can get back to baseline, which sadly will put you in something like the top 0.1%.",
     imageHref:
       "/blog-assets/how-to-be-good-at-sex-guide-for-straight-men/cover.webp",
     majorUpdateDates: [],
     publishedAt: new Date("2023-12-30"),
-    readyForProduction: false,
+    readyForProduction: true,
   },
 } as const;
 
