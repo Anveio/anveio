@@ -19,7 +19,9 @@ export const db = drizzle(connection, {});
 export default {
   schema: "./schema.ts",
   driver: "mysql2",
-  uri: DATABASE_URL,
+  dbCredentials: {
+    uri: DATABASE_URL,
+  },
   out: "./__generated__/migrations",
 } as const
 
