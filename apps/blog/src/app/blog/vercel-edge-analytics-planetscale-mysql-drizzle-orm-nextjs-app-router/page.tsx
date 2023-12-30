@@ -319,7 +319,7 @@ export default function VercelAnalyticsBlogPost() {
           <p>Next, let's set up the schema for our analytics table:</p>
           <Codeblock
             language="tsx"
-            filename="src/lib/db/schemas.ts"
+            filename="src/lib/@/lib/db/schemas.ts"
             text={SchemasCodeSnippet}
           />
           <p>
@@ -353,7 +353,7 @@ const analyticsEvent: AnalyticsEvent = {
 } as const;
 
 const CreateDbFolderSnippet = `mkdir -p src/lib/db
-touch src/lib/db/db.ts src/lib/db/schema.ts
+touch src/lib/db/db.ts src/lib/@/lib/db/schema.ts
 `;
 
 const ConnectDbSnippet = `import { connect } from "@planetscale/database";
@@ -384,7 +384,7 @@ export const db = drizzle(
 );
 
 export default {
-  schema: "./src/lib/db/schema.ts",
+  schema: "./src/lib/@/lib/db/schema.ts",
   driver: "mysql2",
   dbCredentials: {
     connectionString: DATABASE_URL,

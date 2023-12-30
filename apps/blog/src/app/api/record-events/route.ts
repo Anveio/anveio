@@ -1,7 +1,7 @@
 import { NextRequest, userAgentFromString } from "next/server";
 import { geolocation, ipAddress } from "@vercel/edge";
-import { db } from "db";
-import { events, sessions } from "db/schema";
+import { db } from "@/lib/db";
+import { events, sessions } from "@/lib/db/schema";
 import { z } from "zod";
 
 import { Ratelimit } from "@upstash/ratelimit";

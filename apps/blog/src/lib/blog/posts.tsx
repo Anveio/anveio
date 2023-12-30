@@ -49,7 +49,7 @@ export const BLOG_POSTS = {
     publishedAt: new Date("2023-12-30"),
     readyForProduction: false,
   },
-} as const satisfies Record<string, BlogPost>;
+} as const;
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
   dateStyle: "long", // Date as "October 25, 2023"

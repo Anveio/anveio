@@ -59,7 +59,6 @@
     "class-variance-authority": "^0.6.1",
     "clsx": "^1.2.1",
     "date-fns": "^2.30.0",
-    "db": "workspace:*",
     "drizzle-orm": "*",
     "encoding": "^0.1.13",
     "framer-motion": "^10.16.4",

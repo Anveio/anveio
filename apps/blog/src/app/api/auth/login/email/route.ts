@@ -3,9 +3,9 @@ import { createSessionForUser } from "@/lib/auth/sign-in";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { db } from 'db'
+import { db } from '@/lib/db'
 import { eq } from 'drizzle-orm'
-import { users } from 'db/schema'
+import { users } from '@/lib/db/schema'
 
 const requestSchema = z.object({
   email: z.string().email(),

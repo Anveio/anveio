@@ -486,5 +486,5 @@ export default function Post() {
 }
 
 const analyticsEvent = {
-  eventType: "view:blog:how-to-be-good-at-sex-guide-for-straight-men",
+  eventType: "view:blog:how-to-have-good-sex-guide-for-straight-men",
 } as const satisfies AnalyticsEvent;

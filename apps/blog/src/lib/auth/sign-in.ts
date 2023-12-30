@@ -1,8 +1,8 @@
 import { add, isPast } from "date-fns";
 import { eq } from "drizzle-orm";
 import { NextRequest } from "next/server";
-import { db } from "db";
-import { emailVerificationTokens, sessions, users } from "db/schema";
+import { db } from "@/lib/db";
+import { emailVerificationTokens, sessions, users } from "@/lib/db/schema";
 import { generate256BitToken } from "../utils.server";
 
 /**

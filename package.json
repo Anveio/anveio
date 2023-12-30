@@ -22,5 +22,6 @@
   "dependencies": {
     "drizzle-orm": "^0.29.1",
     "vercel": "latest"
-  }
+  },
+  "packageManager": "bun@1.0.15"
 }
