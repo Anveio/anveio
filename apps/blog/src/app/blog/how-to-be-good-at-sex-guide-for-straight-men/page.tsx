@@ -210,17 +210,14 @@ export default function Post() {
           </figcaption>
         </figure>
         <p>
-          The idea of a "man" is awfully convenient for society: an unfeeling
-          machine that takes care of business. That does what needs to be done
-          regardless of how it makes them feel, especially if that feeling is
-          suffering. That only ever acts logically so he's easy to predict.
-          Someone who's better off isolated so that yearnings of the heart don't
-          get in the way of simple incentives like money, power, and status so
-          that when you’re given a script to live by you stick to it: “be a
-          doctor”, “be a soldier’, “don’t complain”, “do not, under any
-          circumstances, dance”. A “man” is physically fit and possesses
-          desirable genetic traits. A “man” is a being more akin to a slave than
-          a free spirit.
+          Even more convenient for the people who benefit from you sticking to
+          the script: no one has to deal with the pain, confusion, and shame
+          caused by living your life this way except for you. So we live our
+          lives trying to be this thing and we internalize the lie that if men
+          were any other way then the world would be worse off. Because after
+          all men are too stupid to come up with our own way of making the world
+          better. And we're all too eager to believe this because if we have to
+          suffer with no complaint, at least we're suffering for a reason.
         </p>
         <p>
           Know that at the heart of every machine man is the deep humiliation of
@@ -278,9 +275,7 @@ export default function Post() {
           initial reaction to the previous statement might be to raise an
           eyebrow but I also invite you to wonder how much of your skepticism is
           because there’s a part of you that thinks femininity is inferior or
-          not worth exhibiting. I’d even agree to some extent, because it seems
-          that for most people “masculinity = strong” and “femininity = weak”,
-          but we’re talking about something much more interesting than that.
+          not worth exhibiting.
         </p>
         <figure className="flex flex-col justify-center items-center py-8">
           <Image
