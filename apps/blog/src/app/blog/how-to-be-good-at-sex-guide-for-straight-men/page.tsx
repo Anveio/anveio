@@ -165,11 +165,7 @@ export default function Post() {
           society's definition of a man and reinventing a new definition for
           yourself from first principles.
         </p>
-        <p>
-          So if you want to be nerdy Goku in bed the first step is unlearning
-          society's definition of a man and reinventing a new definition for
-          yourself from first principles.
-        </p>
+        <p>The second step is to learn to love women again.</p>
       </section>
       <section className="space-y-10">
         <h2 className="text-2xl font-bold">Lover, Love Thyself</h2>
