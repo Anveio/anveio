@@ -128,6 +128,10 @@ export default function Post() {
           In order to love your partner fully.
         </p>
         <p>
+          Be nice to yourself, so you can be nice to your girlfriend, so she’ll
+          find you sexy and enjoy having sex with you.
+        </p>
+        <p>
           But how do you get there? It’s hard to love someone if you’re in your
           own head all the time. It’s hard to be genuine if you’re constantly
           worried about how you’re perceived. It’s hard to let your body express
@@ -136,15 +140,6 @@ export default function Post() {
           relationship when we see and experience bad relationships time and
           time again and don’t know how to process them so we don’t put our pain
           and hurt onto our partner.
-        </p>
-        <p>
-          Be nice to yourself, so you can be nice to your girlfriend, so she’ll
-          find you sexy and enjoy having sex with you.
-        </p>
-        <p>
-          There’s another layer to this that does involve tips like “use the
-          come hither motion” but it’s counterproductive until you establish a
-          good foundation by doing the above.
         </p>
         <p>
           Getting meta for a moment, it’s odd that so much content on the
@@ -161,17 +156,16 @@ export default function Post() {
           will. Or gigachad if he was a monk.
         </p>
         <p>
-          So if you want to be nerdy Goku in bed the first step is unlearning
-          society's definition of a man and reinventing a new definition for
-          yourself from first principles.
+          Tthe first step is unlearning society's definition of a man and
+          reinventing a new definition for yourself from first principles. The
+          second step is to learn to love women again.
         </p>
-        <p>The second step is to learn to love women again.</p>
       </section>
       <section className="space-y-10">
         <h2 className="text-2xl font-bold">Lover, Love Thyself</h2>
         <p>
-          To get good at sex we’re gonna start off by forgetting what it means
-          to be a man.
+          To get good at sex we have to start off by forgetting what it means to
+          be a man. Clean slate.
         </p>
         <p>
           "Forget how to be a man? And that’ll make me good at sex? More
@@ -180,17 +174,17 @@ export default function Post() {
         </p>
         <p>Listen:</p>
         <p>
-          The idea of a "man" is awfully convenient for society: an unfeeling
-          machine that takes care of business. That does what needs to be done
-          regardless of how it makes them feel, especially if that feeling is
-          suffering. That only ever acts logically so he's easy to predict.
-          Someone who's better off isolated so that yearnings of the heart don't
-          get in the way of simple incentives like money, power, and status so
-          that when you’re given a script to live by you stick to it: “be a
-          doctor”, “be a soldier’, “don’t complain”, “do not, under any
+          The idea of a "man" is awfully convenient for society. A man is an
+          unfeeling machine that takes care of business. That does what needs to
+          be done regardless of how it makes them feel, especially if that
+          feeling is suffering. That only ever acts logically so he's easy to
+          predict. Someone who's better off isolated so that yearnings of the
+          heart don't get in the way of simple incentives like money, power, and
+          status so that when you’re given a script to live by you stick to it:
+          “be a doctor”, “be a soldier’, “don’t complain”, “do not, under any
           circumstances, dance”. A “man” is physically fit and possesses
-          desirable genetic traits. A “man” is a being more akin to a slave than
-          a free spirit.
+          desirable genetic traits. No need to continue the atrocity of chattel
+          slavery, we've convinced men to do it to themselves.
         </p>
         <figure className="flex flex-col justify-center items-center py-8">
           <Image
@@ -207,13 +201,14 @@ export default function Post() {
         </figure>
         <p>
           Even more convenient for the people who benefit from you sticking to
-          the script: no one has to deal with the pain, confusion, and shame
-          caused by living your life this way except for you. So we live our
-          lives trying to be this thing and we internalize the lie that if men
-          were any other way then the world would be worse off. Because after
-          all men are too stupid to come up with our own way of making the world
-          better. And we're all too eager to believe this because if we have to
-          suffer with no complaint, at least we're suffering for a reason.
+          the script: there is only one person that has to deal with the pain,
+          confusion, and shame caused by living your life this way and that
+          person is you. So you live our life trying to be this thing and you
+          internalize the lie that if men were any other way then the world
+          would be worse off. Because after all you're too stupid to come up
+          with our own way of making the world better, right? And you're all too
+          eager to believe this because if you have to suffer with no complaint,
+          at least you're suffering for a reason.
         </p>
         <p>
           Know that at the heart of every machine man is the deep humiliation of

@@ -1,3 +1,4 @@
+import { Article } from "@/components/custom/Blog";
 import { Blink } from "@/components/custom/ExternalInlineLink";
 import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
 import { AnalyticsEvent } from "@/lib/analytics/types";
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
 
 export default function Post() {
   return (
-    <article className="space-y-36 text-lg">
+    <Article>
       <div className="space-y-3">
         <p className="italic text-center">
           Published{" "}
@@ -668,7 +669,7 @@ export default function Post() {
         </figure>
       </section>
       <RecordEventOnMount event={analyticsEvent} />
-    </article>
+    </Article>
   );
 }
 
