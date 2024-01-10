@@ -5,12 +5,15 @@ interface BlogPost {
   imageHref: string;
   publishedAt: Date;
   majorUpdateDates: Date[];
+  publicAssetPath: string;
   readyForProduction?: boolean;
 }
 
 export const BLOG_POSTS = {
   "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-router": {
     slug: "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-router",
+    publicAssetPath:
+      "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-router",
     content: `Free analytics for up to 10 million events a month and you can query your own data however you like with SQL. It turns out you can use Vercel to beat Vercel. Thanks Vercel! `,
     title: `Saving $400/month on Vercel Analytics by using Edge Runtime and Planetscale's free tier instead`,
     imageHref: `/blog-assets/vercel-edge-analytics/cover.webp`,
@@ -20,6 +23,7 @@ export const BLOG_POSTS = {
   },
   "algorithmic-loot-generation-sucks": {
     slug: "algorithmic-loot-generation-sucks",
+    publicAssetPath: "algorithmic-loot-generation-sucks",
     content:
       "Loot we find in games are foundational to the stories we form of our time playing them. Who decided this needed to automated?",
     title: `What Did we Gain from Algorithmic Loot Generation? More than we Lost.`,
@@ -30,6 +34,7 @@ export const BLOG_POSTS = {
   },
   "the-genocide-isnt-complicated-actually": {
     slug: "the-genocide-isnt-complicated-actually",
+    publicAssetPath: "the-genocide-isnt-complicated-actually",
     content:
       "The perpetrators of genocide never think they're doing something evil, they'll always point to some violence done by their victims to justify continuing the death and suffering and its morally okay, in my view, to ignore the noise in favor of pursuing an end to the violence in its totality. So let's talk solutions",
     imageHref: `/blog-assets/the-genocide-isnt-complicated-actually/cover.webp`,
@@ -40,6 +45,7 @@ export const BLOG_POSTS = {
   },
   "how-to-be-good-at-sex-guide-for-straight-men": {
     title: "How to Be Good at Sex: A Guide For Straight Men",
+    publicAssetPath: "how-to-be-good-at-sex-guide-for-straight-men",
     slug: "how-to-be-good-at-sex-guide-for-straight-men",
     content:
       "We have, all of us, participated in a narrowing of our relationship to sex. But with a little deprogramming and getting back in touch with our humanity we can get back to baseline, which sadly will put you in something like the top 0.1%.",
@@ -49,12 +55,13 @@ export const BLOG_POSTS = {
     publishedAt: new Date("2023-12-30"),
     readyForProduction: true,
   },
-  "text-is-water": {
-    slug: "text-is-water",
+  "language-models-can-use-existing-software": {
+    slug: "language-models-can-use-existing-software",
+    publicAssetPath: "language-models-can-use-existing-software",
     content:
-      "The internet is a place where we can share our thoughts and feelings with each other. But we're not doing that. We're sharing text. And text is not water.",
-    title: "Text is Water",
-    imageHref: `/blog-assets/text-is-water/cover.webp`,
+      "GPTs and Plugins are toys. Language models can get way more powerful by leveraging the millions of apps that already exist. Here's how.",
+    title: "Language Models Can (and Should) Use Existing Software",
+    imageHref: `/blog-assets/language-models-can-use-existing-software/cover.webp`,
     publishedAt: new Date("2024-01-07"),
     majorUpdateDates: [],
     readyForProduction: false,

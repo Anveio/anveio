@@ -12,8 +12,9 @@ export const Article = (props: React.PropsWithChildren) => {
 
 interface BlogHeaderProps {
   postId: keyof typeof BLOG_POSTS;
-  publicAssetPath: string;
   imageCaption: string;
+  imageWidth?: number;
+  imageHeight?: number;
 }
 
 export const BlogHeader = (props: React.PropsWithChildren<BlogHeaderProps>) => {
@@ -27,10 +28,12 @@ export const BlogHeader = (props: React.PropsWithChildren<BlogHeaderProps>) => {
       </h1>
       <Image
         alt=""
-        src={`/blog-assets/${props.publicAssetPath}/cover.webp`}
+        src={`/blog-assets/${
+          BLOG_POSTS[props.postId].publicAssetPath
+        }/cover.webp`}
         className="blog-post-cover-image"
-        width={896}
-        height={896}
+        width={props.imageWidth ?? 896}
+        height={props.imageHeight ?? 896}
         priority
       />
       <p className="italic text-center">{props.imageCaption}</p>
@@ -44,4 +47,32 @@ export const Section = (props: React.PropsWithChildren) => {
 
 Section.Header = (props: React.PropsWithChildren) => {
   return <h2 className="text-2xl font-semibold">{props.children}</h2>;
+};
+
+interface ImageWithCaptionProps {
+  postId: keyof typeof BLOG_POSTS;
+  fileName: string;
+  imageCaption: string;
+  imageWidth?: number;
+  imageHeight?: number;
+}
+
+export const ImageWithCaption = (
+  props: React.PropsWithChildren<ImageWithCaptionProps>
+) => {
+  return (
+    <figure className="flex flex-col justify-center items-center py-8">
+      <Image
+        src={`/blog-assets/${BLOG_POSTS[props.postId].publicAssetPath}/${
+          props.fileName
+        }.webp`}
+        alt=""
+        width={props.imageWidth ?? 800}
+        height={props.imageHeight ?? 800}
+      />
+      <figcaption className="text-sm text-center py-4">
+        {props.imageCaption}
+      </figcaption>
+    </figure>
+  );
 };
