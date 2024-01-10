@@ -12,12 +12,10 @@ import Link from "next/link";
 
 export const metadata: Metadata = {
   title: BLOG_POSTS["language-models-can-use-existing-software"].title,
-  description:
-    "An essay on how the Palestinian people can achieve peace within the next 10 years.",
+  description: `Future generations will look back at our limited view that language models could "only" generate text meant for humans and think: "How could they have missed what was right in front of their eyes?`,
   openGraph: {
     title: BLOG_POSTS["language-models-can-use-existing-software"].title,
-    description:
-      "An essay on how the Palestinian people can achieve peace within the next 10 years.",
+    description: `Future generations will look back at our limited view that language models could "only" generate text meant for humans and think: "How could they have missed what was right in front of their eyes?`,
     url: "https://anveio.com",
     siteName: "Anveio",
     images: [
