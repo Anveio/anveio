@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     siteName: "Anveio",
     images: [
       {
-        url: "https://anveio.com/blog-assets/language-models-can-use-existing-software/opengraph.png",
+        url: "https://anveio.com/blog-assets/language-models-can-use-existing-software/opengraph.jpg",
         width: 871,
         height: 408,
       },
