@@ -64,7 +64,7 @@ export const BLOG_POSTS = {
     imageHref: `/blog-assets/language-models-can-use-existing-software/cover.webp`,
     publishedAt: new Date("2024-01-07"),
     majorUpdateDates: [],
-    readyForProduction: false,
+    readyForProduction: true,
   },
 } as const;
 

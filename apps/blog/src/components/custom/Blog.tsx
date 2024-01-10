@@ -31,7 +31,7 @@ export const BlogHeader = (props: React.PropsWithChildren<BlogHeaderProps>) => {
         src={`/blog-assets/${
           BLOG_POSTS[props.postId].publicAssetPath
         }/cover.webp`}
-        className="blog-post-cover-image"
+        className="blog-post-cover-image mx-auto"
         width={props.imageWidth ?? 896}
         height={props.imageHeight ?? 896}
         priority
