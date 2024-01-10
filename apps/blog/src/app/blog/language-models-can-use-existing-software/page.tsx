@@ -4,12 +4,10 @@ import {
   ImageWithCaption,
   Section,
 } from "@/components/custom/Blog";
-import { Blink } from "@/components/custom/ExternalInlineLink";
 import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
 import { AnalyticsEvent } from "@/lib/analytics/types";
-import { BLOG_POSTS, formatDateWithSuffix } from "@/lib/blog/posts";
+import { BLOG_POSTS } from "@/lib/blog/posts";
 import { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
