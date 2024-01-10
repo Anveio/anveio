@@ -393,17 +393,13 @@ export default function Post() {
           avoidant. The psychofauna has devoured your legs.
         </p>
         <p>
-          You match with a few women (if you’re lucky), some of whom you really
-          like and enjoy a short text interaction with. You naturally fill up
-          with hope that maybe you’ve found someone who could be the one, an
-          image of the two of you buying your first home together flashes in
-          your mind. You’re pushing a baby stroller down a beautiful suburban
-          neighborhood. But her texts start getting shorter and ultimately stop
-          coming altogether. You have no way of knowing but you offered to go to
-          an Indian place but she really doesn’t like spicy food so she took
-          someone else’s offer to get burgers and she didn’t know how to let you
-          down gently and she’s gonna be too shy to reach out after being so
-          avoidant. The psychofauna has devoured your legs.
+          I’m here to tell you that this really sucks and it’s ok if it really
+          hurts. It’s a critical emotional hit every time it happens. But our
+          reaction to this kind of situation is even worse: we say to ourselves
+          “they have no obligation to us, I’m the idiot for even expecting
+          anything from this situation. Buying a house together? Kids? Immature
+          fantasies of a deluded mind, I didn’t even know this person. I’m being
+          cringe.” The psychofauna is digesting you and seeking the next prey.
         </p>
         <p>
           Your fantasies about being with that girl were your childlike hope
@@ -425,15 +421,14 @@ export default function Post() {
           enough to make this cycle worth it.
         </p>
         <p>
-          First of all: hookups make zero sense. Good sex can be a
-          transcendental experience but it takes an emotional bond and knowledge
-          of each other’s bodies — the areas, pressures, rhythms, and angles
-          that work for each of you — that’s discovered through months of honest
-          communication. You’re absolutely not gonna get that from a hookup.
-          There are a subset of people that claim hookups are fine but my guess
-          is these people either don’t know how good sex can be or the void in
-          their heart is so painful that even a distraction for a night is good
-          enough to make this cycle worth it.
+          And the reason we pursue hookups in the first place is we feel some
+          emotion inside of us, usually boredom or loneliness, that we want to
+          get rid of. But by the end of the hookup we feel even worse than we
+          started and ironically we’ll be back on the apps in no time looking
+          for another hookup to counter this even stronger loneliness. Tinder
+          doesn’t improve its bottom line by getting you a successful
+          relationship, it improves its bottom line by getting you to think
+          Tinder Gold is worth it.
         </p>
         <p>
           It’s way more fun to complain about the way things are than to give

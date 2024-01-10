@@ -1,4 +1,4 @@
-import { Article } from "@/components/custom/Blog";
+import { Article, Section } from "@/components/custom/Blog";
 import { Blink } from "@/components/custom/ExternalInlineLink";
 import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
 import { AnalyticsEvent } from "@/lib/analytics/types";
@@ -62,8 +62,8 @@ export default function Post() {
           genocide in Gaza impossible so long as they exist.
         </p>
       </div>
-      <section className="space-y-12">
-        <h2 className="text-2xl font-bold">A blueprint for peace</h2>
+      <Section>
+        <Section.Header>A blueprint for peace</Section.Header>
         <p>
           <span className="inline leading-[0] font-bold bg-gradient-to-br bg-clip-text text-transparent from-[#FFFF92] to-[#EE8912]">
             Dawn April 10, 1971:
@@ -104,7 +104,7 @@ export default function Post() {
           Palestinian people to carve it.
         </p>
         <p>Listen:</p>
-      </section>
+      </Section>
       <section className="space-y-12">
         <h2 className="text-2xl font-bold">
           Genocide is always{" "}

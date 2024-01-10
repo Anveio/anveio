@@ -49,6 +49,16 @@ export const BLOG_POSTS = {
     publishedAt: new Date("2023-12-30"),
     readyForProduction: true,
   },
+  "text-is-water": {
+    slug: "text-is-water",
+    content:
+      "The internet is a place where we can share our thoughts and feelings with each other. But we're not doing that. We're sharing text. And text is not water.",
+    title: "Text is Water",
+    imageHref: `/blog-assets/text-is-water/cover.webp`,
+    publishedAt: new Date("2024-01-07"),
+    majorUpdateDates: [],
+    readyForProduction: false,
+  },
 } as const;
 
 const dateFormatter = new Intl.DateTimeFormat("en-US", {
