@@ -211,7 +211,9 @@ export default function Post() {
           native apps a similar description of available actions can be hosted
           in a manifest file and app stores scan host a public directory of all
           apps' manifests somewhere where language models can regularly read
-          them.
+          them. For executables and apps not distributed through app stores
+          (e.g. 7zip and other shareware) the industry will need to invent some
+          standard to allow AI to "bind" to software.
         </p>
         <p>
           What I’m describing is the ability for any language model to display
