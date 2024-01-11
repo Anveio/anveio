@@ -10,12 +10,14 @@ import { BLOG_POSTS } from "@/lib/blog/posts";
 import { Metadata } from "next";
 import Link from "next/link";
 
+const POST_ID = "language-models-can-use-existing-software";
+
 export const metadata: Metadata = {
-  title: BLOG_POSTS["language-models-can-use-existing-software"].title,
-  description: `Future generations will look back at our limited view that language models could "only" generate text meant for humans and think: "How could they have missed what was right in front of their eyes?`,
+  title: BLOG_POSTS[POST_ID].title,
+  description: BLOG_POSTS[POST_ID].content,
   openGraph: {
-    title: BLOG_POSTS["language-models-can-use-existing-software"].title,
-    description: `Future generations will look back at our limited view that language models could "only" generate text meant for humans and think: "How could they have missed what was right in front of their eyes?`,
+    title: BLOG_POSTS[POST_ID].title,
+    description: BLOG_POSTS[POST_ID].content,
     url: "https://anveio.com",
     siteName: "Anveio",
     images: [
@@ -35,7 +37,7 @@ export default function Post() {
   return (
     <Article>
       <BlogHeader
-        postId="language-models-can-use-existing-software"
+        postId={POST_ID}
         imageCaption={`Future generations will look back at our limited view that language models could "only" generate text meant for humans and think: "How could they have missed what was right in front of their eyes?"`}
         imageHeight={231}
         imageWidth={806}
@@ -94,7 +96,7 @@ export default function Post() {
         <p>Pick your favorite spot somewhere on the line:</p>
         <ImageWithCaption
           fileName="platform-spectrum"
-          postId="language-models-can-use-existing-software"
+          postId={POST_ID}
           imageCaption="Your company’s design system and component libraries are way on the left, off the chart."
         ></ImageWithCaption>
         <p>
@@ -126,13 +128,13 @@ export default function Post() {
           to learn a language, plan a trip, journal, or whatever. Apps are way
           better than text because they are:
         </p>
-        <ol>
-          <li>Interactive & fun</li>
-          <li>
+        <ol className="list-outside space-y-4 list-disc">
+          <li className="list-item">Interactive & fun</li>
+          <li className="list-item">
             Powerful, can do stuff like open a bank account, file taxes, book
             tickets
           </li>
-          <li>Designed for purpose</li>
+          <li className="list-item">Designed for purpose</li>
         </ol>
 
         <p>
