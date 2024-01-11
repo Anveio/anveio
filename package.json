@@ -9,8 +9,7 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\""
   },
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "apps/*"
   ],
   "devDependencies": {
     "eslint": "^8.55.0",
@@ -21,6 +20,7 @@
   },
   "dependencies": {
     "drizzle-orm": "^0.29.1",
+    "inngest": "^3.8.0",
     "vercel": "latest"
   },
   "packageManager": "bun@1.0.15"

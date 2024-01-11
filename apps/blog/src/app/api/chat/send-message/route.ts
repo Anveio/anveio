@@ -1,5 +1,5 @@
 import type { Message } from "ai";
-import { AnveioInngestClient } from "inngest-client";
+import { AnveioInngestClient } from "@/lib/inngest";
 
 export const runtime = "edge";
 
