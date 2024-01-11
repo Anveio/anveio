@@ -192,13 +192,12 @@ export default function Post() {
           through natural language.
         </p>
         <p>
-          This means that every developer working on an app needs to make their
-          app discoverable to language models and also teach language models how
-          to use their app so that the language model can map natural language
-          requests such as “file my taxes” to a sequence of commands sent to
-          various apps. First, to your file system to find relevant PDFs, log
-          into AcmeTax while proving it can act on your behalf, and send one big
-          POST request with all of your info and encoded file blobs.
+          This means that every developer needs to teach language models how to
+          use their app so that the model can map natural language requests such
+          as “file my taxes” to a sequence of commands. First, perhaps, to your
+          file system to find relevant PDFs, then log into AcmeTax while proving
+          it can act on your behalf, and send one big POST request with all of
+          your info and encoded file blobs.
         </p>
         <p>
           But doing so is simple. The developers at AcmeTax simply describe
