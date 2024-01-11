@@ -1,0 +1,147 @@
+{
+  "sortedMiddleware": [
+    "/"
+  ],
+  "middleware": {
+    "/": {
+      "files": [
+        "prerender-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/src/middleware.js"
+      ],
+      "name": "src/middleware",
+      "page": "/",
+      "matchers": [
+        {
+          "regexp": "^(?:\\/(_next\\/data\\/[^/]{1,}))?(?:\\/((?!api|_next\\/static|_next\\/image|favicon.ico).*))(.json)?[\\/#\\?]?$",
+          "originalSource": "/((?!api|_next/static|_next/image|favicon.ico).*)"
+        }
+      ],
+      "wasm": [],
+      "assets": []
+    }
+  },
+  "functions": {
+    "/api/auth/login/magic-link/route": {
+      "files": [
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "prerender-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/app/api/auth/login/magic-link/route.js"
+      ],
+      "name": "app/api/auth/login/magic-link/route",
+      "page": "/api/auth/login/magic-link/route",
+      "matchers": [
+        {
+          "regexp": "^/api/auth/login/magic\\-link$",
+          "originalSource": "/api/auth/login/magic-link"
+        }
+      ],
+      "wasm": [],
+      "assets": []
+    },
+    "/api/auth/logout/route": {
+      "files": [
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "prerender-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/app/api/auth/logout/route.js"
+      ],
+      "name": "app/api/auth/logout/route",
+      "page": "/api/auth/logout/route",
+      "matchers": [
+        {
+          "regexp": "^/api/auth/logout$",
+          "originalSource": "/api/auth/logout"
+        }
+      ],
+      "wasm": [],
+      "assets": []
+    },
+    "/api/chat/send-message/route": {
+      "files": [
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "prerender-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/app/api/chat/send-message/route.js"
+      ],
+      "name": "app/api/chat/send-message/route",
+      "page": "/api/chat/send-message/route",
+      "matchers": [
+        {
+          "regexp": "^/api/chat/send\\-message$",
+          "originalSource": "/api/chat/send-message"
+        }
+      ],
+      "wasm": [],
+      "assets": []
+    },
+    "/api/auth/verify-email/route": {
+      "files": [
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "prerender-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/app/api/auth/verify-email/route.js"
+      ],
+      "name": "app/api/auth/verify-email/route",
+      "page": "/api/auth/verify-email/route",
+      "matchers": [
+        {
+          "regexp": "^/api/auth/verify\\-email$",
+          "originalSource": "/api/auth/verify-email"
+        }
+      ],
+      "wasm": [],
+      "assets": []
+    },
+    "/api/theming/route": {
+      "files": [
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "prerender-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/app/api/theming/route.js"
+      ],
+      "name": "app/api/theming/route",
+      "page": "/api/theming/route",
+      "matchers": [
+        {
+          "regexp": "^/api/theming$",
+          "originalSource": "/api/theming"
+        }
+      ],
+      "wasm": [],
+      "assets": []
+    },
+    "/api/record-events/route": {
+      "files": [
+        "server/middleware-build-manifest.js",
+        "server/middleware-react-loadable-manifest.js",
+        "server/next-font-manifest.js",
+        "prerender-manifest.js",
+        "server/edge-runtime-webpack.js",
+        "server/app/api/record-events/route.js"
+      ],
+      "name": "app/api/record-events/route",
+      "page": "/api/record-events/route",
+      "matchers": [
+        {
+          "regexp": "^/api/record\\-events$",
+          "originalSource": "/api/record-events"
+        }
+      ],
+      "wasm": [],
+      "assets": []
+    }
+  },
+  "version": 2
+}

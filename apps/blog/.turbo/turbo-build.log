@@ -1,0 +1,35 @@
+$ next build
+   Creating an optimized production build ...
+Failed to compile.
+
+./src/app/api/inngest/route.ts
+Module not found: Can't resolve 'inngest-client'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./src/app/api/inngest/route.ts
+Module not found: Can't resolve 'inngest-client/inngest/next'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./src/app/api/inngest/route.ts
+Module not found: Can't resolve 'inngest-client/functions'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./src/app/api/chat/send-message/route.ts:2:0
+Module not found: Can't resolve 'inngest-client'
+[0m [90m 1 | [39m[36mimport[39m type { [33mMessage[39m } [36mfrom[39m [32m"ai"[39m[33m;[39m[0m
+[0m[31m[1m>[22m[39m[90m 2 | [39m[36mimport[39m { [33mAnveioInngestClient[39m } [36mfrom[39m [32m"inngest-client"[39m[33m;[39m[0m
+[0m [90m 3 | [39m[0m
+[0m [90m 4 | [39m[36mexport[39m [36mconst[39m runtime [33m=[39m [32m"edge"[39m[33m;[39m[0m
+[0m [90m 5 | [39m[0m
+
+https://nextjs.org/docs/messages/module-not-found
+
+Import trace for requested module:
+../../node_modules/next/dist/build/webpack/loaders/next-edge-app-route-loader/index.js?absolutePagePath=private-next-app-dir%2Fapi%2Fchat%2Fsend-message%2Froute.ts&page=%2Fapi%2Fchat%2Fsend-message%2Froute&appDirLoader=bmV4dC1hcHAtbG9hZGVyP25hbWU9YXBwJTJGYXBpJTJGY2hhdCUyRnNlbmQtbWVzc2FnZSUyRnJvdXRlJnBhZ2U9JTJGYXBpJTJGY2hhdCUyRnNlbmQtbWVzc2FnZSUyRnJvdXRlJnBhZ2VQYXRoPXByaXZhdGUtbmV4dC1hcHAtZGlyJTJGYXBpJTJGY2hhdCUyRnNlbmQtbWVzc2FnZSUyRnJvdXRlLnRzJmFwcERpcj0lMkZob21lJTJGc2hvdm9uaCUyRndvcmtzcGFjZXMlMkZhbnZlaW8lMkZhcHBzJTJGYmxvZyUyRnNyYyUyRmFwcCZhcHBQYXRocz0lMkZhcGklMkZjaGF0JTJGc2VuZC1tZXNzYWdlJTJGcm91dGUmcGFnZUV4dGVuc2lvbnM9dHN4JnBhZ2VFeHRlbnNpb25zPXRzJnBhZ2VFeHRlbnNpb25zPWpzeCZwYWdlRXh0ZW5zaW9ucz1qcyZiYXNlUGF0aD0mYXNzZXRQcmVmaXg9Jm5leHRDb25maWdPdXRwdXQ9JnByZWZlcnJlZFJlZ2lvbj0mbWlkZGxld2FyZUNvbmZpZz1lMzAlM0Qh&nextConfigOutput=&preferredRegion=&middlewareConfig=e30%3D!
+
+
+> Build failed because of webpack errors
+error: script "build" exited with code 1 (SIGHUP)

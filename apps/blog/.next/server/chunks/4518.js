@@ -1,0 +1,1 @@
+"use strict";exports.id=4518,exports.ids=[4518],exports.modules={44518:(e,o,t)=>{t.d(o,{gz:()=>s});var d=t(94514);t(44470);var s=(0,d.SO)({allowedOptions:["cacheControlMaxAge","addRandomSuffix","contentType"]})}};

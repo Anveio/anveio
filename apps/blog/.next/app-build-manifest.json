@@ -1,0 +1,162 @@
+{
+  "pages": {
+    "/_not-found": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/app/_not-found-5205a3346d3427fd.js"
+    ],
+    "/layout": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/7d384bb9-9839909254777d2f.js",
+      "static/chunks/992-d265068f375336f7.js",
+      "static/chunks/434-596eea965512dcdd.js",
+      "static/chunks/47-e3bd1565f7cdf0b6.js",
+      "static/chunks/251-5942301c292b3b7c.js",
+      "static/css/f7ead1da34a6b1fd.css",
+      "static/chunks/app/layout-3f2f53ae250c4b63.js"
+    ],
+    "/page": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/b6c0dcd7-148c6912b81621bb.js",
+      "static/chunks/265-b174aa18a32df8fd.js",
+      "static/chunks/992-d265068f375336f7.js",
+      "static/chunks/434-596eea965512dcdd.js",
+      "static/chunks/42-be7d7e79d27e2963.js",
+      "static/chunks/120-590b0e299a56a31f.js",
+      "static/chunks/app/page-dd2933a07eb8f96c.js"
+    ],
+    "/profile/page": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/359-095f01b640a558f2.js",
+      "static/chunks/app/profile/page-0fef728147a3d60d.js"
+    ],
+    "/user-profile/[[...user-profile]]/page": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/app/user-profile/[[...user-profile]]/page-4899946ced5d358c.js"
+    ],
+    "/wip/page": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/265-b174aa18a32df8fd.js",
+      "static/chunks/434-596eea965512dcdd.js",
+      "static/chunks/app/wip/page-2e9c401be7ed801b.js"
+    ],
+    "/(auth)/layout": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/app/(auth)/layout-ef90127ddd5412e8.js"
+    ],
+    "/(auth)/sign-in/page": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/7d384bb9-9839909254777d2f.js",
+      "static/chunks/434-596eea965512dcdd.js",
+      "static/chunks/42-be7d7e79d27e2963.js",
+      "static/chunks/47-e3bd1565f7cdf0b6.js",
+      "static/chunks/913-c1211711a6cf7ad2.js",
+      "static/chunks/821-c5695d5534a602f9.js",
+      "static/chunks/app/(auth)/sign-in/page-1c06b26e04ad5c89.js"
+    ],
+    "/(auth)/sign-up/page": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/7d384bb9-9839909254777d2f.js",
+      "static/chunks/434-596eea965512dcdd.js",
+      "static/chunks/42-be7d7e79d27e2963.js",
+      "static/chunks/47-e3bd1565f7cdf0b6.js",
+      "static/chunks/913-c1211711a6cf7ad2.js",
+      "static/chunks/821-c5695d5534a602f9.js",
+      "static/chunks/app/(auth)/sign-up/page-142079aea589df4a.js"
+    ],
+    "/create/page": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/781-00596fa412636391.js",
+      "static/chunks/app/create/page-4b26596e3ded3d5a.js"
+    ],
+    "/create/layout": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/265-b174aa18a32df8fd.js",
+      "static/chunks/app/create/layout-e57528c29d3deac2.js"
+    ],
+    "/blog/layout": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/265-b174aa18a32df8fd.js",
+      "static/css/ed41ebe4e69b9839.css",
+      "static/chunks/app/blog/layout-36aed67a155a5f0d.js"
+    ],
+    "/blog/algorithmic-loot-generation-sucks/page": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/992-d265068f375336f7.js",
+      "static/chunks/app/blog/algorithmic-loot-generation-sucks/page-4a5e8a61f79817d8.js"
+    ],
+    "/blog/language-models-can-use-existing-software/page": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/265-b174aa18a32df8fd.js",
+      "static/chunks/992-d265068f375336f7.js",
+      "static/chunks/app/blog/language-models-can-use-existing-software/page-b2a10eaca1d40245.js"
+    ],
+    "/blog/how-to-be-good-at-sex-guide-for-straight-men/page": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/992-d265068f375336f7.js",
+      "static/chunks/app/blog/how-to-be-good-at-sex-guide-for-straight-men/page-172e2578bab6e6cb.js"
+    ],
+    "/blog/vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-router/page": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/265-b174aa18a32df8fd.js",
+      "static/chunks/992-d265068f375336f7.js",
+      "static/chunks/app/blog/vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-router/page-448ef5653f6b6816.js"
+    ],
+    "/blog/the-genocide-isnt-complicated-actually/page": [
+      "static/chunks/webpack-0dd8f5065523f987.js",
+      "static/chunks/1dd3208c-0de631ed7f116c3c.js",
+      "static/chunks/53-67c3891fa79cd880.js",
+      "static/chunks/main-app-1f1bed69c75f8766.js",
+      "static/chunks/265-b174aa18a32df8fd.js",
+      "static/chunks/992-d265068f375336f7.js",
+      "static/chunks/app/blog/the-genocide-isnt-complicated-actually/page-d7021161a4768727.js"
+    ]
+  }
+}
