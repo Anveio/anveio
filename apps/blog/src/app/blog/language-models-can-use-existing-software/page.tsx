@@ -145,15 +145,14 @@ export default function Post() {
           for AI and websites to talk to each other.
         </p>
         <p>
-          Fortunately, there’s already a standard way of any device to
-          communicate with websites you may have heard of: HTTP. HTTP is
-          ultimately just text. Language Model’s generate text. Language Model’s
-          can therefore communicate with websites by outputting HTTP request
-          strings. You of course need to translate the string into an actual
-          command sent to your computer’s network interface chip so that it can
-          send the request across the world and listen for the response but
-          that’s something your browser did about 30 times in under a second
-          when you loaded this web page.
+          Fortunately, there’s already a standard way for any device to
+          communicate with websites. You may have heard of it, it's called HTTP.
+          HTTP is just text. Language Model’s generate text. Language Model’s
+          can therefore communicate with websites by outputting HTTP. You of
+          course need to send the string via your computer’s network interface
+          chip across the world and listen for the response but that’s something
+          your browser did about 30 times in under a second when you loaded this
+          web page.
         </p>
         <p>
           OpenAI undoubtedly sees the ravenous hunger for ChatGPT to output
