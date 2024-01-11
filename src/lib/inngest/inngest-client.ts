@@ -7,4 +7,3 @@ export const AnveioInngestClient = new Inngest({
     schemas: new EventSchemas().fromRecord<InngestFunctionTypes>(),
 });
 
-export * from 'inngest'
