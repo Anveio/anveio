@@ -19,6 +19,7 @@
     "typescript": "^5.3.2"
   },
   "dependencies": {
+    "drizzle-kit": "^0.20.10",
     "drizzle-orm": "^0.29.1",
     "inngest": "^3.8.0",
     "vercel": "latest"
