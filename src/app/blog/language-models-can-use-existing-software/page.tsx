@@ -195,9 +195,9 @@ export default function Post() {
           This means that every developer needs to teach language models how to
           use their app so that the model can map natural language requests such
           as “file my taxes” to a sequence of commands. First, perhaps, to your
-          file system to find relevant PDFs, then log into AcmeTax while proving
-          it can act on your behalf, and send one big POST request with all of
-          your info and encoded file blobs.
+          file system to find relevant PDFs, then to log into AcmeTax while
+          proving it can act on your behalf and finally to send one big POST
+          request with all of your info and encoded file blobs.
         </p>
         <p>
           But doing so is simple. The developers at AcmeTax simply describe
@@ -211,14 +211,14 @@ export default function Post() {
           in a manifest file and app stores scan host a public directory of all
           apps' manifests somewhere where language models can regularly read
           them. For executables and apps not distributed through app stores
-          (e.g. 7zip and other shareware) the industry will need to invent some
+          (e.g. Photoshop, 7zip, ) the industry will need to invent some
           standard to allow AI to "bind" to software.
         </p>
         <p>
-          What I’m describing is the ability for any language model to display
-          and command any application. This is an open platform for both
-          language model developers and app developers while massively scaling
-          the capability and usefulness of both language models and apps.
+          What I’m describing is the ability for any language model to command
+          any application. This is an open platform for both language model
+          developers and app developers while massively scaling the capability
+          and usefulness of both language models and apps.
         </p>
         <p>
           If a website sucks or is malicious it’s omitted from the training set

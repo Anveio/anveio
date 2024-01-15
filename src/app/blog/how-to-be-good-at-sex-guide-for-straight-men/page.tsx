@@ -374,10 +374,11 @@ export default function Post() {
           Our ancestors used to have to deal with dangerous fauna: lions,
           tigers, bears. Today we have to deal with dangerous psychofauna.
           Disinformation cycles amplified by recommendation algorithms,
-          propaganda funded by billionaires, and dating apps, for example. You
-          feel lonely or you want to pursue a long-term relationship and 80% of
-          people your age meet their partners online so you download Tinder. The
-          psychofauna has fixed its eyes on you.
+          propaganda funded by billionaires, and dating apps, for example. Let's
+          walk through the typical flow of a dating app: you feel lonely or you
+          want to pursue a long-term relationship and 80% of people your age
+          meet their partners online so you download Tinder. The psychofauna has
+          fixed its eyes on you.
         </p>
         <p>
           You match with a few women (if you’re lucky), some of whom you really
