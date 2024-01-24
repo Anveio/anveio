@@ -3,9 +3,6 @@ import { LiveBlogPostCard } from "@/components/custom/LiveBlogPostCard";
 import { AnalyticsEvent } from "@/lib/analytics/types";
 import { BLOG_POSTS } from "@/lib/blog/posts";
 
-import dynamic from "next/dynamic";
-import { Suspense } from "react";
-
 export default function Home() {
   return (
     <>

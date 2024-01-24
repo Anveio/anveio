@@ -85,15 +85,6 @@
   );
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
 .blog-post-link:hover .blog-post-button,
 .blog-post-link:focus .blog-post-button,
 .blog-post-link:active .blog-post-button {
