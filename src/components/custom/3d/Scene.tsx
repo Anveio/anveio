@@ -1,13 +1,8 @@
 "use client";
 
-import { Canvas, addEffect } from "@react-three/fiber";
 import { Preload, View } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
 import React from "react";
-import Lenis from "@studio-freight/lenis";
-
-// Use lenis smooth scroll
-const lenis = new Lenis({ syncTouch: true });
-addEffect((t) => lenis.raf(t));
 
 export default function Scene({
   style,

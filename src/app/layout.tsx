@@ -1,18 +1,19 @@
 import { UserProvider } from "@/components/custom/Auth/UserProvider";
+import { NavBar } from "@/components/custom/Navbar/NavBar";
+import { NetworkLayer } from "@/components/custom/NetworkLayer/NetworkLayer";
 import { Toaster } from "@/components/ui/toaster";
 import { CustomAnalytics } from "@/lib/analytics/analytics.client";
 import { getUserForSessionToken } from "@/lib/auth/sign-in";
+import { getThemeCookieValue } from "@/lib/theming/theming.server";
 import "@/lib/toasts/toast-styles.css";
 import { cn } from "@/lib/utils";
 import { Analytics } from "@vercel/analytics/react";
-import { Inter } from "next/font/google";
 import dynamic from "next/dynamic";
+import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
-import Image from "next/image";
 import * as React from "react";
 import "./globals.css";
-import { ThemeProvider } from "@/components/custom/ThemeProvider/ThemeProvider";
-import { NavBar } from "@/components/custom/NavBar";
+import { HtmlElement } from "@/lib/theming/ThemeProvider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -38,19 +39,16 @@ export default async function RootLayout({
     ? await getUserForSessionToken(sessionTokenCookie)
     : undefined;
 
+  const themeCookieValue = getThemeCookieValue(cookieStore);
+
+  console.log(themeCookieValue);
+
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
-      <body className={cn(inter.className)}>
-        <ThemeProvider attribute="class" defaultTheme="dark">
-          <Image
-            src={"/bghero.webp"}
-            priority
-            alt=""
-            width={1000}
-            height={1000}
-            className="pointer-events-none absolute left-0 -right-20 h-full w-full select-none md:block"
-            style={{ color: "transparent" }}
-          />
+    <NetworkLayer>
+      <HtmlElement initialTheme={themeCookieValue}>
+        <body
+          className={cn(inter.className, "bg-background dark:bg-slate-950")}
+        >
           <React.Suspense>
             <UserProvider user={maybeUser}>
               <NavBar />
@@ -60,9 +58,9 @@ export default async function RootLayout({
               <CustomAnalytics />
             </UserProvider>
           </React.Suspense>
-        </ThemeProvider>
-        <Scene />
-      </body>
-    </html>
+          <Scene />
+        </body>
+      </HtmlElement>
+    </NetworkLayer>
   );
 }

@@ -1,7 +1,13 @@
-export const SUPPORTED_THEME = {
+import { z } from "zod";
+
+export const Theme = {
   LIGHT: "light",
   DARK: "dark",
 } as const;
 
-export type ColorScheme =
-  (typeof SUPPORTED_THEME)[keyof typeof SUPPORTED_THEME];
+export type Theme =
+  (typeof Theme)[keyof typeof Theme];
+
+export const ThemeCookieKey = "theme" as const
+
+export const themeSchema = z.enum([Theme.DARK, Theme.LIGHT])
