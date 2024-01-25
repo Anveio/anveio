@@ -8,7 +8,7 @@ const DISTANCE = 48;
 
 const ANIMATION_CONFIG = {
   transition: {
-    duration: 0.5,
+    duration: 0.2,
   },
   initial: {
     opacity: 0.5,

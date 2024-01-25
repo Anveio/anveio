@@ -41,15 +41,13 @@ export default async function RootLayout({
 
   const themeCookieValue = getThemeCookieValue(cookieStore);
 
-  console.log(themeCookieValue);
-
   return (
     <NetworkLayer>
       <HtmlElement initialTheme={themeCookieValue}>
         <body
           className={cn(
             inter.className,
-            "bg-background dark:bg-slate-950 transition-colors duration-500"
+            "bg-slate-100 dark:bg-slate-950 transition-colors duration-500"
           )}
         >
           <React.Suspense>
