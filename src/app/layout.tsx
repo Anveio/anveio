@@ -47,7 +47,10 @@ export default async function RootLayout({
     <NetworkLayer>
       <HtmlElement initialTheme={themeCookieValue}>
         <body
-          className={cn(inter.className, "bg-background dark:bg-slate-950")}
+          className={cn(
+            inter.className,
+            "bg-background dark:bg-slate-950 transition-colors duration-500"
+          )}
         >
           <React.Suspense>
             <UserProvider user={maybeUser}>
