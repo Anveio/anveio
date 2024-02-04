@@ -12,12 +12,15 @@ const ANIMATION_CONFIG = {
   },
   initial: {
     opacity: 0.5,
+    x: DISTANCE,
   },
   animate: {
     opacity: 1,
+    x: 0,
   },
   exit: {
     opacity: 0,
+    x: -DISTANCE,
   },
 };
 
@@ -27,18 +30,18 @@ export const ThemeToggleButton = () => {
   return (
     <Toggle
       aria-label="Toggle dark mode"
-      className="max-w-[48px] w-[48px]"
+      className="max-w-[48px] w-[48px] mb-1"
       onClick={toggleTheme}
     >
       <div className="flex overflow-hidden">
-        <AnimatePresence>
+        <AnimatePresence mode="wait">
           {theme === "dark" ? (
             <motion.div key={"dark"} {...ANIMATION_CONFIG}>
-              <MoonIcon className="h-6 w-6 dark:text-zinc-50" />
+              <MoonIcon className="h-4 w-4 dark:text-zinc-50" />
             </motion.div>
           ) : (
             <motion.div key={"light"} {...ANIMATION_CONFIG}>
-              <SunIcon className="h-6 w-6 dark:text-zinc-50" />
+              <SunIcon className="h-4 w-4 dark:text-zinc-50" />
             </motion.div>
           )}
         </AnimatePresence>

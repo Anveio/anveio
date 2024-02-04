@@ -144,3 +144,64 @@
   animation-timing-function: ease-in-out;
   animation-fill-mode: backwards;
 }
+
+@property --r2 {
+  syntax: "<angle>";
+  inherits: false;
+  initial-value: 0deg;
+}
+
+@property --x {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0px;
+}
+
+#b {
+  background: conic-gradient(
+    from calc(var(--r2) - 80deg) at var(--x) 50px,
+    #222 0%,
+    #fff 20%,
+    #222 25%
+  );
+  animation: -0.64s rotating2 3s linear infinite, -0.64s x 3s linear infinite;
+}
+@keyframes x {
+  /* w:h === 6:1 */
+  /* with a 80px x-margin */
+  0% {
+    --x: 80px;
+  }
+  /* 6/(6+3.14) * 50% */
+  32.82275711% {
+    --x: 520px;
+  }
+  50% {
+    --x: 520px;
+  }
+  /* 50% + 32.8% */
+  82.82275711% {
+    --x: 80px;
+  }
+  100% {
+    --x: 80px;
+  }
+}
+
+@keyframes rotating2 {
+  0% {
+    --r2: 0deg;
+  }
+  32.82275711% {
+    --r2: 0deg;
+  }
+  50% {
+    --r2: 180deg;
+  }
+  82.82275711% {
+    --r2: 180deg;
+  }
+  100% {
+    --r2: 360deg;
+  }
+}

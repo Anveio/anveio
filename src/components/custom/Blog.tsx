@@ -4,7 +4,7 @@ import React from "react";
 
 export const Article = (props: React.PropsWithChildren) => {
   return (
-    <article className="space-y-36 text-base leading-8">
+    <article className="space-y-24 text-base text-slate-900 dark:text-gray-100 leading-8">
       {props.children}
     </article>
   );
@@ -20,7 +20,7 @@ interface BlogHeaderProps {
 export const BlogHeader = (props: React.PropsWithChildren<BlogHeaderProps>) => {
   return (
     <div className="space-y-3">
-      <p className="italic text-center">
+      <p className="italic text-sm text-center">
         Published {formatDateWithSuffix(BLOG_POSTS[props.postId].publishedAt)}
       </p>
       <h1 className="text-center text-2xl font-semibold">
@@ -36,17 +36,19 @@ export const BlogHeader = (props: React.PropsWithChildren<BlogHeaderProps>) => {
         height={props.imageHeight ?? 896}
         priority
       />
-      <p className="italic text-center">{props.imageCaption}</p>
+      <p className="italic text-center text-sm leading-6">
+        {props.imageCaption}
+      </p>
     </div>
   );
 };
 
 export const Section = (props: React.PropsWithChildren) => {
-  return <section className="space-y-12">{props.children}</section>;
+  return <section className="space-y-10">{props.children}</section>;
 };
 
 Section.Header = (props: React.PropsWithChildren) => {
-  return <h2 className="text-2xl font-semibold">{props.children}</h2>;
+  return <h2 className="text-xl font-semibold">{props.children}</h2>;
 };
 
 interface ImageWithCaptionProps {

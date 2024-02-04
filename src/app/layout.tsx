@@ -33,11 +33,6 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const cookieStore = cookies();
-  const sessionTokenCookie = cookieStore.get("sessionToken")?.value;
-
-  const maybeUser = sessionTokenCookie
-    ? await getUserForSessionToken(sessionTokenCookie)
-    : undefined;
 
   const themeCookieValue = getThemeCookieValue(cookieStore);
 
@@ -51,15 +46,12 @@ export default async function RootLayout({
           )}
         >
           <React.Suspense>
-            <UserProvider user={maybeUser}>
-              <NavBar />
-              <div>{children}</div>
-              <Toaster />
-              <Analytics />
-              <CustomAnalytics />
-            </UserProvider>
+            <NavBar />
+            <div>{children}</div>
+            <Toaster />
+            <Analytics />
+            <CustomAnalytics />
           </React.Suspense>
-          <Scene />
         </body>
       </HtmlElement>
     </NetworkLayer>
