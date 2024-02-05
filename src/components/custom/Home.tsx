@@ -5,6 +5,7 @@
  */
 import Image from "next/image";
 import Link from "next/link";
+import { Card } from "../ui/card";
 
 interface Props {
   title: string;
@@ -15,7 +16,8 @@ interface Props {
 
 export function FeaturedBlogPost(props: Props) {
   return (
-    <div className="animate-fade-in-up transition-all duration-500 ease-in-out transform translate-y-2 bg-zinc-900 border-2 border-zbg-zinc-700 rounded-lg shadow-lg overflow-hidden max-w-md mx-auto">
+    <Card className="animate-fade-in-up transition-all duration-500 ease-in-out transform translate-y-2 bg-zinc-900 border border-zinc-700 rounded-lg shadow-lg overflow-hidden max-w-md mx-auto">
+      
       <div className="absolute -top-2 -right-2">
         <FlameIcon className="h-6 w-6 text-red-500 z-10" />
       </div>
@@ -31,7 +33,7 @@ export function FeaturedBlogPost(props: Props) {
       </div>
       <div className="p-4 flex flex-col justify-between h-full">
         <div>
-          <h2 className="text-lg font-bold mb-2 text-white dark:text-gray-200">
+          <h2 className="text-lg font-bold mb-2 text-zinc-900 dark:text-gray-300">
             {props.title}
           </h2>
           <p className="text-gray-500 text-sm dark:text-gray-400">
@@ -47,7 +49,7 @@ export function FeaturedBlogPost(props: Props) {
           </Link>
         </div>
       </div>
-    </div>
+    </Card>
   );
 }
 

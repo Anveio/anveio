@@ -5,18 +5,13 @@ import { BLOG_POSTS } from "@/lib/blog/posts";
 import { FeaturedBlogPost } from "@/components/custom/Home";
 
 export default function Home() {
-  const featuredPost = BLOG_POSTS["language-models-can-use-existing-software"];
+  const posts = Object.values(BLOG_POSTS);
 
   return (
     <>
       <main className="">
         <div className="max-w-4xl mx-auto sm:px-0 px-1">
-          <FeaturedBlogPost
-            title={featuredPost.title}
-            description={featuredPost.content}
-            imageHref={featuredPost.imageHref}
-            slug={featuredPost.slug}
-          ></FeaturedBlogPost>
+          
         </div>
       </main>
       <RecordEventOnMount event={analyticsEvent} />
