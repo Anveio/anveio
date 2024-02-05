@@ -134,10 +134,10 @@ const BlogPostCard = (
   return (
     <Card className="flex flex-col rounded-xl border">
       <CardHeader className="space-y-6">
-        <CardTitle className="text-base font-light text-center dark:text-gray-100 text-gray-950">
+        <CardTitle className="text-base font-light text-center dark:text-gray-100 text-gray-700">
           {props.title}
         </CardTitle>
-        <CardDescription className="text-base font-thin dark:text-gray-200 text-black ">
+        <CardDescription className="text-base font-extralight dark:text-gray-200 text-black">
           {props.content}
         </CardDescription>
       </CardHeader>
