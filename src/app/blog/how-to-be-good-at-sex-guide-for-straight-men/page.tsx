@@ -1,15 +1,23 @@
+import {
+  Article,
+  BlogHeader,
+  ImageWithCaption,
+  Section,
+} from "@/components/custom/Blog";
 import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
 import { AnalyticsEvent } from "@/lib/analytics/types";
 import { BLOG_POSTS, formatDateWithSuffix } from "@/lib/blog/posts";
 import { Metadata } from "next";
 import Image from "next/image";
 
+const POST_ID = "how-to-be-good-at-sex-guide-for-straight-men";
+
 export const metadata: Metadata = {
-  title: BLOG_POSTS["how-to-be-good-at-sex-guide-for-straight-men"].title,
+  title: BLOG_POSTS[POST_ID].title,
   description:
     "An essay on finding yourself and as a positive consequence, becoming magnetically sexy.",
   openGraph: {
-    title: BLOG_POSTS["how-to-be-good-at-sex-guide-for-straight-men"].title,
+    title: BLOG_POSTS[POST_ID].title,
     description:
       "An essay on finding yourself and as a positive consequence, becoming magnetically sexy.",
     url: "https://anveio.com",
@@ -29,32 +37,15 @@ export const metadata: Metadata = {
 
 export default function Post() {
   return (
-    <article className="space-y-36 text-base leading-8">
-      <div className="space-y-3">
-        <p className="italic text-center">
-          Published{" "}
-          {formatDateWithSuffix(
-            BLOG_POSTS["how-to-be-good-at-sex-guide-for-straight-men"]
-              .publishedAt
-          )}
-        </p>
-        <h1 className="text-center text-2xl font-semibold">
-          {BLOG_POSTS["how-to-be-good-at-sex-guide-for-straight-men"].title}
-        </h1>
-        <Image
-          alt="Decorative box art of an imaginary RPG game"
-          src={
-            "/blog-assets/how-to-be-good-at-sex-guide-for-straight-men/cover.webp"
-          }
-          className="blog-post-cover-image"
-          width={896}
-          height={896}
-          priority
-        />
-        <p className="italic text-center">Pictured: you, in the future</p>
-      </div>
-      <section className="space-y-10">
-        <h2 className="text-2xl font-bold">Effing the Ineffable</h2>
+    <Article>
+      <BlogHeader
+        postId={POST_ID}
+        imageCaption="Pictured: you, in the future"
+        imageHeight={896}
+        imageWidth={896}
+      />
+      <Section>
+        <Section.Header>Effing the Ineffable</Section.Header>
         <p>
           Good sex doesn’t start in the bedroom. It started at least a few hours
           ago while you were making dinner when she asked if she could help and
@@ -92,20 +83,13 @@ export default function Post() {
           resentment and the resentment gave way to bad sex because sex needs
           love if it’s gonna be good.
         </p>
-        <figure className="flex flex-col justify-center items-center py-8">
-          <Image
-            src={
-              "/blog-assets/how-to-be-good-at-sex-guide-for-straight-men/this-be-the-verse.webp"
-            }
-            alt=""
-            width={400}
-            height={500}
-          />
-          <figcaption className="text-sm text-center py-4">
-            The games we torture ourselves with are a waste of time, but why do
-            we play these games anyway?
-          </figcaption>
-        </figure>
+        <ImageWithCaption
+          postId={POST_ID}
+          fileName="this-be-the-verse"
+          imageCaption="The games we torture ourselves with are a waste of time, but why do we play these games anyway?"
+          imageHeight={500}
+          imageWidth={400}
+        />
         <p>
           The answer to “how do I have good sex as a straight guy” begins with
           this: you love your partner and you have hope for your relationship.
@@ -160,9 +144,9 @@ export default function Post() {
           reinventing a new definition for yourself from first principles. The
           second step is to learn to love women again.
         </p>
-      </section>
-      <section className="space-y-10">
-        <h2 className="text-2xl font-bold">Lover, Love Thyself</h2>
+      </Section>
+      <Section>
+        <Section.Header>Lover, Love Thyself</Section.Header>
         <p>
           To get good at sex we have to start off by forgetting what it means to
           be a man. Clean slate.
@@ -186,19 +170,13 @@ export default function Post() {
           desirable genetic traits. No need to continue the atrocity of chattel
           slavery, we've convinced men to do it to themselves.
         </p>
-        <figure className="flex flex-col justify-center items-center py-8">
-          <Image
-            src={
-              "/blog-assets/how-to-be-good-at-sex-guide-for-straight-men/chandler.webp"
-            }
-            alt=""
-            width={800}
-            height={800}
-          />
-          <figcaption className="text-sm text-center py-4">
-            Chandler Bing knew
-          </figcaption>
-        </figure>
+        <ImageWithCaption
+          postId={POST_ID}
+          fileName="chandler"
+          imageCaption="Chandler Bing knew"
+          imageHeight={800}
+          imageWidth={800}
+        />
         <p>
           Even more convenient for the people who benefit from you sticking to
           the script: there is only one person that has to deal with the pain,
@@ -234,30 +212,24 @@ export default function Post() {
           of femininity too, only the best for you brüther) but in the meantime:
           bravo to the Machine Theory of Masculinity for doing so well.
         </p>
-      </section>
-      <section>
-        <h3 className="text-2xl font-bold">
+      </Section>
+      <Section>
+        <Section.Header>
           A working theory of masculinity and femininity.
-        </h3>
+        </Section.Header>
         <p>
           You’re allowed to come up with your own definitions or even to pick
           freely from others’ definitions based on your taste because this shit
           is all arbitrary and definitions exist to serve human understanding.
           There’s no such thing as a chair, and so on.
         </p>
-        <figure className="flex flex-col justify-center items-center py-8">
-          <Image
-            src={
-              "/blog-assets/how-to-be-good-at-sex-guide-for-straight-men/language.webp"
-            }
-            alt=""
-            width={800}
-            height={800}
-          />
-          <figcaption className="text-sm text-center py-4">
-            Don't mind me just putting another nail on the beach.
-          </figcaption>
-        </figure>
+        <ImageWithCaption
+          postId={POST_ID}
+          fileName="language"
+          imageCaption="Don't mind me just putting another nail on the beach."
+          imageHeight={800}
+          imageWidth={800}
+        />
         <p>
           So with that being said, I invite you to entertain the idea that
           masculinity is not the opposite of femininity but that the two are
@@ -268,19 +240,13 @@ export default function Post() {
           because there’s a part of you that thinks femininity is inferior or
           not worth exhibiting.
         </p>
-        <figure className="flex flex-col justify-center items-center py-8">
-          <Image
-            src={
-              "/blog-assets/how-to-be-good-at-sex-guide-for-straight-men/2x2.webp"
-            }
-            alt=""
-            width={800}
-            height={800}
-          />
-          <figcaption className="text-sm text-center py-4">
-            If King, Warrior, Magician, Lover was good
-          </figcaption>
-        </figure>
+        <ImageWithCaption
+          postId={POST_ID}
+          fileName="2x2"
+          imageCaption="If King, Warrior, Magician, Lover was good"
+          imageHeight={800}
+          imageWidth={800}
+        />
         <p>
           Masculinity is directly proportional to the amount of integration and
           agency your actions exhibit. Someone who’s masculine demonstrates a
@@ -305,19 +271,14 @@ export default function Post() {
           may be under-thinking the traditionally female half of this theory.
         </p>
         <p>Here’s the same graph with some examples:</p>
-        <figure className="flex flex-col justify-center items-center py-8">
-          <Image
-            src={
-              "/blog-assets/how-to-be-good-at-sex-guide-for-straight-men/2x2-2.webp"
-            }
-            alt=""
-            width={800}
-            height={800}
-          />
-          <figcaption className="text-sm text-center py-4">
-            The incel-soldier axis is real
-          </figcaption>
-        </figure>
+
+        <ImageWithCaption
+          postId={POST_ID}
+          fileName="2x2-2"
+          imageCaption="The incel-soldier axis is real"
+          imageHeight={800}
+          imageWidth={800}
+        />
         <p>
           Keep in mind that masculinity and femininity are measured by an
           observer and their assessment is bound by the limitations of their
@@ -342,11 +303,9 @@ export default function Post() {
           here it’s a sign we have room to grow. It’s where we’re born, after
           all.
         </p>
-      </section>
-      <section className="space-y-10">
-        <h2 className="text-2xl font-bold">
-          Falling (Back) in Love with Women
-        </h2>
+      </Section>
+      <Section>
+        <Section.Header>Falling (Back) in Love with Women</Section.Header>
         <p>
           Most straight guys don’t even like women. It’s likely they don’t even
           realize it because they don’t know what the alternative to the current
@@ -357,19 +316,13 @@ export default function Post() {
           want to do, or lied to in infinite possible ways. For guys it’s the
           cycle of desperation, confusion, and rejection.
         </p>
-        <figure className="flex flex-col justify-center items-center py-8">
-          <Image
-            src={
-              "/blog-assets/how-to-be-good-at-sex-guide-for-straight-men/shes-my-friend.webp"
-            }
-            alt=""
-            width={800}
-            height={800}
-          />
-          <figcaption className="text-sm text-center py-4">
-            Gigachad responds to someone adrift
-          </figcaption>
-        </figure>
+        <ImageWithCaption
+          postId={POST_ID}
+          fileName="shes-my-friend"
+          imageCaption="Gigachad responds to an adrift poster."
+          imageHeight={800}
+          imageWidth={800}
+        />
         <p>
           Our ancestors used to have to deal with dangerous fauna: lions,
           tigers, bears. Today we have to deal with dangerous psychofauna.
@@ -441,9 +394,9 @@ export default function Post() {
           anything. You’re gaining a life free of an endless stream of emotional
           nukes targeted at your heart.
         </p>
-      </section>
-      <section className="space-y-10">
-        <h2 className="text-2xl font-bold">So you’ve figured yourself out</h2>
+      </Section>
+      <Section>
+        <Section.Header>So you’ve figured yourself out</Section.Header>
         <p>
           All the stuff other people torture themselves with: “am I texting too
           much? Am I not texting enough? Do I seem like a loser if my schedule
@@ -455,9 +408,9 @@ export default function Post() {
           dating mind games. You’ve come home to yourself and you, in some
           mystical sense, have become a force of nature.
         </p>
-      </section>
+      </Section>
       <RecordEventOnMount event={analyticsEvent} />
-    </article>
+    </Article>
   );
 }
 

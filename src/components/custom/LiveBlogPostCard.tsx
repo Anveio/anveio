@@ -2,6 +2,7 @@
 
 import {
   Card,
+  CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
@@ -133,27 +134,37 @@ const BlogPostCard = (
   return (
     <Card className="flex flex-col rounded-xl border">
       <CardHeader className="space-y-6">
-        <CardTitle className="text-base text-center dark:text-gray-100 text-gray-950">
+        <CardTitle className="text-base font-light text-center dark:text-gray-100 text-gray-950">
           {props.title}
         </CardTitle>
-        <CardDescription className="text-base dark:text-gray-200 text-gray-900 font-light">
+        <CardDescription className="text-base font-thin dark:text-gray-200 text-black ">
           {props.content}
         </CardDescription>
       </CardHeader>
+      <Image
+        alt="Hero image"
+        className="pointer-events-none select-none rounded-b-xl blog-post-cover-image pb-6 w-full h-full object-cover"
+        height={400}
+        src={props.imageHref}
+        priority={props.priority}
+        width={400}
+      />
       <CardFooter className="justify-between">
-        <p className="text-sm dark:text-gray-400 text-gray-900">
+        <p className="text-sm dark:text-gray-400 font-extralight text-gray-900">
           {formatter.format(props.publishedAt)}
         </p>
-        <Button
-          className="hover:text-black"
-          onClick={() => {
-            enqueueAnalyticsEvent({
-              eventType: props.eventType,
-            });
-          }}
-        >
-          Read
-        </Button>
+        <Link href={`/blog/${props.slug}`}>
+          <Button
+            className="hover:text-black"
+            onClick={() => {
+              enqueueAnalyticsEvent({
+                eventType: props.eventType,
+              });
+            }}
+          >
+            Read
+          </Button>
+        </Link>
       </CardFooter>
     </Card>
   );

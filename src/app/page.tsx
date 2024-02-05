@@ -35,7 +35,7 @@ export default function Home() {
     <>
       <main className="">
         <div className="h-44"></div>
-        <div className="max-w-xl mx-auto sm:px-0 px-1 space-y-8">
+        <div className="max-w-xl mx-auto sm:px-0 px-6 space-y-8">
           {postsToRender}
         </div>
       </main>

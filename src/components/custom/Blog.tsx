@@ -4,7 +4,7 @@ import React from "react";
 
 export const Article = (props: React.PropsWithChildren) => {
   return (
-    <article className="space-y-24 text-base text-slate-900 dark:text-gray-100 leading-8">
+    <article className="py-3 sm:py-4 px-6 space-y-24 text-base dark:text-gray-300 text-gray-800 leading-8">
       {props.children}
     </article>
   );
@@ -19,11 +19,11 @@ interface BlogHeaderProps {
 
 export const BlogHeader = (props: React.PropsWithChildren<BlogHeaderProps>) => {
   return (
-    <div className="space-y-3">
-      <p className="italic text-sm text-center">
+    <div className="space-y-6">
+      <p className="italic text-sm text-center font-extralight dark:text-gray-400 text-gray-700">
         Published {formatDateWithSuffix(BLOG_POSTS[props.postId].publishedAt)}
       </p>
-      <h1 className="text-center text-2xl font-semibold">
+      <h1 className="text-center text-xl font-normal dark:text-gray-200 text-gray-950">
         {BLOG_POSTS[props.postId].title}
       </h1>
       <Image
