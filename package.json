@@ -122,5 +122,8 @@
     "eslint-config-next": "13.4.7",
     "partykit": "^0.0.32",
     "typescript": "5.1.6"
+  },
+  "overrides": {
+    "esbuild": "0.19.12"
   }
 }
