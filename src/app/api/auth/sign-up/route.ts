@@ -1,9 +1,8 @@
 import { hashPassword } from "@/lib/auth/argon2";
 import { db } from "@/lib/db";
 import { emailVerificationTokens, users } from "@/lib/db/schema";
-import { sendAccountVerificationEmail } from "@/lib/emails/joining";
 import { generate256BitToken } from "@/lib/utils.server";
-import addDays from "date-fns/addDays";
+import { addDays } from "date-fns";
 import { nanoid } from "nanoid";
 import { NextResponse } from "next/server";
 import { z } from "zod";
@@ -67,10 +66,10 @@ export async function POST(request: Request) {
   try {
     await createUser(putativeUser, verificationToken);
 
-    await sendAccountVerificationEmail({
-      destinationEmailAddress: parseResult.data.email,
-      verificationToken: verificationToken,
-    });
+    // await sendAccountVerificationEmail({
+    //   destinationEmailAddress: parseResult.data.email,
+    //   verificationToken: verificationToken,
+    // });
 
     return NextResponse.json(
       {

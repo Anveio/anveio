@@ -2,6 +2,12 @@ const { get } = require("@vercel/edge-config");
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    serverComponentsExternalPackages: [
+      "@react-email/render",
+      "@react-email/tailwind",
+    ],
+  },
   images: {
     formats: ["image/avif", "image/webp"],
     // Twitter Profile Picture

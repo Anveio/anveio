@@ -1,5 +1,5 @@
 import { createSessionForUser } from "@/lib/auth/sign-in";
-import isPast from "date-fns/isPast";
+import { isPast } from "date-fns";
 import { db } from "@/lib/db";
 import { emailVerificationTokens, users } from "@/lib/db/schema";
 import { and, eq } from "drizzle-orm";
