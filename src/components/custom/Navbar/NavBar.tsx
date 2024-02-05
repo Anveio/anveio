@@ -9,7 +9,7 @@ export function NavBar() {
         <nav className="flex h-8 text-xs w-full shrink-0 items-center   dark:text-gray-400 transition-colors duration-500 backdrop-blur">
           <NavbarLink
             activeClassName="dark:text-white "
-            className="mr-6 px-2 sm:px-0"
+            className="font-semibold mr-6 px-2 sm:px-0"
             href="/"
           >
             <span>Anveio</span>

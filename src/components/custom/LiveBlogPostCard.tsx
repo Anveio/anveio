@@ -132,16 +132,16 @@ const BlogPostCard = (
 ) => {
   return (
     <Card className="flex flex-col rounded-xl border">
-      <CardHeader className="space-y-4">
-        <CardTitle className="text-base text-center dark:text-gray-200 text-gray-950 lg:py-4">
+      <CardHeader className="space-y-6">
+        <CardTitle className="text-base text-center dark:text-gray-100 text-gray-950">
           {props.title}
         </CardTitle>
-        <CardDescription className="md:px-4 text-base dark:text-gray-300 text-gray-900 font-light">
+        <CardDescription className="text-base dark:text-gray-200 text-gray-900 font-light">
           {props.content}
         </CardDescription>
       </CardHeader>
       <CardFooter className="justify-between">
-        <p className="text-sm dark:text-gray-300 text-gray-900">
+        <p className="text-sm dark:text-gray-400 text-gray-900">
           {formatter.format(props.publishedAt)}
         </p>
         <Button

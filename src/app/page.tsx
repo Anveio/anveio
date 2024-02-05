@@ -34,10 +34,8 @@ export default function Home() {
   return (
     <>
       <main className="">
-        <div>
-                  
-        </div>
-        <div className="max-w-4xl mx-auto sm:px-0 px-1 space-y-8">
+        <div className="h-44"></div>
+        <div className="max-w-xl mx-auto sm:px-0 px-1 space-y-8">
           {postsToRender}
         </div>
       </main>

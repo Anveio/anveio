@@ -20,8 +20,6 @@ export const NavbarLink = ({ activeClassName, ...props }: Props) => {
     ? stringHref === pathname
     : props.href.toString().startsWith(pathname);
 
-  console.log(pathname, props.href.toString(), userIsOnbasePath, isActivePath);
-
   return (
     <Link
       {...props}
