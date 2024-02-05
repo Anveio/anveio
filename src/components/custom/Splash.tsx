@@ -2,11 +2,11 @@
 
 import dynamic from "next/dynamic";
 
-const Hello = dynamic(() => import("@/components/custom/3d/Hello"), {
+const Hello = dynamic(() => import("@/components/3d/Hello"), {
   ssr: false,
 });
 
-const Common = dynamic(() => import("@/components/custom/3d/Common"), {
+const Common = dynamic(() => import("@/components/3d/Common"), {
   ssr: false,
 });
 

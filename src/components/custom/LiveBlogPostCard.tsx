@@ -32,6 +32,7 @@ interface Props {
   imageHref: string;
   eventType: StartsWith<"click", AnalyticsEvent["eventType"]>;
   priority?: boolean;
+  publishedAt: Date;
 }
 
 let IS_USING_MULTIPLAYER = false;
@@ -115,6 +116,12 @@ const BlogPostCardWithWidget = (props: Props) => {
   );
 };
 
+const formatter = new Intl.DateTimeFormat("en-US", {
+  month: "short", // "short" for abbreviated month name
+  day: "2-digit",
+  year: "numeric",
+});
+
 const BlogPostCard = (
   props: React.PropsWithChildren<
     Props & {
@@ -124,51 +131,31 @@ const BlogPostCard = (
   >
 ) => {
   return (
-    <div className="flex flex-col rounded-xl border">
-      <div className="py-8 ">
-        <Link tabIndex={-1} href={`/blog/${props.slug}`}>
-          <h2 className="text-3xl hover:underline text-brand font-semibold sm:text-4xl text-center">
-            {props.title}
-          </h2>
-        </Link>
-      </div>
-      <Link
-        href={`/blog/${props.slug}`}
-        className="mx-auto border-t py-8 blog-post-link"
-      >
-        <div className="flex flex-col sm:flex-row w-full px-8">
-          <div className="sm:w-1/2">
-            <Image
-              src={props.imageHref}
-              priority
-              alt=""
-              width={550}
-              height={550}
-              className="pointer-events-none select-none rounded-b-xl blog-post-cover-image pt-2 w-full h-full object-cover "
-            />
-          </div>
-          <div className="sm:pl-8 sm:w-1/2 text-slate-300 ">
-            <div className="flex flex-col sm:h-full sm:pt-0 pt-8 sm:justify-between sm:space-y-0 space-y-8">
-              <p className="md:text-lg text-base text-slate-300">
-                {props.content}
-              </p>
-              <Button
-                tabIndex={-1}
-                variant={"outline"}
-                className="blog-post-button"
-                onClick={() => {
-                  enqueueAnalyticsEvent({
-                    eventType: props.eventType,
-                  });
-                }}
-              >
-                <span className="blog-post-button-text">Read</span>
-              </Button>
-            </div>
-          </div>
-        </div>
-      </Link>
-    </div>
+    <Card className="flex flex-col rounded-xl border">
+      <CardHeader className="space-y-4">
+        <CardTitle className="text-base text-center dark:text-gray-200 text-gray-950 lg:py-4">
+          {props.title}
+        </CardTitle>
+        <CardDescription className="md:px-4 text-base dark:text-gray-300 text-gray-900 font-light">
+          {props.content}
+        </CardDescription>
+      </CardHeader>
+      <CardFooter className="justify-between">
+        <p className="text-sm dark:text-gray-300 text-gray-900">
+          {formatter.format(props.publishedAt)}
+        </p>
+        <Button
+          className="hover:text-black"
+          onClick={() => {
+            enqueueAnalyticsEvent({
+              eventType: props.eventType,
+            });
+          }}
+        >
+          Read
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
 

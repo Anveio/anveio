@@ -8,12 +8,12 @@ import { getThemeCookieValue } from "@/lib/theming/theming.server";
 import "@/lib/toasts/toast-styles.css";
 import { cn } from "@/lib/utils";
 import { Analytics } from "@vercel/analytics/react";
-import dynamic from "next/dynamic";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 import * as React from "react";
 import "./globals.css";
 import { HtmlElement } from "@/lib/theming/ThemeProvider";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -22,10 +22,6 @@ export const metadata = {
     "Thoughts on software engineering, culture, and science from Shovon Hasan (Anveio).",
   "view-transition": "same-origin",
 };
-
-const Scene = dynamic(() => import("@/components/custom/3d/Scene"), {
-  ssr: false,
-});
 
 export default async function RootLayout({
   children,
@@ -42,12 +38,12 @@ export default async function RootLayout({
         <body
           className={cn(
             inter.className,
-            "bg-slate-100 dark:bg-slate-950 transition-colors duration-500"
+            "bg-slate-100 dark:bg-black transition-colors duration-500"
           )}
         >
           <React.Suspense>
             <NavBar />
-            <div>{children}</div>
+            {children}
             <Toaster />
             <Analytics />
             <CustomAnalytics />
