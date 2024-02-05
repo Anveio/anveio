@@ -41,6 +41,13 @@ const View = dynamic(
   }
 );
 
+const HeroScene = dynamic(
+  () => import("@/components/3d/Core/HeroScene").then((mod) => mod.HeroScene),
+  {
+    ssr: false,
+  }
+);
+
 const postsToRender = posts
   .filter((post) => {
     if (process.env.NODE_ENV === "development") {
@@ -73,7 +80,9 @@ export default function Home() {
         <div className="h-96">
           {" "}
           <Scene>{/* @ts-expect-error */}</Scene>
-          <View />
+          <View>
+            <HeroScene />
+          </View>
         </div>
         <section className="space-y-4">
           <h1 className="text-center dark:text-gray-400 text-gray-700">
