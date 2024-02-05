@@ -35,9 +35,14 @@ export default function Home() {
     <>
       <main className="">
         <div className="h-44"></div>
-        <div className="max-w-xl mx-auto sm:px-0 px-6 space-y-8">
-          {postsToRender}
-        </div>
+        <section className="space-y-4">
+          <h1 className="text-center dark:text-gray-400 text-gray-700">
+            Featured Essay
+          </h1>
+          <div className="max-w-xl mx-auto sm:px-0 px-6 space-y-8">
+            {postsToRender[0]}
+          </div>
+        </section>
       </main>
       <RecordEventOnMount event={analyticsEvent} />
     </>
