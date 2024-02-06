@@ -88,16 +88,16 @@ export function HeroScene() {
     );
     spot.current.intensity = rainbow.current.material.emissiveIntensity;
     // // Animate ambience
-    // lerp(ambient.current, "intensity", isPrismHit ? 4 : 0, 1);
+    lerp(ambient.current, "intensity", isPrismHit ? 4 : 0, 1);
   });
 
   return (
     <>
       {/* Lights */}
       <ambientLight ref={ambient} intensity={0} />
-      <pointLight position={[5, 0, 0]} intensity={50} />
-      <pointLight position={[0, 10, 0]} intensity={50} />
-      <pointLight position={[-5, 0, 0]} intensity={50} />
+      <pointLight position={[5, 0, 0]} intensity={0.05} />
+      <pointLight position={[0, 10, 0]} intensity={0.05} />
+      <pointLight position={[-5, 0, 0]} intensity={0.05} />
       <spotLight
         ref={spot}
         intensity={1}
