@@ -64,12 +64,7 @@ function isRayMesh(object: THREE.Object3D): object is RayMesh {
   );
 }
 
-function createEvent(
-  api: ReflectApi,
-  hit: any,
-  intersect: any,
-  intersects: any[]
-): RayEvent {
+function createEvent(api: any, hit: any, intersect: any, intersects: any): any {
   return {
     api,
     object: intersect.object,
@@ -80,16 +75,6 @@ function createEvent(
     intersect,
     intersects,
     stopPropagation: () => (hit.stopped = true),
-    nativeEvent: new MouseEvent("click"), // Placeholder, real event would be determined by context
-    intersections: intersects,
-    ray: new THREE.Ray(),
-    unprojectedPoint: new THREE.Vector3(),
-    distance: intersect.distance,
-    delta: 0,
-    uv: new THREE.Vector2(),
-    face: intersect.face,
-    faceIndex: intersect.faceIndex,
-    sourceEvent: new MouseEvent("click"), // Placeholder
   };
 }
 
@@ -97,7 +82,7 @@ export const Reflect = forwardRef<ReflectApi, ReflectProps>(
   (
     {
       children,
-      start: _start = [0, -window.document.body.clientHeight, 0],
+      start: _start = [0, 0, 0],
       end: _end = [0, 0, 0],
       bounce = 10,
       far = 100,

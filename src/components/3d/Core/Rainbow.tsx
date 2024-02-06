@@ -133,6 +133,7 @@ export const Rainbow = forwardRef<any, any>(
           fade={fade}
           startRadius={startRadius}
           endRadius={endRadius}
+          
           ratio={1}
           toneMapped={false}
         />

@@ -61,34 +61,39 @@ export function HeroScene() {
     spot.current.target.updateMatrixWorld();
   }, []);
 
-  useFrame((state) => {
-    // debugger;
-    // Tie beam to the mouse
+  let baseAngle = useRef(0);
 
-    // boxreflect.current.setRay(
-    //   [
-    //     (state.pointer.x * state.viewport.width) / 2,
-    //     (state.pointer.y * state.viewport.height) / 2,
-    //     0,
-    //   ],
-    //   [0, 0, 0]
-    // );
-    // Animate rainbow intensity
+  useFrame((state, delta) => {
+    // Increment the base angle to move along a circle over time
+    baseAngle.current += delta * 0.2; // Increase by delta time for smooth animation, adjust speed here as necessary
 
-    if (isPrismHit) {
-      console.log(state.pointer);
-      console.log(Date.now(), isPrismHit);
-    }
+    // Define the radius of the circle and the center point
+    const radius = 5; // Adjust the radius as needed
+    const centerX = 0; // Center X position of the circle, adjust as needed
+    const centerY = 0; // Center Y position of the circle, adjust as needed
 
+    // Calculate the new x and y positions based on the base angle
+    const x = centerX + radius * Math.cos(baseAngle.current);
+    const y = centerY + radius * Math.sin(baseAngle.current);
+
+    // Apply these positions through the setRay function
+    boxreflect.current.setRay(
+      [
+        (x * state.viewport.width) / 2, // Adjust if the circle seems off-center
+        (y * state.viewport.height) / 2, // Adjust if the circle seems off-center
+        0,
+      ],
+      [0, 0, 0]
+    );
+
+    // Continue with your existing animation code...
     lerp(
       rainbow.current.material,
       "emissiveIntensity",
       isPrismHit ? 2.5 : 0,
       0.1
     );
-    spot.current.intensity = rainbow.current.material.emissiveIntensity;
-    // // Animate ambience
-    lerp(ambient.current, "intensity", isPrismHit ? 4 : 0, 1);
+    lerp(ambient.current, "intensity", isPrismHit ? 1.5 : 0, 1);
   });
 
   return (
@@ -100,7 +105,7 @@ export function HeroScene() {
       <pointLight position={[-5, 0, 0]} intensity={0.05} />
       <spotLight
         ref={spot}
-        intensity={1}
+        intensity={0}
         distance={7}
         angle={1}
         penumbra={1}
@@ -148,14 +153,15 @@ export function HeroScene() {
           onRayOut={rayOut}
           onRayMove={rayMove}
         />
-        {/* <Box position={[0, -2, 0]} rotation={[0, 0, Math.PI / 8]} />
-        <Box position={[-2.4, -1, 0]} rotation={[0, 0, Math.PI / -4]} /> */}
+        <Box position={[3, -2, 0]} rotation={[0, 0, Math.PI / 8]} />
+        <Box position={[-2.4, -1, 0]} rotation={[0, 0, Math.PI / -4]} />
+        <Box position={[3.2, 2, 0]} rotation={[0, 0, Math.PI / -4]} />
       </Beam>
       {/* Rainbow and flares */}
       <Rainbow
         ref={rainbow}
         startRadius={0}
-        endRadius={2}
+        endRadius={1.5}
         fade={0}
         emissiveIntensity={0}
       />
@@ -167,7 +173,7 @@ export function HeroScene() {
         streak={[12.5, 20, 1]}
       />
       {isIos ? null : (
-        <EffectComposer disableNormalPass key={Date.now()}>
+        <EffectComposer disableNormalPass>
           <Bloom
             mipmapBlur
             levels={9}
