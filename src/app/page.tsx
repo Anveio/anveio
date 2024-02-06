@@ -79,17 +79,17 @@ export default function Home() {
       <main>
         <div className="h-[100dvh]">
           <Scene>{/* @ts-expect-error */}</Scene>
-          <View className="w-full h-[100dvh]">
+          <View className="w-full h-full">
             <color attach="background" args={["black"]} />
             <HeroScene />
           </View>
         </div>
-        <section className="space-y-4">
-          <h1 className="text-center dark:text-gray-400 text-gray-700">
-            Featured Essay
-          </h1>
-          <div className="max-w-xl mx-auto sm:px-0 px-6 space-y-8">
-            {postsToRender[0]}
+        <section className="absolute top-[600px] flex w-[100dvw]">
+          <div className="max-w-xl mx-auto space-y-4 ">
+            <h1 className="text-center dark:text-gray-400 text-gray-700">
+              Featured Essay
+            </h1>
+            <div className=" sm:px-0 px-6 space-y-8">{postsToRender[0]}</div>
           </div>
         </section>
       </main>

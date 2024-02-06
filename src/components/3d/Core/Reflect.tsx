@@ -97,7 +97,7 @@ export const Reflect = forwardRef<ReflectApi, ReflectProps>(
   (
     {
       children,
-      start: _start = [0, 0, 0],
+      start: _start = [0, -window.document.body.clientHeight, 0],
       end: _end = [0, 0, 0],
       bounce = 10,
       far = 100,

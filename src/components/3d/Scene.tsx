@@ -2,16 +2,19 @@
 
 import { Preload, View } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
+import { useWindowSize } from "@uidotdev/usehooks";
 import React from "react";
 
 export default function Scene({
   style,
   ...props
 }: Omit<React.ComponentProps<typeof Canvas>, "children">) {
+  const { width, height } = useWindowSize();
+
   return (
     <Canvas
+      // @ts-expect-error
       orthographic
-      shadows
       style={{
         position: "fixed",
         top: 0,
@@ -21,7 +24,7 @@ export default function Scene({
         pointerEvents: "none",
         ...style,
       }}
-      camera={{ position: [0, 0, 100], zoom: 70 }}
+      camera={{ position: [0, 0, 100], zoom: 50 }}
       gl={{ antialias: false }}
       eventSource={document.body}
       eventPrefix="client"

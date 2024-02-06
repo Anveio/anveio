@@ -2,16 +2,18 @@
 
 import { calculateRefractionAngle, lerp, lerpV3 } from "@/lib/3d/utils";
 import { Center, Text3D } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import { useFrame, useLoader } from "@react-three/fiber";
 import { useCallback, useRef, useState } from "react";
 import * as THREE from "three";
 import { Beam } from "./Beam";
 import { Flare } from "./Flare";
 import { Prism } from "./Prism";
 import { Rainbow } from "./Rainbow";
-import { Bloom, EffectComposer } from "@react-three/postprocessing";
+import { Bloom, EffectComposer, LUT } from "@react-three/postprocessing";
+import { LUTCubeLoader } from "postprocessing";
 
 export function HeroScene() {
+  const texture = useLoader(LUTCubeLoader, "/lut/F-6800-STD.cube");
   const [isPrismHit, hitPrism] = useState(false);
   const flare = useRef<any>(null);
   const ambient = useRef<any>(null);
@@ -59,14 +61,11 @@ export function HeroScene() {
   useFrame((state) => {
     // debugger;
     // Tie beam to the mouse
-    boxreflect.current.setRay(
-      [
-        (state.pointer.x * state.viewport.width) / 2,
-        (state.pointer.y * state.viewport.height) / 2,
-        0,
-      ],
-      [0, 0, 0]
-    );
+
+    // boxreflect.current.setRay(
+    //   [state.viewport.width * 0, -state.viewport.height, 0],
+    //   [0, 0, 0]
+    // );
     // Animate rainbow intensity
     lerp(
       rainbow.current.material,
@@ -83,9 +82,9 @@ export function HeroScene() {
     <>
       {/* Lights */}
       <ambientLight ref={ambient} intensity={0} />
-      <pointLight position={[10, -10, 0]} intensity={0.05} />
-      <pointLight position={[0, 10, 0]} intensity={0.05} />
-      <pointLight position={[-10, 0, 0]} intensity={0.05} />
+      <pointLight position={[10, -10, 0]} intensity={1} />
+      <pointLight position={[0, 10, 0]} intensity={1} />
+      <pointLight position={[-10, 0, 0]} intensity={1} />
       <spotLight
         ref={spot}
         intensity={1}
@@ -138,7 +137,7 @@ export function HeroScene() {
         />
       </Beam>
       {/* Rainbow and flares */}
-      <Rainbow ref={rainbow} startRadius={0} endRadius={0.5} fade={0} />
+      <Rainbow ref={rainbow} startRadius={0} endRadius={2} fade={0} />
       <Flare
         ref={flare}
         visible={isPrismHit}
@@ -154,7 +153,11 @@ export function HeroScene() {
           luminanceThreshold={1}
           luminanceSmoothing={1}
         />
+        {/* @ts-expect-error */}
+        <LUT lut={texture} />
       </EffectComposer>
     </>
   );
 }
+
+useLoader.preload(LUTCubeLoader, "/lut/F-6800-STD.cube");
