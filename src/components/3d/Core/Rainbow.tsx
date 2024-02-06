@@ -109,7 +109,7 @@ export const Rainbow = forwardRef<any, any>(
     {
       startRadius = 0,
       endRadius = 0.5,
-      emissiveIntensity = 2.5,
+      emissiveIntensity = 0,
       fade = 0.25,
       ...props
     },

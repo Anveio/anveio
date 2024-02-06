@@ -19,13 +19,10 @@ export default function Scene({
         left: 0,
         width: "100vw",
         height: "100vh",
-        pointerEvents: "none",
         ...style,
       }}
       camera={{ position: [0, 0, 100], zoom: 50 }}
       gl={{ antialias: false }}
-      eventSource={document.body}
-      eventPrefix="client"
       {...props}
     >
       <View.Port />

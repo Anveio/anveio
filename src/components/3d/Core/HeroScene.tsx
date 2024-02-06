@@ -11,6 +11,7 @@ import { Prism } from "./Prism";
 import { Rainbow } from "./Rainbow";
 import { Bloom, EffectComposer, LUT } from "@react-three/postprocessing";
 import { LUTCubeLoader } from "postprocessing";
+import { Box } from "./Box";
 
 export function HeroScene() {
   const isIos = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
@@ -65,10 +66,20 @@ export function HeroScene() {
     // Tie beam to the mouse
 
     // boxreflect.current.setRay(
-    //   [state.viewport.width * 0, -state.viewport.height, 0],
+    //   [
+    //     (state.pointer.x * state.viewport.width) / 2,
+    //     (state.pointer.y * state.viewport.height) / 2,
+    //     0,
+    //   ],
     //   [0, 0, 0]
     // );
     // Animate rainbow intensity
+
+    if (isPrismHit) {
+      console.log(state.pointer);
+      console.log(Date.now(), isPrismHit);
+    }
+
     lerp(
       rainbow.current.material,
       "emissiveIntensity",
@@ -77,16 +88,16 @@ export function HeroScene() {
     );
     spot.current.intensity = rainbow.current.material.emissiveIntensity;
     // // Animate ambience
-    lerp(ambient.current, "intensity", 0, 0.025);
+    // lerp(ambient.current, "intensity", isPrismHit ? 4 : 0, 1);
   });
 
   return (
     <>
       {/* Lights */}
       <ambientLight ref={ambient} intensity={0} />
-      <pointLight position={[10, -10, 0]} intensity={1} />
-      <pointLight position={[0, 10, 0]} intensity={1} />
-      <pointLight position={[-10, 0, 0]} intensity={1} />
+      <pointLight position={[5, 0, 0]} intensity={50} />
+      <pointLight position={[0, 10, 0]} intensity={50} />
+      <pointLight position={[-5, 0, 0]} intensity={50} />
       <spotLight
         ref={spot}
         intensity={1}
@@ -132,14 +143,22 @@ export function HeroScene() {
       {/* Prism + reflect beam */}
       <Beam ref={boxreflect} bounce={10} far={20}>
         <Prism
-          position={[0, -0.5, 0]}
+          position={[0, 0, 0]}
           onRayOver={rayOver}
           onRayOut={rayOut}
           onRayMove={rayMove}
         />
+        {/* <Box position={[0, -2, 0]} rotation={[0, 0, Math.PI / 8]} />
+        <Box position={[-2.4, -1, 0]} rotation={[0, 0, Math.PI / -4]} /> */}
       </Beam>
       {/* Rainbow and flares */}
-      <Rainbow ref={rainbow} startRadius={0} endRadius={2} fade={0} />
+      <Rainbow
+        ref={rainbow}
+        startRadius={0}
+        endRadius={2}
+        fade={0}
+        emissiveIntensity={0}
+      />
       <Flare
         ref={flare}
         visible={isPrismHit}
@@ -148,7 +167,7 @@ export function HeroScene() {
         streak={[12.5, 20, 1]}
       />
       {isIos ? null : (
-        <EffectComposer disableNormalPass>
+        <EffectComposer disableNormalPass key={Date.now()}>
           <Bloom
             mipmapBlur
             levels={9}
