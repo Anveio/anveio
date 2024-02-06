@@ -11,7 +11,7 @@ export const getThemeCookieValue = (
 
     if (!themeCookieValueValidation.success) {
         console.error("Invalid theme cookie value", themeCookieValueValidation.error);
-        return Theme.LIGHT;
+        return Theme.DARK;
     }
 
     return themeCookieValueValidation.data
