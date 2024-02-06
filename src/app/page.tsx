@@ -78,10 +78,10 @@ export default function Home() {
   return (
     <>
       <main>
-        <div className="h-[100dvh] max-h-[1280px]">
+        <div className="h-[100dvh] max-h-[1280px] ">
           <Scene></Scene>
           {/* @ts-expect-error */}
-          <View className="w-full h-full">
+          <View className="w-full h-full border-b-4 border-gray-500 dark:border-0">
             <color attach="background" args={["black"]} />
             <HeroScene />
           </View>

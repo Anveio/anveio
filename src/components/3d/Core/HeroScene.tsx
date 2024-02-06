@@ -3,7 +3,7 @@
 import { calculateRefractionAngle, lerp, lerpV3 } from "@/lib/3d/utils";
 import { Center, Text3D } from "@react-three/drei";
 import { useFrame, useLoader } from "@react-three/fiber";
-import { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 import { Beam } from "./Beam";
 import { Flare } from "./Flare";
@@ -13,6 +13,8 @@ import { Bloom, EffectComposer, LUT } from "@react-three/postprocessing";
 import { LUTCubeLoader } from "postprocessing";
 
 export function HeroScene() {
+  const isIos = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
+
   const texture = useLoader(LUTCubeLoader, "/lut/F-6800-STD.cube");
   const [isPrismHit, hitPrism] = useState(false);
   const flare = useRef<any>(null);
@@ -145,17 +147,19 @@ export function HeroScene() {
         scale={1.25}
         streak={[12.5, 20, 1]}
       />
-      <EffectComposer disableNormalPass>
-        <Bloom
-          mipmapBlur
-          levels={9}
-          intensity={1.5}
-          luminanceThreshold={1}
-          luminanceSmoothing={1}
-        />
-        {/* @ts-expect-error */}
-        <LUT lut={texture} />
-      </EffectComposer>
+      {isIos ? null : (
+        <EffectComposer disableNormalPass>
+          <Bloom
+            mipmapBlur
+            levels={9}
+            intensity={1.5}
+            luminanceThreshold={1}
+            luminanceSmoothing={1}
+          />
+          {/* @ts-expect-error */}
+          <LUT lut={texture} />
+        </EffectComposer>
+      )}
     </>
   );
 }

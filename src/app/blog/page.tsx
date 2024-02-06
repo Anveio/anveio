@@ -33,7 +33,7 @@ const postsToRender = posts
 export default function PageIndex() {
   return (
     <>
-      <main className="space-y-2">
+      <main className="space-y-2 mt-8">
         <h1 className="text-center font-extralight dark:text-gray-400 text-gray-700">
           Blog
         </h1>
