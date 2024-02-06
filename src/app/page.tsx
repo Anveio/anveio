@@ -5,6 +5,7 @@ import { LiveBlogPostCard } from "@/components/custom/LiveBlogPostCard";
 import { AnalyticsEvent } from "@/lib/analytics/types";
 import { BLOG_POSTS } from "@/lib/blog/posts";
 import dynamic from "next/dynamic";
+import { useThemeOnClient } from "@/lib/theming/ThemeProvider";
 
 const posts = Object.values(BLOG_POSTS);
 
@@ -74,18 +75,23 @@ const postsToRender = posts
   });
 
 export default function Home() {
+  const { theme } = useThemeOnClient();
+
   return (
     <>
       <main>
-        <div className="h-[100dvh]">
+        <div className="h-[100dvh] max-h-[1280px]">
           <Scene></Scene>
           {/* @ts-expect-error */}
           <View className="w-full h-full">
-            <color attach="background" args={["black"]} />
+            <color
+              attach="background"
+              args={[theme === "light" ? "#e5e7eb" : "black"]}
+            />
             <HeroScene />
           </View>
         </div>
-        <section className="absolute top-[600px] flex w-[100dvw]">
+        <section className="absolute top-[725px] flex w-[100dvw]">
           <div className="max-w-xl mx-auto space-y-4 ">
             <h1 className="text-center dark:text-gray-400 text-gray-700">
               Featured Post
