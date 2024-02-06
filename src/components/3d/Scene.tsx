@@ -12,7 +12,6 @@ export default function Scene({
 }) {
   return (
     <Canvas
-      // @ts-expect-error
       orthographic
       style={{
         position: "fixed",
