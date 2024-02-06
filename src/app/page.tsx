@@ -75,8 +75,6 @@ const postsToRender = posts
   });
 
 export default function Home() {
-  const { theme } = useThemeOnClient();
-
   return (
     <>
       <main>
@@ -84,10 +82,7 @@ export default function Home() {
           <Scene></Scene>
           {/* @ts-expect-error */}
           <View className="w-full h-full">
-            <color
-              attach="background"
-              args={[theme === "light" ? "#e5e7eb" : "black"]}
-            />
+            <color attach="background" args={["black"]} />
             <HeroScene />
           </View>
         </div>
