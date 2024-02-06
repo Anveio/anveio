@@ -1,9 +1,7 @@
-import { Message } from 'ai'
-
 export type InngestFunctionTypes = {
     "chat/global.message-send": {
         data: {
-            messages: Message[];
+            messages: any[];
             requestId: string;
         };
     };
