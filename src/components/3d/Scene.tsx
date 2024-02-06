@@ -2,15 +2,14 @@
 
 import { Preload, View } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { useWindowSize } from "@uidotdev/usehooks";
 import React from "react";
 
 export default function Scene({
   style,
   ...props
-}: Omit<React.ComponentProps<typeof Canvas>, "children">) {
-  const { width, height } = useWindowSize();
-
+}: Omit<React.ComponentProps<typeof Canvas>, "children"> & {
+  children?: never[];
+}) {
   return (
     <Canvas
       // @ts-expect-error
