@@ -92,7 +92,7 @@
     "nanoid": "^5.0.2",
     "next": "14.1.0",
     "partysocket": "^0.0.12",
-    "postcss": "8.4.33",
+    "postcss": "8.4.29",
     "postprocessing": "^6.34.2",
     "react": "18.2.0",
     "react-day-picker": "^8.10.0",
