@@ -3,7 +3,13 @@
 import { calculateRefractionAngle, lerp, lerpV3 } from "@/lib/3d/utils";
 import { Center, Text3D } from "@react-three/drei";
 import { useFrame, useLoader } from "@react-three/fiber";
-import { useCallback, useRef, useState, useEffect } from "react";
+import {
+  useCallback,
+  useRef,
+  useState,
+  useEffect,
+  useLayoutEffect,
+} from "react";
 import * as THREE from "three";
 import { Beam } from "./Beam";
 import { Flare } from "./Flare";
@@ -23,6 +29,10 @@ export function HeroScene() {
   const spot = useRef<any>(null);
   const boxreflect = useRef<any>(null);
   const rainbow = useRef<any>(null);
+
+  // useLayoutEffect(() => {
+  //   rainbow.current.material.emissiveIntensity = 0;
+  // }, []);
 
   const rayOut = useCallback(() => hitPrism(false), []);
   const rayOver = useCallback((e: any) => {
@@ -68,7 +78,7 @@ export function HeroScene() {
     baseAngle.current += delta * 0.2; // Increase by delta time for smooth animation, adjust speed here as necessary
 
     // Define the radius of the circle and the center point
-    const radius = 5; // Adjust the radius as needed
+    const radius = 2; // Adjust the radius as needed
     const centerX = 0; // Center X position of the circle, adjust as needed
     const centerY = 0; // Center Y position of the circle, adjust as needed
 
@@ -76,11 +86,13 @@ export function HeroScene() {
     const x = centerX + radius * Math.cos(baseAngle.current);
     const y = centerY + radius * Math.sin(baseAngle.current);
 
+    const nextX = (x * state.viewport.width) / 2;
+    const nextY = (y * state.viewport.height) / 2;
     // Apply these positions through the setRay function
     boxreflect.current.setRay(
       [
-        (x * state.viewport.width) / 2, // Adjust if the circle seems off-center
-        (y * state.viewport.height) / 2, // Adjust if the circle seems off-center
+        nextX, // Adjust if the circle seems off-center
+        nextY, // Adjust if the circle seems off-center
         0,
       ],
       [0, 0, 0]
@@ -155,7 +167,7 @@ export function HeroScene() {
         />
         <Box position={[3, -2, 0]} rotation={[0, 0, Math.PI / 8]} />
         <Box position={[-2.4, -1, 0]} rotation={[0, 0, Math.PI / -4]} />
-        <Box position={[3.2, 2, 0]} rotation={[0, 0, Math.PI / -4]} />
+        <Box position={[-3.2, 2, 0]} rotation={[0, 0, Math.PI / -4]} />
       </Beam>
       {/* Rainbow and flares */}
       <Rainbow
@@ -188,5 +200,3 @@ export function HeroScene() {
     </>
   );
 }
-
-useLoader.preload(LUTCubeLoader, "/lut/F-6800-STD.cube");

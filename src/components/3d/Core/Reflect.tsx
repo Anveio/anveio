@@ -82,7 +82,7 @@ export const Reflect = forwardRef<ReflectApi, ReflectProps>(
   (
     {
       children,
-      start: _start = [0, 0, 0],
+      start: _start = [17.039725125091472, 0.1450664198434705, 0],
       end: _end = [0, 0, 0],
       bounce = 10,
       far = 100,
@@ -112,9 +112,13 @@ export const Reflect = forwardRef<ReflectApi, ReflectProps>(
         positions: new Float32Array(
           Array.from({ length: (adjustedBounce + 10) * 3 }, () => 0)
         ),
-        setRay: (_start = [0, 0, 0], _end = [0, 0, 0]) => {
+        setRay: (
+          _start = [17.039725125091472, 0.1450664198434705, 0],
+          _end = [0, 0, 0]
+        ) => {
           api.start.set(..._start);
           api.end.set(..._end);
+          // debugger;
         },
         update: () => {
           api.number = 0;
