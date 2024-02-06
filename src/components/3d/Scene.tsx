@@ -10,6 +10,7 @@ export default function Scene({
 }: Omit<React.ComponentProps<typeof Canvas>, "children">) {
   return (
     <Canvas
+      orthographic
       shadows
       style={{
         position: "fixed",
@@ -20,6 +21,8 @@ export default function Scene({
         pointerEvents: "none",
         ...style,
       }}
+      camera={{ position: [0, 0, 100], zoom: 70 }}
+      gl={{ antialias: false }}
       eventSource={document.body}
       eventPrefix="client"
       {...props}

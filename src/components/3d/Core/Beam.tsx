@@ -90,14 +90,7 @@ const Beam = forwardRef<any, BeamProps>(
       }
     });
 
-    useImperativeHandle(
-      fRef,
-      () => ({
-        update: reflect.current?.update || (() => 0),
-        positions: reflect.current?.positions || new Float32Array(),
-      }),
-      []
-    );
+    useImperativeHandle(fRef, () => reflect.current, []);
 
     return (
       <group position={position}>

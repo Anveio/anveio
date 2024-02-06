@@ -6,10 +6,10 @@ import { useFrame } from "@react-three/fiber";
 import { useCallback, useRef, useState } from "react";
 import * as THREE from "three";
 import { Beam } from "./Beam";
-import { Box } from "./Box";
 import { Flare } from "./Flare";
 import { Prism } from "./Prism";
 import { Rainbow } from "./Rainbow";
+import { Bloom, EffectComposer } from "@react-three/postprocessing";
 
 export function HeroScene() {
   const [isPrismHit, hitPrism] = useState(false);
@@ -57,6 +57,7 @@ export function HeroScene() {
   }, []);
 
   useFrame((state) => {
+    // debugger;
     // Tie beam to the mouse
     boxreflect.current.setRay(
       [
@@ -74,7 +75,7 @@ export function HeroScene() {
       0.1
     );
     spot.current.intensity = rainbow.current.material.emissiveIntensity;
-    // Animate ambience
+    // // Animate ambience
     lerp(ambient.current, "intensity", 0, 0.025);
   });
 
@@ -127,7 +128,7 @@ export function HeroScene() {
           <meshStandardMaterial color="white" />
         </Text3D>
       </Center>
-      {/* Prism + blocks + reflect beam */}
+      {/* Prism + reflect beam */}
       <Beam ref={boxreflect} bounce={10} far={20}>
         <Prism
           position={[0, -0.5, 0]}
@@ -135,9 +136,6 @@ export function HeroScene() {
           onRayOut={rayOut}
           onRayMove={rayMove}
         />
-        <Box position={[2.25, -3.5, 0]} rotation={[0, 0, Math.PI / 3.5]} />
-        <Box position={[-2.5, -2.5, 0]} rotation={[0, 0, Math.PI / 4]} />
-        <Box position={[-3, 1, 0]} rotation={[0, 0, Math.PI / 4]} />
       </Beam>
       {/* Rainbow and flares */}
       <Rainbow ref={rainbow} startRadius={0} endRadius={0.5} fade={0} />
@@ -148,6 +146,15 @@ export function HeroScene() {
         scale={1.25}
         streak={[12.5, 20, 1]}
       />
+      <EffectComposer disableNormalPass>
+        <Bloom
+          mipmapBlur
+          levels={9}
+          intensity={1.5}
+          luminanceThreshold={1}
+          luminanceSmoothing={1}
+        />
+      </EffectComposer>
     </>
   );
 }

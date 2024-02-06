@@ -40,3 +40,5 @@ export function Prism({ onRayOver, onRayOut, onRayMove, ...props }: any) {
     </group>
   );
 }
+
+useLoader.preload(GLTFLoader, "/gltf/prism.glb");

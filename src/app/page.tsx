@@ -76,11 +76,11 @@ const postsToRender = posts
 export default function Home() {
   return (
     <>
-      <main className="">
-        <div className="h-96">
-          {" "}
+      <main>
+        <div className="h-[100dvh]">
           <Scene>{/* @ts-expect-error */}</Scene>
-          <View>
+          <View className="w-full h-[100dvh]">
+            <color attach="background" args={["black"]} />
             <HeroScene />
           </View>
         </div>

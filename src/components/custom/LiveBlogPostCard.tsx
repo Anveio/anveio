@@ -121,6 +121,7 @@ const formatter = new Intl.DateTimeFormat("en-US", {
   month: "short", // "short" for abbreviated month name
   day: "2-digit",
   year: "numeric",
+  timeZone: "UTC",
 });
 
 const BlogPostCard = (
