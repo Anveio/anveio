@@ -4,6 +4,9 @@ import { GLTFLoader } from "three-stdlib";
 
 export function Prism({ onRayOver, onRayOut, onRayMove, ...props }: any) {
   const { nodes } = useLoader(GLTFLoader, "/gltf/prism.glb");
+
+  console.log(nodes);
+
   return (
     <group {...props}>
       {/* A low-res, invisible representation of the prism that gets hit by the raycaster */}

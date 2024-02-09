@@ -56,6 +56,7 @@
     "@radix-ui/react-tooltip": "^1.0.7",
     "@react-email/components": "^0.0.14",
     "@react-email/render": "^0.0.12",
+    "@react-hooks-library/core": "^0.6.0",
     "@react-three/drei": "^9.97.0",
     "@react-three/fiber": "^8.15.16",
     "@react-three/postprocessing": "^2.15.13",

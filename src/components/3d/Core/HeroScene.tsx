@@ -4,12 +4,10 @@ import { calculateRefractionAngle, lerp, lerpV3 } from "@/lib/3d/utils";
 import { Center, Text3D } from "@react-three/drei";
 import { useFrame, useLoader } from "@react-three/fiber";
 import {
-  useCallback,
-  useRef,
-  useState,
-  useEffect,
-  useLayoutEffect,
-} from "react";
+  BreakPointHooks,
+  breakpointsTailwind,
+} from "@react-hooks-library/core";
+import { useCallback, useRef, useState } from "react";
 import * as THREE from "three";
 import { Beam } from "./Beam";
 import { Flare } from "./Flare";
@@ -18,6 +16,14 @@ import { Rainbow } from "./Rainbow";
 import { Bloom, EffectComposer, LUT } from "@react-three/postprocessing";
 import { LUTCubeLoader } from "postprocessing";
 import { Box } from "./Box";
+
+const { useGreater, useBetween, isSmaller } =
+  BreakPointHooks(breakpointsTailwind);
+
+const Text3dYCoordinatesConfig = {
+  sm: [4.5, 3.25, 2],
+  md: [6, 4, 2],
+} as const;
 
 export function HeroScene() {
   const isIos = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
@@ -30,9 +36,7 @@ export function HeroScene() {
   const boxreflect = useRef<any>(null);
   const rainbow = useRef<any>(null);
 
-  // useLayoutEffect(() => {
-  //   rainbow.current.material.emissiveIntensity = 0;
-  // }, []);
+  const greater = useGreater("sm");
 
   const rayOut = useCallback(() => hitPrism(false), []);
   const rayOver = useCallback((e: any) => {
@@ -108,6 +112,8 @@ export function HeroScene() {
     lerp(ambient.current, "intensity", isPrismHit ? 1.5 : 0, 1);
   });
 
+  const textLayout = Text3dYCoordinatesConfig[greater ? "md" : "sm"];
+
   return (
     <>
       {/* Lights */}
@@ -124,7 +130,7 @@ export function HeroScene() {
         position={[0, 0, 1]}
       />
       {/* Caption */}
-      <Center top bottom position={[0, 6, 0]}>
+      <Center top bottom position={[0, textLayout[0], 0]}>
         <Text3D
           size={0.7}
           letterSpacing={-0.05}
@@ -135,7 +141,7 @@ export function HeroScene() {
           <meshStandardMaterial color="white" />
         </Text3D>
       </Center>
-      <Center top bottom position={[0, 4, 0]}>
+      <Center top bottom position={[0, textLayout[1], 0]}>
         <Text3D
           size={0.7}
           letterSpacing={-0.05}
@@ -146,7 +152,7 @@ export function HeroScene() {
           <meshStandardMaterial color="white" />
         </Text3D>
       </Center>
-      <Center top bottom position={[0, 2, 0]}>
+      <Center top bottom position={[0, textLayout[2], 0]}>
         <Text3D
           size={0.7}
           letterSpacing={-0.05}

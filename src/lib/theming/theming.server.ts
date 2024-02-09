@@ -10,7 +10,7 @@ export const getThemeCookieValue = (
     const themeCookieValueValidation = themeSchema.safeParse(themeCookieValue);
 
     if (!themeCookieValueValidation.success) {
-        console.error("Invalid theme cookie value", themeCookieValueValidation.error);
+        console.error("Invalid theme cookie value", themeCookieValueValidation.error.message);
         return Theme.DARK;
     }
 
