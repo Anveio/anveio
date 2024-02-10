@@ -17,8 +17,7 @@ import { Bloom, EffectComposer, LUT } from "@react-three/postprocessing";
 import { LUTCubeLoader } from "postprocessing";
 import { Box } from "./Box";
 
-const { useGreater, useBetween, isSmaller } =
-  BreakPointHooks(breakpointsTailwind);
+const { useGreater } = BreakPointHooks(breakpointsTailwind);
 
 const Text3dYCoordinatesConfig = {
   sm: [4.5, 3.25, 2],

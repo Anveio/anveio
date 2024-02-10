@@ -86,7 +86,7 @@ export default function Home() {
             <HeroScene />
           </View>
         </div>
-        <section className="absolute top-[725px] flex w-[100dvw]">
+        <section className="absolute bottom-[-25dvh] sm:bottom-0 flex w-[100dvw]">
           <div className="max-w-xl mx-auto space-y-4 ">
             <h1 className="text-center dark:text-gray-400 text-gray-700">
               Featured Post
