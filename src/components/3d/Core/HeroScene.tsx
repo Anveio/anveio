@@ -32,7 +32,7 @@ export function HeroScene() {
   const flare = useRef<any>(null);
   const ambient = useRef<any>(null);
   const spot = useRef<any>(null);
-  const boxreflect = useRef<any>(null);
+  const beamRef = useRef<any>(null);
   const rainbow = useRef<any>(null);
 
   const greater = useGreater("sm");
@@ -65,6 +65,7 @@ export function HeroScene() {
     // Apply the refraction
     angleScreenCenter += refractionAngle;
     rainbow.current.rotation.z = angleScreenCenter;
+
     // Set spot light
     lerpV3(
       spot.current.target.position,
@@ -81,7 +82,7 @@ export function HeroScene() {
     baseAngle.current += delta * 0.2; // Increase by delta time for smooth animation, adjust speed here as necessary
 
     // Define the radius of the circle and the center point
-    const radius = 2; // Adjust the radius as needed
+    const radius = 5; // Adjust the radius as needed
     const centerX = 0; // Center X position of the circle, adjust as needed
     const centerY = 0; // Center Y position of the circle, adjust as needed
 
@@ -92,23 +93,27 @@ export function HeroScene() {
     const nextX = (x * state.viewport.width) / 2;
     const nextY = (y * state.viewport.height) / 2;
     // Apply these positions through the setRay function
-    boxreflect.current.setRay(
-      [
-        nextX, // Adjust if the circle seems off-center
-        nextY, // Adjust if the circle seems off-center
-        0,
-      ],
-      [0, 0, 0]
-    );
+    beamRef.current.setRay([nextX, nextY, 0], [0, 0, 0]);
 
-    // Continue with your existing animation code...
     lerp(
       rainbow.current.material,
       "emissiveIntensity",
       isPrismHit ? 2.5 : 0,
       0.1
     );
-    lerp(ambient.current, "intensity", isPrismHit ? 1.5 : 0, 1);
+
+    // Calculate dynamic intensity based on rainbow.current.rotation.z
+    const rotationInDegrees = distanceInDegreesAlongUnitCircle(
+      THREE.MathUtils.radToDeg(rainbow.current.rotation.z),
+      95 /** 95 seems to the angle when the rainbow is pointed straight up */
+    );
+
+    lerp(
+      ambient.current,
+      "intensity",
+      isPrismHit ? 0.1 * interpolateCurve(rotationInDegrees, 1, 50) : 0,
+      1
+    );
   });
 
   const textLayout = Text3dYCoordinatesConfig[greater ? "md" : "sm"];
@@ -163,7 +168,7 @@ export function HeroScene() {
         </Text3D>
       </Center>
       {/* Prism + reflect beam */}
-      <Beam ref={boxreflect} bounce={10} far={20}>
+      <Beam ref={beamRef} bounce={10} far={20}>
         <Prism
           position={[0, 0, 0]}
           onRayOver={rayOver}
@@ -204,4 +209,37 @@ export function HeroScene() {
       )}
     </>
   );
+}
+
+function interpolateCurve(
+  distance: number,
+  startValue: number,
+  endValue: number
+): number {
+  // Clamp the distance to the range [0, 180]
+  const clampedDistance = Math.min(Math.max(distance, 0), 180);
+
+  // Calculate the interpolation factor using a modified cubic ease-out function
+  const t = 1 - clampedDistance / 180;
+  const modifiedT = t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+  // Interpolate between the start and end values
+  const value = startValue + (endValue - startValue) * modifiedT;
+
+  return value;
+}
+
+function distanceInDegreesAlongUnitCircle(
+  x: number,
+  baseAngle: number
+): number {
+  // Calculate the distance from the 90-degree line
+  let distance = Math.abs((x % 360) - baseAngle);
+
+  // Adjust for distances that cross the 360-degree mark
+  if (distance > 180) {
+    distance = 360 - distance;
+  }
+
+  return distance;
 }
