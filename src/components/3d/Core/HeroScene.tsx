@@ -175,10 +175,9 @@ export function HeroScene() {
           onRayOut={rayOut}
           onRayMove={rayMove}
         />
-        <Box position={[3, -2, 0]} rotation={[0, 0, Math.PI / 8]} />
+        <Box position={[2, -2, 0]} rotation={[0, 0, Math.PI / 8]} />
         <Box position={[-2.4, -1, 0]} rotation={[0, 0, Math.PI / -4]} />
         <Box position={[-3.2, 2, 0]} rotation={[0, 0, Math.PI / -4]} />
-        <Box position={[4, 0, 0]} rotation={[0, 0, Math.PI / -4]} />
       </Beam>
       {/* Rainbow and flares */}
       <Rainbow
