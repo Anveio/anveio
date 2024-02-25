@@ -205,3 +205,7 @@
     --r2: 360deg;
   }
 }
+
+.fade-out-towards-bottom {
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
