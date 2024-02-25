@@ -54,7 +54,7 @@ export default function Home() {
   return (
     <>
       <main>
-        <div className='my-div h-[100dvh]'>
+        <div className='fade-out-towards-bottom h-[100dvh]'>
           <React.Suspense
             fallback={
               <div className='dark:text-white flex h-full w-full fixed top-0 left-0 flex-col items-center justify-center'>
