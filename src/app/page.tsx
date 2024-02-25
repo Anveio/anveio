@@ -89,7 +89,7 @@ export default function Home() {
             </View>
           </React.Suspense>
         </div>
-        <section className="absolute bottom-[-25dvh] sm:bottom-0 w-[100dvw]">
+        <section className="absolute h-0 bottom-[25dvh] w-[100dvw]">
           <div className="max-w-xl mx-auto space-y-4 ">
             <h1 className="text-center dark:text-gray-400 text-gray-700">
               Featured Post
