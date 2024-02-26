@@ -1,14 +1,14 @@
-import { Codeblock } from "@/components/custom/Codeblock/Codeblock";
-import { Blink } from "@/components/custom/ExternalInlineLink";
-import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
-import { AnalyticsEvent } from "@/lib/analytics/types";
-import { BLOG_POSTS, formatDateWithSuffix } from "@/lib/blog/posts";
-import Image from "next/image";
+import { Codeblock } from '@/components/custom/Codeblock/Codeblock';
+import { Blink } from '@/components/custom/ExternalInlineLink';
+import { RecordEventOnMount } from '@/lib/analytics/analytics.client';
+import { AnalyticsEvent } from '@/lib/analytics/types';
+import { BLOG_POSTS, formatDateWithSuffix } from '@/lib/blog/posts';
+import Image from 'next/image';
 
 export const metadata = {
   title:
     BLOG_POSTS[
-      "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-router"
+      'vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-router'
     ].title,
   description:
     "Step by step tutorial on how to implement production ready analytics for large scale applications for free using Vercel, Vercel's Edge Runtime, Planetscale, TypeScript, Next.js App Router, Drizzle ORM, React, and TypeScript",
@@ -16,57 +16,57 @@ export const metadata = {
 
 export default function VercelAnalyticsBlogPost() {
   return (
-    <article className="">
-      <div className="space-y-3">
-        <p className="italic text-center">
-          Published{" "}
+    <article className=''>
+      <div className='space-y-3'>
+        <p className='italic text-center'>
+          Published{' '}
           {formatDateWithSuffix(
             BLOG_POSTS[
-              "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-router"
+              'vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-router'
             ].publishedAt
           )}
         </p>
-        <h1 className="text-center text-2xl font-semibold">
+        <h1 className='text-center text-2xl font-semibold'>
           {
             BLOG_POSTS[
-              "vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-router"
+              'vercel-edge-analytics-planetscale-mysql-drizzle-orm-nextjs-app-router'
             ].title
           }
         </h1>
         <Image
-          alt="Planetscale UI showing some analytics events"
-          src={"/blog-assets/vercel-edge-analytics/table.webp"}
+          alt='Planetscale UI showing some analytics events'
+          src={'/blog-assets/vercel-edge-analytics/table.webp'}
           width={896}
           height={274}
           priority
         />
-        <p className="italic text-center">
+        <p className='italic text-center'>
           A glimpse of the analytics table we'll be building
         </p>
       </div>
 
-      <div className="py-12 space-y-12">
-        <section className="space-y-6">
+      <div className='py-12 space-y-12'>
+        <section className='space-y-6'>
           <p>
-            Vercel Analytics'{" "}
-            <Blink href="https://vercel.com/docs/analytics/limits-and-pricing">
+            Vercel Analytics'{' '}
+            <Blink href='https://vercel.com/docs/analytics/limits-and-pricing'>
               free tier
-            </Blink>{" "}
+            </Blink>{' '}
             gives you 2,500 events a month, which isn't a lot. Its most
             efficient tier costs $20 per 500k events before you have to pick the
             phone and call for a better price. But you can set up an endpoint
-            hosted on Vercel using the new{" "}
-            <Blink href="https://nextjs.org/docs/pages/api-reference/edge">
+            hosted on Vercel using the new{' '}
+            <Blink href='https://nextjs.org/docs/pages/api-reference/edge'>
               Edge Runtime
-            </Blink>{" "}
-            to get{" "}
-            <Blink href="https://vercel.com/docs/functions/edge-functions/usage-and-pricing">
+            </Blink>{' '}
+            to get{' '}
+            <Blink href='https://vercel.com/docs/functions/edge-functions/usage-and-pricing'>
               half-a-million invocations per-month
-            </Blink>{" "}
-            for free and use that endpoint to write up to{" "}
-            <Blink href="https://planetscale.com/pricing">
+            </Blink>{' '}
+            for free and use that endpoint to write up to{' '}
+            <Blink href='https://planetscale.com/pricing'>
               10 million free analytics events per-month
-            </Blink>{" "}
+            </Blink>{' '}
             using Planetscale (I'm not affiliated in any way). The next 40
             million events will cost you $29.
           </p>
@@ -76,7 +76,7 @@ export default function VercelAnalyticsBlogPost() {
             cheapest managed solution. We're also going to be using Drizzle ORM
             in this tutorial because it makes the code simpler, safer, compiles
             down to regular SQL and if you want to bring your own database all
-            you' have to do is <span className="italic">delete</span> a line of
+            you' have to do is <span className='italic'>delete</span> a line of
             code. We'll also be using Vercel KV to do rate limiting.
           </p>
           <p>
@@ -86,21 +86,21 @@ export default function VercelAnalyticsBlogPost() {
             building I live in. Quite scary!
           </p>
         </section>
-        <section className="space-y-6">
-          <h2 className="text-xl font-bold">Just give me the code</h2>
+        <section className='space-y-6'>
+          <h2 className='text-xl font-bold'>Just give me the code</h2>
           <p>
-            Here's the code for a{" "}
-            <Blink href="https://nextjs.org/docs/app/building-your-application/routing/route-handlers">
+            Here's the code for a{' '}
+            <Blink href='https://nextjs.org/docs/app/building-your-application/routing/route-handlers'>
               Next.js Route Handler
-            </Blink>{" "}
+            </Blink>{' '}
             that will read the IP addres and geolocation of a request and save
             it to a database. It handles rate limiting IP's per unique event
             type using a 5 second sliding window and validating the request body
             against a list of known events.
           </p>
           <Codeblock
-            filename="src/app/api/record-events/route.ts"
-            language="typescript"
+            filename='src/app/api/record-events/route.ts'
+            language='typescript'
             text={RouteHandlerCodeSnippet}
           />
           <p>
@@ -109,7 +109,7 @@ export default function VercelAnalyticsBlogPost() {
             spammed from non-visitors. You also have the option to wall off
             recording events to authenticated-users-only by reading, e.g. a
             session token from the request using the cookie function exported
-            from <pre className="inline">next/server</pre> and mapping the
+            from <pre className='inline'>next/server</pre> and mapping the
             session token to a user. The route handler above does not do that
             and treats events as anonymous.
           </p>
@@ -125,10 +125,10 @@ export default function VercelAnalyticsBlogPost() {
             take just 30 minutes.
           </p>
         </section>
-        <section className="space-y-6">
-          <h2 className="text-xl font-bold">The high-level components</h2>
-          <ol className="list-decimal">
-            <li className="list-item">A table for our analytics events</li>
+        <section className='space-y-6'>
+          <h2 className='text-xl font-bold'>The high-level components</h2>
+          <ol className='list-decimal'>
+            <li className='list-item'>A table for our analytics events</li>
             <li>
               An edge function deployed on Vercel that collects the user's IP
               and Geolocation data and writes the data to the table
@@ -138,20 +138,20 @@ export default function VercelAnalyticsBlogPost() {
               browser.
             </li>
           </ol>
-          <p className="py-3">
+          <p className='py-3'>
             Each of these components can be deployed independently but the
             example code will use a single Next.js app using the new App
             Directory to manage the database, the API, and the frontend.
           </p>
-          <p className="py-3">
+          <p className='py-3'>
             To get this production ready wee'll also need to rate limit events
             per user and per event type and batch events on the client so that
             we minimize the total number of edge function invocations.
           </p>
         </section>
 
-        <section className="space-y-6">
-          <h2 className="text-xl font-bold">1. Install bun</h2>
+        <section className='space-y-6'>
+          <h2 className='text-xl font-bold'>1. Install bun</h2>
           <p>
             If you'd rather use npm or yarn you can skip this. Vercel supports
             Bun now so may as well to speed up deployments and local
@@ -159,10 +159,10 @@ export default function VercelAnalyticsBlogPost() {
             feature parity.
           </p>
           <p>
-            Follow the instructions at{" "}
-            <Blink href="https://bun.sh/docs/installation">
+            Follow the instructions at{' '}
+            <Blink href='https://bun.sh/docs/installation'>
               https://bun.sh/docs/installation
-            </Blink>{" "}
+            </Blink>{' '}
             to install it.
           </p>
           <p>
@@ -170,29 +170,29 @@ export default function VercelAnalyticsBlogPost() {
             automatically, and you can install it with
           </p>
           <Codeblock
-            language="shell"
-            filename="install-vercel-cli.sh"
-            text={"bun install --global vercel"}
+            language='shell'
+            filename='install-vercel-cli.sh'
+            text={'bun install --global vercel'}
           />
           <p>
             But you can choose to copy paste environment variables manually if
             you prefer.
           </p>
         </section>
-        <section className="space-y-6">
-          <h2 className="text-xl font-bold">2. Create the Next.js app</h2>
-          <p className="py-3">
+        <section className='space-y-6'>
+          <h2 className='text-xl font-bold'>2. Create the Next.js app</h2>
+          <p className='py-3'>
             Run the below command from your command line to create a Next.js app
-            using the App Router, Bun, and the{" "}
+            using the App Router, Bun, and the{' '}
           </p>
-          <div className="py-6">
+          <div className='py-6'>
             <Codeblock
-              language="shell"
-              filename="create-next-app.sh"
+              language='shell'
+              filename='create-next-app.sh'
               text={`bunx create-next-app@latest --ts --app --src-dir --use-bun`}
             />
           </div>
-          <div className="space-y-3">
+          <div className='space-y-3'>
             <p>
               Now let's install the dependencies we'll need for the first
               iteration of our analytics.
@@ -220,16 +220,16 @@ export default function VercelAnalyticsBlogPost() {
               forget config thing.
             </p>
           </div>
-          <div className="py-6">
+          <div className='py-6'>
             <Codeblock
-              language="shell"
-              filename="install-initial-dependencies.sh"
+              language='shell'
+              filename='install-initial-dependencies.sh'
               text={`bun i @vercel/edge drizzle-kit drizzle-orm zod @planetscale/database`}
             ></Codeblock>
           </div>
         </section>
-        <section className="space-y-6">
-          <h2 className="text-xl font-semibold">3. Set up the DB</h2>
+        <section className='space-y-6'>
+          <h2 className='text-xl font-semibold'>3. Set up the DB</h2>
           <p>
             Ok this section is a lot of boring hooking stuff up and copying
             around credentials but the good thing is you only have to do it
@@ -237,17 +237,17 @@ export default function VercelAnalyticsBlogPost() {
             programming.
           </p>
           <p>
-            To get started create an account on{" "}
-            <Blink href="https://auth.planetscale.com/sign-in">
+            To get started create an account on{' '}
+            <Blink href='https://auth.planetscale.com/sign-in'>
               Planetscale
-            </Blink>{" "}
+            </Blink>{' '}
             and create a table with a branch name of "dev". We'll connect to the
             dev branch for local development and the main branch for production.
           </p>
-          <div className="flex justify-center">
+          <div className='flex justify-center'>
             <Image
-              src="/blog-assets/vercel-edge-analytics/planetscale-dev-branch.webp"
-              alt="Planetscale UI: Branch name = dev, base branch = main, region = us-east-2 (Ohio)"
+              src='/blog-assets/vercel-edge-analytics/planetscale-dev-branch.webp'
+              alt='Planetscale UI: Branch name = dev, base branch = main, region = us-east-2 (Ohio)'
               width={400}
               height={313}
             />
@@ -262,10 +262,10 @@ export default function VercelAnalyticsBlogPost() {
             string for both as you won't be able to see it after creation. Next
             step is to copy these into Vercel
           </p>
-          <div className="flex justify-center">
+          <div className='flex justify-center'>
             <Image
-              src="/blog-assets/vercel-edge-analytics/planetscale-password.webp"
-              alt="Planetscale UI: Connect button"
+              src='/blog-assets/vercel-edge-analytics/planetscale-password.webp'
+              alt='Planetscale UI: Connect button'
               width={800}
               height={647}
             />
@@ -286,8 +286,8 @@ export default function VercelAnalyticsBlogPost() {
             local filesystem.
           </p>
           <Codeblock
-            language="shell"
-            filename="link-vercel-and-pull.sh"
+            language='shell'
+            filename='link-vercel-and-pull.sh'
             text={`vercel link\nvercel env pull`}
           />
           <p>
@@ -295,8 +295,8 @@ export default function VercelAnalyticsBlogPost() {
             core DB code in.
           </p>
           <Codeblock
-            language="shell"
-            filename="create-db-folder.sh"
+            language='shell'
+            filename='create-db-folder.sh'
             text={CreateDbFolderSnippet}
           />
           <p>
@@ -304,8 +304,8 @@ export default function VercelAnalyticsBlogPost() {
             export the db connection to the rest of the codebase.
           </p>
           <Codeblock
-            language="tsx"
-            filename="src/lib/db/db.ts"
+            language='tsx'
+            filename='src/lib/db/db.ts'
             text={ConnectDbSnippet}
           />
           <p>
@@ -318,8 +318,8 @@ export default function VercelAnalyticsBlogPost() {
           </p>
           <p>Next, let's set up the schema for our analytics table:</p>
           <Codeblock
-            language="tsx"
-            filename="src/lib/@/lib/db/schemas.ts"
+            language='tsx'
+            filename='src/lib/@/lib/db/schemas.ts'
             text={SchemasCodeSnippet}
           />
           <p>
@@ -349,7 +349,7 @@ export default function VercelAnalyticsBlogPost() {
 }
 
 const analyticsEvent: AnalyticsEvent = {
-  eventType: "view:blog:vercel_edge_analytics",
+  eventType: 'view:blog:vercel_edge_analytics',
 } as const;
 
 const CreateDbFolderSnippet = `mkdir -p src/lib/db

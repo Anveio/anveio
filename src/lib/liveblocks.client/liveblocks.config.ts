@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { LiveObject, createClient, shallow } from "@liveblocks/client";
-import { createRoomContext } from "@liveblocks/react";
-import * as React from "react";
-import { AvatarId } from "../constants/avatars";
+import { LiveObject, createClient, shallow } from '@liveblocks/client';
+import { createRoomContext } from '@liveblocks/react';
+import * as React from 'react';
+import { AvatarId } from '../constants/avatars';
 
 const client = createClient({
-  authEndpoint: "/api/liveblocks-auth",
+  authEndpoint: '/api/liveblocks-auth',
 });
 
 // Presence represents the properties that exist on every user in the Room
@@ -24,7 +24,7 @@ export type LiveChatObject = LiveObject<{
   x: number;
   y: number;
   text: string;
-  selectedBy: UserMeta["info"] | null;
+  selectedBy: UserMeta['info'] | null;
   id: string;
 }>;
 

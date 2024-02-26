@@ -1,20 +1,20 @@
-"use client";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+'use client';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
-} from "@/components/ui/card";
-import { registerNewUser } from "@/lib/auth/register-new-user";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRightIcon, ReloadIcon } from "@radix-ui/react-icons";
-import { AnimatePresence, motion } from "framer-motion";
-import { CheckCircle2Icon } from "lucide-react";
-import * as React from "react";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/card';
+import { registerNewUser } from '@/lib/auth/register-new-user';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ArrowRightIcon, ReloadIcon } from '@radix-ui/react-icons';
+import { AnimatePresence, motion } from 'framer-motion';
+import { CheckCircle2Icon } from 'lucide-react';
+import * as React from 'react';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -23,32 +23,32 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { useUser } from "./user-context";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useUser } from './user-context';
 
 const formSchema = z
   .object({
     email: z
       .string()
       .email({
-        message: "Email must be in the correct format.",
+        message: 'Email must be in the correct format.',
       })
       .min(3, {
-        message: "Email must be at least 3 characters.",
+        message: 'Email must be at least 3 characters.',
       }),
     password: z.string().min(6, {
-      message: "Your password must be at least 6 characters.",
+      message: 'Your password must be at least 6 characters.',
     }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
-    path: ["confirmPassword"],
+    path: ['confirmPassword'],
   })
   .refine((data) => data.password !== data.email, {
-    message: "Password cannot be the same as your email",
-    path: ["password"],
+    message: 'Password cannot be the same as your email',
+    path: ['password'],
   });
 
 export function SignUpForm() {
@@ -58,17 +58,17 @@ export function SignUpForm() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    mode: "onSubmit",
+    mode: 'onSubmit',
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
   if (user) {
     return (
-      <Alert variant="default">
-        <CheckCircle2Icon className="h-4 w-4" />
+      <Alert variant='default'>
+        <CheckCircle2Icon className='h-4 w-4' />
         <AlertTitle>Sign up successful</AlertTitle>
         <AlertDescription>
           You are logged in as {user.email} with ID {user.id}
@@ -90,11 +90,11 @@ export function SignUpForm() {
   }
 
   return (
-    <div className="relative max-w-xl m-auto space-y-4">
+    <div className='relative max-w-xl m-auto space-y-4'>
       <AnimatePresence>
         {isSuccessful ? (
           <motion.div
-            className="w-full"
+            className='w-full'
             initial={{ opacity: 0, y: 10 }}
             animate={{
               y: 10,
@@ -102,8 +102,8 @@ export function SignUpForm() {
               transition: { duration: 0.5 },
             }}
           >
-            <Alert variant="default">
-              <CheckCircle2Icon className="h-4 w-4" />
+            <Alert variant='default'>
+              <CheckCircle2Icon className='h-4 w-4' />
               <AlertTitle>Good</AlertTitle>
               <AlertDescription>
                 Check your inbox for the invitation.
@@ -121,20 +121,20 @@ export function SignUpForm() {
           transition: { duration: 0.5 },
         }}
       >
-        <Card className="bg-background text-white">
+        <Card className='bg-background text-white'>
           <CardHeader></CardHeader>
           <CardContent>
             <Form {...form}>
               <form
-                id="sign-up-form"
-                action="/api/auth/sign-up"
-                method="post"
+                id='sign-up-form'
+                action='/api/auth/sign-up'
+                method='post'
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="space-y-8"
+                className='space-y-8'
               >
                 <FormField
                   control={form.control}
-                  name="email"
+                  name='email'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Email address</FormLabel>
@@ -142,7 +142,7 @@ export function SignUpForm() {
                         <Input
                           {...field}
                           disabled={isFormSubmitting}
-                          autoComplete={"email"}
+                          autoComplete={'email'}
                           required
                         />
                       </FormControl>
@@ -153,16 +153,16 @@ export function SignUpForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="password"
+                  name='password'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Password</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          type="password"
+                          type='password'
                           disabled={isFormSubmitting}
-                          autoComplete="new-password"
+                          autoComplete='new-password'
                           required
                         />
                       </FormControl>
@@ -175,16 +175,16 @@ export function SignUpForm() {
                 />
                 <FormField
                   control={form.control}
-                  name="confirmPassword"
+                  name='confirmPassword'
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Confirm password</FormLabel>
                       <FormControl>
                         <Input
                           {...field}
-                          type="password"
+                          type='password'
                           disabled={isFormSubmitting}
-                          autoComplete="new-password"
+                          autoComplete='new-password'
                           required
                         />
                       </FormControl>
@@ -195,13 +195,13 @@ export function SignUpForm() {
               </form>
             </Form>
           </CardContent>
-          <CardFooter className="justify-end">
-            <Button variant={"default"} type="submit" form="sign-up-form">
+          <CardFooter className='justify-end'>
+            <Button variant={'default'} type='submit' form='sign-up-form'>
               Request
               {isFormSubmitting ? (
-                <ReloadIcon className="ml-2 h-4 w-4 animate-spin" />
+                <ReloadIcon className='ml-2 h-4 w-4 animate-spin' />
               ) : (
-                <ArrowRightIcon className="ml-2 h-4 w-4" />
+                <ArrowRightIcon className='ml-2 h-4 w-4' />
               )}
             </Button>
           </CardFooter>

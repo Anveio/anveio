@@ -3,14 +3,14 @@ import {
   BlogHeader,
   ImageWithCaption,
   Section,
-} from "@/components/custom/Blog";
-import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
-import { AnalyticsEvent } from "@/lib/analytics/types";
-import { BLOG_POSTS } from "@/lib/blog/posts";
-import { Metadata } from "next";
-import Link from "next/link";
+} from '@/components/custom/Blog';
+import { RecordEventOnMount } from '@/lib/analytics/analytics.client';
+import { AnalyticsEvent } from '@/lib/analytics/types';
+import { BLOG_POSTS } from '@/lib/blog/posts';
+import { Metadata } from 'next';
+import Link from 'next/link';
 
-const POST_ID = "language-models-can-use-existing-software";
+const POST_ID = 'language-models-can-use-existing-software';
 
 export const metadata: Metadata = {
   title: BLOG_POSTS[POST_ID].title,
@@ -18,19 +18,19 @@ export const metadata: Metadata = {
   openGraph: {
     title: BLOG_POSTS[POST_ID].title,
     description: BLOG_POSTS[POST_ID].content,
-    url: "https://anveio.com",
-    siteName: "Anveio",
+    url: 'https://anveio.com',
+    siteName: 'Anveio',
     images: [
       {
-        url: "https://anveio.com/blog-assets/language-models-can-use-existing-software/opengraph.jpg",
+        url: 'https://anveio.com/blog-assets/language-models-can-use-existing-software/opengraph.jpg',
         width: 871,
         height: 408,
       },
     ],
-    locale: "en_US",
-    type: "website",
+    locale: 'en_US',
+    type: 'website',
   },
-  metadataBase: new URL("https://anveio.com"),
+  metadataBase: new URL('https://anveio.com'),
 };
 
 export default function Post() {
@@ -95,9 +95,9 @@ export default function Post() {
         </p>
         <p>Pick your favorite spot somewhere on the line:</p>
         <ImageWithCaption
-          fileName="platform-spectrum"
+          fileName='platform-spectrum'
           postId={POST_ID}
-          imageCaption="Your company’s design system and component libraries are way on the left, off the chart."
+          imageCaption='Your company’s design system and component libraries are way on the left, off the chart.'
         ></ImageWithCaption>
         <p>
           If you want a lot of developers on your closed platform you better
@@ -128,13 +128,13 @@ export default function Post() {
           to learn a language, plan a trip, journal, or whatever. Apps are way
           better than text because they are:
         </p>
-        <ol className="list-outside space-y-4 list-disc">
-          <li className="list-item">Interactive & fun</li>
-          <li className="list-item">
+        <ol className='list-outside space-y-4 list-disc'>
+          <li className='list-item'>Interactive & fun</li>
+          <li className='list-item'>
             Powerful, can do stuff like open a bank account, file taxes, book
             tickets
           </li>
-          <li className="list-item">Designed for purpose</li>
+          <li className='list-item'>Designed for purpose</li>
         </ol>
 
         <p>
@@ -202,8 +202,8 @@ export default function Post() {
         <p>
           But doing so is simple. The developers at AcmeTax simply describe
           their API in natural language in a text file hosted at
-          acme-tax.com/mythra.txt (I describe this in more technical detail at{" "}
-          <Link href="https://mythra.vercel.app" className="underline">
+          acme-tax.com/mythra.txt (I describe this in more technical detail at{' '}
+          <Link href='https://mythra.vercel.app' className='underline'>
             https://mythra.vercel.app
           </Link>
           ) and language models read those text files during training. For
@@ -239,5 +239,5 @@ export default function Post() {
 }
 
 const analyticsEvent: AnalyticsEvent = {
-  eventType: "view:blog:language-models-can-use-existing-software",
+  eventType: 'view:blog:language-models-can-use-existing-software',
 } as const;

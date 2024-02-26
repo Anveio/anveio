@@ -1,6 +1,6 @@
-import { put } from "@vercel/blob";
-import { NextResponse } from "next/server";
-import { z } from "zod";
+import { put } from '@vercel/blob';
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
 const searchParamsSchema = z.object({
   filename: z.string(),
@@ -8,7 +8,7 @@ const searchParamsSchema = z.object({
 
 export async function POST(request: Request): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
-  const filenameUnsafe = searchParams.get("filename");
+  const filenameUnsafe = searchParams.get('filename');
 
   const fileNameParseResult = searchParamsSchema.safeParse({
     filename: filenameUnsafe,
@@ -28,7 +28,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   if (!request.body) {
     return NextResponse.json(
       {
-        error: "No body",
+        error: 'No body',
       },
       {
         status: 400,
@@ -39,7 +39,7 @@ export async function POST(request: Request): Promise<NextResponse> {
   const fileName = fileNameParseResult.data.filename;
 
   const blob = await put(fileName, request.body, {
-    access: "public",
+    access: 'public',
   });
 
   return NextResponse.json(blob);

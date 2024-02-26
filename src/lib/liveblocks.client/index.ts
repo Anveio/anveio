@@ -1,1 +1,1 @@
-export * from "./liveblocks.config";
+export * from './liveblocks.config';

@@ -1,6 +1,6 @@
-import { AnveioInngestClient } from "@/lib/inngest";
+import { AnveioInngestClient } from '@/lib/inngest';
 
-export const runtime = "edge";
+export const runtime = 'edge';
 
 export async function POST(req: Request) {
   // if no requestId is provided we generate one
@@ -10,12 +10,12 @@ export async function POST(req: Request) {
   // const requestId = nanoid();
 
   await AnveioInngestClient.send({
-    name: "chat/global.message-send",
+    name: 'chat/global.message-send',
     data: {
       messages: messages as any[],
-      requestId: "",
+      requestId: '',
     },
   });
 
-  return new Response("" as string, { status: 200 });
+  return new Response('' as string, { status: 200 });
 }

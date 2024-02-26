@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import React from "react";
-import { Theme } from "./shared";
-import { useMutation } from "@tanstack/react-query";
-import { cn } from "../utils";
+import React from 'react';
+import { Theme } from './shared';
+import { useMutation } from '@tanstack/react-query';
+import { cn } from '../utils';
 
 export const ThemeContext = React.createContext<{
   theme: Theme;
@@ -17,7 +17,7 @@ export const useThemeOnClient = () => {
   const context = React.useContext(ThemeContext);
 
   if (!context) {
-    throw new Error("useThemeOnClient must be used within a ThemeProvider");
+    throw new Error('useThemeOnClient must be used within a ThemeProvider');
   }
 
   return context;
@@ -31,10 +31,10 @@ export const HtmlElement = (
   const mutation = useMutation({
     mutationFn: async (nextTheme: Theme) => {
       try {
-        fetch("/api/theming", {
-          method: "POST",
+        fetch('/api/theming', {
+          method: 'POST',
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             theme: nextTheme,
@@ -61,7 +61,7 @@ export const HtmlElement = (
         toggleTheme,
       }}
     >
-      <html lang="en" className={cn(theme)}>
+      <html lang='en' className={cn(theme)}>
         {props.children}
       </html>
     </ThemeContext.Provider>

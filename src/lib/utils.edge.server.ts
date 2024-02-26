@@ -1,6 +1,6 @@
-import "@edge-runtime/ponyfill";
-import { NextRequest } from "next/server";
-import { NextApiRequest } from "next";
+import '@edge-runtime/ponyfill';
+import { NextRequest } from 'next/server';
+import { NextApiRequest } from 'next';
 
 export const readStreamedRequestBody = async (
   request: NextRequest | NextApiRequest
@@ -11,7 +11,7 @@ export const readStreamedRequestBody = async (
 
   const reader = request.body.getReader();
   const decoder = new TextDecoder();
-  let body = "";
+  let body = '';
 
   while (true) {
     const { done, value } = await reader.read();

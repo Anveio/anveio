@@ -1,9 +1,9 @@
-import { useLoader } from "@react-three/fiber";
-import { MeshTransmissionMaterial } from "@react-three/drei";
-import { GLTFLoader } from "three-stdlib";
+import { useLoader } from '@react-three/fiber';
+import { MeshTransmissionMaterial } from '@react-three/drei';
+import { GLTFLoader } from 'three-stdlib';
 
 export function Prism({ onRayOver, onRayOut, onRayMove, ...props }: any) {
-  const { nodes } = useLoader(GLTFLoader, "/gltf/prism.glb");
+  const { nodes } = useLoader(GLTFLoader, '/gltf/prism.glb');
 
   return (
     <group {...props}>
@@ -12,7 +12,7 @@ export function Prism({ onRayOver, onRayOut, onRayMove, ...props }: any) {
         visible={false}
         scale={1.9}
         rotation={[Math.PI / 2, Math.PI, 0]}
-        // @ts-expect-error
+        // @ts-expect-error Because
         onRayOver={onRayOver}
         onRayOut={onRayOut}
         onRayMove={onRayMove}
@@ -42,4 +42,4 @@ export function Prism({ onRayOver, onRayOut, onRayMove, ...props }: any) {
   );
 }
 
-useLoader.preload(GLTFLoader, "/gltf/prism.glb");
+useLoader.preload(GLTFLoader, '/gltf/prism.glb');

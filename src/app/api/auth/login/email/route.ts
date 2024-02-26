@@ -1,11 +1,11 @@
-import { doesPasswordMatchHash } from "@/lib/auth/argon2";
-import { createSessionForUser } from "@/lib/auth/sign-in";
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
-import { db } from '@/lib/db'
-import { eq } from 'drizzle-orm'
-import { users } from '@/lib/db/schema'
+import { doesPasswordMatchHash } from '@/lib/auth/argon2';
+import { createSessionForUser } from '@/lib/auth/sign-in';
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { db } from '@/lib/db';
+import { eq } from 'drizzle-orm';
+import { users } from '@/lib/db/schema';
 
 const requestSchema = z.object({
   email: z.string().email(),
@@ -17,8 +17,8 @@ export const POST = async (request: NextRequest) => {
 
   const { set } = cookies();
 
-  const emailUnsafe = String(formData.get("email"));
-  const passwordUnsafe = String(formData.get("password"));
+  const emailUnsafe = String(formData.get('email'));
+  const passwordUnsafe = String(formData.get('password'));
 
   const parseResult = requestSchema.safeParse({
     email: emailUnsafe,
@@ -46,14 +46,15 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-
-  const user = await getPasswordHashForUserByEmailAddress(parseResult.data.email);
+  const user = await getPasswordHashForUserByEmailAddress(
+    parseResult.data.email
+  );
 
   if (!user) {
     return NextResponse.json(
       {
         error: {
-          email: "No user found with that email address",
+          email: 'No user found with that email address',
         },
       },
       {
@@ -62,13 +63,13 @@ export const POST = async (request: NextRequest) => {
     );
   }
 
-  const { email, passwordHash, publicId } = user
+  const { email, passwordHash, publicId } = user;
 
   if (!passwordHash) {
     return NextResponse.json(
       {
         error: {
-          password: "Incorrect password",
+          password: 'Incorrect password',
         },
       },
       {
@@ -86,7 +87,7 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json(
       {
         error: {
-          password: "Incorrect password",
+          password: 'Incorrect password',
         },
       },
       {
@@ -102,13 +103,13 @@ export const POST = async (request: NextRequest) => {
 
   const requestUrl = new URL(request.url);
 
-  set("sessionToken", session.token, {
+  set('sessionToken', session.token, {
     expires: session.expirationDate,
     secure: true,
     domain: requestUrl.hostname,
-    sameSite: "strict",
+    sameSite: 'strict',
     httpOnly: true,
-    path: "/",
+    path: '/',
   });
 
   return NextResponse.json({
@@ -125,13 +126,11 @@ const getPasswordHashForUserByEmailAddress = async (emailAddress: string) => {
       publicId: users.publicId,
     })
     .from(users)
-    .where(
-      eq(users.email, emailAddress)
-    )
+    .where(eq(users.email, emailAddress))
     .limit(1)
     .execute();
 
   const firstRow = results[0];
 
-  return firstRow
+  return firstRow;
 };

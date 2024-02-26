@@ -1,5 +1,5 @@
-import * as React from "react";
-import { useHoverDirty } from "react-use";
+import * as React from 'react';
+import { useHoverDirty } from 'react-use';
 
 export const useHasIntent = (ref: React.RefObject<HTMLElement>): boolean => {
   const [isPressed, setIsPressed] = React.useState(false);
@@ -17,13 +17,13 @@ export const useHasIntent = (ref: React.RefObject<HTMLElement>): boolean => {
     const element = ref.current;
 
     // Attach event listeners
-    element?.addEventListener("touchstart", handleTouchStart);
-    element?.addEventListener("touchend", handleTouchEnd);
+    element?.addEventListener('touchstart', handleTouchStart);
+    element?.addEventListener('touchend', handleTouchEnd);
 
     // Cleanup function
     return () => {
-      element?.removeEventListener("touchstart", handleTouchStart);
-      element?.removeEventListener("touchend", handleTouchEnd);
+      element?.removeEventListener('touchstart', handleTouchStart);
+      element?.removeEventListener('touchend', handleTouchEnd);
     };
   }, [ref, handleTouchStart, handleTouchEnd]);
 

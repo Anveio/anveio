@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { AVATAR_ID_TO_DISPLAY_META } from "@/lib/features/avatars.client/avatars";
+import { AVATAR_ID_TO_DISPLAY_META } from '@/lib/features/avatars.client/avatars';
 import {
   useMyPresence,
   useOthersOnPage,
   useUpdateMyPresence,
-} from "@/lib/liveblocks.client";
-import { cn } from "@/lib/utils";
-import { ClientSideSuspense } from "@liveblocks/react";
-import * as React from "react";
-import styles from "./Cursor.module.css";
-import { MousePointer2 } from "lucide-react";
+} from '@/lib/liveblocks.client';
+import { cn } from '@/lib/utils';
+import { ClientSideSuspense } from '@liveblocks/react';
+import * as React from 'react';
+import styles from './Cursor.module.css';
+import { MousePointer2 } from 'lucide-react';
 
-interface Props extends Omit<React.ComponentProps<"div">, "color"> {
+interface Props extends Omit<React.ComponentProps<'div'>, 'color'> {
   color: string;
   name: string;
   x: number;
@@ -29,12 +29,12 @@ function Cursor({ x, y, color, name, className, style, ...props }: Props) {
       <MousePointer2
         className={styles.pointer}
         color={color}
-        stroke={"black"}
+        stroke={'black'}
         strokeWidth={1}
         fill={color}
-        height="44"
-        viewBox="0 0 24 36"
-        width="32"
+        height='44'
+        viewBox='0 0 24 36'
+        width='32'
       />
     </div>
   );
@@ -64,7 +64,7 @@ const Cursors = React.memo((props: { currentlyViewedPageId: string }) => {
 
           const cursorColor = avatar
             ? AVATAR_ID_TO_DISPLAY_META[avatar].iconColor
-            : "chartreuse";
+            : 'chartreuse';
 
           return (
             <Cursor
@@ -72,7 +72,7 @@ const Cursors = React.memo((props: { currentlyViewedPageId: string }) => {
               key={`cursor-${i}`}
               // connectionId is an integer that is incremented at every new connections
               // Assigning a color with a modulo makes sure that a specific user has the same colors on every clients
-              name={"Anonymous"}
+              name={'Anonymous'}
               x={cursor.x}
               y={cursor.y}
             />
@@ -134,22 +134,22 @@ export const useUpdateMyCursor = () => {
     };
 
     globalThis.window.document.body.addEventListener(
-      "pointermove",
+      'pointermove',
       updateCursor
     );
     globalThis.window.document.body.addEventListener(
-      "pointerleave",
+      'pointerleave',
       removeCursor
     );
 
     // Clean up event listeners
     return () => {
       globalThis.window.document.body.removeEventListener(
-        "pointermove",
+        'pointermove',
         updateCursor
       );
       globalThis.window.document.body.removeEventListener(
-        "pointerleave",
+        'pointerleave',
         removeCursor
       );
     };

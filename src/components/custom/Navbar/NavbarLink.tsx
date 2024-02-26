@@ -1,8 +1,8 @@
-"use client";
-import { cn } from "@/lib/utils";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React from "react";
+'use client';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import React from 'react';
 
 interface Props extends React.ComponentProps<typeof Link> {
   inactiveClassName?: string;
@@ -14,7 +14,7 @@ export const NavbarLink = ({ activeClassName, ...props }: Props) => {
 
   const stringHref = props.href.toString();
 
-  const userIsOnbasePath = pathname === "/";
+  const userIsOnbasePath = pathname === '/';
 
   const isActivePath = userIsOnbasePath
     ? stringHref === pathname

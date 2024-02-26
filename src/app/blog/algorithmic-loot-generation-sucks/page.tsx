@@ -1,43 +1,43 @@
-import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
-import { AnalyticsEvent } from "@/lib/analytics/types";
-import { BLOG_POSTS, formatDateWithSuffix } from "@/lib/blog/posts";
-import Image from "next/image";
+import { RecordEventOnMount } from '@/lib/analytics/analytics.client';
+import { AnalyticsEvent } from '@/lib/analytics/types';
+import { BLOG_POSTS, formatDateWithSuffix } from '@/lib/blog/posts';
+import Image from 'next/image';
 
 export const metadata = {
-  title: BLOG_POSTS["algorithmic-loot-generation-sucks"].title,
+  title: BLOG_POSTS['algorithmic-loot-generation-sucks'].title,
   description:
-    "A rant on how algorithmic loot generation has ruined the stories we form of our time playing games.",
+    'A rant on how algorithmic loot generation has ruined the stories we form of our time playing games.',
 };
 
 export default function Post() {
   return (
-    <article className="space-y-6">
-      <div className="space-y-3">
-        <p className="italic text-center">
-          Published{" "}
+    <article className='space-y-6'>
+      <div className='space-y-3'>
+        <p className='italic text-center'>
+          Published{' '}
           {formatDateWithSuffix(
-            BLOG_POSTS["algorithmic-loot-generation-sucks"].publishedAt
+            BLOG_POSTS['algorithmic-loot-generation-sucks'].publishedAt
           )}
         </p>
-        <h1 className="text-center text-2xl font-semibold">
-          {BLOG_POSTS["algorithmic-loot-generation-sucks"].title}
+        <h1 className='text-center text-2xl font-semibold'>
+          {BLOG_POSTS['algorithmic-loot-generation-sucks'].title}
         </h1>
         <Image
-          alt="Decorative box art of an imaginary RPG game"
-          src={"/blog-assets/algorithmic-loot-generation-sucks/cover.webp"}
-          className="blog-post-cover-image"
+          alt='Decorative box art of an imaginary RPG game'
+          src={'/blog-assets/algorithmic-loot-generation-sucks/cover.webp'}
+          className='blog-post-cover-image'
           width={896}
           height={660}
           priority
         />
-        <p className="italic text-center">
+        <p className='italic text-center'>
           We would have been better off algorithmically generating the stories.
         </p>
       </div>
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold">
-          The year is{" "}
-          <span className="inline leading-[0] bg-gradient-to-br bg-clip-text text-transparent from-[#FFFF92] to-[#EE8912]">
+      <section className='space-y-4'>
+        <h2 className='text-xl font-bold'>
+          The year is{' '}
+          <span className='inline leading-[0] bg-gradient-to-br bg-clip-text text-transparent from-[#FFFF92] to-[#EE8912]'>
             2004
           </span>
         </h2>
@@ -61,10 +61,10 @@ export default function Post() {
           Lizard King will drop next.
         </p>
       </section>
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold">
-          The year is{" "}
-          <span className="inline leading-[0] bg-gradient-to-br bg-clip-text text-transparent from-[#b6f492] to-[#338b93]">
+      <section className='space-y-4'>
+        <h2 className='text-xl font-bold'>
+          The year is{' '}
+          <span className='inline leading-[0] bg-gradient-to-br bg-clip-text text-transparent from-[#b6f492] to-[#338b93]'>
             2023
           </span>
         </h2>
@@ -85,8 +85,8 @@ export default function Post() {
           in damage. You take it to sell for later. You can't wear leather.
         </p>
       </section>
-      <section className="space-y-4">
-        <h2 className="text-xl font-bold">
+      <section className='space-y-4'>
+        <h2 className='text-xl font-bold'>
           We've failed to procedurally generate meaning
         </h2>
         <p>
@@ -110,5 +110,5 @@ export default function Post() {
 }
 
 const analyticsEvent: AnalyticsEvent = {
-  eventType: "view:blog:algorithmic-loot-generation-sucks",
+  eventType: 'view:blog:algorithmic-loot-generation-sucks',
 } as const;

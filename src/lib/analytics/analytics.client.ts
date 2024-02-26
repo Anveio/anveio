@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-const KEY = "AnalyticsEventQueue";
+const KEY = 'AnalyticsEventQueue';
 
 import {
   AnalyticsEvent,
   AnalyticsEventWithClientRecordedTimestamp,
-} from "@/lib/analytics/types";
-import React from "react";
-import useInterval from "react-use/lib/useInterval";
+} from '@/lib/analytics/types';
+import React from 'react';
+import useInterval from 'react-use/lib/useInterval';
 
 async function flushAnalyticsEventQueue() {
   const events = getAnalyticsEventQueue();
@@ -15,7 +15,7 @@ async function flushAnalyticsEventQueue() {
 
   try {
     const sendBeaconResult = navigator.sendBeacon(
-      "/api/record-events",
+      '/api/record-events',
       JSON.stringify(events)
     );
 

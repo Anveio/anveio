@@ -1,8 +1,8 @@
-"use client";
-import { Toggle } from "@/components/ui/toggle";
-import { useThemeOnClient } from "@/lib/theming/ThemeProvider";
-import { AnimatePresence, motion } from "framer-motion";
-import { MoonIcon, SunIcon } from "lucide-react";
+'use client';
+import { Toggle } from '@/components/ui/toggle';
+import { useThemeOnClient } from '@/lib/theming/ThemeProvider';
+import { AnimatePresence, motion } from 'framer-motion';
+import { MoonIcon, SunIcon } from 'lucide-react';
 
 const DISTANCE = 48;
 
@@ -29,19 +29,19 @@ export const ThemeToggleButton = () => {
 
   return (
     <Toggle
-      aria-label="Toggle dark mode"
-      className="max-w-[48px] w-[48px] mb-1"
+      aria-label='Toggle dark mode'
+      className='max-w-[48px] w-[48px] mb-1'
       onClick={toggleTheme}
     >
-      <div className="flex overflow-hidden">
-        <AnimatePresence mode="wait">
-          {theme === "dark" ? (
-            <motion.div key={"dark"} {...ANIMATION_CONFIG}>
-              <MoonIcon className="h-4 w-4 dark:text-zinc-50" />
+      <div className='flex overflow-hidden'>
+        <AnimatePresence mode='wait'>
+          {theme === 'dark' ? (
+            <motion.div key={'dark'} {...ANIMATION_CONFIG}>
+              <MoonIcon className='h-4 w-4 dark:text-zinc-50' />
             </motion.div>
           ) : (
-            <motion.div key={"light"} {...ANIMATION_CONFIG}>
-              <SunIcon className="h-4 w-4 dark:text-zinc-50" />
+            <motion.div key={'light'} {...ANIMATION_CONFIG}>
+              <SunIcon className='h-4 w-4 dark:text-zinc-50' />
             </motion.div>
           )}
         </AnimatePresence>

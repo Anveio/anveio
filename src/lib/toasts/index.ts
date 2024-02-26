@@ -23,7 +23,7 @@ export interface ToastOptions {
    * Toast type
    * @default `default`
    */
-  type?: "success" | "error" | "warning" | "dark" | "default";
+  type?: 'success' | 'error' | 'warning' | 'dark' | 'default';
   action?: Action;
   cancel?: string;
   category?: string;
@@ -39,7 +39,7 @@ export class Toast {
   private timeoutId?: number;
 
   constructor(message: Message, options: ToastOptions = {}) {
-    const { timeout = 0, action, type = "default", cancel, category } = options;
+    const { timeout = 0, action, type = 'default', cancel } = options;
 
     this.message = message;
     this.options = {
@@ -59,22 +59,22 @@ export class Toast {
   }
 
   insert(): void {
-    const el = document.createElement("div");
-    el.className = "toast";
-    el.setAttribute("aria-live", "assertive");
-    el.setAttribute("aria-atomic", "true");
-    el.setAttribute("aria-hidden", "false");
+    const el = document.createElement('div');
+    el.className = 'toast';
+    el.setAttribute('aria-live', 'assertive');
+    el.setAttribute('aria-atomic', 'true');
+    el.setAttribute('aria-hidden', 'false');
 
     const { action, type, cancel } = this.options;
 
-    const inner = document.createElement("div");
-    inner.className = "toast-inner";
+    const inner = document.createElement('div');
+    inner.className = 'toast-inner';
 
-    const text = document.createElement("div");
-    text.className = "toast-text";
+    const text = document.createElement('div');
+    text.className = 'toast-text';
     inner.classList.add(type as string);
 
-    if (typeof this.message !== "object") {
+    if (typeof this.message !== 'object') {
       text.textContent = String(this.message);
     } else {
       /**
@@ -86,16 +86,16 @@ export class Toast {
     inner.appendChild(text);
 
     if (cancel) {
-      const button = document.createElement("button");
-      button.className = "toast-button cancel-button";
+      const button = document.createElement('button');
+      button.className = 'toast-button cancel-button';
       button.textContent = cancel;
       button.onclick = () => this.destroy();
       inner.appendChild(button);
     }
 
     if (action) {
-      const button = document.createElement("button");
-      button.className = "toast-button";
+      const button = document.createElement('button');
+      button.className = 'toast-button';
       button.textContent = action.text;
       button.onclick = () => {
         this.stopTimer();
@@ -121,9 +121,9 @@ export class Toast {
     const { el } = this;
     if (!el) return;
 
-    el.style.opacity = "0";
-    el.style.visibility = "hidden";
-    el.style.transform = "translateY(10px)";
+    el.style.opacity = '0';
+    el.style.visibility = 'hidden';
+    el.style.transform = 'translateY(10px)';
 
     this.stopTimer();
 
@@ -139,20 +139,20 @@ export class Toast {
   }
 
   setContainer(): void {
-    container = document.querySelector(".toast-container") as HTMLDivElement;
+    container = document.querySelector('.toast-container') as HTMLDivElement;
     if (!container) {
-      container = document.createElement("div");
-      container.className = "toast-container";
+      container = document.createElement('div');
+      container.className = 'toast-container';
       document.body.appendChild(container);
     }
 
     // Stop all instance timer when mouse enter
-    container.addEventListener("mouseenter", () => {
+    container.addEventListener('mouseenter', () => {
       instances.forEach((instance) => instance.stopTimer());
     });
 
     // Restart all instance timer when mouse leave
-    container.addEventListener("mouseleave", () => {
+    container.addEventListener('mouseleave', () => {
       instances.forEach((instance) => instance.startTimer());
     });
   }
@@ -219,23 +219,23 @@ function sortToast(): void {
   toasts.forEach((toast, index) => {
     const sortIndex = index + 1;
     const el = toast.el as HTMLDivElement;
-    const height = +(el.getAttribute("data-height") || 0) || el.clientHeight;
+    const height = +(el.getAttribute('data-height') || 0) || el.clientHeight;
 
     heights.push(height);
 
     el.className = `toast toast-${sortIndex}`;
     el.dataset.height = `${height}`;
-    el.style.setProperty("--index", `${sortIndex}`);
-    el.style.setProperty("--height", `${height}px`);
-    el.style.setProperty("--front-height", `${heights[0]}px`);
+    el.style.setProperty('--index', `${sortIndex}`);
+    el.style.setProperty('--height', `${height}px`);
+    el.style.setProperty('--front-height', `${heights[0]}px`);
 
     if (sortIndex > 1) {
       const hoverOffsetY = heights
         .slice(0, sortIndex - 1)
         .reduce((res, next) => (res += next), 0);
-      el.style.setProperty("--hover-offset-y", `-${hoverOffsetY}px`);
+      el.style.setProperty('--hover-offset-y', `-${hoverOffsetY}px`);
     } else {
-      el.style.removeProperty("--hover-offset-y");
+      el.style.removeProperty('--hover-offset-y');
     }
   });
 }
@@ -243,7 +243,7 @@ function sortToast(): void {
 const createElementFromJsx = (
   node: JSX.Element | string
 ): HTMLElement | Text => {
-  if (typeof node === "string") {
+  if (typeof node === 'string') {
     return document.createTextNode(node);
   }
 
@@ -251,7 +251,7 @@ const createElementFromJsx = (
   const { children, ...props } = node.props || {};
 
   for (const propName in props) {
-    if (props.hasOwnProperty(propName) && propName !== "children") {
+    if (props.hasOwnProperty(propName) && propName !== 'children') {
       element.setAttribute(propName, props[propName]);
     }
   }

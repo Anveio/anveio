@@ -1,8 +1,8 @@
 export const registerNewUser = async (email: string, password: string) => {
-  const response = await fetch("/api/auth/sign-up", {
-    method: "POST",
+  const response = await fetch('/api/auth/sign-up', {
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify({
       email,
@@ -11,7 +11,7 @@ export const registerNewUser = async (email: string, password: string) => {
   });
 
   if (!response.body) {
-    throw new Error("No Response Body");
+    throw new Error('No Response Body');
   }
 
   if (!response.ok) {

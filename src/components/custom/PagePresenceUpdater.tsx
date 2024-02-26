@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useUpdateMyPresence } from "@/lib/liveblocks.client";
-import * as React from "react";
+import { useUpdateMyPresence } from '@/lib/liveblocks.client';
+import * as React from 'react';
 
 interface Props {
   pageId: string;
@@ -15,7 +15,7 @@ export const PagePresenceUpdater = (props: Props) => {
     if (!pageId) {
       updateMyPresence({
         currentlyViewedPage: {
-          id: "home",
+          id: 'home',
         },
       });
     }

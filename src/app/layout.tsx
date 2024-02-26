@@ -1,26 +1,26 @@
-import { UserProvider } from "@/components/custom/Auth/UserProvider";
-import { NavBar } from "@/components/custom/Navbar/NavBar";
-import { NetworkLayer } from "@/components/custom/NetworkLayer/NetworkLayer";
-import { Toaster } from "@/components/ui/toaster";
-import { CustomAnalytics } from "@/lib/analytics/analytics.client";
-import { getUserForSessionToken } from "@/lib/auth/sign-in";
-import { getThemeCookieValue } from "@/lib/theming/theming.server";
-import "@/lib/toasts/toast-styles.css";
-import { cn } from "@/lib/utils";
-import { Analytics } from "@vercel/analytics/react";
-import { Inter } from "next/font/google";
-import { cookies } from "next/headers";
-import * as React from "react";
-import "./globals.css";
-import { HtmlElement } from "@/lib/theming/ThemeProvider";
+import { UserProvider } from '@/components/custom/Auth/UserProvider';
+import { NavBar } from '@/components/custom/Navbar/NavBar';
+import { NetworkLayer } from '@/components/custom/NetworkLayer/NetworkLayer';
+import { Toaster } from '@/components/ui/toaster';
+import { CustomAnalytics } from '@/lib/analytics/analytics.client';
+import { getUserForSessionToken } from '@/lib/auth/sign-in';
+import { getThemeCookieValue } from '@/lib/theming/theming.server';
+import '@/lib/toasts/toast-styles.css';
+import { cn } from '@/lib/utils';
+import { Analytics } from '@vercel/analytics/react';
+import { Inter } from 'next/font/google';
+import { cookies } from 'next/headers';
+import * as React from 'react';
+import './globals.css';
+import { HtmlElement } from '@/lib/theming/ThemeProvider';
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: "Anveio - Shovon Hasan - Blog",
+  title: 'Anveio - Shovon Hasan - Blog',
   description:
-    "Thoughts on software engineering, culture, and science from Shovon Hasan (Anveio).",
-  "view-transition": "same-origin",
+    'Thoughts on software engineering, culture, and science from Shovon Hasan (Anveio).',
+  'view-transition': 'same-origin',
 };
 
 export default async function RootLayout({
@@ -38,7 +38,7 @@ export default async function RootLayout({
         <body
           className={cn(
             inter.className,
-            "bg-slate-100 min-h-screen static dark:bg-black transition-colors duration-500"
+            'bg-slate-100 min-h-screen static dark:bg-black transition-colors duration-500'
           )}
         >
           <React.Suspense>

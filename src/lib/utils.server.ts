@@ -1,6 +1,6 @@
 export async function generate256BitToken(): Promise<string> {
   if (!crypto || !crypto.subtle) {
-    throw new Error("Crypto API is not available in this environment.");
+    throw new Error('Crypto API is not available in this environment.');
   }
 
   // Generate random values
@@ -9,8 +9,8 @@ export async function generate256BitToken(): Promise<string> {
 
   // Convert the random values to a hex string for easier storage and handling
   const token = Array.from(randomValues)
-    .map((byte) => byte.toString(16).padStart(2, "0"))
-    .join("");
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
 
   return token;
 }

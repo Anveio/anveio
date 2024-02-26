@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import {} from "@radix-ui/react-dropdown-menu";
+import {} from '@radix-ui/react-dropdown-menu';
 import {
   DropdownMenu,
   DropdownMenuItem,
@@ -14,9 +14,9 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuPortal,
   DropdownMenuSubContent,
-} from "./ui/dropdown-menu";
-import { Button } from "./ui/button";
-import Link from "next/link";
+} from './ui/dropdown-menu';
+import { Button } from './ui/button';
+import Link from 'next/link';
 
 interface Props {
   userId: string;
@@ -26,13 +26,13 @@ export const ManageAccountMenu = (props: Props) => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline">Account</Button>
+        <Button variant='outline'>Account</Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className='w-56'>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link href={"/profile"}>
+          <Link href={'/profile'}>
             <DropdownMenuItem>
               Profile
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>

@@ -1,13 +1,13 @@
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
 
-export const runtime = "edge";
+export const runtime = 'edge';
 
 export const POST = async (req: NextRequest, res: NextResponse) => {
   if (!req.body) {
     return NextResponse.json(
       {
-        error: "No body found in request",
+        error: 'No body found in request',
       },
       {
         status: 400,
@@ -15,12 +15,12 @@ export const POST = async (req: NextRequest, res: NextResponse) => {
     );
   }
 
-  const body = await req.json()
+  const body = await req.json();
   const { theme } = body;
 
   const cookieStore = cookies();
 
-  cookieStore.set("theme", theme, { secure: true, sameSite: "strict" });
+  cookieStore.set('theme', theme, { secure: true, sameSite: 'strict' });
 
   return NextResponse.json({ theme });
 };

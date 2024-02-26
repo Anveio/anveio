@@ -1,17 +1,17 @@
-export const dynamic = "force-dynamic";
-import { db } from "@/lib/db";
-import { sessions } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+export const dynamic = 'force-dynamic';
+import { db } from '@/lib/db';
+import { sessions } from '@/lib/db/schema';
+import { eq } from 'drizzle-orm';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-export const runtime = "edge";
+export const runtime = 'edge';
 
 export async function POST(request: Request) {
   const requestUrl = new URL(request.url);
   const { get, set } = cookies();
 
-  const sessionToken = get("sessionToken");
+  const sessionToken = get('sessionToken');
 
   const redirectUrl = new URL(`${requestUrl.origin}/logged-out`);
 
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
   }
 
   await expireSessionForUser(sessionToken.value);
-  set("sessionToken", sessionToken.value, {
+  set('sessionToken', sessionToken.value, {
     expires: new Date(),
   });
 

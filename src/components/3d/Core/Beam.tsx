@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import * as THREE from "three";
-import React, { forwardRef, useImperativeHandle, useRef } from "react";
-import { useFrame, ThreeElements } from "@react-three/fiber";
-import { useTexture } from "@react-three/drei";
-import { Reflect } from "./Reflect";
+import * as THREE from 'three';
+import React, { forwardRef, useImperativeHandle, useRef } from 'react';
+import { useFrame, ThreeElements } from '@react-three/fiber';
+import { useTexture } from '@react-three/drei';
+import { Reflect } from './Reflect';
 
 interface BeamProps {
   children: React.ReactNode;
-  position: ThreeElements["group"]["position"];
+  position: ThreeElements['group']['position'];
   stride?: number;
   width?: number;
   [propName: string]: any; // For additional props not explicitly defined
@@ -20,8 +20,8 @@ const Beam = forwardRef<any, BeamProps>(
     const glow = useRef<THREE.InstancedMesh>(null);
     const reflect = useRef<any>(null);
     const [streakTexture, glowTexture] = useTexture([
-      "/textures/lensflare/lensflare2.png",
-      "/textures/lensflare/lensflare0_bw.jpg",
+      '/textures/lensflare/lensflare2.png',
+      '/textures/lensflare/lensflare0_bw.jpg',
     ]);
 
     const obj = new THREE.Object3D();

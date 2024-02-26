@@ -1,27 +1,27 @@
-import { createSessionForUser } from "@/lib/auth/sign-in";
-import { isPast } from "date-fns";
-import { db } from "@/lib/db";
-import { emailVerificationTokens, users } from "@/lib/db/schema";
-import { and, eq } from "drizzle-orm";
-import { cookies } from "next/headers";
-import { NextRequest, NextResponse } from "next/server";
-import { z } from "zod";
+import { createSessionForUser } from '@/lib/auth/sign-in';
+import { isPast } from 'date-fns';
+import { db } from '@/lib/db';
+import { emailVerificationTokens, users } from '@/lib/db/schema';
+import { and, eq } from 'drizzle-orm';
+import { cookies } from 'next/headers';
+import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
 
 const requestSearchParamsSchema = z.object({
   email: z.string().email(),
   verificationToken: z.string(),
 });
 
-export const runtime = "edge";
+export const runtime = 'edge';
 
 export async function GET(request: NextRequest) {
   const { set } = cookies();
 
   const searchParams = new URL(request.url).searchParams;
 
-  const emailUnsafe = searchParams.get("email");
+  const emailUnsafe = searchParams.get('email');
 
-  const verficationTokenUnsafe = new URL(request.url).searchParams.get("token");
+  const verficationTokenUnsafe = new URL(request.url).searchParams.get('token');
 
   const parseResult = requestSearchParamsSchema.safeParse({
     email: emailUnsafe,
@@ -54,7 +54,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         error: {
-          verificationToken: "Invalid verification token",
+          verificationToken: 'Invalid verification token',
         },
       },
       {
@@ -70,7 +70,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         error: {
-          verificationToken: "Invalid verification token",
+          verificationToken: 'Invalid verification token',
         },
       },
       {
@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(
       {
         error: {
-          verificationToken: "Expired verification token",
+          verificationToken: 'Expired verification token',
         },
       },
       {
@@ -109,9 +109,9 @@ export async function GET(request: NextRequest) {
     expires: session.expirationDate,
     secure: true,
     domain: requestUrl.hostname,
-    sameSite: "strict",
+    sameSite: 'strict',
     httpOnly: true,
-    path: "/",
+    path: '/',
   });
 
   return Response.redirect(requestUrl.origin);
@@ -129,7 +129,12 @@ const getVerificationTokenForEmail = async (
       email: emailVerificationTokens.email,
     })
     .from(emailVerificationTokens)
-    .where(and(eq(emailVerificationTokens.email, email), eq(emailVerificationTokens.token, verificationToken)))
+    .where(
+      and(
+        eq(emailVerificationTokens.email, email),
+        eq(emailVerificationTokens.token, verificationToken)
+      )
+    )
     .limit(1)
     .execute();
 
@@ -150,7 +155,7 @@ const verifyEmail = async (tokenId: number, emailAddress: string) => {
       .execute();
 
     if (tokenExpirationResult.rowsAffected === 0) {
-      throw new Error("Token not found");
+      throw new Error('Token not found');
     }
 
     const currentDate = new Date();
@@ -195,7 +200,7 @@ const verifyEmail = async (tokenId: number, emailAddress: string) => {
 
 async function generate256BitToken(): Promise<string> {
   if (!crypto || !crypto.subtle) {
-    throw new Error("Crypto API is not available in this environment.");
+    throw new Error('Crypto API is not available in this environment.');
   }
 
   // Generate random values
@@ -204,8 +209,8 @@ async function generate256BitToken(): Promise<string> {
 
   // Convert the random values to a hex string for easier storage and handling
   const token = Array.from(randomValues)
-    .map((byte) => byte.toString(16).padStart(2, "0"))
-    .join("");
+    .map((byte) => byte.toString(16).padStart(2, '0'))
+    .join('');
 
   return token;
 }

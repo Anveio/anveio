@@ -3,36 +3,36 @@ import {
   BlogHeader,
   ImageWithCaption,
   Section,
-} from "@/components/custom/Blog";
-import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
-import { AnalyticsEvent } from "@/lib/analytics/types";
-import { BLOG_POSTS, formatDateWithSuffix } from "@/lib/blog/posts";
-import { Metadata } from "next";
-import Image from "next/image";
+} from '@/components/custom/Blog';
+import { RecordEventOnMount } from '@/lib/analytics/analytics.client';
+import { AnalyticsEvent } from '@/lib/analytics/types';
+import { BLOG_POSTS, formatDateWithSuffix } from '@/lib/blog/posts';
+import { Metadata } from 'next';
+import Image from 'next/image';
 
-const POST_ID = "how-to-be-good-at-sex-guide-for-straight-men";
+const POST_ID = 'how-to-be-good-at-sex-guide-for-straight-men';
 
 export const metadata: Metadata = {
   title: BLOG_POSTS[POST_ID].title,
   description:
-    "An essay on finding yourself and as a positive consequence, becoming magnetically sexy.",
+    'An essay on finding yourself and as a positive consequence, becoming magnetically sexy.',
   openGraph: {
     title: BLOG_POSTS[POST_ID].title,
     description:
-      "An essay on finding yourself and as a positive consequence, becoming magnetically sexy.",
-    url: "https://anveio.com",
-    siteName: "Anveio",
+      'An essay on finding yourself and as a positive consequence, becoming magnetically sexy.',
+    url: 'https://anveio.com',
+    siteName: 'Anveio',
     images: [
       {
-        url: "https://anveio.com/blog-assets/how-to-be-good-at-sex-guide-for-straight-men/opengraph-image.jpg",
+        url: 'https://anveio.com/blog-assets/how-to-be-good-at-sex-guide-for-straight-men/opengraph-image.jpg',
         width: 1080,
         height: 1080,
       },
     ],
-    locale: "en_US",
-    type: "website",
+    locale: 'en_US',
+    type: 'website',
   },
-  metadataBase: new URL("https://anveio.com"),
+  metadataBase: new URL('https://anveio.com'),
 };
 
 export default function Post() {
@@ -40,7 +40,7 @@ export default function Post() {
     <Article>
       <BlogHeader
         postId={POST_ID}
-        imageCaption="Pictured: you, in the future"
+        imageCaption='Pictured: you, in the future'
         imageHeight={896}
         imageWidth={896}
       />
@@ -85,8 +85,8 @@ export default function Post() {
         </p>
         <ImageWithCaption
           postId={POST_ID}
-          fileName="this-be-the-verse"
-          imageCaption="The games we torture ourselves with are a waste of time, but why do we play these games anyway?"
+          fileName='this-be-the-verse'
+          imageCaption='The games we torture ourselves with are a waste of time, but why do we play these games anyway?'
           imageHeight={500}
           imageWidth={400}
         />
@@ -172,8 +172,8 @@ export default function Post() {
         </p>
         <ImageWithCaption
           postId={POST_ID}
-          fileName="chandler"
-          imageCaption="Chandler Bing knew"
+          fileName='chandler'
+          imageCaption='Chandler Bing knew'
           imageHeight={800}
           imageWidth={800}
         />
@@ -225,7 +225,7 @@ export default function Post() {
         </p>
         <ImageWithCaption
           postId={POST_ID}
-          fileName="language"
+          fileName='language'
           imageCaption="Don't mind me just putting another nail on the beach."
           imageHeight={800}
           imageWidth={800}
@@ -242,8 +242,8 @@ export default function Post() {
         </p>
         <ImageWithCaption
           postId={POST_ID}
-          fileName="2x2"
-          imageCaption="If King, Warrior, Magician, Lover was good"
+          fileName='2x2'
+          imageCaption='If King, Warrior, Magician, Lover was good'
           imageHeight={800}
           imageWidth={800}
         />
@@ -274,8 +274,8 @@ export default function Post() {
 
         <ImageWithCaption
           postId={POST_ID}
-          fileName="2x2-2"
-          imageCaption="The incel-soldier axis is real"
+          fileName='2x2-2'
+          imageCaption='The incel-soldier axis is real'
           imageHeight={800}
           imageWidth={800}
         />
@@ -318,8 +318,8 @@ export default function Post() {
         </p>
         <ImageWithCaption
           postId={POST_ID}
-          fileName="shes-my-friend"
-          imageCaption="Gigachad responds to an adrift poster."
+          fileName='shes-my-friend'
+          imageCaption='Gigachad responds to an adrift poster.'
           imageHeight={800}
           imageWidth={800}
         />
@@ -415,5 +415,5 @@ export default function Post() {
 }
 
 const analyticsEvent = {
-  eventType: "view:blog:how-to-have-good-sex-guide-for-straight-men",
+  eventType: 'view:blog:how-to-have-good-sex-guide-for-straight-men',
 } as const satisfies AnalyticsEvent;

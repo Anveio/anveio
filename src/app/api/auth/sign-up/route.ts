@@ -1,11 +1,11 @@
-import { hashPassword } from "@/lib/auth/argon2";
-import { db } from "@/lib/db";
-import { emailVerificationTokens, users } from "@/lib/db/schema";
-import { generate256BitToken } from "@/lib/utils.server";
-import { addDays } from "date-fns";
-import { nanoid } from "nanoid";
-import { NextResponse } from "next/server";
-import { z } from "zod";
+import { hashPassword } from '@/lib/auth/argon2';
+import { db } from '@/lib/db';
+import { emailVerificationTokens, users } from '@/lib/db/schema';
+import { generate256BitToken } from '@/lib/utils.server';
+import { addDays } from 'date-fns';
+import { nanoid } from 'nanoid';
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
 const requestSearchParamsSchema = z.object({
   email: z.string().email(),

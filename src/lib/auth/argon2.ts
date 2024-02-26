@@ -1,9 +1,9 @@
-import { hash, verify } from "argon2";
+import { hash, verify } from 'argon2';
 
 const PASSWORD_SALT = process.env.PASSWORD_SALT;
 
 if (!PASSWORD_SALT) {
-  throw new Error("PASSWORD_SALT is not defined");
+  throw new Error('PASSWORD_SALT is not defined');
 }
 
 export const hashPassword = (plaintextPassword: string) => {

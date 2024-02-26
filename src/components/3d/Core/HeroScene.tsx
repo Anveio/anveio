@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
-import { calculateRefractionAngle, lerp, lerpV3 } from "@/lib/3d/utils";
-import { Center, Text3D } from "@react-three/drei";
-import { useFrame, useLoader } from "@react-three/fiber";
+import { calculateRefractionAngle, lerp, lerpV3 } from '@/lib/3d/utils';
+import { Center, Text3D } from '@react-three/drei';
+import { useFrame, useLoader } from '@react-three/fiber';
 import {
   BreakPointHooks,
   breakpointsTailwind,
-} from "@react-hooks-library/core";
-import { useCallback, useRef, useState } from "react";
-import * as THREE from "three";
-import { Beam } from "./Beam";
-import { Flare } from "./Flare";
-import { Prism } from "./Prism";
-import { Rainbow } from "./Rainbow";
-import { Bloom, EffectComposer, LUT } from "@react-three/postprocessing";
-import { LUTCubeLoader } from "postprocessing";
-import { Box } from "./Box";
+} from '@react-hooks-library/core';
+import { useCallback, useRef, useState } from 'react';
+import * as THREE from 'three';
+import { Beam } from './Beam';
+import { Flare } from './Flare';
+import { Prism } from './Prism';
+import { Rainbow } from './Rainbow';
+import { Bloom, EffectComposer, LUT } from '@react-three/postprocessing';
+import { LUTCubeLoader } from 'postprocessing';
+import { Box } from './Box';
 
 const { useGreater } = BreakPointHooks(breakpointsTailwind);
 
@@ -27,7 +27,7 @@ const Text3dYCoordinatesConfig = {
 export function HeroScene() {
   const isIos = /iphone|ipad|ipod/i.test(window.navigator.userAgent);
 
-  const texture = useLoader(LUTCubeLoader, "/lut/F-6800-STD.cube");
+  const texture = useLoader(LUTCubeLoader, '/lut/F-6800-STD.cube');
   const [isPrismHit, hitPrism] = useState(false);
   const flare = useRef<any>(null);
   const ambient = useRef<any>(null);
@@ -35,7 +35,7 @@ export function HeroScene() {
   const beamRef = useRef<any>(null);
   const rainbow = useRef<any>(null);
 
-  const greater = useGreater("sm");
+  const greater = useGreater('sm');
 
   const rayOut = useCallback(() => hitPrism(false), []);
   const rayOver = useCallback((e: any) => {
@@ -75,7 +75,7 @@ export function HeroScene() {
     spot.current.target.updateMatrixWorld();
   }, []);
 
-  let baseAngle = useRef(0);
+  const baseAngle = useRef(0);
 
   useFrame((state, delta) => {
     // Increment the base angle to move along a circle over time
@@ -97,7 +97,7 @@ export function HeroScene() {
 
     lerp(
       rainbow.current.material,
-      "emissiveIntensity",
+      'emissiveIntensity',
       isPrismHit ? 2.5 : 0,
       0.1
     );
@@ -110,13 +110,13 @@ export function HeroScene() {
 
     lerp(
       ambient.current,
-      "intensity",
+      'intensity',
       isPrismHit ? 0.1 * interpolateCurve(rotationInDegrees, 1, 50) : 0,
       1
     );
   });
 
-  const textLayout = Text3dYCoordinatesConfig[greater ? "md" : "sm"];
+  const textLayout = Text3dYCoordinatesConfig[greater ? 'md' : 'sm'];
 
   return (
     <>
@@ -139,10 +139,10 @@ export function HeroScene() {
           size={0.7}
           letterSpacing={-0.05}
           height={0.05}
-          font="/fonts/Inter_Bold.json"
+          font='/fonts/Inter_Bold.json'
         >
           The Internet
-          <meshStandardMaterial color="white" />
+          <meshStandardMaterial color='white' />
         </Text3D>
       </Center>
       <Center top bottom position={[0, textLayout[1], 0]}>
@@ -150,10 +150,10 @@ export function HeroScene() {
           size={0.7}
           letterSpacing={-0.05}
           height={0.05}
-          font="/fonts/Inter_Bold.json"
+          font='/fonts/Inter_Bold.json'
         >
           Should Feel
-          <meshStandardMaterial color="white" />
+          <meshStandardMaterial color='white' />
         </Text3D>
       </Center>
       <Center top bottom position={[0, textLayout[2], 0]}>
@@ -161,10 +161,10 @@ export function HeroScene() {
           size={0.7}
           letterSpacing={-0.05}
           height={0.05}
-          font="/fonts/Inter_Bold.json"
+          font='/fonts/Inter_Bold.json'
         >
           Alive
-          <meshStandardMaterial color="white" />
+          <meshStandardMaterial color='white' />
         </Text3D>
       </Center>
       {/* Prism + reflect beam */}
@@ -203,7 +203,7 @@ export function HeroScene() {
             luminanceThreshold={1}
             luminanceSmoothing={1}
           />
-          {/* @ts-expect-error */}
+          {/* @ts-expect-error Because*/}
           <LUT lut={texture} />
         </EffectComposer>
       )}

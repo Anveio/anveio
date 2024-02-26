@@ -1,23 +1,23 @@
-import { getUserForSessionToken } from "@/lib/auth/sign-in";
-import { geolocation, ipAddress } from "@vercel/edge";
-import { add } from "date-fns";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
-import { NextResponse } from "next/server";
-import { z } from "zod";
+import { getUserForSessionToken } from '@/lib/auth/sign-in';
+import { geolocation, ipAddress } from '@vercel/edge';
+import { add } from 'date-fns';
+import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { NextResponse } from 'next/server';
+import { z } from 'zod';
 
 const requestSearchParamsSchema = z.object({
   sessionToken: z.string(),
 });
 
-export const runtime = "edge";
+export const runtime = 'edge';
 
 export async function GET(request: Request) {
   const { set } = cookies();
 
   const searchParams = new URL(request.url).searchParams;
 
-  const sessionTokenUnsafe = searchParams.get("sessionToken");
+  const sessionTokenUnsafe = searchParams.get('sessionToken');
 
   const parseResult = requestSearchParamsSchema.safeParse({
     sessionToken: sessionTokenUnsafe,
@@ -45,7 +45,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         error: {
-          verificationToken: "Invalid verification token",
+          verificationToken: 'Invalid verification token',
         },
       },
       {
@@ -58,7 +58,7 @@ export async function GET(request: Request) {
     return NextResponse.json(
       {
         error: {
-          verificationToken: "Invalid verification token",
+          verificationToken: 'Invalid verification token',
         },
       },
       {
@@ -76,10 +76,10 @@ export async function GET(request: Request) {
     expires: add(Date.now(), { days: 365 }),
     secure: true,
     domain: requestUrl.hostname,
-    sameSite: "strict",
+    sameSite: 'strict',
     httpOnly: true,
-    path: "/",
+    path: '/',
   });
 
-  redirect("/?");
+  redirect('/?');
 }

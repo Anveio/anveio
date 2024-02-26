@@ -1,6 +1,6 @@
-import { forwardRef, useRef } from "react";
-import { extend, useFrame, useThree } from "@react-three/fiber";
-import { shaderMaterial } from "@react-three/drei";
+import { forwardRef, useRef } from 'react';
+import { extend, useFrame, useThree } from '@react-three/fiber';
+import { shaderMaterial } from '@react-three/drei';
 
 // Based on
 // "Improving the Rainbow" by Alan Zucconi: https://www.alanzucconi.com/2017/07/15/improving-the-rainbow-2/
@@ -126,14 +126,13 @@ export const Rainbow = forwardRef<any, any>(
     return (
       <mesh ref={fRef} scale={[length, length, 1]} {...props}>
         <planeGeometry />
-        {/* @ts-expect-error */}
+        {/* @ts-expect-error Because */}
         <rainbowMaterial
           ref={material}
           key={RainbowMaterial.key}
           fade={fade}
           startRadius={startRadius}
           endRadius={endRadius}
-          
           ratio={1}
           toneMapped={false}
         />

@@ -1,15 +1,15 @@
-import { Code } from "bright";
+import { Code } from 'bright';
 interface Props {
   text: string;
   language: string;
 }
 
-Code.theme = "dark-plus";
+Code.theme = 'dark-plus';
 
 export const SyntaxHighlightedText = (props: Props) => {
   return (
     <Code
-      lineNumbers={props.language === "shell" ? false : true}
+      lineNumbers={props.language === 'shell' ? false : true}
       lang={props.language}
       style={{
         marginTop: 0,

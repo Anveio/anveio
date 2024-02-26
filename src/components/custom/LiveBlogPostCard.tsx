@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import {
   Card,
@@ -7,19 +7,19 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { AVATAR_ID_TO_DISPLAY_META } from "@/lib/features/avatars.client/avatars";
-import { useOthersOnPage } from "@/lib/liveblocks.client";
-import { cn, notEmpty } from "@/lib/utils";
-import { ClientSideSuspense } from "@liveblocks/react";
-import { AnimatePresence, motion, useAnimation } from "framer-motion";
-import Link from "next/link";
-import * as React from "react";
-import { Button } from "../ui/button";
-import { MotionCard } from "./MotionCard";
-import Image from "next/image";
-import { AnalyticsEvent } from "@/lib/analytics/types";
-import { enqueueAnalyticsEvent } from "@/lib/analytics/analytics.client";
+} from '@/components/ui/card';
+import { AVATAR_ID_TO_DISPLAY_META } from '@/lib/features/avatars.client/avatars';
+import { useOthersOnPage } from '@/lib/liveblocks.client';
+import { cn, notEmpty } from '@/lib/utils';
+import { ClientSideSuspense } from '@liveblocks/react';
+import { AnimatePresence, motion, useAnimation } from 'framer-motion';
+import Link from 'next/link';
+import * as React from 'react';
+import { Button } from '../ui/button';
+import { MotionCard } from './MotionCard';
+import Image from 'next/image';
+import { AnalyticsEvent } from '@/lib/analytics/types';
+import { enqueueAnalyticsEvent } from '@/lib/analytics/analytics.client';
 
 type StartsWith<S extends string, T extends string> = T extends `${S}${infer _}`
   ? T
@@ -31,12 +31,12 @@ interface Props {
   content: string;
   slug: string;
   imageHref: string;
-  eventType: StartsWith<"click", AnalyticsEvent["eventType"]>;
+  eventType: StartsWith<'click', AnalyticsEvent['eventType']>;
   priority?: boolean;
   publishedAt: Date;
 }
 
-let IS_USING_MULTIPLAYER = false;
+const IS_USING_MULTIPLAYER = false;
 
 export const LiveBlogPostCard = (props: Props) => {
   if (!IS_USING_MULTIPLAYER) {
@@ -92,17 +92,17 @@ const BlogPostCardWithWidget = (props: Props) => {
         colors={otherColors}
       >
         <CardHeader>
-          <CardTitle className="text-2xl lg:py-4">{props.title}</CardTitle>
-          <CardDescription className="px-2 md:px-4 text-xl text-center">
+          <CardTitle className='text-2xl lg:py-4'>{props.title}</CardTitle>
+          <CardDescription className='px-2 md:px-4 text-xl text-center'>
             {props.content}
           </CardDescription>
         </CardHeader>
-        <CardFooter className="justify-between align-self-end">
+        <CardFooter className='justify-between align-self-end'>
           <div>
             <OtherUsersReadingBlogWidget articleId={props.id} />
           </div>
           <Button
-            className="hover:text-black"
+            className='hover:text-black'
             onClick={() => {
               enqueueAnalyticsEvent({
                 eventType: props.eventType,
@@ -117,46 +117,46 @@ const BlogPostCardWithWidget = (props: Props) => {
   );
 };
 
-const formatter = new Intl.DateTimeFormat("en-US", {
-  month: "short", // "short" for abbreviated month name
-  day: "2-digit",
-  year: "numeric",
-  timeZone: "UTC",
+const formatter = new Intl.DateTimeFormat('en-US', {
+  month: 'short', // "short" for abbreviated month name
+  day: '2-digit',
+  year: 'numeric',
+  timeZone: 'UTC',
 });
 
 const BlogPostCard = (
   props: React.PropsWithChildren<
     Props & {
-      className?: React.ComponentProps<typeof Card>["className"];
-      animate?: React.ComponentProps<typeof motion.a>["animate"];
+      className?: React.ComponentProps<typeof Card>['className'];
+      animate?: React.ComponentProps<typeof motion.a>['animate'];
     }
   >
 ) => {
   return (
-    <Card className="flex flex-col rounded-xl border">
-      <CardHeader className="space-y-6">
-        <CardTitle className="text-base font-light text-center dark:text-gray-100 text-gray-700">
+    <Card className='flex flex-col rounded-xl border'>
+      <CardHeader className='space-y-6'>
+        <CardTitle className='text-base font-light text-center dark:text-gray-100 text-gray-700'>
           {props.title}
         </CardTitle>
-        <CardDescription className="text-base font-extralight dark:text-gray-200 text-black">
+        <CardDescription className='text-base font-extralight dark:text-gray-200 text-black'>
           {props.content}
         </CardDescription>
       </CardHeader>
       <Image
-        alt="Hero image"
-        className="pointer-events-none select-none rounded-b-xl blog-post-cover-image pb-6 w-full h-full object-cover"
+        alt='Hero image'
+        className='pointer-events-none select-none rounded-b-xl blog-post-cover-image pb-6 w-full h-full object-cover'
         height={400}
         src={props.imageHref}
         priority={props.priority}
         width={400}
       />
-      <CardFooter className="justify-between">
-        <p className="text-sm dark:text-gray-400 font-extralight text-gray-900">
+      <CardFooter className='justify-between'>
+        <p className='text-sm dark:text-gray-400 font-extralight text-gray-900'>
           {formatter.format(props.publishedAt)}
         </p>
         <Link href={`/blog/${props.slug}`}>
           <Button
-            className="hover:text-black"
+            className='hover:text-black'
             onClick={() => {
               enqueueAnalyticsEvent({
                 eventType: props.eventType,
@@ -177,7 +177,7 @@ const OtherUsersReadingBlogWidget = (props: { articleId: string }) => {
   const othersViewingArticle = useOthersOnPage(props.articleId);
 
   return (
-    <div className="grid place-items-center grid-cols-5 grid-gap-[-5px]">
+    <div className='grid place-items-center grid-cols-5 grid-gap-[-5px]'>
       <AnimatePresence>
         {othersViewingArticle.map((el, index) => {
           const avatarMeta = el.presence.avatar
@@ -187,8 +187,8 @@ const OtherUsersReadingBlogWidget = (props: { articleId: string }) => {
           const AvatarIcon = avatarMeta ? avatarMeta.iconComponent : null;
 
           const ringStyle = {
-            backgroundColor: "white",
-            "--tw-ring-color": avatarMeta?.iconColor,
+            backgroundColor: 'white',
+            '--tw-ring-color': avatarMeta?.iconColor,
             marginLeft: `-${OVERLAP_PIXELS * index}px`,
             zIndex: index,
           };
@@ -202,16 +202,16 @@ const OtherUsersReadingBlogWidget = (props: { articleId: string }) => {
                 duration: 0.2,
               }}
               key={el.connectionId}
-              className="rounded-full ring-inset ring-2 h-8 w-8 flex items-center justify-center"
+              className='rounded-full ring-inset ring-2 h-8 w-8 flex items-center justify-center'
               style={ringStyle}
             >
               {AvatarIcon ? (
                 <AvatarIcon
-                  className="h-5 w-5"
+                  className='h-5 w-5'
                   stroke={avatarMeta?.iconColor}
                 />
               ) : (
-                "hi"
+                'hi'
               )}
             </motion.div>
           );
@@ -228,11 +228,11 @@ interface AppendOutlineProps {
 }
 
 interface StyleProperties extends React.CSSProperties {
-  ["--tw-ring-color"]: string;
+  ['--tw-ring-color']: string;
 }
 
 const AppendRingIfLive: React.FC<AppendOutlineProps> = (props) => {
-  const colorToUse = props.colors[0] || "red";
+  const colorToUse = props.colors[0] || 'red';
 
   return (
     <>
@@ -246,18 +246,18 @@ const AppendRingIfLive: React.FC<AppendOutlineProps> = (props) => {
         if (React.isValidElement(child)) {
           const childProps = child.props;
           // Retrieve existing className
-          const existingClassName = childProps.className || "";
+          const existingClassName = childProps.className || '';
 
           // Create a new className by appending "outline" to the existing one
           const newClassName = `${existingClassName} ${
-            props.numberWatchingLive > 0 ? "ring-inset ring-4" : ""
+            props.numberWatchingLive > 0 ? 'ring-inset ring-4' : ''
           }`;
 
           // Clone the element with the new className
           return React.cloneElement(child, {
             className: newClassName,
             style: {
-              "--tw-ring-color": colorToUse,
+              '--tw-ring-color': colorToUse,
             },
           });
         }

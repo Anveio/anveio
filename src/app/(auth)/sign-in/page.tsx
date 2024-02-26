@@ -1,5 +1,5 @@
-import { AuthForm } from "@/components/custom/Auth/AuthForm";
+import { AuthForm } from '@/components/custom/Auth/AuthForm';
 
 export default function SignInPage() {
-  return <AuthForm tab="l" />;
+  return <AuthForm tab='l' />;
 }

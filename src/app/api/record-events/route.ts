@@ -1,15 +1,15 @@
-import { NextRequest, userAgentFromString } from "next/server";
-import { geolocation, ipAddress } from "@vercel/edge";
-import { db } from "@/lib/db";
-import { events, sessions } from "@/lib/db/schema";
-import { z } from "zod";
+import { NextRequest, userAgentFromString } from 'next/server';
+import { geolocation, ipAddress } from '@vercel/edge';
+import { db } from '@/lib/db';
+import { events, sessions } from '@/lib/db/schema';
+import { z } from 'zod';
 
-import { Ratelimit } from "@upstash/ratelimit";
-import { kv } from "@vercel/kv";
-import { cookies } from "next/headers";
-import { eq } from "drizzle-orm";
+import { Ratelimit } from '@upstash/ratelimit';
+import { kv } from '@vercel/kv';
+import { cookies } from 'next/headers';
+import { eq } from 'drizzle-orm';
 
-export const runtime = "edge";
+export const runtime = 'edge';
 
 /**
  * Set up the expected request JSON schema
@@ -18,15 +18,15 @@ const requestBodySchema = z.array(
   z.object({
     eventType: z.enum(
       [
-        "view:home",
-        "click:vercel_edge_analytics",
-        "view:blog:vercel_edge_analytics",
-        "view:blog:the-genocide-isnt-complicated-actually",
-        "view:blog:algorithmic-loot-generation-sucks",
+        'view:home',
+        'click:vercel_edge_analytics',
+        'view:blog:vercel_edge_analytics',
+        'view:blog:the-genocide-isnt-complicated-actually',
+        'view:blog:algorithmic-loot-generation-sucks',
       ],
       {
-        invalid_type_error: "Invalid event type",
-        required_error: "Event type not provided",
+        invalid_type_error: 'Invalid event type',
+        required_error: 'Event type not provided',
       }
     ),
     clientRecordedAtUtcMillis: z.number(),
@@ -36,11 +36,11 @@ const requestBodySchema = z.array(
 
 const ratelimit = new Ratelimit({
   redis: kv,
-  limiter: Ratelimit.slidingWindow(1, "5 s"),
+  limiter: Ratelimit.slidingWindow(1, '5 s'),
 });
 
 export const POST = async (request: NextRequest) => {
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV === 'development') {
     /**
      * Don't bother recording events in development
      */
@@ -50,7 +50,7 @@ export const POST = async (request: NextRequest) => {
   /**
    * Pull the user agent out from the request headers
    */
-  const userAgent = request.headers.get("user-agent");
+  const userAgent = request.headers.get('user-agent');
 
   /**
    * Parse the request JSON
@@ -103,21 +103,21 @@ export const POST = async (request: NextRequest) => {
 
   const { get } = cookies();
 
-  const sessionTokenCookie = get("sessionToken");
+  const sessionTokenCookie = get('sessionToken');
 
   const sessionToken = sessionTokenCookie?.value;
 
   await db.transaction(async (tx) => {
     const [sessionTokenId] = sessionToken
       ? await tx
-        .select({ id: sessions.id })
-        .from(sessions)
-        .where(eq(sessions.sessionToken, sessionToken))
-        .limit(1)
-        .execute()
+          .select({ id: sessions.id })
+          .from(sessions)
+          .where(eq(sessions.sessionToken, sessionToken))
+          .limit(1)
+          .execute()
       : [null];
 
-    for (let event of eventsUnderRateLimit) {
+    for (const event of eventsUnderRateLimit) {
       /**
        * We can't do concurrent writes so do these writes serially.
        */

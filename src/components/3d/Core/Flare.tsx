@@ -1,15 +1,15 @@
-import * as THREE from "three";
-import { forwardRef, useRef } from "react";
-import { useTexture, Instances, Instance } from "@react-three/drei";
-import { useFrame } from "@react-three/fiber";
+import * as THREE from 'three';
+import { forwardRef, useRef } from 'react';
+import { useTexture, Instances, Instance } from '@react-three/drei';
+import { useFrame } from '@react-three/fiber';
 
 export const Flare = forwardRef<any, any>(
   ({ streak = [8, 20, 1], visible, ...props }, fRef) => {
     const ref = useRef<any>(null);
     const [streakTexture, dotTexture, glowTexture] = useTexture([
-      "/textures/lensflare/lensflare2.png",
-      "/textures/lensflare/lensflare3.png",
-      "/textures/lensflare/lensflare0_bw.png",
+      '/textures/lensflare/lensflare2.png',
+      '/textures/lensflare/lensflare3.png',
+      '/textures/lensflare/lensflare0_bw.png',
     ]);
     const config = {
       transparent: true,
@@ -22,13 +22,13 @@ export const Flare = forwardRef<any, any>(
     useFrame((state) => {
       ref.current.children.forEach((instance: any) => {
         instance.position.x =
-          (Math[instance.scale.x > 1 ? "sin" : "cos"](
+          (Math[instance.scale.x > 1 ? 'sin' : 'cos'](
             (state.clock.elapsedTime * instance.scale.x) / 2
           ) *
             instance.scale.x) /
           8;
         instance.position.y =
-          (Math[instance.scale.x > 1 ? "cos" : "atan"](
+          (Math[instance.scale.x > 1 ? 'cos' : 'atan'](
             state.clock.elapsedTime * instance.scale.x
           ) *
             instance.scale.x) /

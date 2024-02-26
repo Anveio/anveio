@@ -1,9 +1,9 @@
-"use client";
+'use client';
 
-import * as THREE from "three";
-import React, { forwardRef, useRef, useState } from "react";
-import { useFrame } from "@react-three/fiber";
-import { lerpC } from "@/lib/3d/utils"; // Assuming lerpC is correctly typed in its definition
+import * as THREE from 'three';
+import React, { forwardRef, useRef, useState } from 'react';
+import { useFrame } from '@react-three/fiber';
+import { lerpC } from '@/lib/3d/utils'; // Assuming lerpC is correctly typed in its definition
 
 const w = 1;
 const h = 1;
@@ -35,8 +35,8 @@ export const Box = forwardRef<THREE.Group, any>((props, ref) => {
   useFrame(() => {
     if (inner.current?.material instanceof THREE.MeshStandardMaterial) {
       const emissiveColor = hovered
-        ? new THREE.Color("white")
-        : new THREE.Color("#454545");
+        ? new THREE.Color('white')
+        : new THREE.Color('#454545');
       lerpC(inner.current.material.emissive, emissiveColor, 0.1);
     }
   });
@@ -45,14 +45,14 @@ export const Box = forwardRef<THREE.Group, any>((props, ref) => {
     <group scale={0.5} ref={ref} {...props}>
       <mesh
         visible={false}
-        // @ts-expect-error
+        // @ts-expect-error Because
         onRayOver={() => hover(true)}
         onRayOut={() => hover(false)}
         geometry={boxGeometry}
       />
       <mesh ref={inner} geometry={roundedBoxGeometry}>
         <meshStandardMaterial
-          color="#333"
+          color='#333'
           toneMapped={false}
           emissiveIntensity={2}
         />

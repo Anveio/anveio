@@ -1,9 +1,9 @@
-import { add, isPast } from "date-fns";
-import { eq } from "drizzle-orm";
-import { NextRequest } from "next/server";
-import { db } from "@/lib/db/db";
-import { emailVerificationTokens, sessions, users } from "@/lib/db/schema";
-import { generate256BitToken } from "../utils.server";
+import { add, isPast } from 'date-fns';
+import { eq } from 'drizzle-orm';
+import { NextRequest } from 'next/server';
+import { db } from '@/lib/db/db';
+import { emailVerificationTokens, sessions, users } from '@/lib/db/schema';
+import { generate256BitToken } from '../utils.server';
 
 /**
  * Returns a user in exchange for a session token.
@@ -75,9 +75,7 @@ export const validateSessionToken = async (
         expiresAt: sessions.expiresAt,
       })
       .from(sessions)
-      .where(
-        eq(sessions.sessionToken, sessionToken)
-      )
+      .where(eq(sessions.sessionToken, sessionToken))
       .limit(1)
       .execute();
 
@@ -190,7 +188,7 @@ export const verifyEmailAndGenerateSessionToken = async (
       .execute();
 
     if (tokenExpirationResult.rowsAffected === 0) {
-      throw new Error("Token not found");
+      throw new Error('Token not found');
     }
 
     const currentDate = new Date();

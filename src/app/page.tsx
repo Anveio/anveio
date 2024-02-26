@@ -82,7 +82,7 @@ export default function Home() {
             }
           >
             <Scene></Scene>
-            {/* @ts-expect-error */}
+            {/* @ts-expect-error View type definitions are off*/}
             <View className='w-full h-full border-b-4 border-gray-500 dark:border-0'>
               <color attach='background' args={['black']} />
               <HeroScene />

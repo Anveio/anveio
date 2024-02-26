@@ -1,62 +1,62 @@
-import { Article, Section } from "@/components/custom/Blog";
-import { Blink } from "@/components/custom/ExternalInlineLink";
-import { RecordEventOnMount } from "@/lib/analytics/analytics.client";
-import { AnalyticsEvent } from "@/lib/analytics/types";
-import { BLOG_POSTS, formatDateWithSuffix } from "@/lib/blog/posts";
-import { Metadata } from "next";
-import Image from "next/image";
+import { Article, Section } from '@/components/custom/Blog';
+import { Blink } from '@/components/custom/ExternalInlineLink';
+import { RecordEventOnMount } from '@/lib/analytics/analytics.client';
+import { AnalyticsEvent } from '@/lib/analytics/types';
+import { BLOG_POSTS, formatDateWithSuffix } from '@/lib/blog/posts';
+import { Metadata } from 'next';
+import Image from 'next/image';
 
 export const metadata: Metadata = {
-  title: BLOG_POSTS["the-genocide-isnt-complicated-actually"].title,
+  title: BLOG_POSTS['the-genocide-isnt-complicated-actually'].title,
   description:
-    "An essay on how the Palestinian people can achieve peace within the next 10 years.",
+    'An essay on how the Palestinian people can achieve peace within the next 10 years.',
   openGraph: {
-    title: BLOG_POSTS["the-genocide-isnt-complicated-actually"].title,
+    title: BLOG_POSTS['the-genocide-isnt-complicated-actually'].title,
     description:
-      "An essay on how the Palestinian people can achieve peace within the next 10 years.",
-    url: "https://anveio.com",
-    siteName: "Anveio",
+      'An essay on how the Palestinian people can achieve peace within the next 10 years.',
+    url: 'https://anveio.com',
+    siteName: 'Anveio',
     images: [
       {
-        url: "https://anveio.com/blog-assets/the-genocide-isnt-complicated-actually/opengraph.png",
+        url: 'https://anveio.com/blog-assets/the-genocide-isnt-complicated-actually/opengraph.png',
         width: 871,
         height: 408,
       },
       {
-        url: "https://anveio.com/blog-assets/the-genocide-isnt-complicated-actually/1953.webp",
+        url: 'https://anveio.com/blog-assets/the-genocide-isnt-complicated-actually/1953.webp',
         width: 800,
         height: 555,
-        alt: "",
+        alt: '',
       },
     ],
-    locale: "en_US",
-    type: "website",
+    locale: 'en_US',
+    type: 'website',
   },
-  metadataBase: new URL("https://anveio.com"),
+  metadataBase: new URL('https://anveio.com'),
 };
 
 export default function Post() {
   return (
     <Article>
-      <div className="space-y-3">
-        <p className="italic text-center">
-          Published{" "}
+      <div className='space-y-3'>
+        <p className='italic text-center'>
+          Published{' '}
           {formatDateWithSuffix(
-            BLOG_POSTS["the-genocide-isnt-complicated-actually"].publishedAt
+            BLOG_POSTS['the-genocide-isnt-complicated-actually'].publishedAt
           )}
         </p>
-        <h1 className="text-center text-2xl font-semibold">
-          {BLOG_POSTS["the-genocide-isnt-complicated-actually"].title}
+        <h1 className='text-center text-2xl font-semibold'>
+          {BLOG_POSTS['the-genocide-isnt-complicated-actually'].title}
         </h1>
         <Image
-          alt="Decorative box art of an imaginary RPG game"
-          src={"/blog-assets/the-genocide-isnt-complicated-actually/cover.webp"}
-          className="blog-post-cover-image"
+          alt='Decorative box art of an imaginary RPG game'
+          src={'/blog-assets/the-genocide-isnt-complicated-actually/cover.webp'}
+          className='blog-post-cover-image'
           width={896}
           height={896}
           priority
         />
-        <p className="italic text-center">
+        <p className='italic text-center'>
           Hamas is bad. But not just because they're a religious fundamentalist
           terror group. It's because they make a non-violent end to Israel's
           genocide in Gaza impossible so long as they exist.
@@ -65,9 +65,9 @@ export default function Post() {
       <Section>
         <Section.Header>A blueprint for peace</Section.Header>
         <p>
-          <span className="inline leading-[0] font-bold bg-gradient-to-br bg-clip-text text-transparent from-[#FFFF92] to-[#EE8912]">
+          <span className='inline leading-[0] font-bold bg-gradient-to-br bg-clip-text text-transparent from-[#FFFF92] to-[#EE8912]'>
             Dawn April 10, 1971:
-          </span>{" "}
+          </span>{' '}
           The sun rises on millions of Bengalis living in Dhaka, the capital of
           Bangladesh. The army of West Pakistan has just seized control of the
           city after a brutal 16 day campaign that had killed between 300,000
@@ -105,23 +105,23 @@ export default function Post() {
         </p>
         <p>Listen:</p>
       </Section>
-      <section className="space-y-12">
-        <h2 className="text-2xl font-bold">
-          Genocide is always{" "}
-          <span className="inline leading-[0] bg-gradient-to-br bg-clip-text text-transparent from-[#b6f492] to-[#338b93]">
+      <section className='space-y-12'>
+        <h2 className='text-2xl font-bold'>
+          Genocide is always{' '}
+          <span className='inline leading-[0] bg-gradient-to-br bg-clip-text text-transparent from-[#b6f492] to-[#338b93]'>
             "complicated"
           </span>
         </h2>
-        <figure className="flex flex-col justify-center items-center py-8">
+        <figure className='flex flex-col justify-center items-center py-8'>
           <Image
             src={
-              "/blog-assets/the-genocide-isnt-complicated-actually/gazipur.webp"
+              '/blog-assets/the-genocide-isnt-complicated-actually/gazipur.webp'
             }
-            alt=""
+            alt=''
             width={800}
             height={800}
           />
-          <figcaption className="text-sm text-center py-4">
+          <figcaption className='text-sm text-center py-4'>
             Days before the Operation Searchlight began, Bangladesh police
             refused orders from the West Pakistan government to fire on student
             protestors outside of Gazipur Ordnance Factory. West Pakistan's
@@ -164,7 +164,7 @@ export default function Post() {
 
         <p>
           The sense you come away with reading these books is that people were
-          primarily <span className="italic">confused</span>. Most of the people
+          primarily <span className='italic'>confused</span>. Most of the people
           in the country were farmers living in the wilderness in literal mud
           huts. The politically active who had organized against West Pakistan
           and understood how they had been orchestrating mass starvation in
@@ -180,19 +180,19 @@ export default function Post() {
           abound and discrimination and preemptive killing of innocent civilians
           certainly happened if these accounts are to be believed. It's been
           confirmed that Richard Nixon had to change his underwear after reading
-          a report that <span className="italic">three</span> different types of
+          a report that <span className='italic'>three</span> different types of
           brown people were killing each other. "Triple the efficiency!" he
           moaned. Just kidding, the sick fuck probably never changed his
           underwear.
         </p>
-        <figure className="py-16 space-y-4">
+        <figure className='py-16 space-y-4'>
           <blockquote
             className={`text-2xl text-center font-semibold before:content-['“'] after:content-['”']`}
           >
             Kill 3 million of them and the rest will eat out of our hands
           </blockquote>
-          <figcaption className="text-center text-xl italic">
-            {" "}
+          <figcaption className='text-center text-xl italic'>
+            {' '}
             - Yahya Khan, President of West Pakistan, 22 February 1971
           </figcaption>
         </figure>
@@ -224,7 +224,7 @@ export default function Post() {
           the suffering? The conflict between Israel and Palestine is commonly
           treated as a joke stand-in for some impossible-to-resolve situation
           but after following the situation for the past 15 years it's one of
-          those rare things that gets <span className="italic">simpler</span>{" "}
+          those rare things that gets <span className='italic'>simpler</span>{' '}
           the more you learn about it, at least morally, in much the same way
           you can skip reading every pamphlet from the American colonists
           describing the savagery of the Native Americans before deciding the
@@ -236,27 +236,27 @@ export default function Post() {
           solve, the solution becomes clear and there's several blueprints to
           follow. Here's one:
         </p>
-        <figure className="flex flex-col justify-center items-center">
+        <figure className='flex flex-col justify-center items-center'>
           <Image
             src={
-              "/blog-assets/the-genocide-isnt-complicated-actually/girlsmarch.webp"
+              '/blog-assets/the-genocide-isnt-complicated-actually/girlsmarch.webp'
             }
-            alt=""
+            alt=''
             width={600}
             height={600}
           />
-          <figcaption className="text-sm text-center py-8">
+          <figcaption className='text-sm text-center py-8'>
             Students preparing to resist West Pakistan, 1970
           </figcaption>
         </figure>
       </section>
-      <section className="space-y-12">
-        <h2 className="text-xl font-bold"></h2>
+      <section className='space-y-12'>
+        <h2 className='text-xl font-bold'></h2>
       </section>
-      <section className="space-y-12">
-        <h2 className="text-2xl font-bold">
-          Palestine doesn't need Hamas.{" "}
-          <span className="bg-clip-text font-extrabold text-transparent green-gradient">
+      <section className='space-y-12'>
+        <h2 className='text-2xl font-bold'>
+          Palestine doesn't need Hamas.{' '}
+          <span className='bg-clip-text font-extrabold text-transparent green-gradient'>
             It needs Gandhi.
           </span>
         </h2>
@@ -266,8 +266,8 @@ export default function Post() {
           protest, election, and general strike in human history. And it
           followed the model established by Gandhi.
         </p>
-        <p className="italic">
-          <span className="font-semibold">
+        <p className='italic'>
+          <span className='font-semibold'>
             TL;DR for this section (but read the whole thing if you want to
             learn about the milestones in Bangladesh's unlikely path to
             independence and see some parallels to the situation in Gaza)
@@ -322,24 +322,24 @@ export default function Post() {
           who promised independence above all else, and they proceeded to seize
           160 of the 162 seats. Awami almost immediately, led by a charmingly
           nerdy fellow named Sheikh Rahman, sued for independence via a document
-          called the{" "}
-          <Blink href="https://en.wikipedia.org/wiki/Six_point_movement">
+          called the{' '}
+          <Blink href='https://en.wikipedia.org/wiki/Six_point_movement'>
             Six Points
           </Blink>
           . West Pakistan responded by pretending the election didn't happen,
           that the Six Points didn't exist, and refused to transfer power to
           Sheikh Rahman and the Awami League.
         </p>
-        <figure className="flex flex-col justify-center items-center py-8">
+        <figure className='flex flex-col justify-center items-center py-8'>
           <Image
             src={
-              "/blog-assets/the-genocide-isnt-complicated-actually/situation-report.webp"
+              '/blog-assets/the-genocide-isnt-complicated-actually/situation-report.webp'
             }
             alt="Memo from England's ambassador to West Pakistan to England: 'We now have a fuller account of Sheikh Mujibur Rahman's speech in Dacca on 7 March. We still do not have a text. But it is clear that Mujib has set 5 conditions for his participation in the Assembly Meeting proposed by President Yahya Khan for 25 March. The conditions are: 1. Widthdrawal of all troops to barracks 2. No furrther firing on civilians; 3. No further military reinforcement from West Pakistan; 4. No military interference in the working of Bangla Desh Government; 5. Maintenance of law and order to be left exclusively to the Police and Bengali Rifles (East Pakistanis) (A press report mentions also assistancy by Awami League Volunteers)."
             width={800}
             height={1200}
           />
-          <figcaption className="text-sm text-center">
+          <figcaption className='text-sm text-center'>
             England's ambassador in West Pakistan describing Sheikh Rahman's
             demands.
           </figcaption>
@@ -351,10 +351,10 @@ export default function Post() {
           League straight up made it illegal to work. Based.)
         </p>
         <p>
-          Shortly after, the{" "}
-          <Blink href={"https://en.wikipedia.org/wiki/1970_Bhola_cyclone"}>
+          Shortly after, the{' '}
+          <Blink href={'https://en.wikipedia.org/wiki/1970_Bhola_cyclone'}>
             1970 Bhola Cyclone
-          </Blink>{" "}
+          </Blink>{' '}
           hit Bangladesh, killing at least 300,000 people. West Pakistan passive
           aggressively chose to do basically nothing to help in the relief
           efforts of the disaster. A Reagan-esque "if they all die maybe we
@@ -383,22 +383,22 @@ export default function Post() {
           each crushed protest, with every dead student, with every starving
           farmer.
         </p>
-        <figure className="flex flex-col justify-center items-center py-8">
+        <figure className='flex flex-col justify-center items-center py-8'>
           <Image
             src={
-              "/blog-assets/the-genocide-isnt-complicated-actually/dominos.webp"
+              '/blog-assets/the-genocide-isnt-complicated-actually/dominos.webp'
             }
-            alt="Palestinian Authority is ruled by coalition promising independence through strict non-violence -> Israel crushes protests with violence -> US ends unconditional support for Israel -> Israel retreats under thread of a regional power -> An independent Palestine"
+            alt='Palestinian Authority is ruled by coalition promising independence through strict non-violence -> Israel crushes protests with violence -> US ends unconditional support for Israel -> Israel retreats under thread of a regional power -> An independent Palestine'
             width={800}
             height={535}
           />
-          <figcaption className="text-sm text-center">
+          <figcaption className='text-sm text-center'>
             If we play our cards right.
           </figcaption>
         </figure>
       </section>
-      <section className="space-y-12">
-        <h2 className="text-2xl font-bold">A post-Hamas path to peace</h2>
+      <section className='space-y-12'>
+        <h2 className='text-2xl font-bold'>A post-Hamas path to peace</h2>
         <p>
           Bangladesh's victory in Operation Searchlight isn't complicated
           either. West Pakistan's brutality during the military campaign was
@@ -413,12 +413,12 @@ export default function Post() {
           they halted their military alliance with West Pakistan and recognized
           Bangladesh as an independent country shortly after.
         </p>
-        <div className="space-y-6">
+        <div className='space-y-6'>
           <p>Establishing a few axioms about the situation in Palestine:</p>
-          <ol className="list-disc space-y-4">
-            <li className="list-item">
+          <ol className='list-disc space-y-4'>
+            <li className='list-item'>
               <div>
-                <h3 className="text-xl font-semibold">
+                <h3 className='text-xl font-semibold'>
                   Non-violence is a winning strategy.
                 </h3>
                 <p>
@@ -429,9 +429,9 @@ export default function Post() {
                 </p>
               </div>
             </li>
-            <li className="list-item">
+            <li className='list-item'>
               <div>
-                <h3 className="text-xl font-semibold">
+                <h3 className='text-xl font-semibold'>
                   Hamas stands zero chance of military victory against Israel.
                 </h3>
                 <p>
@@ -449,9 +449,9 @@ export default function Post() {
                 </p>
               </div>
             </li>
-            <li className="list-item">
+            <li className='list-item'>
               <div>
-                <h3 className="text-xl font-semibold">
+                <h3 className='text-xl font-semibold'>
                   Israel is incapable of continuing the genocide without backing
                   from the United States.
                 </h3>
@@ -466,9 +466,9 @@ export default function Post() {
                 </p>
               </div>
             </li>
-            <li className="list-item">
+            <li className='list-item'>
               <div>
-                <h3 className="text-xl font-semibold">
+                <h3 className='text-xl font-semibold'>
                   Popular support for Israel in the United States can end.
                 </h3>
                 <p>
@@ -478,17 +478,17 @@ export default function Post() {
                   Palestine a few months before the war began and 2 weeks into
                   the war.
                 </p>
-                <div className="py-8 flex justify-center">
+                <div className='py-8 flex justify-center'>
                   <figure>
                     <Image
                       src={
-                        "/blog-assets/the-genocide-isnt-complicated-actually/poll.png"
+                        '/blog-assets/the-genocide-isnt-complicated-actually/poll.png'
                       }
-                      alt=""
+                      alt=''
                       width={800}
                       height={711}
                     />
-                    <figcaption className="text-sm text-center py-4">
+                    <figcaption className='text-sm text-center py-4'>
                       Most of the support went to Israel but support for
                       Palestine saw a small bump.
                     </figcaption>
@@ -498,8 +498,8 @@ export default function Post() {
                   Events like Hamas' terrorist attack on Israel should
                   historically draw universal rallying around the victim but I'd
                   say a change in support from 25.4% to 42.9% in the wake of
-                  such an attack can best be described as{" "}
-                  <span className="italic">muted.</span> As the suffering of the
+                  such an attack can best be described as{' '}
+                  <span className='italic'>muted.</span> As the suffering of the
                   Palestinian people gets airtime in American media, history and
                   humanity have shown that support for the perpretators of the
                   suffering will drop precipitously.
@@ -508,12 +508,12 @@ export default function Post() {
             </li>
           </ol>
         </div>
-        <div className="space-y-4">
-          <h3 className="text-xl">A timeline for Palestine's independence</h3>
-          <ol className="list-disc space-y-4">
-            <li className="list-item">
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold">
+        <div className='space-y-4'>
+          <h3 className='text-xl'>A timeline for Palestine's independence</h3>
+          <ol className='list-disc space-y-4'>
+            <li className='list-item'>
+              <div className='space-y-4'>
+                <h3 className='text-xl font-semibold'>
                   April 2024 - Hamas surrenders and the current war ends.
                 </h3>
                 <p>
@@ -534,9 +534,9 @@ export default function Post() {
                 </p>
               </div>
             </li>
-            <li className="list-item">
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold">
+            <li className='list-item'>
+              <div className='space-y-4'>
+                <h3 className='text-xl font-semibold'>
                   June 2024 - A political party seeking independence through
                   non-violence gains almost complete control of the Palestinian
                   Authority.
@@ -562,9 +562,9 @@ export default function Post() {
                 </p>
               </div>
             </li>
-            <li className="list-item">
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold">
+            <li className='list-item'>
+              <div className='space-y-4'>
+                <h3 className='text-xl font-semibold'>
                   February 2025 - US State Department imposes key conditions on
                   its support of Israel.
                 </h3>
@@ -597,9 +597,9 @@ export default function Post() {
                 </p>
               </div>
             </li>
-            <li className="list-item">
-              <div className="space-y-4">
-                <h3 className="text-xl font-semibold">
+            <li className='list-item'>
+              <div className='space-y-4'>
+                <h3 className='text-xl font-semibold'>
                   December 2025 - Palestine joins a regional defensive pact in
                   the Middle-East, invites Israel to it, and campaigns for
                   global recognition of Palestine as a sovereign state.
@@ -625,8 +625,8 @@ export default function Post() {
           </ol>
         </div>
       </section>
-      <section className="space-y-12">
-        <h2 className="text-2xl font-bold">There's hope</h2>
+      <section className='space-y-12'>
+        <h2 className='text-2xl font-bold'>There's hope</h2>
         <p>
           It's not anti-semitic to be critical of Israel's treatment of
           Palestinians. I grew up in a majority Jewish community in Long Island
@@ -653,16 +653,16 @@ export default function Post() {
           situations. These things have humble beginnings but glorious, peaceful
           ends.
         </p>
-        <figure className="flex flex-col justify-center items-center py-8">
+        <figure className='flex flex-col justify-center items-center py-8'>
           <Image
             src={
-              "/blog-assets/the-genocide-isnt-complicated-actually/1953.webp"
+              '/blog-assets/the-genocide-isnt-complicated-actually/1953.webp'
             }
-            alt=""
+            alt=''
             width={800}
             height={800}
           />
-          <figcaption className="text-sm text-center py-4">
+          <figcaption className='text-sm text-center py-4'>
             Students marching for the recognition of Bangla as an official
             language, 21 February 1953.
           </figcaption>
@@ -674,5 +674,5 @@ export default function Post() {
 }
 
 const analyticsEvent: AnalyticsEvent = {
-  eventType: "view:blog:the-genocide-isnt-complicated-actually",
+  eventType: 'view:blog:the-genocide-isnt-complicated-actually',
 } as const;

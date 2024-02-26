@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 export const SendMessageForm: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -10,8 +10,8 @@ export const SendMessageForm: React.FC = () => {
     console.log(formData);
 
     try {
-      const response = await fetch("/api/chat/send-message", {
-        method: "POST",
+      const response = await fetch('/api/chat/send-message', {
+        method: 'POST',
         body: formData,
       });
 
@@ -19,24 +19,24 @@ export const SendMessageForm: React.FC = () => {
         const data = await response.json();
         console.log(data);
       } else {
-        console.error("Failed to send message");
+        console.error('Failed to send message');
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error('Error:', error);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="text-slate-700">
+    <form onSubmit={handleSubmit} className='text-slate-700'>
       <div>
-        <label htmlFor="username">Username:</label>
-        <input type="text" id="username" name="username" required />
+        <label htmlFor='username'>Username:</label>
+        <input type='text' id='username' name='username' required />
       </div>
       <div>
-        <label htmlFor="message">Message:</label>
-        <textarea id="message" name="message" required></textarea>
+        <label htmlFor='message'>Message:</label>
+        <textarea id='message' name='message' required></textarea>
       </div>
-      <button type="submit">Send Message</button>
+      <button type='submit'>Send Message</button>
     </form>
   );
 };

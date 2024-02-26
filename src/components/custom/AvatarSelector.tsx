@@ -1,6 +1,6 @@
-import * as React from "react";
+import * as React from 'react';
 
-import { Button } from "@/components/ui/button";
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,27 +14,27 @@ import {
   DropdownMenuSubContent,
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { GearIcon } from "@radix-ui/react-icons";
-import { cn } from "@/lib/utils";
-import { AVATAR_ID_TO_DISPLAY_META } from "@/lib/features/avatars.client/avatars";
-import { useHasIntent } from "@/lib/features/use-has-intent/use-has-intent";
+} from '@/components/ui/dropdown-menu';
+import { GearIcon } from '@radix-ui/react-icons';
+import { cn } from '@/lib/utils';
+import { AVATAR_ID_TO_DISPLAY_META } from '@/lib/features/avatars.client/avatars';
+import { useHasIntent } from '@/lib/features/use-has-intent/use-has-intent';
 import {
   Presence,
   useMyPresence,
   useUpdateMyPresence,
-} from "@/lib/liveblocks.client";
-import { AVATAR_IDS, AvatarId } from "@/lib/constants/avatars";
+} from '@/lib/liveblocks.client';
+import { AVATAR_IDS, AvatarId } from '@/lib/constants/avatars';
 
 export const AvatarSelector = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="rounded-none border-none">
+        <Button variant='outline' className='rounded-none border-none'>
           <GearIcon height={18} width={18} />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className='w-56'>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
@@ -42,7 +42,7 @@ export const AvatarSelector = () => {
             <DropdownMenuSubTrigger>Profile</DropdownMenuSubTrigger>
             <DropdownMenuPortal>
               <DropdownMenuSubContent>
-                <div className="grid grid-cols-3">
+                <div className='grid grid-cols-3'>
                   {AVATAR_IDS.map((avatarId) => {
                     return (
                       <AvatarSelectorButton
@@ -106,7 +106,7 @@ const AvatarSelectorButton = (props: AvatarSelectorButtonProps) => {
           ? `inset 0 0 0 2px ${meta.iconColor}`
           : undefined,
       }}
-      variant={"ghost"}
+      variant={'ghost'}
       aria-label={meta.label}
     >
       <IconComponent

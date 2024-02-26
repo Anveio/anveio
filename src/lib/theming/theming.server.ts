@@ -1,20 +1,16 @@
-import { cookies } from "next/headers";
-import { Theme, ThemeCookieKey, themeSchema } from "./shared";
+import { cookies } from 'next/headers';
+import { Theme, ThemeCookieKey, themeSchema } from './shared';
 
 export const getThemeCookieValue = (
-    readonlyRequestCookies: ReturnType<typeof cookies>
+  readonlyRequestCookies: ReturnType<typeof cookies>
 ): Theme => {
+  const themeCookieValue = readonlyRequestCookies.get(ThemeCookieKey)?.value;
 
-    const themeCookieValue = readonlyRequestCookies.get(ThemeCookieKey)?.value;
+  const themeCookieValueValidation = themeSchema.safeParse(themeCookieValue);
 
-    const themeCookieValueValidation = themeSchema.safeParse(themeCookieValue);
+  if (!themeCookieValueValidation.success) {
+    return Theme.DARK;
+  }
 
-    if (!themeCookieValueValidation.success) {
-        return Theme.DARK;
-    }
-
-    return themeCookieValueValidation.data
-
+  return themeCookieValueValidation.data;
 };
-
-

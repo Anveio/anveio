@@ -1,5 +1,5 @@
-import { UserProfile } from "@clerk/nextjs";
+import { UserProfile } from '@clerk/nextjs';
 
 export default function UserProfilePage() {
-  return <div className="flex justify-center"></div>;
+  return <div className='flex justify-center'></div>;
 }

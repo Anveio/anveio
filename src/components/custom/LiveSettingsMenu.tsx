@@ -1,4 +1,4 @@
-import * as React from "react";
+import * as React from 'react';
 import {
   DropdownMenu,
   DropdownMenuItem,
@@ -12,24 +12,24 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuPortal,
   DropdownMenuSubContent,
-} from "../ui/dropdown-menu";
-import { Button } from "../ui/button";
-import Link from "next/link";
-import { GearIcon } from "@radix-ui/react-icons";
+} from '../ui/dropdown-menu';
+import { Button } from '../ui/button';
+import Link from 'next/link';
+import { GearIcon } from '@radix-ui/react-icons';
 
 export const LiveSettingsMenu = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="rounded-none border-none">
+        <Button variant='outline' className='rounded-none border-none'>
           <GearIcon height={18} width={18} />
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
+      <DropdownMenuContent className='w-56'>
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <Link href={"/profile"}>
+          <Link href={'/profile'}>
             <DropdownMenuItem>
               Profile
               <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>

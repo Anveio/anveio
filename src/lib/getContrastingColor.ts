@@ -1,9 +1,9 @@
 export function getContrastingColor(col: string) {
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return;
   }
   const useBlack = getColor(hexToRgb(standardizeColor(col)));
-  return useBlack ? "#000000" : "#ffffff";
+  return useBlack ? '#000000' : '#ffffff';
 }
 
 type RGB = {
@@ -26,9 +26,9 @@ function getColor(rgb: RGB) {
 }
 
 function standardizeColor(str: string): string {
-  const ctx = document.createElement("canvas").getContext("2d");
+  const ctx = document.createElement('canvas').getContext('2d');
   if (!ctx) {
-    return "";
+    return '';
   }
 
   ctx.fillStyle = str;
@@ -44,7 +44,12 @@ function hexToRgb(hex: string): RGB | null {
 
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 
-  if (result && result[1] !== undefined && result[2] !== undefined && result[3] !== undefined) {
+  if (
+    result &&
+    result[1] !== undefined &&
+    result[2] !== undefined &&
+    result[3] !== undefined
+  ) {
     return {
       r: parseInt(result[1], 16),
       g: parseInt(result[2], 16),
@@ -54,4 +59,3 @@ function hexToRgb(hex: string): RGB | null {
     return null;
   }
 }
-
