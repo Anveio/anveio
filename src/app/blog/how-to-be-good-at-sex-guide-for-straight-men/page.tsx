@@ -115,14 +115,14 @@ export default function Post() {
           find you sexy and enjoy having sex with you.
         </p>
         <p>
-          But it's hard to love someone if you're in your
-          own head all the time. It's hard to be genuine if you're constantly
-          worried about how you're perceived. It's hard to let your body express
-          your love in ways words never could when you spend so much of your life
-          feeling like an alien in your own bodiy. It's hard to have hope for a
-          relationship when you experience bad relationships time and
-          time again and don't know how to process them so that you don't put your pain
-          and hurt onto our partner.
+          But it's hard to love someone if you're in your own head all the time.
+          It's hard to be genuine if you're constantly worried about how you're
+          perceived. It's hard to let your body express your love in ways words
+          never could when you spend so much of your life feeling like an alien
+          in your own bodiy. It's hard to have hope for a relationship when you
+          experience bad relationships time and time again and don't know how to
+          process them so that you don't put your pain and hurt onto our
+          partner.
         </p>
         <p>
           Getting meta for a moment, it's odd that so much content on the
@@ -165,8 +165,10 @@ export default function Post() {
           soul don't get in the way of simple incentives like money, power, and
           status so that when he's given a script to live by he sticks to it:
           “be a doctor”, “be a soldier', “don't complain”, “do not, under any
-          circumstances, dance like a fool”. A “man” is physically fit and possesses
-          desirable genetic traits. Men and slaves share a set of traits that conveniently benefit those in power, who get away with only valorizing these traits, not embodying them.
+          circumstances, dance like a fool”. A “man” is physically fit and
+          posesses desirable genetic traits. Men and slaves share a set of
+          traits that conveniently benefit those in power, who get away with
+          only valorizing these traits, not embodying them.
         </p>
         <ImageWithCaption
           postId={POST_ID}
@@ -176,13 +178,14 @@ export default function Post() {
           imageWidth={800}
         />
         <p>
-          There is only one person that has to deal with the pain,
-          confusion, and shame caused by living your life this way and that
-          person is you. So men aspire eternally to this implanted ideal and they
-          internalize the lie that if men were any other way then the world
-          would be worse off; built into the ideal, even, is the notion a man is incapable of devising a better system, so they must not question it. And finally, the man is all too
-          eager to believe this because if he has to suffer with no complaint,
-          at least he can suffer for a reason.
+          There is only one person that has to deal with the pain, confusion,
+          and shame caused by living your life this way and that person is you.
+          So men aspire eternally to this implanted ideal and they internalize
+          the lie that if men were any other way then the world would be worse
+          off; built into the ideal, even, is the notion a man is incapable of
+          devising a better system, so they must not question it. And finally,
+          the man is all too eager to believe this because if he has to suffer
+          with no complaint, at least he can suffer for a reason.
         </p>
         <p>
           Know that at the heart of every machine man is the deep humiliation of
@@ -280,11 +283,10 @@ export default function Post() {
           for men to be feminine, it's good, even. You may also notice that
           aesthetics is missing from this discussion, “isn't being super into
           makeup and nails feminine?” you may ask. And I'm here to tell you that
-          being confidently into makeup and nails is masculine as
-          hell. This applies regardless of society's present view on any
-          particular interest: Lego, books, working out,
-          internet memes, etc. Any interest is masculine if you engage in it
-          without shame.
+          being confidently into makeup and nails is masculine as hell. This
+          applies regardless of society's present view on any particular
+          interest: Lego, books, working out, internet memes, etc. Any interest
+          is masculine if you engage in it without shame.
         </p>
         <p>
           All the quadrants are good in their own way except for the bottom left
@@ -296,13 +298,14 @@ export default function Post() {
       <Section>
         <Section.Header>Falling (Back) in Love with Women</Section.Header>
         <p>
-          Most straight guys secretly don't like women. It's likely they don't even
-          realize it because they don't know of an alternative to the current
-          dynamics. I can't blame them because society is structured
+          Most straight guys secretly don't like women. It's likely they don't
+          even realize it because they don't know of an alternative to the
+          current dynamics. I can't blame them because society is structured
           specifically to make men and women hate each other. Most straight
-          women don't like guys either but that dislike is more conscious. For women it's the fear of being
-          physically hurt or murdered, pressured into doing something they don't
-          want to do, or lied to in infinite possible ways. For guys it's the fear of rejection.
+          women don't like guys either but that dislike is more conscious. For
+          women it's the fear of being physically hurt or murdered, pressured
+          into doing something they don't want to do, or lied to in infinite
+          possible ways. For guys it's the fear of rejection.
         </p>
         <ImageWithCaption
           postId={POST_ID}
@@ -365,17 +368,17 @@ export default function Post() {
         <p>
           And the reason we pursue hookups in the first place is we feel some
           negative emotion inside of us, usually loneliness, that we want to
-          suppress. But by the end of a hookup the loneliness is even worse than before, driving us back to the apps. Tinder
-          doesn't improve its bottom line by getting you a successful
-          relationship, it improves its bottom line by getting you to think
-          Tinder Gold is worth it.
+          suppress. But by the end of a hookup the loneliness is even worse than
+          before, driving us back to the apps. Tinder doesn't improve its bottom
+          line by getting you a successful relationship, it improves its bottom
+          line by getting you to think Tinder Gold is worth it.
         </p>
         <p>
-          The framework I offer you boils down to: “stop hating yourself so you can love your partner and everything
-          will sort itself out between you.” Additionally, you
-          need to get off the apps. Don't worry: you're not sacrificing
-          anything. You're gaining a life free of an endless stream of emotional
-          nukes targeted at your heart.
+          The framework I offer you boils down to: “stop hating yourself so you
+          can love your partner and everything will sort itself out between
+          you.” Additionally, you need to get off the apps. Don't worry: you're
+          not sacrificing anything. You're gaining a life free of an endless
+          stream of emotional nukes targeted at your heart.
         </p>
       </Section>
       <Section>
