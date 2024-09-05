@@ -1,9 +1,8 @@
-import { UserProvider } from '@/components/custom/Auth/UserProvider';
 import { NavBar } from '@/components/custom/Navbar/NavBar';
 import { NetworkLayer } from '@/components/custom/NetworkLayer/NetworkLayer';
 import { Toaster } from '@/components/ui/toaster';
 import { CustomAnalytics } from '@/lib/analytics/analytics.client';
-import { getUserForSessionToken } from '@/lib/auth/sign-in';
+import { HtmlElement } from '@/lib/theming/ThemeProvider';
 import { getThemeCookieValue } from '@/lib/theming/theming.server';
 import '@/lib/toasts/toast-styles.css';
 import { cn } from '@/lib/utils';
@@ -12,7 +11,6 @@ import { Inter } from 'next/font/google';
 import { cookies } from 'next/headers';
 import * as React from 'react';
 import './globals.css';
-import { HtmlElement } from '@/lib/theming/ThemeProvider';
 
 const inter = Inter({ subsets: ['latin'] });
 
