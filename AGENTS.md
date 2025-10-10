@@ -94,5 +94,6 @@ The workspace runs on Node 24 with npm. Each package is a shippable unit followi
 # Site Architecture Notes
 - `lib/posts.ts` is a server-only module; it reads markdown from `content/posts`, validates front matter, and caches both the post index and individual post bodies with `react.cache`.
 - All routes opt in to `force-dynamic`, ensuring SSR behaviour on Vercel. The Next.js config emits a standalone output for portability.
-- Styling lives in `app/globals.css` and intentionally mirrors the minimal typography of Dan Luu's site; keep future changes subtle and text-first.
+- Styling lives in `app/globals.css` and clones the HTML + CSS skeleton from danluu.com (flex-index list, `.np` nav rows, default serif typography). Preserve that structure unless we decide to diverge deliberately.
 - The data layer is already isolated so we can replace the filesystem adapter with Convex once the CMS lands. Plan on introducing a posts data provider that can delegate to either filesystem or Convex during the migration.
+- Admin auth is powered by Better Auth with an in-memory adapter seeded from environment variables (`ADMIN_EMAIL`, `ADMIN_PASSWORD`, `BETTER_AUTH_SECRET`). Sessions live behind `/admin`, and the login form posts to Better Auth’s Next handler at `/api/auth/[...betterAuth]`.

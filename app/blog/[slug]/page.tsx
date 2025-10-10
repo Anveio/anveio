@@ -1,8 +1,9 @@
+import Link from "next/link"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
 import {
   PostNotFoundError,
-  formatDate,
+  getAdjacentPosts,
   getPost,
 } from "@/lib/posts"
 
@@ -34,18 +35,41 @@ export default async function BlogPostPage({ params }: PageProps) {
   try {
     const { slug } = await params
     const post = await getPost(slug)
+    const { newer, older } = await getAdjacentPosts(slug)
 
     return (
-      <main>
-        <article className="post">
-          <h1>{post.title}</h1>
-          <p className="post-meta">{formatDate(post.publishedAt)}</p>
-          <div
-            className="post-body"
+      <>
+        <header className="post-header">
+          <strong>{post.title}</strong> | <Link href="/">Archive</Link>
+          <hr />
+        </header>
+        <main>
+          <article
+            className="post"
             dangerouslySetInnerHTML={{ __html: post.html }}
           />
-        </article>
-      </main>
+        </main>
+        <nav>
+          <div className="np">
+            {older ? (
+              <Link href={`/blog/${older.slug}`}>← {older.title}</Link>
+            ) : (
+              <span />
+            )}
+            {newer ? (
+              <Link href={`/blog/${newer.slug}`}>{newer.title} →</Link>
+            ) : (
+              <span />
+            )}
+          </div>
+        </nav>
+        <footer>
+          <div className="np">
+            <Link href="/">Archive</Link>
+            <a href="mailto:shovon@hey.com">Email</a>
+          </div>
+        </footer>
+      </>
     )
   } catch (error) {
     if (error instanceof PostNotFoundError) {

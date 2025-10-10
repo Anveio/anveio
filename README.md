@@ -5,7 +5,7 @@ This repository hosts my personal site and blog. The goal is to publish systems 
 ## Stack
 
 - [Next.js](https://nextjs.org/) using the App Router with server-side rendering forced for every page
-- Minimal bespoke CSS (no Tailwind, no component frameworks), in the style of Dan Luu
+- Minimal bespoke CSS (no Tailwind, no component frameworks) — the markup and layout intentionally mirror [Dan Luu’s blog](https://danluu.com/)
 - Markdown posts parsed with [`gray-matter`](https://github.com/jonschlinkert/gray-matter) and rendered with [`marked`](https://github.com/markedjs/marked)
 
 ## Getting Started
@@ -58,6 +58,21 @@ npx convex dev
 ```
 
 This outputs the `CONVEX_DEPLOYMENT` and `CONVEX_URL` values you will eventually copy into Vercel project settings. Mirror them locally by copying `.env.example` to `.env.local` and filling in each variable. Hold off on committing Convex-generated files until the CMS implementation lands; the codebase already treats the filesystem reader as an adapter we can swap.
+
+## Admin Panel
+
+There is a password-protected dashboard at `/admin`. It currently lists existing posts and holds space for the forthcoming composer.
+
+1. Copy `.env.example` to `.env.local`.
+2. Provide values for:
+   - `BETTER_AUTH_SECRET` – a long random string (32+ chars).
+   - `ADMIN_EMAIL` – the account you will log in with.
+   - `ADMIN_PASSWORD` – the plaintext password for that account.
+   - Optional: `ADMIN_NAME` and `AUTH_BASE_URL` (defaults to Vercel URL or `http://localhost:3000`).
+3. Deploy the same variables in Vercel (`vercel env pull` keeps local copies in sync).
+4. Visit `/admin/login`, sign in, and you’ll be redirected to the dashboard.
+
+Better Auth stores credentials in an in-memory adapter for now; expect to replace that with Convex once the CMS lands.
 
 ## Deployment Notes
 

@@ -1,209 +1,125 @@
 :root {
-  color-scheme: light;
-  --content-width: 720px;
-}
-
-* {
-  box-sizing: border-box;
+  color-scheme: light dark;
 }
 
 html,
 body {
   margin: 0;
-  padding: 0;
-  font-family: "Georgia", "Times New Roman", serif;
-  background-color: #ffffff;
-  color: #1e1e1e;
-  line-height: 1.7;
-  font-size: 1.05rem;
-}
-
-body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-header,
-main,
-footer {
-  width: 100%;
-  max-width: var(--content-width);
-  padding: 2.25rem 1.5rem;
-}
-
-header {
-  padding-bottom: 1.5rem;
-}
-
-header h1 {
-  margin: 0;
-  font-size: 2.1rem;
-  font-weight: 600;
-}
-
-header h1 a {
-  color: inherit;
-  text-decoration: none;
-}
-
-header p {
-  margin: 0.75rem 0 0;
-  color: #4a4a4a;
-  font-size: 0.95rem;
-}
-
-nav {
-  margin-top: 1.25rem;
-  font-size: 0.95rem;
-  color: #444;
-}
-
-nav a {
-  color: inherit;
-  text-decoration: none;
-}
-
-nav a + a::before {
-  content: " · ";
-  color: #888;
-}
-
-nav a:hover {
-  color: #0645ad;
-  text-decoration: underline;
+  padding: 0.75rem;
+  font-family: "Times New Roman", Times, serif;
+  line-height: 1.6;
 }
 
 a {
   color: inherit;
-  text-decoration: underline;
-  text-decoration-thickness: 0.08em;
-  text-decoration-skip-ink: auto;
 }
 
 img {
   max-width: 100%;
-  display: block;
-}
-
-h1,
-h2,
-h3,
-h4 {
-  font-family: "Georgia", "Times New Roman", serif;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  margin-top: 2.4rem;
-  margin-bottom: 1rem;
-}
-
-h1 {
-  font-size: 2.25rem;
-  margin-top: 0;
-}
-
-h2 {
-  font-size: 1.65rem;
-}
-
-p {
-  margin: 1.1rem 0;
-}
-
-ul,
-ol {
-  padding-left: 1.4rem;
-}
-
-code {
-  font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-  background: #f5f5f5;
-  padding: 0.1rem 0.3rem;
-  border-radius: 3px;
+  height: auto;
 }
 
 pre {
-  background: #f8f8f8;
-  padding: 1rem;
-  overflow-x: auto;
-  border-radius: 4px;
-  border: 1px solid #ededed;
+  max-width: 100%;
+  height: auto;
+  white-space: pre-wrap;
 }
 
-footer {
-  margin-top: auto;
-  padding-top: 1.5rem;
-  color: #6a6a6a;
-  font-size: 0.9rem;
-}
-
-.post-list {
+.index-list {
   list-style: none;
-  padding: 0;
-  margin: 1.75rem 0 0;
-}
-
-.post-list li + li {
-  margin-top: 2.25rem;
-}
-
-.post-list h3 {
   margin: 0;
-  font-size: 1.3rem;
+  padding: 0;
 }
 
-.post-list p {
-  margin: 0.6rem 0;
-  color: #3f3f3f;
+.index-list li {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin: 0 0 0.9em;
 }
 
-.post-list time {
-  display: block;
-  margin-top: 0.2rem;
-  font-size: 0.85rem;
-  color: #767676;
-  letter-spacing: 0.02em;
+.index-date {
+  display: inline-block;
+  width: 4em;
+  flex-shrink: 0;
 }
 
-.post {
-  margin-bottom: 3.5rem;
+.post-header strong {
+  font-weight: bold;
 }
 
-.post-meta {
-  margin: 0.4rem 0 2rem;
-  color: #6a6a6a;
-  font-size: 0.9rem;
-  letter-spacing: 0.02em;
+.post-header hr {
+  margin-top: 0.5em;
 }
 
-.post-body p {
-  margin: 1.25rem 0;
+.np {
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  padding-bottom: 0.5em;
+  font-style: italic;
 }
 
-.post-body h2,
-.post-body h3 {
-  margin-top: 2.4rem;
+form {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 22rem;
+  margin-top: 1.5rem;
 }
 
-.post-body ul,
-.post-body ol {
-  margin: 1.4rem 0;
+label {
+  font-weight: bold;
 }
 
-.post-body li {
-  margin: 0.5rem 0;
+input {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid #bbb;
+  font: inherit;
+  border-radius: 4px;
 }
 
-.inline-list {
+button {
+  font: inherit;
+  padding: 0.45rem 0.75rem;
+  border: 1px solid #222;
+  background: transparent;
+  cursor: pointer;
+}
+
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.form-error {
+  color: #b00020;
+  margin: 0;
+}
+
+.admin-header {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.75rem;
-  padding: 0;
-  margin: 1.5rem 0 0;
-  list-style: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
 }
 
-.inline-list a {
-  text-decoration: underline;
+.admin-post-list {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 2rem;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.admin-post-list li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.admin-post-actions {
+  display: flex;
+  gap: 0.5rem;
 }
