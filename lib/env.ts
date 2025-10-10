@@ -1,30 +1,31 @@
-import { z } from "zod"
+import { z } from 'zod'
 
 const envSchema = z.object({
   BETTER_AUTH_SECRET: z
-    .string({ message: "BETTER_AUTH_SECRET is required" })
-    .min(1, "BETTER_AUTH_SECRET must be non-empty"),
-  ADMIN_EMAIL: z.email("ADMIN_EMAIL must be a valid email address"),
+    .string({ message: 'BETTER_AUTH_SECRET is required' })
+    .min(1, 'BETTER_AUTH_SECRET must be non-empty'),
+  ADMIN_EMAIL: z.email('ADMIN_EMAIL must be a valid email address'),
   ADMIN_PASSWORD: z
-    .string({ message: "ADMIN_PASSWORD is required" })
-    .min(8, "ADMIN_PASSWORD should be at least 8 characters long for basic security"),
-  ADMIN_NAME: z
-    .string()
-    .min(1)
-    .optional()
-    .or(z.literal("")),
+    .string({ message: 'ADMIN_PASSWORD is required' })
+    .min(
+      8,
+      'ADMIN_PASSWORD should be at least 8 characters long for basic security',
+    ),
+  ADMIN_NAME: z.string().min(1).optional().or(z.literal('')),
   AUTH_BASE_URL: z
-    .url("AUTH_BASE_URL must be an absolute URL with protocol")
+    .url('AUTH_BASE_URL must be an absolute URL with protocol')
     .optional()
-    .or(z.literal("")),
-  CONVEX_URL: z.url("CONVEX_URL must be a valid Convex deployment URL"),
+    .or(z.literal('')),
+  NEXT_PUBLIC_CONVEX_URL: z.url(
+    'NEXT_PUBLIC_CONVEX_URL must be a valid Convex deployment URL',
+  ),
   CONVEX_AUTH_SECRET: z
-    .string({ message: "CONVEX_AUTH_SECRET is required" })
-    .min(32, "CONVEX_AUTH_SECRET must be at least 32 characters long"),
-  CONVEX_SITE_URL: z.url("CONVEX_SITE_URL must be a valid Convex site URL"),
+    .string({ message: 'CONVEX_AUTH_SECRET is required' })
+    .min(32, 'CONVEX_AUTH_SECRET must be at least 32 characters long'),
+  CONVEX_SITE_URL: z.url('CONVEX_SITE_URL must be a valid Convex site URL'),
   RESEND_API_KEY: z
-    .string({ message: "RESEND_API_KEY is required" })
-    .min(1, "RESEND_API_KEY must be non-empty"),
+    .string({ message: 'RESEND_API_KEY is required' })
+    .min(1, 'RESEND_API_KEY must be non-empty'),
 })
 
 const parsed = envSchema.safeParse({
@@ -33,15 +34,16 @@ const parsed = envSchema.safeParse({
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
   ADMIN_NAME: process.env.ADMIN_NAME,
   AUTH_BASE_URL: process.env.AUTH_BASE_URL,
-  CONVEX_URL: process.env.CONVEX_URL,
+  NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL,
   CONVEX_AUTH_SECRET: process.env.CONVEX_AUTH_SECRET,
   CONVEX_SITE_URL: process.env.CONVEX_SITE_URL,
+  RESEND_API_KEY: process.env.RESEND_API_KEY,
 })
 
 if (!parsed.success) {
   const formatted = parsed.error.issues
-    .map((issue) => `• ${issue.path.join(".")}: ${issue.message}`)
-    .join("\n")
+    .map((issue) => `• ${issue.path.join('.')}: ${issue.message}`)
+    .join('\n')
   throw new Error(
     `Missing or invalid environment configuration for better-auth integration:\n${formatted}`,
   )
@@ -49,26 +51,28 @@ if (!parsed.success) {
 
 const data = parsed.data
 
-const normalizedAuthBaseUrl = data.AUTH_BASE_URL?.trim() ?? ""
+const normalizedAuthBaseUrl = data.AUTH_BASE_URL?.trim() ?? ''
 const baseUrl =
   normalizedAuthBaseUrl.length > 0
     ? normalizedAuthBaseUrl
     : process.env.VERCEL_URL
       ? `https://${process.env.VERCEL_URL}`
-      : "http://localhost:3000"
+      : 'http://localhost:3000'
 
-const normalizedAdminName = data.ADMIN_NAME?.trim() ?? ""
-const convexUrl = data.CONVEX_URL.replace(/\/+$/, "")
-const convexSiteUrl = data.CONVEX_SITE_URL.replace(/\/+$/, "")
+const normalizedAdminName = data.ADMIN_NAME?.trim() ?? ''
+const convexUrl = data.NEXT_PUBLIC_CONVEX_URL.replace(/\/+$/, '')
+const convexSiteUrl = data.CONVEX_SITE_URL.replace(/\/+$/, '')
 
 export const authEnv = {
   secret: data.BETTER_AUTH_SECRET,
   adminEmail: data.ADMIN_EMAIL,
   adminPassword: data.ADMIN_PASSWORD,
-  adminName: normalizedAdminName.length > 0 ? normalizedAdminName : "Site Admin",
-  baseURL: baseUrl.replace(/\/+$/, ""),
-  isProduction: process.env.NODE_ENV === "production",
+  adminName:
+    normalizedAdminName.length > 0 ? normalizedAdminName : 'Site Admin',
+  baseURL: baseUrl.replace(/\/+$/, ''),
+  isProduction: process.env.NODE_ENV === 'production',
   convexUrl,
   convexAuthSecret: data.CONVEX_AUTH_SECRET,
   convexSiteUrl,
+  resendApiKey: data.RESEND_API_KEY,
 }

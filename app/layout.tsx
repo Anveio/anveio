@@ -1,5 +1,7 @@
-import type { Metadata, Viewport } from "next"
 import "./globals.css"
+import type { Metadata, Viewport } from "next"
+
+import { ConvexClientProvider } from "@/components/convex-client-provider"
 
 export const metadata: Metadata = {
   title: "Shovon Hasan",
@@ -20,7 +22,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <ConvexClientProvider>{children}</ConvexClientProvider>
+      </body>
     </html>
   )
 }

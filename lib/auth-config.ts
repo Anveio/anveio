@@ -1,6 +1,7 @@
 import type { BetterAuthOptions } from "better-auth"
 
 import { authEnv } from "@/lib/env"
+import { sendPasswordResetEmail, sendVerificationEmail } from "@/lib/email"
 
 type PluginList = NonNullable<BetterAuthOptions["plugins"]>
 
@@ -23,6 +24,22 @@ export function buildAuthOptions({
       enabled: true,
       disableSignUp: true,
       requireEmailVerification: false,
+      sendResetPassword: async ({ user, url }) => {
+        await sendPasswordResetEmail({
+          email: user.email,
+          resetUrl: url,
+          userName: user.name || undefined,
+        })
+      },
+    },
+    emailVerification: {
+      sendVerificationEmail: async ({ user, url }) => {
+        await sendVerificationEmail({
+          email: user.email,
+          verificationUrl: url,
+          userName: user.name || undefined,
+        })
+      },
     },
     session: {
       cookieCache: {
