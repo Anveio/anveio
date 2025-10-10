@@ -1,5 +1,8 @@
-import fs from "node:fs"
+import "server-only"
+
+import fs from "node:fs/promises"
 import path from "node:path"
+import { cache } from "react"
 import matter from "gray-matter"
 import { marked } from "marked"
 
@@ -27,31 +30,56 @@ const isoFormatter = new Intl.DateTimeFormat("en-US", {
   day: "numeric",
 })
 
-export function formatDate(isoDate: string): string {
-  return isoFormatter.format(new Date(isoDate))
+export class PostNotFoundError extends Error {
+  constructor(slug: string) {
+    super(`Post "${slug}" was not found`)
+    this.name = "PostNotFoundError"
+  }
 }
 
-export function getAllPosts(): PostMeta[] {
-  const entries = fs
-    .readdirSync(postsDirectory, { withFileTypes: true })
-    .filter((entry) => entry.isFile() && MARKDOWN_EXTENSION.test(entry.name))
+export function formatDate(isoDate: string): string {
+  const parsed = new Date(isoDate)
+  if (Number.isNaN(parsed.getTime())) {
+    throw new Error(`Invalid ISO date string "${isoDate}"`)
+  }
 
-  const posts = entries.map((entry) => {
-    const slug = entry.name.replace(MARKDOWN_EXTENSION, "")
-    const file = fs.readFileSync(path.join(postsDirectory, entry.name), "utf8")
-    const { data } = matter(file)
-    return normalizeMeta(slug, data)
-  })
+  return isoFormatter.format(parsed)
+}
+
+const loadPostIndex = cache(async (): Promise<PostMeta[]> => {
+  const entries = await fs.readdir(postsDirectory, { withFileTypes: true })
+  const markdownFiles = entries.filter(
+    (entry) => entry.isFile() && MARKDOWN_EXTENSION.test(entry.name),
+  )
+
+  const posts = await Promise.all(
+    markdownFiles.map(async (entry) => {
+      const slug = entry.name.replace(MARKDOWN_EXTENSION, "")
+      const file = await fs.readFile(path.join(postsDirectory, entry.name), "utf8")
+      const { data } = matter(file)
+      return normalizeMeta(slug, data)
+    }),
+  )
 
   return posts.sort(
     (a, b) =>
       new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
   )
-}
+})
 
-export function getPost(slug: string): Post {
+const loadPost = cache(async (slug: string): Promise<Post> => {
   const fullPath = path.join(postsDirectory, `${slug}.md`)
-  const file = fs.readFileSync(fullPath, "utf8")
+  let file: string
+
+  try {
+    file = await fs.readFile(fullPath, "utf8")
+  } catch (error) {
+    if (isNotFoundError(error)) {
+      throw new PostNotFoundError(slug)
+    }
+    throw error
+  }
+
   const { data, content } = matter(file)
   const meta = normalizeMeta(slug, data)
   const parsed = marked.parse(content)
@@ -60,8 +88,15 @@ export function getPost(slug: string): Post {
     throw new Error(`Failed to render markdown for post "${slug}"`)
   }
 
-  const html = parsed
-  return { ...meta, html }
+  return { ...meta, html: parsed }
+})
+
+export async function getAllPosts(): Promise<PostMeta[]> {
+  return loadPostIndex()
+}
+
+export async function getPost(slug: string): Promise<Post> {
+  return loadPost(slug)
 }
 
 function normalizeMeta(
@@ -81,4 +116,16 @@ function normalizeMeta(
   }
 
   return { slug, title, summary, publishedAt }
+}
+
+function isNotFoundError(error: unknown): boolean {
+  if (typeof error !== "object" || error === null) {
+    return false
+  }
+
+  if ("code" in error && typeof error.code === "string") {
+    return error.code === "ENOENT"
+  }
+
+  return false
 }

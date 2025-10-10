@@ -49,6 +49,10 @@ The workspace runs on Node 24 with npm. Each package is a shippable unit followi
 - useEffect's are extremely tricky to get right, so know what you're getting into. Remember how the React layer orchestrates useEffect within its runtime -- remember, for example, that effects will be called twice in development. That shouldn't matter for most things, but for somethings it does. How would we guard against caveats like these? 
 - Every new React contribution should explain its state topology in PR/commit notes (which hook owns what, how data travels). If the graph becomes complex, add diagrams or ADR snippets to the package README/AGENTS.
 
+# Environment Variables
+- The vercel dashboard's view of the current state of environment variables is the ultimate source of truth. We have used `vercel link` to keep this workspace linked to the Vercel project.
+- We have two separate stages of environment variables: development and production. Use `vercel env pull` to get the latest and see @context/vercel-env-docs.md for more on using the `vercel` CLI to manage all environment variables for the different stages.
+
 # Testing
 - Unit: Vitest for logic (parser fixtures, diff reducers, React hooks). Property-based tests where state spaces explode.
 - End-to-End: We use Playwright for anything that pushes pixels to the screen (tui-react, tui-web-canvas-renderer) and apps (apps/web-demo). Every behavioral change demands a scenario. All statements in specifications MUST have a test scenario.
@@ -82,6 +86,13 @@ The workspace runs on Node 24 with npm. Each package is a shippable unit followi
 # Common Commands
 - Install: `npm install`
 - Dev server (demo app): `npm run dev`
-- All tests: `npm run test`
+- Build: `npm run build`
 - Typecheck: `npm run typecheck`
-- Lint (write): `npm run lint:fix`
+- Lint: `npm run lint`
+- Format: `npm run format`
+
+# Site Architecture Notes
+- `lib/posts.ts` is a server-only module; it reads markdown from `content/posts`, validates front matter, and caches both the post index and individual post bodies with `react.cache`.
+- All routes opt in to `force-dynamic`, ensuring SSR behaviour on Vercel. The Next.js config emits a standalone output for portability.
+- Styling lives in `app/globals.css` and intentionally mirrors the minimal typography of Dan Luu's site; keep future changes subtle and text-first.
+- The data layer is already isolated so we can replace the filesystem adapter with Convex once the CMS lands. Plan on introducing a posts data provider that can delegate to either filesystem or Convex during the migration.

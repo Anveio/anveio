@@ -1,6 +1,10 @@
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
-import { formatDate, getPost } from "@/lib/posts"
+import {
+  PostNotFoundError,
+  formatDate,
+  getPost,
+} from "@/lib/posts"
 
 export const dynamic = "force-dynamic"
 
@@ -11,46 +15,42 @@ interface PageProps {
 export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
-  const { slug } = await params
-  const post = resolvePost(slug)
-
-  if (!post) {
-    return { title: "Post not found · Shovon Hasan" }
-  }
-
-  return {
-    title: `${post.title} · Shovon Hasan`,
-    description: post.summary,
+  try {
+    const { slug } = await params
+    const post = await getPost(slug)
+    return {
+      title: `${post.title} · Shovon Hasan`,
+      description: post.summary,
+    }
+  } catch (error) {
+    if (error instanceof PostNotFoundError) {
+      return { title: "Post not found · Shovon Hasan" }
+    }
+    throw error
   }
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
-  const { slug } = await params
-  const post = resolvePost(slug)
-
-  if (!post) {
-    notFound()
-  }
-
-  return (
-    <main>
-      <article className="post">
-        <h1>{post.title}</h1>
-        <p className="post-meta">{formatDate(post.publishedAt)}</p>
-        <div
-          className="post-body"
-          dangerouslySetInnerHTML={{ __html: post.html }}
-        />
-      </article>
-    </main>
-  )
-}
-
-function resolvePost(slug: string) {
   try {
-    return getPost(slug)
+    const { slug } = await params
+    const post = await getPost(slug)
+
+    return (
+      <main>
+        <article className="post">
+          <h1>{post.title}</h1>
+          <p className="post-meta">{formatDate(post.publishedAt)}</p>
+          <div
+            className="post-body"
+            dangerouslySetInnerHTML={{ __html: post.html }}
+          />
+        </article>
+      </main>
+    )
   } catch (error) {
-    console.error(`Failed to load post "${slug}":`, error)
-    return null
+    if (error instanceof PostNotFoundError) {
+      notFound()
+    }
+    throw error
   }
 }

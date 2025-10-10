@@ -11,11 +11,11 @@ This repository hosts my personal site and blog. The goal is to publish systems 
 ## Getting Started
 
 ```bash
-bun install      # or npm install
-bun run dev      # starts next dev on http://localhost:3000
+npm install
+npm run dev   # http://localhost:3000
 ```
 
-The site uses Bun for package management in this repo, but `npm` works just as well.
+`npm` is the reference workflow for local development and deployment. Bun continues to work if you prefer it, but make sure every change also passes the `npm` scripts listed below before shipping.
 
 ## Writing Posts
 
@@ -35,10 +35,30 @@ The homepage automatically lists posts in reverse chronological order, and indiv
 
 ## Scripts
 
-- `bun run dev` – run the development server
-- `bun run build` – create an optimized production build
-- `bun run lint` – lint the codebase with Biome
+- `npm run dev` – start the development server
+- `npm run build` – produce a production build ready for Vercel
+- `npm run lint` – lint the codebase with Biome
+- `npm run typecheck` – run the TypeScript compiler in `--noEmit` mode
+
+## Deploying to Vercel
+
+1. Create a new Vercel project and import this repository. The defaults work: Vercel will run `npm install` followed by `npm run build`, then start the standalone output with `npm run start`.
+2. Set the project to use Node.js 20 or later (Project Settings → Build & Development Settings → Node.js Version).
+3. Trigger a deployment. Static assets (including `content/posts`) are bundled automatically, and every request is rendered on the server because each route opts into `force-dynamic`.
+
+Before pushing, run `npm run lint`, `npm run typecheck`, and `npm run build` locally—those are the same checks Vercel will execute.
+
+## Preparing for the Convex CMS
+
+The blog still reads Markdown files from `content/posts`. When we introduce Convex, we will migrate the loader in `lib/posts.ts` behind a new data-access layer. To start a fresh Convex project when you are ready:
+
+```bash
+npm install convex
+npx convex dev
+```
+
+This outputs the `CONVEX_DEPLOYMENT` and `CONVEX_URL` values you will eventually copy into Vercel project settings. Mirror them locally by copying `.env.example` to `.env.local` and filling in each variable. Hold off on committing Convex-generated files until the CMS implementation lands; the codebase already treats the filesystem reader as an adapter we can swap.
 
 ## Deployment Notes
 
-The app is SSR-first (`export const dynamic = "force-dynamic"` on each route), so deploy to any Node-friendly environment (Vercel, AWS, etc.) without additional configuration.
+The app is SSR-first (`export const dynamic = "force-dynamic"` on each route), so it can run on any Node-friendly platform. Vercel is the default target, but the standalone build works equally well on Fly.io, Render, or bare EC2.

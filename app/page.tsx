@@ -3,8 +3,8 @@ import { formatDate, getAllPosts } from "@/lib/posts"
 
 export const dynamic = "force-dynamic"
 
-export default function Home() {
-  const posts = getAllPosts()
+export default async function Home() {
+  const posts = await getAllPosts()
 
   return (
     <main>
