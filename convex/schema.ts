@@ -37,6 +37,7 @@ export default defineSchema({
    * Includes roles for session-level permission caching.
    */
   session: defineTable({
+    publicId: v.string(), // ses_1234567890abcdef - Stripe-style external identifier
     expiresAt: v.number(),
     token: v.string(),
     createdAt: v.number(),
@@ -46,6 +47,7 @@ export default defineSchema({
     userId: v.string(),
     roles: v.optional(v.array(v.union(v.literal('user'), v.literal('admin')))),
   })
+    .index('publicId', ['publicId'])
     .index('expiresAt', ['expiresAt'])
     .index('expiresAt_userId', ['expiresAt', 'userId'])
     .index('token', ['token'])
@@ -57,6 +59,7 @@ export default defineSchema({
    * Stores provider-specific tokens and credentials for API access.
    */
   account: defineTable({
+    publicId: v.string(), // acc_1234567890abcdef - Stripe-style external identifier
     accountId: v.string(),
     providerId: v.string(),
     userId: v.string(),
@@ -70,6 +73,7 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
   })
+    .index('publicId', ['publicId'])
     .index('accountId', ['accountId'])
     .index('accountId_providerId', ['accountId', 'providerId'])
     .index('providerId_userId', ['providerId', 'userId'])
@@ -80,12 +84,14 @@ export default defineSchema({
    * Temporary records with expiration for secure identity verification flows.
    */
   verification: defineTable({
+    publicId: v.string(), // ver_1234567890abcdef - Stripe-style external identifier
     identifier: v.string(),
     value: v.string(),
     expiresAt: v.number(),
     createdAt: v.number(),
     updatedAt: v.number(),
   })
+    .index('publicId', ['publicId'])
     .index('expiresAt', ['expiresAt'])
     .index('identifier', ['identifier']),
   
@@ -94,16 +100,20 @@ export default defineSchema({
    * Stores TOTP secrets and one-time backup codes for enhanced security.
    */
   twoFactor: defineTable({
+    publicId: v.string(), // tfa_1234567890abcdef - Stripe-style external identifier
     secret: v.string(),
     backupCodes: v.string(),
     userId: v.string(),
-  }).index('userId', ['userId']),
+  })
+    .index('publicId', ['publicId'])
+    .index('userId', ['userId']),
   
   /**
    * WebAuthn passkey credentials for passwordless authentication.
    * Stores public keys and metadata for FIDO2/WebAuthn security keys and biometrics.
    */
   passkey: defineTable({
+    publicId: v.string(), // key_1234567890abcdef - Stripe-style external identifier
     name: v.optional(v.union(v.null(), v.string())),
     publicKey: v.string(),
     userId: v.string(),
@@ -115,6 +125,7 @@ export default defineSchema({
     createdAt: v.optional(v.union(v.null(), v.number())),
     aaguid: v.optional(v.union(v.null(), v.string())),
   })
+    .index('publicId', ['publicId'])
     .index('credentialID', ['credentialID'])
     .index('userId', ['userId']),
   
@@ -123,6 +134,7 @@ export default defineSchema({
    * Enables this service to act as an OAuth provider for external applications.
    */
   oauthApplication: defineTable({
+    publicId: v.string(), // app_1234567890abcdef - Stripe-style external identifier
     name: v.optional(v.union(v.null(), v.string())),
     icon: v.optional(v.union(v.null(), v.string())),
     metadata: v.optional(v.union(v.null(), v.string())),
@@ -135,6 +147,7 @@ export default defineSchema({
     createdAt: v.optional(v.union(v.null(), v.number())),
     updatedAt: v.optional(v.union(v.null(), v.number())),
   })
+    .index('publicId', ['publicId'])
     .index('clientId', ['clientId'])
     .index('userId', ['userId']),
   
@@ -143,6 +156,7 @@ export default defineSchema({
    * Tracks token lifecycle and permissions for external API access.
    */
   oauthAccessToken: defineTable({
+    publicId: v.string(), // tok_1234567890abcdef - Stripe-style external identifier
     accessToken: v.optional(v.union(v.null(), v.string())),
     refreshToken: v.optional(v.union(v.null(), v.string())),
     accessTokenExpiresAt: v.optional(v.union(v.null(), v.number())),
@@ -153,6 +167,7 @@ export default defineSchema({
     createdAt: v.optional(v.union(v.null(), v.number())),
     updatedAt: v.optional(v.union(v.null(), v.number())),
   })
+    .index('publicId', ['publicId'])
     .index('accessToken', ['accessToken'])
     .index('refreshToken', ['refreshToken'])
     .index('clientId', ['clientId'])
@@ -163,6 +178,7 @@ export default defineSchema({
    * Tracks which permissions users have granted to third-party apps.
    */
   oauthConsent: defineTable({
+    publicId: v.string(), // con_1234567890abcdef - Stripe-style external identifier
     clientId: v.optional(v.union(v.null(), v.string())),
     userId: v.optional(v.union(v.null(), v.string())),
     scopes: v.optional(v.union(v.null(), v.string())),
@@ -170,6 +186,7 @@ export default defineSchema({
     updatedAt: v.optional(v.union(v.null(), v.number())),
     consentGiven: v.optional(v.union(v.null(), v.boolean())),
   })
+    .index('publicId', ['publicId'])
     .index('clientId_userId', ['clientId', 'userId'])
     .index('userId', ['userId']),
   
@@ -178,30 +195,37 @@ export default defineSchema({
    * Stores public/private key pairs for secure token operations.
    */
   jwks: defineTable({
+    publicId: v.string(), // jwk_1234567890abcdef - Stripe-style external identifier
     publicKey: v.string(),
     privateKey: v.string(),
     createdAt: v.number(),
-  }),
+  }).index('publicId', ['publicId']),
   
   /**
    * Rate limiting counters to prevent abuse.
    * Tracks request counts per key (IP, user, etc.) with time windows.
    */
   rateLimit: defineTable({
+    publicId: v.string(), // rlt_1234567890abcdef - Stripe-style external identifier
     key: v.optional(v.union(v.null(), v.string())),
     count: v.optional(v.union(v.null(), v.number())),
     lastRequest: v.optional(v.union(v.null(), v.number())),
-  }).index('key', ['key']),
+  })
+    .index('publicId', ['publicId'])
+    .index('key', ['key']),
   
   /**
    * Alternative rate limiting implementation.
    * Duplicate table - consider consolidating with rateLimit table.
    */
   ratelimit: defineTable({
+    publicId: v.string(), // rl2_1234567890abcdef - Stripe-style external identifier
     key: v.string(),
     count: v.number(),
     lastRequest: v.number(),
-  }).index('key', ['key']),
+  })
+    .index('publicId', ['publicId'])
+    .index('key', ['key']),
 
   /**
    * Blog posts with rich content composition.
@@ -310,10 +334,12 @@ export default defineSchema({
    * Enables posts to belong to multiple categories.
    */
   postCategory: defineTable({
+    publicId: v.string(), // pcr_1234567890abcdef - Stripe-style external identifier
     postId: v.id('post'),
     categoryId: v.id('category'),
     createdAt: v.number(),
   })
+    .index('publicId', ['publicId'])
     .index('postId', ['postId'])
     .index('categoryId', ['categoryId'])
     .index('postId_categoryId', ['postId', 'categoryId']),

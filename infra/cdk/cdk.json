@@ -1,0 +1,8 @@
+{
+  "app": "npx ts-node --esm --prefer-ts-exts bin/anveio-post-artifacts.ts",
+  "context": {
+    "aws-cdk:enableDiffNoFail": "true",
+    "@aws-cdk/aws-s3:grantWriteWithoutAcl": true,
+    "@aws-cdk/core:stackRelativeExports": true
+  }
+}
