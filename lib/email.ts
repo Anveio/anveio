@@ -1,6 +1,6 @@
-import { Resend } from "resend"
+import { Resend } from 'resend'
 
-import { authEnv } from "@/lib/env"
+import { authEnv } from '@/lib/public-env'
 
 const resend = new Resend(authEnv.resendApiKey)
 
@@ -19,13 +19,13 @@ interface SendVerificationEmailParams {
 export async function sendPasswordResetEmail({
   email,
   resetUrl,
-  userName = "User",
+  userName = 'User',
 }: SendPasswordResetEmailParams) {
   try {
     const { data, error } = await resend.emails.send({
-      from: "noreply@anveio.com",
+      from: 'noreply@anveio.com',
       to: email,
-      subject: "Password Reset Request",
+      subject: 'Password Reset Request',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2>Password Reset Request</h2>
@@ -42,13 +42,13 @@ export async function sendPasswordResetEmail({
     })
 
     if (error) {
-      console.error("Failed to send password reset email:", error)
-      throw new Error("Failed to send password reset email")
+      console.error('Failed to send password reset email:', error)
+      throw new Error('Failed to send password reset email')
     }
 
     return { success: true, data }
   } catch (error) {
-    console.error("Error sending password reset email:", error)
+    console.error('Error sending password reset email:', error)
     throw error
   }
 }
@@ -56,13 +56,13 @@ export async function sendPasswordResetEmail({
 export async function sendVerificationEmail({
   email,
   verificationUrl,
-  userName = "User",
+  userName = 'User',
 }: SendVerificationEmailParams) {
   try {
     const { data, error } = await resend.emails.send({
-      from: "noreply@anveio.com",
+      from: 'noreply@anveio.com',
       to: email,
-      subject: "Verify Your Email Address",
+      subject: 'Verify Your Email Address',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
           <h2>Verify Your Email Address</h2>
@@ -78,13 +78,13 @@ export async function sendVerificationEmail({
     })
 
     if (error) {
-      console.error("Failed to send verification email:", error)
-      throw new Error("Failed to send verification email")
+      console.error('Failed to send verification email:', error)
+      throw new Error('Failed to send verification email')
     }
 
     return { success: true, data }
   } catch (error) {
-    console.error("Error sending verification email:", error)
+    console.error('Error sending verification email:', error)
     throw error
   }
 }

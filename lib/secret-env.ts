@@ -12,17 +12,9 @@ const envSchema = z.object({
       'ADMIN_PASSWORD should be at least 8 characters long for basic security',
     ),
   ADMIN_NAME: z.string().min(1).optional().or(z.literal('')),
-  AUTH_BASE_URL: z
-    .url('AUTH_BASE_URL must be an absolute URL with protocol')
-    .optional()
-    .or(z.literal('')),
-  NEXT_PUBLIC_CONVEX_URL: z.url(
-    'NEXT_PUBLIC_CONVEX_URL must be a valid Convex deployment URL',
-  ),
   CONVEX_AUTH_SECRET: z
     .string({ message: 'CONVEX_AUTH_SECRET is required' })
     .min(32, 'CONVEX_AUTH_SECRET must be at least 32 characters long'),
-  CONVEX_SITE_URL: z.url('CONVEX_SITE_URL must be a valid Convex site URL'),
   RESEND_API_KEY: z
     .string({ message: 'RESEND_API_KEY is required' })
     .min(1, 'RESEND_API_KEY must be non-empty'),
@@ -33,10 +25,7 @@ const parsed = envSchema.safeParse({
   ADMIN_EMAIL: process.env.ADMIN_EMAIL,
   ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
   ADMIN_NAME: process.env.ADMIN_NAME,
-  AUTH_BASE_URL: process.env.AUTH_BASE_URL,
-  NEXT_PUBLIC_CONVEX_URL: process.env.NEXT_PUBLIC_CONVEX_URL,
   CONVEX_AUTH_SECRET: process.env.CONVEX_AUTH_SECRET,
-  CONVEX_SITE_URL: process.env.CONVEX_SITE_URL,
   RESEND_API_KEY: process.env.RESEND_API_KEY,
 })
 
@@ -45,34 +34,19 @@ if (!parsed.success) {
     .map((issue) => `• ${issue.path.join('.')}: ${issue.message}`)
     .join('\n')
   throw new Error(
-    `Missing or invalid environment configuration for better-auth integration:\n${formatted}`,
+    `Missing or invalid environment configuration for server-side variables:\n${formatted}`,
   )
 }
 
 const data = parsed.data
-
-const normalizedAuthBaseUrl = data.AUTH_BASE_URL?.trim() ?? ''
-const baseUrl =
-  normalizedAuthBaseUrl.length > 0
-    ? normalizedAuthBaseUrl
-    : process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : 'http://localhost:3000'
-
 const normalizedAdminName = data.ADMIN_NAME?.trim() ?? ''
-const convexUrl = data.NEXT_PUBLIC_CONVEX_URL.replace(/\/+$/, '')
-const convexSiteUrl = data.CONVEX_SITE_URL.replace(/\/+$/, '')
 
-export const authEnv = {
+export const ENV = {
   secret: data.BETTER_AUTH_SECRET,
   adminEmail: data.ADMIN_EMAIL,
   adminPassword: data.ADMIN_PASSWORD,
   adminName:
     normalizedAdminName.length > 0 ? normalizedAdminName : 'Site Admin',
-  baseURL: baseUrl.replace(/\/+$/, ''),
-  isProduction: process.env.NODE_ENV === 'production',
-  convexUrl,
   convexAuthSecret: data.CONVEX_AUTH_SECRET,
-  convexSiteUrl,
   resendApiKey: data.RESEND_API_KEY,
 }

@@ -1,12 +1,12 @@
-import type { BetterAuthOptions } from "better-auth"
+import type { BetterAuthOptions } from 'better-auth'
 
-import { authEnv } from "@/lib/env"
-import { sendPasswordResetEmail, sendVerificationEmail } from "@/lib/email"
+import { authEnv } from '@/lib/public-env'
+import { sendPasswordResetEmail, sendVerificationEmail } from '@/lib/email'
 
-type PluginList = NonNullable<BetterAuthOptions["plugins"]>
+type PluginList = NonNullable<BetterAuthOptions['plugins']>
 
 interface BuildAuthOptionsParams {
-  readonly database: BetterAuthOptions["database"]
+  readonly database: BetterAuthOptions['database']
   readonly optionsOnly?: boolean
   readonly plugins?: PluginList
 }
@@ -54,8 +54,8 @@ export function buildAuthOptions({
     advanced: {
       useSecureCookies: authEnv.isProduction,
       defaultCookieAttributes: {
-        sameSite: "lax",
-        path: "/",
+        sameSite: 'lax',
+        path: '/',
       },
     },
     logger: {
