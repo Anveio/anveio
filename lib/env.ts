@@ -2,28 +2,25 @@ import { z } from "zod"
 
 const envSchema = z.object({
   BETTER_AUTH_SECRET: z
-    .string()
-    .min(1, "BETTER_AUTH_SECRET is required and must be non-empty."),
-  ADMIN_EMAIL: z
-    .string()
-    .email("ADMIN_EMAIL must be a valid email address."),
+    .string({ message: "BETTER_AUTH_SECRET is required" })
+    .min(1, "BETTER_AUTH_SECRET must be non-empty"),
+  ADMIN_EMAIL: z.email("ADMIN_EMAIL must be a valid email address"),
   ADMIN_PASSWORD: z
+    .string({ message: "ADMIN_PASSWORD is required" })
+    .min(8, "ADMIN_PASSWORD should be at least 8 characters long for basic security"),
+  ADMIN_NAME: z
     .string()
-    .min(
-      8,
-      "ADMIN_PASSWORD should be at least 8 characters long for basic security.",
-    ),
-  ADMIN_NAME: z.string().min(1).optional(),
+    .min(1)
+    .optional()
+    .or(z.literal("")),
   AUTH_BASE_URL: z
-    .string()
-    .url("AUTH_BASE_URL must be an absolute URL with protocol.")
-    .optional(),
-  CONVEX_URL: z
-    .string()
-    .url("CONVEX_URL must be a valid Convex deployment URL."),
+    .url("AUTH_BASE_URL must be an absolute URL with protocol")
+    .optional()
+    .or(z.literal("")),
+  CONVEX_URL: z.url("CONVEX_URL must be a valid Convex deployment URL"),
   CONVEX_AUTH_SECRET: z
-    .string()
-    .min(32, "CONVEX_AUTH_SECRET must be at least 32 characters long."),
+    .string({ message: "CONVEX_AUTH_SECRET is required" })
+    .min(32, "CONVEX_AUTH_SECRET must be at least 32 characters long"),
 })
 
 const parsed = envSchema.safeParse({
@@ -38,7 +35,7 @@ const parsed = envSchema.safeParse({
 
 if (!parsed.success) {
   const formatted = parsed.error.issues
-    .map((issue) => `• ${issue.message}`)
+    .map((issue) => `• ${issue.path.join(".")}: ${issue.message}`)
     .join("\n")
   throw new Error(
     `Missing or invalid environment configuration for better-auth integration:\n${formatted}`,
