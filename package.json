@@ -11,7 +11,8 @@
     "start": "next start",
     "lint": "biome lint --fix",
     "format": "biome format --write .",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "seed:admin": "node scripts/seed-admin.mjs"
   },
   "dependencies": {
     "@convex-dev/better-auth": "^0.9.1",

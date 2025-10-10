@@ -1,8 +1,7 @@
 import { Resend } from 'resend'
+import { SecretEnvironmentVariables } from './secret-env'
 
-import { authEnv } from '@/lib/public-env'
-
-const resend = new Resend(authEnv.resendApiKey)
+const resend = new Resend(SecretEnvironmentVariables.resendApiKey)
 
 interface SendPasswordResetEmailParams {
   email: string
