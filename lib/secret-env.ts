@@ -41,7 +41,7 @@ if (!parsed.success) {
 const data = parsed.data
 const normalizedAdminName = data.ADMIN_NAME?.trim() ?? ''
 
-export const ENV = {
+export const SecretEnvironmentVariables = {
   secret: data.BETTER_AUTH_SECRET,
   adminEmail: data.ADMIN_EMAIL,
   adminPassword: data.ADMIN_PASSWORD,

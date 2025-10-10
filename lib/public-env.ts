@@ -38,10 +38,7 @@ const baseUrl =
       ? `https://${process.env.VERCEL_URL}`
       : 'http://localhost:3000'
 
-
-
-
-export const PUBLIC_ENV = {
+export const PublicEnvironmentVariables = {
   convexUrl: data.NEXT_PUBLIC_CONVEX_URL,
   convexSiteUrl: data.NEXT_PUBLIC_CONVEX_SITE_URL,
   baseUrl,

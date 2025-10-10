@@ -1,7 +1,7 @@
-import Link from "next/link"
-import { formatListingDate, getAllPosts } from "@/lib/posts"
+import Link from 'next/link'
+import { formatListingDate, getAllPosts } from '@/lib/posts'
 
-export const dynamic = "force-dynamic"
+export const dynamic = 'force-dynamic'
 
 export default async function Home() {
   const posts = await getAllPosts()
@@ -11,7 +11,9 @@ export default async function Home() {
       <ul className="index-list">
         {posts.map((post) => (
           <li key={post.slug}>
-            <span className="index-date">{formatListingDate(post.publishedAt)}</span>
+            <span className="index-date">
+              {formatListingDate(post.publishedAt)}
+            </span>
             <Link href={`/blog/${post.slug}`}>{post.title}</Link>
           </li>
         ))}

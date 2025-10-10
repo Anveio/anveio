@@ -1,7 +1,7 @@
 import { nextJsHandler } from '@convex-dev/better-auth/nextjs'
 
-import { authEnv } from '@/lib/public-env'
+import { PublicEnvironmentVariables } from '@/lib/public-env'
 
 export const { GET, POST } = nextJsHandler({
-  convexSiteUrl: authEnv.convexSiteUrl,
+  convexSiteUrl: PublicEnvironmentVariables.convexSiteUrl,
 })
