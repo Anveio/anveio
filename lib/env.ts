@@ -21,6 +21,10 @@ const envSchema = z.object({
   CONVEX_AUTH_SECRET: z
     .string({ message: "CONVEX_AUTH_SECRET is required" })
     .min(32, "CONVEX_AUTH_SECRET must be at least 32 characters long"),
+  CONVEX_SITE_URL: z.url("CONVEX_SITE_URL must be a valid Convex site URL"),
+  RESEND_API_KEY: z
+    .string({ message: "RESEND_API_KEY is required" })
+    .min(1, "RESEND_API_KEY must be non-empty"),
 })
 
 const parsed = envSchema.safeParse({
@@ -31,6 +35,7 @@ const parsed = envSchema.safeParse({
   AUTH_BASE_URL: process.env.AUTH_BASE_URL,
   CONVEX_URL: process.env.CONVEX_URL,
   CONVEX_AUTH_SECRET: process.env.CONVEX_AUTH_SECRET,
+  CONVEX_SITE_URL: process.env.CONVEX_SITE_URL,
 })
 
 if (!parsed.success) {
@@ -44,19 +49,26 @@ if (!parsed.success) {
 
 const data = parsed.data
 
+const normalizedAuthBaseUrl = data.AUTH_BASE_URL?.trim() ?? ""
 const baseUrl =
-  data.AUTH_BASE_URL ??
-  (process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : "http://localhost:3000")
+  normalizedAuthBaseUrl.length > 0
+    ? normalizedAuthBaseUrl
+    : process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : "http://localhost:3000"
+
+const normalizedAdminName = data.ADMIN_NAME?.trim() ?? ""
+const convexUrl = data.CONVEX_URL.replace(/\/+$/, "")
+const convexSiteUrl = data.CONVEX_SITE_URL.replace(/\/+$/, "")
 
 export const authEnv = {
   secret: data.BETTER_AUTH_SECRET,
   adminEmail: data.ADMIN_EMAIL,
   adminPassword: data.ADMIN_PASSWORD,
-  adminName: data.ADMIN_NAME ?? "Site Admin",
+  adminName: normalizedAdminName.length > 0 ? normalizedAdminName : "Site Admin",
   baseURL: baseUrl.replace(/\/+$/, ""),
   isProduction: process.env.NODE_ENV === "production",
-  convexUrl: data.CONVEX_URL.replace(/\/+$/, ""),
+  convexUrl,
   convexAuthSecret: data.CONVEX_AUTH_SECRET,
+  convexSiteUrl,
 }

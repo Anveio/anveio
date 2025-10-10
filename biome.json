@@ -33,7 +33,8 @@
       "**",
       "!node_modules",
       "!dist",
-      "!.next"
+      "!.next",
+      "!convex/_generated"
     ]
   },
   "vcs": {

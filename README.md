@@ -68,11 +68,14 @@ There is a password-protected dashboard at `/admin`. It currently lists existing
    - `BETTER_AUTH_SECRET` – a long random string (32+ chars).
    - `ADMIN_EMAIL` – the account you will log in with.
    - `ADMIN_PASSWORD` – the plaintext password for that account.
+   - `CONVEX_URL` – the Convex deployment URL (ends in `.convex.cloud`).
+   - `CONVEX_SITE_URL` – the paired site URL (ends in `.convex.site`).
+   - `CONVEX_AUTH_SECRET` – a Convex admin token (create one from the dashboard).
    - Optional: `ADMIN_NAME` and `AUTH_BASE_URL` (defaults to Vercel URL or `http://localhost:3000`).
-3. Deploy the same variables in Vercel (`vercel env pull` keeps local copies in sync).
+3. Deploy the same variables in Vercel (`vercel env pull` keeps local copies in sync) and set the Convex-side `SITE_URL` value with `npx convex env set SITE_URL http://localhost:3000`.
 4. Visit `/admin/login`, sign in, and you’ll be redirected to the dashboard.
 
-Better Auth stores credentials in an in-memory adapter for now; expect to replace that with Convex once the CMS lands.
+Authentication now runs entirely through Convex using the Better Auth component, so user/session data persists across deploys.
 
 ## Deployment Notes
 
