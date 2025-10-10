@@ -1,0 +1,15 @@
+{
+  "contextFileName": [
+    ".gemini/context/convex_rules.md",
+    ".gemini/context/arch.md",
+    ".gemini/context/brand.md"
+  ],
+  "context": {
+    "includeDirectories": [
+      "convex/schema.ts"
+    ]
+  },
+  "ide": {
+    "enabled": true
+  }
+}
