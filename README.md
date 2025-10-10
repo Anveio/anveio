@@ -48,16 +48,57 @@ The homepage automatically lists posts in reverse chronological order, and indiv
 
 Before pushing, run `npm run lint`, `npm run typecheck`, and `npm run build` locally—those are the same checks Vercel will execute.
 
-## Preparing for the Convex CMS
+## Blog Architecture & Media Storage
 
-The blog still reads Markdown files from `content/posts`. When we introduce Convex, we will migrate the loader in `lib/posts.ts` behind a new data-access layer. To start a fresh Convex project when you are ready:
+### Content Management
+The blog uses a **block-based content architecture** stored in Convex tables:
+- **Posts**: Structured as arrays of content blocks (text, images, videos, WebGL, React components)
+- **Media**: Centralized asset management with metadata (dimensions, alt text, captions)
+- **Categories**: Hierarchical organization with many-to-many post relationships
+
+### Public ID System
+Following Stripe's API design, all resources have **prefixed public identifiers** alongside Convex's internal IDs:
+
+- **Users**: `usr_1234567890abcdef`
+- **Posts**: `pst_1234567890abcdef`
+- **Media**: `med_1234567890abcdef`
+- **Categories**: `cat_1234567890abcdef`
+- **OAuth Clients**: `cid_1234567890abcdef`
+
+**Benefits:**
+- **API-friendly URLs**: `/admin/posts/pst_abc123def456` instead of cryptic internal IDs
+- **Type safety**: Know resource type from ID prefix
+- **External stability**: Public IDs remain constant even if internal schema changes
+- **Collision prevention**: Prefixes eliminate cross-table ID confusion
+
+Convex's system IDs remain for internal database operations and relationships, while public IDs provide a clean external interface.
+
+### Media Storage Decision
+**Images and files are stored in Convex's built-in file storage** rather than external services like S3:
+
+**Benefits:**
+- ✅ **Automatic CDN**: Global edge caching out of the box
+- ✅ **Direct uploads**: Client-side file uploads without backend routing  
+- ✅ **Tight integration**: Files referenced by ID in schema (`featuredImageId: v.id('_storage')`)
+- ✅ **No infrastructure**: No S3 buckets, IAM policies, or CDN configuration
+- ✅ **Signed URLs**: Secure, expiring URLs for private content
+
+**Limits:**
+- Free tier: 1GB storage, 1GB bandwidth/month
+- Pro tier: 100GB storage, 1TB bandwidth/month  
+- Max file size: 100MB per file
+
+For a personal blog, Convex storage provides excellent performance without operational complexity.
+
+### Setting Up Convex
+To start the Convex backend:
 
 ```bash
 npm install convex
 npx convex dev
 ```
 
-This outputs the `CONVEX_DEPLOYMENT` and `CONVEX_URL` values you will eventually copy into Vercel project settings. Mirror them locally by copying `.env.example` to `.env.local` and filling in each variable. Hold off on committing Convex-generated files until the CMS implementation lands; the codebase already treats the filesystem reader as an adapter we can swap.
+This outputs the `CONVEX_DEPLOYMENT` and `CONVEX_URL` values you will copy into Vercel project settings. Mirror them locally by copying `.env.example` to `.env.local` and filling in each variable.
 
 ## Admin Panel
 

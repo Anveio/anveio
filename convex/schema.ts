@@ -8,6 +8,7 @@ export default defineSchema({
    * Supports both traditional email/password and OAuth authentication flows.
    */
   user: defineTable({
+    publicId: v.string(), // usr_1234567890abcdef - Stripe-style external identifier
     name: v.string(),
     email: v.string(),
     emailVerified: v.boolean(),
@@ -23,6 +24,7 @@ export default defineSchema({
     phoneNumberVerified: v.optional(v.union(v.null(), v.boolean())),
     userId: v.optional(v.union(v.null(), v.string())),
   })
+    .index('publicId', ['publicId'])
     .index('email_name', ['email', 'name'])
     .index('name', ['name'])
     .index('userId', ['userId'])
@@ -124,7 +126,7 @@ export default defineSchema({
     name: v.optional(v.union(v.null(), v.string())),
     icon: v.optional(v.union(v.null(), v.string())),
     metadata: v.optional(v.union(v.null(), v.string())),
-    clientId: v.optional(v.union(v.null(), v.string())),
+    clientId: v.optional(v.union(v.null(), v.string())), // cid_1234567890abcdef format
     clientSecret: v.optional(v.union(v.null(), v.string())),
     redirectURLs: v.optional(v.union(v.null(), v.string())),
     type: v.optional(v.union(v.null(), v.string())),
@@ -207,6 +209,7 @@ export default defineSchema({
    * Uses a flexible block-based architecture for complex layouts.
    */
   post: defineTable({
+    publicId: v.string(), // pst_1234567890abcdef - Stripe-style external identifier
     title: v.string(),
     slug: v.string(),
     excerpt: v.optional(v.string()),
@@ -238,6 +241,7 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
   })
+    .index('publicId', ['publicId'])
     .index('slug', ['slug'])
     .index('authorId', ['authorId'])
     .index('status', ['status'])
@@ -253,6 +257,7 @@ export default defineSchema({
    * Links to Convex file storage with additional metadata for content management.
    */
   media: defineTable({
+    publicId: v.string(), // med_1234567890abcdef - Stripe-style external identifier
     storageId: v.id('_storage'),
     filename: v.string(),
     originalFilename: v.string(),
@@ -268,6 +273,7 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
   })
+    .index('publicId', ['publicId'])
     .index('storageId', ['storageId'])
     .index('uploadedBy', ['uploadedBy'])
     .index('mimeType', ['mimeType'])
@@ -282,6 +288,7 @@ export default defineSchema({
    * Hierarchical structure supporting nested categories.
    */
   category: defineTable({
+    publicId: v.string(), // cat_1234567890abcdef - Stripe-style external identifier
     name: v.string(),
     slug: v.string(),
     description: v.optional(v.string()),
@@ -293,6 +300,7 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
   })
+    .index('publicId', ['publicId'])
     .index('slug', ['slug'])
     .index('parentId', ['parentId'])
     .index('isVisible_sortOrder', ['isVisible', 'sortOrder']),
