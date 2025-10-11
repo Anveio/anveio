@@ -29,7 +29,7 @@ Collected details on how Better Auth is wired into this project, current constra
 - Guards:
   - `lib/admin-session.ts` wraps `auth.api.getSession`, unwraps the Better Auth client response, enforces the admin role check via `isAdmin`, and exposes `requireAdminSession` for server routes/pages.
 - Seeding:
-  - `scripts/seed-admin.mjs` posts to `/api/auth/sign-up/email`, then calls `convex/admin.ensureRoles` via the admin key to guarantee the seeded account includes the `admin` role. Run with `npm run seed:admin` after exporting `.env.local`.
+  - `POST ${CONVEX_SITE_URL}/dev/seed-admin` (development only) resets the admin account using the credentials from `ADMIN_EMAIL` / `ADMIN_PASSWORD`, marks the user as verified, and syncs user/session roles. The HTTP route short-circuits with a 404 when `NODE_ENV === "production"`.
 ## Working with the Adapter
 
 - The Convex Better Auth component exposes an `authComponent` factory (`convex/auth.ts`), which we consume server-side via `createConvexAuthContext`.

@@ -99,6 +99,7 @@ There is a password-protected dashboard at `/admin`. It currently lists existing
    - Optional: `ADMIN_NAME` and `AUTH_BASE_URL` (defaults to Vercel URL or `http://localhost:3000`).
 3. Deploy the same variables in Vercel (`vercel env pull` keeps local copies in sync) and set the Convex-side `SITE_URL` value with `npx convex env set SITE_URL http://localhost:3000`.
 4. Visit `/admin/login`, sign in, and you’ll be redirected to the dashboard.
+5. When you need to recreate the admin account locally, issue a `POST` to `${CONVEX_SITE_URL}/dev/seed-admin`. The action reuses the credentials from `ADMIN_EMAIL` / `ADMIN_PASSWORD`, enforces the admin role, and is hard-disabled (404) in production deployments.
 
 Authentication now runs entirely through Convex using the Better Auth component, so user/session data persists across deploys.
 
