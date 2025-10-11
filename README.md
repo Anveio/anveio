@@ -55,7 +55,10 @@ There is a password-protected dashboard at `/admin`. It currently lists existing
    - Optional: `AUTH_BASE_URL` to override the base URL used by Better Auth (defaults to Vercel-provided origin or `http://localhost:3000`).
 3. Deploy the same variables in Vercel (`vercel env pull` keeps local copies in sync) and mirror them into Convex with `npx convex env set`.
 4. Visit `/admin/login`, sign in, and you’ll be redirected to the dashboard.
-5. When you need to recreate the admin account, open the Convex dashboard and run the action `dev.seedAdmin`, passing `{ email, password, name? }`. The action enforces the admin role and syncs existing sessions.
+5. When you need to recreate the admin account, either:
+   - open the Convex dashboard and run `dev.seedAdmin` with `{ email, password, name? }`, or
+   - run `npm run seed:admin -- --email <email> --password <password> [--name <name>]`.
+   The action enforces the admin role and syncs existing sessions.
 
 Authentication now runs entirely through Convex using the Better Auth component, so user/session data persists across deploys.
 

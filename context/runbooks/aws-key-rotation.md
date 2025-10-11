@@ -22,10 +22,10 @@ Run the helper script for the target environment:
 
 ```bash
 # Development
-./scripts/rotate-post-artifacts-dev-key.sh
+node scripts/rotate-post-artifacts-dev-key.ts
 
 # Production (updates both Preview + Production in Vercel)
-./scripts/rotate-post-artifacts-prod-key.sh
+node scripts/rotate-post-artifacts-prod-key.ts
 ```
 
 The script outputs a new `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY`. Store these values in a secure location immediately; they are only displayed once.
