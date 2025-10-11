@@ -57,6 +57,7 @@ There is a password-protected dashboard at `/admin`. It currently lists existing
 4. Visit `/admin/login`, sign in, and you’ll be redirected to the dashboard.
 5. When you need to recreate the admin account, either:
    - open the Convex dashboard and run `dev.seedAdmin` with `{ email, password, name? }`, or
+   - run the operational CLI: `npm run ops` (choose *seed-admin*), or
    - run `npm run seed:admin -- --email <email> --password <password> [--name <name>]`.
    The action enforces the admin role and syncs existing sessions.
 

@@ -15,10 +15,12 @@
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
-    "seed:admin": "node scripts/seed-admin.ts"
+    "seed:admin": "node scripts/seed-admin.ts",
+    "ops": "node scripts/index.ts"
   },
   "dependencies": {
     "@convex-dev/better-auth": "^0.9.1",
+    "@inquirer/prompts": "^7.8.6",
     "better-auth": "^1.3.27",
     "convex": "^1.27.5",
     "date-fns": "^4.1.0",

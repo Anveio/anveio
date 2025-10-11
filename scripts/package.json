@@ -1,0 +1,13 @@
+{
+  "name": "@anveio/scripts",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "dependencies": {
+    "@inquirer/prompts": "^7.8.6",
+    "zod": "^4.1.12"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json"
+  }
+}
