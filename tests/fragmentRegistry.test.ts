@@ -5,7 +5,7 @@ import {
   fragmentComponents,
   getFragmentComponentDefinition,
   validateHydrationMode,
-} from '@/app/(admin)/lib/fragmentRegistry'
+} from '@/lib/admin/fragmentRegistry'
 import type { Doc } from '@/convex/_generated/dataModel'
 
 type FragmentPayload = Doc<'postFragment'>['payload']

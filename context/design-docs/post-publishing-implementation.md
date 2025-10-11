@@ -27,7 +27,7 @@ Exit criteria: Convex deployable schema, validators reused across stack.
 
 ## 3. Fragment Component Registry
 Tasks:
-1. Expand `app/(admin)/lib/fragmentRegistry.ts` with real embeds (text, image, video, WebGL placeholders).
+1. Expand `lib/admin/fragmentRegistry.ts` with real embeds (text, image, video, WebGL placeholders).
 2. Ensure each entry exposes a Convex validator + dynamic import module.
 3. Update tests to cover new entries and hydration modes.
 
