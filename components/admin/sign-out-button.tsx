@@ -3,6 +3,7 @@
 import { useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
+import { adminButtonClass } from "@/components/admin/ui-classes"
 
 export function SignOutButton() {
   const router = useRouter()
@@ -17,7 +18,12 @@ export function SignOutButton() {
   }
 
   return (
-    <button type="button" disabled={isPending} onClick={handleClick}>
+    <button
+      type="button"
+      disabled={isPending}
+      onClick={handleClick}
+      className={adminButtonClass}
+    >
       {isPending ? "Signing out…" : "Sign Out"}
     </button>
   )

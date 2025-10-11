@@ -128,7 +128,7 @@ export default App;
 # Site Architecture Notes
 - `lib/posts.ts` is a server-only module; it reads markdown from `content/posts`, validates front matter, and caches both the post index and individual post bodies with `react.cache`.
 - All routes opt in to `force-dynamic`, ensuring SSR behaviour on Vercel. The Next.js config emits a standalone output for portability.
-- Styling lives in `app/globals.css` and clones the HTML + CSS skeleton from danluu.com (flex-index list, `.np` nav rows, default serif typography). Preserve that structure unless we decide to diverge deliberately.
+- Tailwind CSS 4 is the design system. `app/globals.css` only pulls in the Tailwind layers, and shared admin UI utility tokens live in `components/admin/ui-classes.ts`. (Logged 2024-10-10 — bespoke CSS removed in favor of Tailwind utilities.)
 - The data layer is already isolated so we can replace the filesystem adapter with Convex once the CMS lands. Plan on introducing a posts data provider that can delegate to either filesystem or Convex during the migration.
 - Admin auth is powered by Better Auth with an in-memory adapter seeded from environment variables (`ADMIN_EMAIL`, `ADMIN_PASSWORD`, `BETTER_AUTH_SECRET`). Sessions live behind `/admin`, and the login form posts to Better Auth’s Next handler at `/api/auth/[...betterAuth]`.
 - Users carry a `roles` array persisted in Convex (`["user"]` by default) and mirrored into session records during login. Grant yourself admin by adding `"admin"` to that array via the Convex dashboard; sign out and back in to refresh the session snapshot.

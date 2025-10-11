@@ -1,10 +1,12 @@
 import { describe, expect, it } from 'vitest'
 import {
+  assertComponentPayload,
   fragmentComponentKeys,
   fragmentComponents,
   getFragmentComponentDefinition,
+  validateHydrationMode,
 } from '@/app/(admin)/lib/fragmentRegistry'
-import { fragmentHydrationModeSchema } from '@/lib/post-fragments'
+import type { FragmentPayload } from '@/convex/schema/postFragments'
 
 describe('fragment registry', () => {
   it('exposes consistent definitions for each key', () => {
@@ -13,12 +15,8 @@ describe('fragment registry', () => {
     for (const key of fragmentComponentKeys) {
       const definition = getFragmentComponentDefinition(key)
       expect(definition.key).toBe(key)
-      expect(fragmentHydrationModeSchema.parse(definition.hydration)).toBe(
-        definition.hydration,
-      )
-
-      const parsedProps = definition.propsSchema.parse({})
-      expect(parsedProps).toBeDefined()
+      expect(definition.propsValidator.isConvexValidator).toBe(true)
+      expect(definition.propsValidator.kind).toBe('object')
 
       uniqueKeys.add(definition.key)
     }
@@ -31,5 +29,20 @@ describe('fragment registry', () => {
       const mod = await definition.load()
       expect(mod.default).toBeTypeOf('function')
     }
+  })
+
+  it('validates hydration modes and fragment payloads', () => {
+    expect(validateHydrationMode('client')).toBe('client')
+    expect(() => validateHydrationMode('invalid')).toThrow()
+
+    const textPayload: FragmentPayload = {
+      kind: 'text',
+      version: '1',
+      editorState: '{}',
+      wordCount: 0,
+    }
+
+    expect(assertComponentPayload(textPayload)).toStrictEqual(textPayload)
+    expect(() => assertComponentPayload({})).toThrow()
   })
 })

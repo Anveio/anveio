@@ -3,6 +3,11 @@
 import { useState, useTransition } from "react"
 import { useRouter } from "next/navigation"
 import { authClient } from "@/lib/auth-client"
+import {
+  adminFormFieldClass,
+  adminInputClass,
+  adminPrimaryButtonClass,
+} from "@/components/admin/ui-classes"
 
 interface AdminLoginFormProps {
   readonly nextPath?: string
@@ -50,31 +55,56 @@ export function AdminLoginForm({
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="email">Email</label>
-      <input
-        id="email"
-        name="email"
-        type="email"
-        defaultValue={defaultEmail}
-        autoComplete="username"
-        required
+    <form
+      onSubmit={handleSubmit}
+      className="flex w-full flex-col gap-5 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-700 dark:bg-slate-900/80"
+    >
+      <div className={adminFormFieldClass}>
+        <label
+          htmlFor="email"
+          className="text-sm font-semibold text-slate-700 dark:text-slate-200"
+        >
+          Email
+        </label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          defaultValue={defaultEmail}
+          autoComplete="username"
+          required
+          disabled={isPending}
+          className={adminInputClass}
+        />
+      </div>
+
+      <div className={adminFormFieldClass}>
+        <label
+          htmlFor="password"
+          className="text-sm font-semibold text-slate-700 dark:text-slate-200"
+        >
+          Password
+        </label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          autoComplete="current-password"
+          required
+          disabled={isPending}
+          className={adminInputClass}
+        />
+      </div>
+
+      {error ? (
+        <p className="text-sm font-medium text-red-600">{error}</p>
+      ) : null}
+
+      <button
+        type="submit"
         disabled={isPending}
-      />
-
-      <label htmlFor="password">Password</label>
-      <input
-        id="password"
-        name="password"
-        type="password"
-        autoComplete="current-password"
-        required
-        disabled={isPending}
-      />
-
-      {error ? <p className="form-error">{error}</p> : null}
-
-      <button type="submit" disabled={isPending}>
+        className={adminPrimaryButtonClass}
+      >
         {isPending ? "Signing in…" : "Sign In"}
       </button>
     </form>

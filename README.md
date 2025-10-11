@@ -5,7 +5,7 @@ This repository hosts my personal site and blog. The goal is to publish systems 
 ## Stack
 
 - [Next.js](https://nextjs.org/) using the App Router with server-side rendering forced for every page
-- Minimal bespoke CSS (no Tailwind, no component frameworks) — the markup and layout intentionally mirror [Dan Luu’s blog](https://danluu.com/)
+- Tailwind CSS 4 providing the utility layer for both the blog and admin surfaces
 - Markdown posts parsed with [`gray-matter`](https://github.com/jonschlinkert/gray-matter) and rendered with [`marked`](https://github.com/markedjs/marked)
 
 ## Getting Started

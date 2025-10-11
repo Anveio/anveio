@@ -1,131 +1,118 @@
 # Implementation Plan: Static-First Post Publishing
 
 ## 0. Guiding Principles
-- Work in vertical slices that end with observable value (e.g., schema + tests + minimal UI hook).
-- Keep type safety enforced at every layer (Convex validators, zod schemas, TS types).
-- “Make it work → make it good → make it fast”: ship a functional baseline, then harden, then optimize.
-- Treat S3 artifacts as immutable; all mutations go through Convex transactions guarded by validations.
-- Every behavior change lands with tests: unit (Vitest), integration (Convex), end-to-end (Playwright), or snapshots as appropriate.
+- Deliver value in vertical slices: schema + validator + mutation + UI hook, verified by tests.
+- Keep type safety strict. All payload validation flows through `convex/values` validators defined in `convex/schema/postFragments.ts`.
+- Prioritise fast publish flows over deep history. We only maintain draft and published stages—no revision log.
+- Every behaviour change ships with tests (Vitest, Convex integration, Playwright) so the pipeline stays reliable.
 
 ## 1. Prerequisites & Tooling
-1. **AWS CDK Stack**
-   - Author CDK app (TypeScript) under `infra/cdk` that defines:
-     - `anveio-post-artifacts-dev` and `anveio-post-artifacts-prod` S3 buckets (versioned, SSE-S3, public access blocked).
-     - IAM users (`postArtifactsDevUser`, `postArtifactsProdUser`) with inline policies for scoped bucket access (`s3:GetObject`, `PutObject`, `DeleteObject`, `ListBucket` limited to `posts/*`).
-     - Optional lifecycle rule: transition non-current versions to Glacier after 90 days.
-     - AWS Secrets Manager entries or local script hooks for creating/rotating access keys (see rotation docs below).
-   - CDK outputs access keys/secret (stored via AWS Secrets Manager or locally for initial setup).
-   - Deployment commands: `cd infra/cdk && npm install && npx cdk synth && npx cdk deploy --all`.
-   - Tests: CDK assertions (e.g., `@aws-cdk/assertions`) verifying policies and bucket configuration.
-   - Deliverables: rotation scripts (`scripts/rotate-post-artifacts-dev-key.sh`, `...-prod-key.sh`) plus documentation (`context/runbooks/aws-key-rotation.md`) describing rotation cadence and manual steps.
-2. **Environment Variable Wiring**
-   - Add required vars to Vercel (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `POST_ARTIFACT_BUCKET`) for Dev/Preview/Prod environments.
-   - Mirror credentials in Convex environment settings and `.env.local` via `vercel env pull`.
-   - Document rotation procedure (Calendar reminder + `aws iam update-access-key`).
-3. **Shared S3 Utility**
-   - Create `lib/storage/postArtifacts.ts` exposing `uploadArtifact`, `deleteArtifactVersion`, `getArtifact`.
-   - Use AWS SDK v3 with dependency injection (pass credentials via env).
-   - Unit tests mocking AWS calls (`jest-mock-aws` or custom mock).
+1. **AWS CDK Stack** (completed): S3 buckets, IAM users, rotation scripts, runbook.
+2. **Environment Variables**: Populate Vercel + Convex envs with S3 credentials (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `POST_ARTIFACT_BUCKET`).
+3. **S3 Utility Layer**: `lib/storage/postArtifacts.ts` with `uploadArtifact`, `deleteArtifact`, `getArtifact`. Mock AWS SDK in unit tests.
 
-Exit criteria: CDK stack deployed in dev, environment variables available, utility functions passing unit tests.
+Exit criteria: CDK stack deployed, env vars present, storage utility tested.
 
-## 2. Data Model & Convex Schema
+## 2. Schema & Validators
 Tasks:
-1. Update `convex/schema.ts` with tables:
-   - `post`, `postRevision`, `postFragment`, `postFragmentAsset`, `postPublication`, `tag`, `postTag`.
-   - Enforce indexes described in design doc.
-2. Add zod schemas mirroring fragment payloads under `convex/validators/postFragments.ts`.
-3. Implement Convex mutations/queries stubs with type-safe signatures.
-4. Migration script (`scripts/migrate-post-schema.mjs`) to backfill existing markdown posts into new tables (Phase 1 placeholder).
+1. Finalise schema updates for `post`, `postFragment` (with `stage`), `postFragmentAsset`, `postPublication`, `tag`, `postTag`.
+2. Ensure all fragment validators live in `convex/schema/postFragments.ts` and are exported for Convex + Next.js usage.
+3. Regenerate Convex types (`npx convex codegen`) after schema changes.
 
 Tests:
-- Vitest coverage for validators (valid/invalid fragments, payload version checks).
-- Convex unit tests (`convex/test.ts`) ensuring indexes enforce uniqueness and validators are used.
+- Vitest coverage for validators (valid/invalid fragment payloads, hydration guards).
+- Convex unit tests verifying index invariants (dense ordering, unique `(postId, stage, position)`).
 
-Exit criteria: Convex typecheck passes; schema deployable to dev; validators exported for UI.
+Exit criteria: Convex deployable schema, validators reused across stack.
 
 ## 3. Fragment Component Registry
 Tasks:
-1. Create `app/(admin)/lib/fragmentRegistry.ts` exporting `fragmentComponents` map with entries `{ key, hydration, propsSchema }`.
-2. Define shared TypeScript types (`lib/posts/fragments.ts`) and re-export zod schemas for both Convex and Next.js.
-3. Add tests verifying registry entries conform to schema and hydration mode enumerate (`'static' | 'client' | 'none'`).
-4. Set up lint rule or test ensuring every registry entry supplies a `propsSchema`.
+1. Expand `app/(admin)/lib/fragmentRegistry.ts` with real embeds (text, image, video, WebGL placeholders).
+2. Ensure each entry exposes a Convex validator + dynamic import module.
+3. Update tests to cover new entries and hydration modes.
 
-Exit criteria: Registry consumed by both admin UI and publish pipeline without circular deps.
+Exit criteria: Registry used by admin editor and publish validator, tests green.
 
-## 4. Publish Pipeline
+## 4. Draft Editing Mutations
 Tasks:
-1. Implement Convex mutation `publishRevision`:
-   - Lock revision, validate fragments, assemble artifact JSON, render intro HTML using shared renderer (`lib/posts/publish/renderIntro.tsx` with React server-side rendering).
-   - Upload both files to S3 via utility.
-   - Record `postPublication` entry and update `post.currentPublishedRevisionId`.
-2. Add helper `buildArtifact` returning JSON + HTML + metrics.
-3. Guard with transaction semantics (Convex `db.transaction` where available).
-4. Implement `schedulePublish` job + background worker to trigger at specified timestamps.
-5. Write unit tests for `buildArtifact` (input fixtures → JSON structure snapshot).
-6. Integration test: publish flow with mocked S3; ensure rollback on failure.
+1. Implement Convex mutations:
+   - `createPost` (initial draft fragments optional).
+   - `updatePostMetadata` (title, slug, SEO, status guard).
+   - Fragment CRUD: `addFragment`, `updateFragment`, `reorderFragments`, `deleteFragment` targeting `stage='draft'`.
+   - `setDraftFragments` helper for bulk operations (used by future editor batch saves).
+2. Maintain dense `position` within transactions to avoid gaps.
+3. Update `postFragmentAsset` records when fragments reference media.
 
-Exit criteria: End-to-end Convex test publishing a sample post writes artifact files (mocked) and updates tables correctly.
+Tests:
+- Convex integration tests covering create/update/delete with concurrent operations.
+- Ensure deleting a fragment removes orphaned `postFragmentAsset` rows.
 
-## 5. Next.js Read Path
+Exit criteria: Draft editing API stable and transactionally consistent.
+
+## 5. Publish Pipeline
 Tasks:
-1. Add server loader `lib/posts/getPublishedArtifact.ts` reading from Convex + fetching S3 JSON/HTML.
-2. Update `app/posts/[slug]/page.tsx` to:
-   - Use `generateStaticParams` reading list of published slugs from Convex.
-   - Fetch artifact JSON + intro HTML with caching hints (`fetchCache: 'force-cache'`).
-   - Render intro HTML directly, hydrate with `hydrateFragmentChunks`.
-   - Stream subsequent chunks via Suspense or route segment (introduce `app/posts/[slug]/chunks.tsx` if needed).
-3. Add `lib/posts/hydrateFragmentChunks.tsx` converting artifact JSON to React components (shared between SSR and client).
-4. Ensure images use `next/image` with placeholders; components use registry hydration metadata.
-5. Tests: React testing library snapshot for intro render; integration route test verifying correct headers & caching; Playwright scenario to assert zero layout shift (use performance API or screenshot diff).
+1. Implement `publishPost` mutation:
+   - Validate draft fragments + metadata using shared validators and registry.
+   - Build artefact JSON + intro HTML (`lib/posts/publish/buildArtifact.ts`) and upload to S3.
+   - Copy draft fragments to `stage='published'`, delete old published fragments, update `post` (`publishedAt`, `status`).
+   - Insert `postPublication` log entry.
+2. Add optional `schedulePublish` field + Convex cron job to trigger `publishPost`.
+3. Handle rollback: if any step fails, nothing persists.
 
-Exit criteria: Visiting `/posts/demo` in dev renders from artifact; hydration logs clean; SEO metadata unaffected.
+Tests:
+- Vitest tests for artefact builder (fixtures → snapshot).
+- Convex end-to-end test using mocked S3 to ensure transactional behaviour.
 
-## 6. Admin UI Enhancements
+Exit criteria: Manual and scheduled publishes succeed; published fragments match draft at publish time.
+
+## 6. Read Path
 Tasks:
-1. Create admin routes under `app/admin/posts`:
-   - List view showing posts, status, current published revision, publish actions.
-   - Revision detail page with fragment editor (stub initial version with manual JSON editing if necessary).
-2. Integrate fragment registry for block selection, preview.
-3. Add media library UI hooking into existing `media` table; ensure uploads capture intrinsic dimensions.
-4. Implement publish workflow UI calling Convex `publishRevision`.
-5. Tests: Playwright admin scenario (create draft, add fragment, preview, publish); component tests for fragment editor (render text/image).
+1. Implement `lib/posts/getPublishedArtifact.ts` fetching post metadata + S3 artefacts.
+2. Create `lib/posts/hydrateFragmentChunks.tsx` to transform artefact JSON into React elements (shared SSR/client).
+3. Update `app/posts/[slug]/page.tsx` to stream intro HTML + hydrate subsequent chunks.
+4. Ensure images/components use manifest dimensions to prevent layout shift.
 
-Exit criteria: Admin can create draft, upload image, publish, and see result on public route.
+Tests:
+- React Testing Library snapshot for intro chunk render.
+- Integration route test verifying caching headers.
+- Playwright check for zero layout shift on load.
 
-## 7. Migration & Legacy Content
+Exit criteria: Published posts render via artefacts with streaming chunk hydration.
+
+## 7. Admin UI
 Tasks:
-1. Implement script converting `content/posts/*.md` into `post`, `postRevision`, `postFragment` records (`scripts/import-legacy-posts.mjs`).
-2. Seed script uploads initial artifacts via publish pipeline (ensures consistency).
-3. Update documentation directing contributors to new system; mark markdown path as deprecated.
+1. Build `app/admin/posts` list page with status filters, publish CTA, version info.
+2. Implement draft editor using the fragment registry (text editing, media insertion, component picker).
+3. Add publish dialog (validation summary, optional schedule time).
+4. Media library integration for browsing/uploading assets.
 
-Exit criteria: All legacy posts available through new render path; tests updated to read from Convex.
+Tests:
+- Component tests for editor widgets.
+- Playwright scenario: create post → edit fragments → publish → view published page.
 
-## 8. Observability & Operations
+Exit criteria: Admin can author posts end-to-end.
+
+## 8. Migration & Legacy Content
 Tasks:
-1. Add logging (`lib/logging/publish.ts`) for artifact generation metrics (size, chunk counts, time).
-2. Wire logs into Vercel/Convex observability (e.g., console instrumentation, Sentry capture).
-3. Set up alarms for S3 bucket errors or artifact upload failures (CloudWatch or third-party).
-4. Define runbooks in `context/runbooks/post-publishing.md`.
+1. Write `scripts/import-legacy-posts.mjs` to ingest Markdown into `post` + `postFragment` (both draft and published stages).
+2. Upload legacy artefacts via publish pipeline.
+3. Update docs/README to mark Markdown path as deprecated.
 
-Exit criteria: Operators can trace publish events and diagnose failures quickly.
+Exit criteria: Existing posts served via Convex pipeline; filesystem content archived.
 
-## 9. Verification & Rollout Checklist
-- [ ] CDK stack deployed to prod; credentials rotated once as rehearsal.
-- [ ] Schema deployed; Convex migrations complete.
-- [ ] Publish pipeline validated via integration tests.
-- [ ] Admin UI E2E test green in CI.
-- [ ] Next.js route lighthouse score checked (TTFB, LCP thresholds <= 1s on fast 3G).
-- [ ] Legacy posts migrated; markdown fallback removed.
-- [ ] Documentation updated: `README.md`, `AGENTS.md`, `context/design-docs` cross-references.
+## 9. Observability & Operations
+Tasks:
+1. Instrument publish pipeline with structured logs (artefact size, fragment counts, duration).
+2. Add error reporting (Sentry) with payload summaries.
+3. Document publish runbooks (failure recovery, cache invalidation).
 
-## 10. Timeline Sketch (indicative)
-| Week | Focus | Key Deliverables |
-| --- | --- | --- |
-| 1 | Infra & Schema | CDK stacks, environment variables, schema deployed, validators tested |
-| 2 | Publish Pipeline | `publishRevision`, artifact builder, S3 integration tests |
-| 3 | Read Path | Next.js loader/hydrator, intro HTML streaming |
-| 4 | Admin UI v1 | Draft editor, media management basics |
-| 5 | Migration & Polish | Legacy import, performance tuning, documentation |
+Exit criteria: Operators can diagnose publish failures quickly.
 
-Adjust timeline as team capacity changes; each week should end with demoable progress.
+## 10. Rollout Checklist
+- [ ] Schema deployed and Convex codegen updated.
+- [ ] Draft editing mutations tested in staging.
+- [ ] Publish pipeline verified against staging bucket.
+- [ ] Next.js read path deployed and Lighthouse (TTFB/LCP) validated.
+- [ ] Admin UI E2E passing in CI.
+- [ ] Legacy posts migrated; Markdown removed from prod builds.
+- [ ] Runbooks and rotation docs updated.

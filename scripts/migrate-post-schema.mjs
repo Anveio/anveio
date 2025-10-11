@@ -2,7 +2,7 @@
 
 /**
  * Placeholder migration script for transitioning existing markdown posts into
- * the structured Convex schema (post, postRevision, postFragment, etc.).
+ * the structured Convex schema (post, postFragment, postFragmentAsset, etc.).
  *
  * The actual migration will be implemented once the publish pipeline is ready.
  * For now, we detect accidental invocation and provide guidance.

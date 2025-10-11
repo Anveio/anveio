@@ -3,5 +3,5 @@ export default function AdminLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <div>{children}</div>
+  return <div className="font-sans">{children}</div>
 }

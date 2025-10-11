@@ -1,5 +1,10 @@
 import { defineSchema, defineTable } from 'convex/server'
 import { v } from 'convex/values'
+import {
+  displayPriorityValidator,
+  fragmentStageValidator,
+  fragmentPayloadValidator,
+} from './schema/postFragments'
 
 export default defineSchema({
   /**
@@ -30,7 +35,7 @@ export default defineSchema({
     .index('userId', ['userId'])
     .index('username', ['username'])
     .index('phoneNumber', ['phoneNumber']),
-  
+
   /**
    * Active login sessions for authenticated users.
    * Tracks session lifecycle with expiration and security metadata.
@@ -52,7 +57,7 @@ export default defineSchema({
     .index('expiresAt_userId', ['expiresAt', 'userId'])
     .index('token', ['token'])
     .index('userId', ['userId']),
-  
+
   /**
    * OAuth provider account connections. Enables users to link multiple
    * authentication providers (Google, GitHub, etc.) to a single user identity.
@@ -78,7 +83,7 @@ export default defineSchema({
     .index('accountId_providerId', ['accountId', 'providerId'])
     .index('providerId_userId', ['providerId', 'userId'])
     .index('userId', ['userId']),
-  
+
   /**
    * Email and phone number verification codes.
    * Temporary records with expiration for secure identity verification flows.
@@ -94,7 +99,7 @@ export default defineSchema({
     .index('publicId', ['publicId'])
     .index('expiresAt', ['expiresAt'])
     .index('identifier', ['identifier']),
-  
+
   /**
    * Two-factor authentication secrets and backup codes.
    * Stores TOTP secrets and one-time backup codes for enhanced security.
@@ -107,7 +112,7 @@ export default defineSchema({
   })
     .index('publicId', ['publicId'])
     .index('userId', ['userId']),
-  
+
   /**
    * WebAuthn passkey credentials for passwordless authentication.
    * Stores public keys and metadata for FIDO2/WebAuthn security keys and biometrics.
@@ -128,7 +133,7 @@ export default defineSchema({
     .index('publicId', ['publicId'])
     .index('credentialID', ['credentialID'])
     .index('userId', ['userId']),
-  
+
   /**
    * OAuth application registrations for third-party app integration.
    * Enables this service to act as an OAuth provider for external applications.
@@ -150,7 +155,7 @@ export default defineSchema({
     .index('publicId', ['publicId'])
     .index('clientId', ['clientId'])
     .index('userId', ['userId']),
-  
+
   /**
    * OAuth access tokens issued to third-party applications.
    * Tracks token lifecycle and permissions for external API access.
@@ -172,7 +177,7 @@ export default defineSchema({
     .index('refreshToken', ['refreshToken'])
     .index('clientId', ['clientId'])
     .index('userId', ['userId']),
-  
+
   /**
    * User consent records for OAuth applications.
    * Tracks which permissions users have granted to third-party apps.
@@ -189,7 +194,7 @@ export default defineSchema({
     .index('publicId', ['publicId'])
     .index('clientId_userId', ['clientId', 'userId'])
     .index('userId', ['userId']),
-  
+
   /**
    * JSON Web Key Set for JWT token signing and verification.
    * Stores public/private key pairs for secure token operations.
@@ -200,7 +205,7 @@ export default defineSchema({
     privateKey: v.string(),
     createdAt: v.number(),
   }).index('publicId', ['publicId']),
-  
+
   /**
    * Rate limiting counters to prevent abuse.
    * Tracks request counts per key (IP, user, etc.) with time windows.
@@ -213,7 +218,7 @@ export default defineSchema({
   })
     .index('publicId', ['publicId'])
     .index('key', ['key']),
-  
+
   /**
    * Alternative rate limiting implementation.
    * Duplicate table - consider consolidating with rateLimit table.
@@ -228,8 +233,8 @@ export default defineSchema({
     .index('key', ['key']),
 
   /**
-   * Core blog post metadata. Stores canonical identity/SEO fields and points to
-   * the currently published revision.
+   * Core blog post metadata. Tracks draft vs. published state without retaining
+   * full revision history.
    */
   post: defineTable({
     publicId: v.string(), // pst_1234567890abcdef - external identifier
@@ -237,8 +242,11 @@ export default defineSchema({
     title: v.string(),
     summary: v.optional(v.string()),
     primaryAuthorId: v.id('user'),
-    status: v.union(v.literal('draft'), v.literal('published'), v.literal('archived')),
-    currentPublishedRevisionId: v.optional(v.id('postRevision')),
+    status: v.union(
+      v.literal('draft'),
+      v.literal('published'),
+      v.literal('archived'),
+    ),
     featuredMediaId: v.optional(v.id('media')),
     seoTitle: v.optional(v.string()),
     seoDescription: v.optional(v.string()),
@@ -246,44 +254,17 @@ export default defineSchema({
     createdAt: v.number(),
     updatedAt: v.number(),
     publishedAt: v.optional(v.number()),
+    scheduledPublishAt: v.optional(v.number()),
   })
     .index('publicId', ['publicId'])
     .index('slug', ['slug'])
     .index('status', ['status'])
     .index('primaryAuthorId', ['primaryAuthorId'])
-    .index('currentPublishedRevisionId', ['currentPublishedRevisionId'])
+    .index('publishedAt', ['publishedAt'])
     .searchIndex('search_posts_title', {
       searchField: 'title',
       filterFields: ['status', 'primaryAuthorId'],
     }),
-
-  /**
-   * Immutable snapshot of a post's content at a point in time. Revisions hold
-   * editorial history and are promoted to published state through the pipeline.
-   */
-  postRevision: defineTable({
-    publicId: v.string(), // prv_1234567890abcdef
-    postId: v.id('post'),
-    revisionNumber: v.number(),
-    state: v.union(
-      v.literal('draft'),
-      v.literal('ready'),
-      v.literal('published'),
-      v.literal('archived')
-    ),
-    fragmentsChecksum: v.string(),
-    source: v.optional(v.union(v.literal('editor'), v.literal('import'), v.literal('api'))),
-    createdBy: v.id('user'),
-    createdAt: v.number(),
-    updatedAt: v.number(),
-    note: v.optional(v.string()),
-    scheduledPublishAt: v.optional(v.number()),
-    publishedAt: v.optional(v.number()),
-  })
-    .index('publicId', ['publicId'])
-    .index('postId', ['postId'])
-    .index('postId_revisionNumber', ['postId', 'revisionNumber'])
-    .index('postId_state', ['postId', 'state']),
 
   /**
    * Ordered fragments of a revision. Each fragment references a typed payload
@@ -291,81 +272,17 @@ export default defineSchema({
    */
   postFragment: defineTable({
     publicId: v.string(), // pfg_1234567890abcdef
-    revisionId: v.id('postRevision'),
+    postId: v.id('post'),
+    stage: fragmentStageValidator,
     position: v.number(),
-    displayPriority: v.union(
-      v.literal('intro'),
-      v.literal('body'),
-      v.literal('supplement')
-    ),
-    payload: v.union(
-      v.object({
-        kind: v.literal('text'),
-        version: v.literal('1'),
-        editorState: v.string(), // Serialized TipTap/MDX JSON string
-        wordCount: v.number(),
-      }),
-      v.object({
-        kind: v.literal('image'),
-        version: v.literal('1'),
-        mediaId: v.id('media'),
-        layout: v.union(
-          v.literal('inline'),
-          v.literal('breakout'),
-          v.literal('fullscreen')
-        ),
-        width: v.number(),
-        height: v.number(),
-        alt: v.string(),
-        caption: v.optional(v.string()),
-        focalPoint: v.optional(v.object({ x: v.number(), y: v.number() })),
-      }),
-      v.object({
-        kind: v.literal('video'),
-        version: v.literal('1'),
-        source: v.union(
-          v.object({
-            type: v.literal('media'),
-            mediaId: v.id('media'),
-          }),
-          v.object({
-            type: v.literal('external'),
-            url: v.string(),
-          })
-        ),
-        posterMediaId: v.optional(v.id('media')),
-        aspectRatio: v.string(),
-        autoplay: v.boolean(),
-        loop: v.boolean(),
-        controls: v.boolean(),
-        caption: v.optional(v.string()),
-      }),
-      v.object({
-        kind: v.literal('component'),
-        version: v.literal('1'),
-        componentKey: v.string(),
-        propsJson: v.string(), // JSON string validated against registry schema
-        hydration: v.union(
-          v.literal('static'),
-          v.literal('client'),
-          v.literal('none')
-        ),
-      }),
-      v.object({
-        kind: v.literal('webgl'),
-        version: v.literal('1'),
-        sceneKey: v.string(),
-        propsJson: v.string(),
-        fallbackMediaId: v.optional(v.id('media')),
-        aspectRatio: v.string(),
-      })
-    ),
+    displayPriority: displayPriorityValidator,
+    payload: fragmentPayloadValidator,
     createdAt: v.number(),
     updatedAt: v.number(),
   })
     .index('publicId', ['publicId'])
-    .index('revisionId', ['revisionId'])
-    .index('revisionId_position', ['revisionId', 'position']),
+    .index('postId_stage', ['postId', 'stage'])
+    .index('postId_stage_position', ['postId', 'stage', 'position']),
 
   /**
    * Join table between fragments and media assets. Enables analytics and GC of
@@ -373,16 +290,19 @@ export default defineSchema({
    */
   postFragmentAsset: defineTable({
     publicId: v.string(), // pfa_1234567890abcdef
+    postId: v.id('post'),
+    stage: fragmentStageValidator,
     fragmentId: v.id('postFragment'),
     mediaId: v.id('media'),
     role: v.union(
       v.literal('primary'),
       v.literal('poster'),
-      v.literal('thumbnail')
+      v.literal('thumbnail'),
     ),
     createdAt: v.number(),
   })
     .index('publicId', ['publicId'])
+    .index('postId_stage', ['postId', 'stage'])
     .index('fragmentId', ['fragmentId'])
     .index('mediaId', ['mediaId'])
     .index('fragment_media', ['fragmentId', 'mediaId']),
@@ -394,22 +314,12 @@ export default defineSchema({
   postPublication: defineTable({
     publicId: v.string(), // ppu_1234567890abcdef
     postId: v.id('post'),
-    revisionId: v.id('postRevision'),
-    artifactVersion: v.string(),
-    artifactJsonPath: v.string(),
-    artifactIntroHtmlPath: v.string(),
-    artifactChecksum: v.string(),
     publishedAt: v.number(),
     publishedBy: v.id('user'),
-    cdnInvalidationStatus: v.optional(
-      v.union(v.literal('pending'), v.literal('completed'), v.literal('failed'))
-    ),
     createdAt: v.number(),
   })
     .index('publicId', ['publicId'])
     .index('postId', ['postId'])
-    .index('revisionId', ['revisionId'])
-    .index('postId_artifactVersion', ['postId', 'artifactVersion'])
     .index('publishedAt', ['publishedAt']),
 
   /**
@@ -471,7 +381,6 @@ export default defineSchema({
     .index('isPublic', ['isPublic'])
     .searchIndex('search_media', {
       searchField: 'filename',
-      filterFields: ['mimeType', 'uploadedBy', 'tags', 'isPublic']
+      filterFields: ['mimeType', 'uploadedBy', 'tags', 'isPublic'],
     }),
-
 })

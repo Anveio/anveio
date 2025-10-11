@@ -11,6 +11,8 @@
 import type * as admin from "../admin.js";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
+import type * as posts from "../posts.js";
+import type * as schema_postFragments from "../schema/postFragments.js";
 import type * as validators_index from "../validators/index.js";
 import type * as validators_postFragments from "../validators/postFragments.js";
 
@@ -32,6 +34,8 @@ declare const fullApi: ApiFromModules<{
   admin: typeof admin;
   auth: typeof auth;
   http: typeof http;
+  posts: typeof posts;
+  "schema/postFragments": typeof schema_postFragments;
   "validators/index": typeof validators_index;
   "validators/postFragments": typeof validators_postFragments;
 }>;
