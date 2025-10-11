@@ -6,9 +6,7 @@ import type { Doc, Id } from './_generated/dataModel'
 import {
   displayPriorityValidator,
   fragmentPayloadValidator,
-  type FragmentStage,
-  type FragmentPayload,
-} from './schema/postFragments'
+} from './schema/content'
 
 const PUBLIC_ID_LENGTH = 16
 
@@ -18,6 +16,9 @@ const PUBLIC_ID_PREFIX = {
   fragmentAsset: 'pfa',
   publication: 'ppu',
 } as const
+
+type FragmentPayload = Doc<'postFragment'>['payload']
+type FragmentStage = Doc<'postFragment'>['stage']
 
 const draftStage: FragmentStage = 'draft'
 const publishedStage: FragmentStage = 'published'

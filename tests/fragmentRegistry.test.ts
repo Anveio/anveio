@@ -6,7 +6,9 @@ import {
   getFragmentComponentDefinition,
   validateHydrationMode,
 } from '@/app/(admin)/lib/fragmentRegistry'
-import type { FragmentPayload } from '@/convex/schema/postFragments'
+import type { Doc } from '@/convex/_generated/dataModel'
+
+type FragmentPayload = Doc<'postFragment'>['payload']
 
 describe('fragment registry', () => {
   it('exposes consistent definitions for each key', () => {

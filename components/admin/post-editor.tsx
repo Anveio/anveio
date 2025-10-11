@@ -5,13 +5,13 @@ import { useMutation, useQuery } from 'convex/react'
 
 import { api } from '@/convex/_generated/api'
 import type { Doc, Id } from '@/convex/_generated/dataModel'
-import type { FragmentPayload } from '@/convex/schema/postFragments'
 
 interface PostEditorProps {
   readonly postId: string
 }
 
-type DraftFragment = Doc<'postFragment'> & { payload: FragmentPayload }
+type DraftFragment = Doc<'postFragment'>
+type FragmentPayload = DraftFragment['payload']
 
 type EditorData = {
   post: Doc<'post'>

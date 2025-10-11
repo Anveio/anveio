@@ -17,22 +17,6 @@ npm run dev   # http://localhost:3000
 
 `npm` is the reference workflow for local development and deployment. Bun continues to work if you prefer it, but make sure every change also passes the `npm` scripts listed below before shipping.
 
-## Writing Posts
-
-We want to change this. Create a new Markdown file inside `content/posts` with front matter for `title`, `summary`, and `publishedAt`. Example:
-
-```markdown
----
-title: "Boring Systems Win"
-summary: "The best compliment I hear on-call is about how uneventful the night was."
-publishedAt: "2025-01-18"
----
-
-Your essay goes here. Markdown headings, lists, code blocks, and emphasis are all supported.
-```
-
-The homepage automatically lists posts in reverse chronological order, and individual posts render at `/blog/<slug>`.
-
 ## Scripts
 
 - `npm run dev` – start the development server

@@ -1,10 +1,13 @@
 import type { ComponentType } from 'react'
 import { v } from 'convex/values'
 import type { GenericValidator, Infer } from 'convex/values'
-import type {
-  FragmentHydrationMode,
+import type { Doc } from '@/convex/_generated/dataModel'
+
+type FragmentPayload = Doc<'postFragment'>['payload']
+type FragmentHydrationMode = Extract<
   FragmentPayload,
-} from '@/convex/schema/postFragments'
+  { kind: 'component' }
+>['hydration']
 
 type FragmentComponentModule<Props> = {
   default: ComponentType<Props>
@@ -95,11 +98,13 @@ export function assertComponentPayload(payload: unknown): FragmentPayload {
   }
 }
 
-const hydrationModes = ['static', 'client', 'none'] as const satisfies readonly FragmentHydrationMode[]
+const hydrationModes = [
+  'static',
+  'client',
+  'none',
+] as const satisfies readonly FragmentHydrationMode[]
 
-export function validateHydrationMode(
-  mode: unknown,
-): FragmentHydrationMode {
+export function validateHydrationMode(mode: unknown): FragmentHydrationMode {
   if (
     typeof mode === 'string' &&
     hydrationModes.includes(mode as FragmentHydrationMode)

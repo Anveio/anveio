@@ -12,9 +12,10 @@ import type * as admin from "../admin.js";
 import type * as auth from "../auth.js";
 import type * as http from "../http.js";
 import type * as posts from "../posts.js";
-import type * as schema_postFragments from "../schema/postFragments.js";
-import type * as validators_index from "../validators/index.js";
-import type * as validators_postFragments from "../validators/postFragments.js";
+import type * as schema_account from "../schema/account.js";
+import type * as schema_content from "../schema/content.js";
+import type * as schema_session from "../schema/session.js";
+import type * as schema_user from "../schema/user.js";
 
 import type {
   ApiFromModules,
@@ -35,9 +36,10 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   http: typeof http;
   posts: typeof posts;
-  "schema/postFragments": typeof schema_postFragments;
-  "validators/index": typeof validators_index;
-  "validators/postFragments": typeof validators_postFragments;
+  "schema/account": typeof schema_account;
+  "schema/content": typeof schema_content;
+  "schema/session": typeof schema_session;
+  "schema/user": typeof schema_user;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

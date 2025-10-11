@@ -2,7 +2,7 @@
 
 ## 0. Guiding Principles
 - Deliver value in vertical slices: schema + validator + mutation + UI hook, verified by tests.
-- Keep type safety strict. All payload validation flows through `convex/values` validators defined in `convex/schema/postFragments.ts`.
+- Keep type safety strict. All payload validation flows through `convex/values` validators defined in `convex/schema/content.ts`.
 - Prioritise fast publish flows over deep history. We only maintain draft and published stages—no revision log.
 - Every behaviour change ships with tests (Vitest, Convex integration, Playwright) so the pipeline stays reliable.
 
@@ -16,7 +16,7 @@ Exit criteria: CDK stack deployed, env vars present, storage utility tested.
 ## 2. Schema & Validators
 Tasks:
 1. Finalise schema updates for `post`, `postFragment` (with `stage`), `postFragmentAsset`, `postPublication`, `tag`, `postTag`.
-2. Ensure all fragment validators live in `convex/schema/postFragments.ts` and are exported for Convex + Next.js usage.
+2. Ensure all fragment validators live in `convex/schema/content.ts` and are exported for Convex + Next.js usage.
 3. Regenerate Convex types (`npx convex codegen`) after schema changes.
 
 Tests:

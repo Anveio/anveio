@@ -34,7 +34,8 @@
       "!node_modules",
       "!dist",
       "!.next",
-      "!convex/_generated"
+      "!convex/_generated",
+      "!app/globals.css"
     ]
   },
   "vcs": {
@@ -50,7 +51,7 @@
     "formatter": {
       "semicolons": "asNeeded",
       "trailingCommas": "all",
-      "indentStyle": "space",
+      "indentStyle": "tab",
       "quoteProperties": "asNeeded",
       "quoteStyle": "single"
     }

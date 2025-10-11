@@ -90,13 +90,14 @@ export default App;
 # Testing
 - Unit: Vitest for logic (parser fixtures, diff reducers, React hooks). Property-based tests where state spaces explode.
 - End-to-End: We use Playwright for anything that pushes pixels to the screen (tui-react, tui-web-canvas-renderer) and apps (apps/web-demo). Every behavioral change demands a scenario. All statements in specifications MUST have a test scenario.
+- To smoke test your current changes, run `npx convex dev --once`
 - After completing a task, run `npm run typecheck`, `npm run build`, and `npm run test` before declaring victory.
 - Spec Currency: When behavior shifts, update the relevant spec documents first (see package-level `AGENTS.md`), then tests, then code.
 
 # Toolchain Rituals
 - Package manager + runner: npm (`npm install`, `npm run test`, `npm run typecheck`).
 - Task orchestration: Turbo (`npm run dev -- --filter <target>`). Default to `--output-logs=errors-only` unless diagnosing.
-- Lint & format: Biome (`npm run lint`, `npm run lint:fix` → alias for `biome check --write .`).
+- Lint & format: Biome (`npm run lint`).
 - Git hygiene: Respect existing dirty state. Never revert foreign changes. Commit format must follow the following format:
 
 [Problem]
@@ -113,17 +114,8 @@ export default App;
 - Work around unexpected changes. If they appear, it simply means your co-collaborator or others are actively developing in the branch. 
 
 # Layering Human Expectation on Spec Compliance
-- Document every divergence from raw spec (e.g., DEL vs Backspace) at the adapter layer. Code comments should explain *why* the deviation exists.
 - Prefer configuration flags over hard forks. Ship sane defaults but keep the canonical behavior reachable.
 - Mirror AWS security rigor: zero-trust defaults, explicit capability grants, deterministic logging surfaces.
-
-# Common Commands
-- Install: `npm install`
-- Dev server (demo app): `npm run dev`
-- Build: `npm run build`
-- Typecheck: `npm run typecheck`
-- Lint: `npm run lint`
-- Format: `npm run format`
 
 # Site Architecture Notes
 - `lib/posts.ts` is a server-only module; it reads markdown from `content/posts`, validates front matter, and caches both the post index and individual post bodies with `react.cache`.
@@ -133,4 +125,3 @@ export default App;
 - Admin auth is powered by Better Auth with an in-memory adapter seeded from environment variables (`ADMIN_EMAIL`, `ADMIN_PASSWORD`, `BETTER_AUTH_SECRET`). Sessions live behind `/admin`, and the login form posts to Better Auth’s Next handler at `/api/auth/[...betterAuth]`.
 - Users carry a `roles` array persisted in Convex (`["user"]` by default) and mirrored into session records during login. Grant yourself admin by adding `"admin"` to that array via the Convex dashboard; sign out and back in to refresh the session snapshot.
 - Gate privileged flows with the helpers in `lib/auth/roles.ts` (`isAdmin`, `assertAdmin`, `hasRole`). UI guards should call `requireAdminSession`, which already enforces the admin role before returning a session bundle.
-- Local dev seed: `npm run seed:admin` creates (or updates) a user and promotes it to `roles: ["user", "admin"]` by driving Better Auth + Convex in one go. Override `SEED_ADMIN_*` env vars to customize credentials.

@@ -43,7 +43,7 @@ type FragmentPayload =
   | { kind: 'component'; version: '1'; componentKey: string; propsJson: string; hydration: 'static' | 'client' | 'none' }
   | { kind: 'webgl'; version: '1'; sceneKey: string; propsJson: string; fallbackMediaId?: Id<'media'>; aspectRatio: string }
 ```
-Validation lives in `convex/schema/postFragments.ts`, and both Convex mutations and Next.js code import types from there.
+Validation lives in `convex/schema/content.ts`, and both Convex mutations and Next.js code import types from there.
 
 ## 5. Publish Pipeline
 ### Trigger Options
