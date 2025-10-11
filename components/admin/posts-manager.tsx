@@ -7,16 +7,6 @@ import { useRouter } from 'next/navigation'
 import { api } from '@/convex/_generated/api'
 import type { Id } from '@/convex/_generated/dataModel'
 import { SignOutButton } from '@/components/admin/sign-out-button'
-import {
-  adminCardClass,
-  adminFormFieldClass,
-  adminInputClass,
-  adminLinkButtonClass,
-  adminMutedTextClass,
-  adminPrimaryButtonClass,
-  adminStackClass,
-  adminTextareaClass,
-} from '@/components/admin/ui-classes'
 
 interface PostsManagerProps {
   readonly currentUserEmail: string
@@ -40,9 +30,6 @@ const statusLabel: Record<ListPost['status'], string> = {
   archived: 'Archived',
 }
 
-const pluralize = (count: number, noun: string) =>
-  `${count} ${noun}${count === 1 ? '' : 's'}`
-
 const formatDateTime = (timestamp: number | null): string => {
   if (!timestamp) return '—'
   return new Intl.DateTimeFormat('en-US', {
@@ -54,15 +41,14 @@ const formatDateTime = (timestamp: number | null): string => {
   }).format(new Date(timestamp))
 }
 
-const slugify = (input: string): string => {
-  return input
+const slugify = (input: string): string =>
+  input
     .trim()
     .toLowerCase()
     .replace(/[^a-z0-9\s-]/g, '')
     .replace(/\s+/g, '-')
     .replace(/-+/g, '-')
     .replace(/^-|-$/g, '')
-}
 
 export function PostsManager({ currentUserEmail }: PostsManagerProps) {
   const router = useRouter()
@@ -71,17 +57,16 @@ export function PostsManager({ currentUserEmail }: PostsManagerProps) {
 
   const [title, setTitle] = useState('')
   const [summary, setSummary] = useState('')
-  const [isPending, startTransition] = useTransition()
   const [error, setError] = useState<string | null>(null)
+  const [isPending, startTransition] = useTransition()
 
-  const totalStats = useMemo(() => {
+  const totals = useMemo(() => {
     if (!posts) return { total: 0, published: 0 }
     const published = posts.filter((post) => post.status === 'published').length
     return { total: posts.length, published }
   }, [posts])
 
-  const handleCreate = async () => {
-    setError(null)
+  const handleCreate = () => {
     const trimmedTitle = title.trim()
     if (!trimmedTitle) {
       setError('Title is required to create a post.')
@@ -102,6 +87,7 @@ export function PostsManager({ currentUserEmail }: PostsManagerProps) {
         })
         setTitle('')
         setSummary('')
+        setError(null)
         router.push(`/admin/posts/${result.postId}/edit`)
       } catch (cause) {
         console.error(cause)
@@ -111,43 +97,47 @@ export function PostsManager({ currentUserEmail }: PostsManagerProps) {
   }
 
   return (
-    <div className={adminStackClass}>
-      <section className={adminCardClass}>
+    <div className="mx-auto flex w-full max-w-4xl flex-col gap-8 py-8 md:py-12">
+      <section className="rounded-2xl border border-slate-200/70 bg-white/90 p-6 shadow-sm dark:border-slate-700/60 dark:bg-slate-900/70">
         <header className="flex flex-wrap items-center justify-between gap-4">
           <div className="space-y-1">
-            <h1 className="text-2xl font-semibold tracking-tight">Admin Workspace</h1>
-            <p className={adminMutedTextClass}>Signed in as {currentUserEmail}</p>
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
+              Admin Workspace
+            </h1>
+            <p className="text-sm text-slate-500 dark:text-slate-400">
+              Signed in as {currentUserEmail}
+            </p>
           </div>
           <SignOutButton />
         </header>
         <dl className="mt-6 grid gap-4 sm:grid-cols-2">
-          <div className="rounded-xl bg-slate-100/80 p-4 dark:bg-slate-800/60">
-            <dt className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
-              Total Posts
+          <div className="rounded-xl border border-slate-200/70 bg-slate-100/80 p-4 dark:border-slate-700/50 dark:bg-slate-800/60">
+            <dt className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              Total posts
             </dt>
             <dd className="mt-2 text-2xl font-semibold text-slate-900 dark:text-slate-100">
-              {totalStats.total}
+              {totals.total}
             </dd>
           </div>
-          <div className="rounded-xl bg-slate-100/80 p-4 dark:bg-slate-800/60">
-            <dt className="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+          <div className="rounded-xl border border-slate-200/70 bg-slate-100/80 p-4 dark:border-slate-700/50 dark:bg-slate-800/60">
+            <dt className="text-xs font-medium uppercase tracking-wide text-slate-500 dark:text-slate-400">
               Published
             </dt>
             <dd className="mt-2 text-2xl font-semibold text-slate-900 dark:text-slate-100">
-              {totalStats.published}
+              {totals.published}
             </dd>
           </div>
         </dl>
       </section>
 
-      <section className={adminCardClass}>
-        <header className="flex flex-wrap items-center justify-between gap-4">
+      <section className="rounded-2xl border border-slate-200/70 bg-white/90 p-6 shadow-sm dark:border-slate-700/60 dark:bg-slate-900/70">
+        <header className="flex items-center justify-between gap-4">
           <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
-            Create a New Post
+            Create a new post
           </h2>
         </header>
         <div className="mt-4 flex flex-col gap-4">
-          <label className={adminFormFieldClass}>
+          <label className="flex flex-col gap-2">
             <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
               Title
             </span>
@@ -155,12 +145,12 @@ export function PostsManager({ currentUserEmail }: PostsManagerProps) {
               type="text"
               value={title}
               onChange={(event) => setTitle(event.target.value)}
-              placeholder="Observability Notes"
+              placeholder="Observability notes"
               autoComplete="off"
-              className={adminInputClass}
+              className="w-full rounded-lg border border-slate-300 bg-white/95 px-3 py-2 text-base text-slate-900 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus:border-slate-400 dark:focus:ring-slate-700"
             />
           </label>
-          <label className={adminFormFieldClass}>
+          <label className="flex flex-col gap-2">
             <span className="text-sm font-semibold text-slate-700 dark:text-slate-200">
               Summary (optional)
             </span>
@@ -169,34 +159,30 @@ export function PostsManager({ currentUserEmail }: PostsManagerProps) {
               value={summary}
               onChange={(event) => setSummary(event.target.value)}
               placeholder="One-paragraph synopsis for listings"
-              className={adminTextareaClass}
+              className="w-full rounded-lg border border-slate-300 bg-white/95 px-3 py-2 text-base text-slate-900 shadow-sm focus:border-slate-500 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-900/70 dark:text-slate-100 dark:focus:border-slate-400 dark:focus:ring-slate-700"
             />
           </label>
           {error && (
-            <p className="text-sm font-medium text-red-600 dark:text-red-400">
-              {error}
-            </p>
+            <p className="text-sm font-medium text-red-600 dark:text-red-400">{error}</p>
           )}
           <button
             type="button"
-            className={adminPrimaryButtonClass}
             onClick={handleCreate}
             disabled={isPending}
+            className="inline-flex w-fit items-center justify-center rounded-full bg-slate-900 px-4 py-2 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
           >
             {isPending ? 'Creating…' : 'Create & edit'}
           </button>
         </div>
       </section>
 
-      <section className={adminCardClass}>
+      <section className="rounded-2xl border border-slate-200/70 bg-white/90 p-6 shadow-sm dark:border-slate-700/60 dark:bg-slate-900/70">
         <header className="flex flex-wrap items-center justify-between gap-4">
           <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
             Posts
           </h2>
-          <p className={adminMutedTextClass}>
-            {posts === undefined
-              ? 'Loading…'
-              : `${pluralize(posts.length, 'post')} total`}
+          <p className="text-sm text-slate-500 dark:text-slate-400">
+            {posts === undefined ? 'Loading…' : `${posts.length} total`}
           </p>
         </header>
         {posts === undefined ? (
@@ -210,7 +196,7 @@ export function PostsManager({ currentUserEmail }: PostsManagerProps) {
         ) : (
           <div className="mt-6 overflow-hidden rounded-xl border border-slate-200 dark:border-slate-700">
             <table className="min-w-full divide-y divide-slate-200 dark:divide-slate-700">
-              <thead className="bg-slate-50/70 dark:bg-slate-800/60">
+              <thead className="bg-slate-50/90 dark:bg-slate-800/70">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                     Title
@@ -224,51 +210,45 @@ export function PostsManager({ currentUserEmail }: PostsManagerProps) {
                   <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                     Published
                   </th>
-                  <th
-                    className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400"
-                    aria-label="actions"
-                  >
+                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-slate-500 dark:text-slate-400">
                     Actions
                   </th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
                 {posts.map((post) => (
-                  <tr
-                    key={post._id}
-                    className="bg-white/90 odd:bg-white even:bg-slate-50/70 dark:bg-slate-900/40 dark:odd:bg-slate-900/60 dark:even:bg-slate-900/40"
-                  >
-                    <td className="px-4 py-3 align-middle">
-                      <div className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  <tr key={post._id} className="bg-white/95 dark:bg-slate-900/60">
+                    <td className="px-4 py-3">
+                      <div className="font-semibold text-slate-900 dark:text-slate-100">
                         {post.title}
                       </div>
-                      <div className="text-xs uppercase tracking-wider text-slate-500 dark:text-slate-400">
+                      <div className="text-xs text-slate-500 dark:text-slate-400">
                         /{post.slug}
                       </div>
                     </td>
-                    <td className="px-4 py-3 align-middle text-sm text-slate-700 dark:text-slate-200">
+                    <td className="px-4 py-3 text-sm text-slate-700 dark:text-slate-200">
                       {statusLabel[post.status]}
                     </td>
-                    <td className="px-4 py-3 align-middle text-sm text-slate-700 dark:text-slate-200">
+                    <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">
                       {formatDateTime(post.updatedAt)}
                     </td>
-                    <td className="px-4 py-3 align-middle text-sm text-slate-700 dark:text-slate-200">
+                    <td className="px-4 py-3 text-sm text-slate-600 dark:text-slate-300">
                       {formatDateTime(post.publishedAt)}
                     </td>
-                    <td className="px-4 py-3 align-middle">
-                      <div className="flex items-center gap-3">
+                    <td className="px-4 py-3 text-right text-sm">
+                      <div className="flex items-center justify-end gap-3">
                         <button
                           type="button"
-                          className={adminLinkButtonClass}
                           onClick={() => router.push(`/admin/posts/${post._id}/edit`)}
+                          className="text-slate-700 underline-offset-4 transition hover:text-slate-900 hover:underline dark:text-slate-200 dark:hover:text-white"
                         >
                           Edit
                         </button>
                         <a
-                          className={adminLinkButtonClass}
                           href={`/blog/${post.slug}`}
                           target="_blank"
                           rel="noreferrer"
+                          className="text-slate-700 underline-offset-4 transition hover:text-slate-900 hover:underline dark:text-slate-200 dark:hover:text-white"
                         >
                           View
                         </a>
