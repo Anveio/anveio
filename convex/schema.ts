@@ -228,53 +228,220 @@ export default defineSchema({
     .index('key', ['key']),
 
   /**
-   * Blog posts with rich content composition.
-   * Stores structured content blocks that can include text, images, videos, and components.
-   * Uses a flexible block-based architecture for complex layouts.
+   * Core blog post metadata. Stores canonical identity/SEO fields and points to
+   * the currently published revision.
    */
   post: defineTable({
-    publicId: v.string(), // pst_1234567890abcdef - Stripe-style external identifier
-    title: v.string(),
+    publicId: v.string(), // pst_1234567890abcdef - external identifier
     slug: v.string(),
-    excerpt: v.optional(v.string()),
-    content: v.array(v.object({
-      id: v.string(),
-      type: v.union(
-        v.literal('text'),
-        v.literal('image'), 
-        v.literal('video'),
-        v.literal('webgl'),
-        v.literal('component')
-      ),
-      data: v.any(), // Flexible data structure per block type
-      metadata: v.optional(v.object({
-        caption: v.optional(v.string()),
-        alt: v.optional(v.string()),
-        width: v.optional(v.number()),
-        height: v.optional(v.number()),
-        alignment: v.optional(v.union(v.literal('left'), v.literal('center'), v.literal('right'))),
-      })),
-    })),
-    authorId: v.id('user'),
+    title: v.string(),
+    summary: v.optional(v.string()),
+    primaryAuthorId: v.id('user'),
     status: v.union(v.literal('draft'), v.literal('published'), v.literal('archived')),
-    publishedAt: v.optional(v.number()),
-    tags: v.array(v.string()),
-    featuredImageId: v.optional(v.id('_storage')),
+    currentPublishedRevisionId: v.optional(v.id('postRevision')),
+    featuredMediaId: v.optional(v.id('media')),
     seoTitle: v.optional(v.string()),
     seoDescription: v.optional(v.string()),
+    canonicalUrl: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+    publishedAt: v.optional(v.number()),
+  })
+    .index('publicId', ['publicId'])
+    .index('slug', ['slug'])
+    .index('status', ['status'])
+    .index('primaryAuthorId', ['primaryAuthorId'])
+    .index('currentPublishedRevisionId', ['currentPublishedRevisionId'])
+    .searchIndex('search_posts_title', {
+      searchField: 'title',
+      filterFields: ['status', 'primaryAuthorId'],
+    }),
+
+  /**
+   * Immutable snapshot of a post's content at a point in time. Revisions hold
+   * editorial history and are promoted to published state through the pipeline.
+   */
+  postRevision: defineTable({
+    publicId: v.string(), // prv_1234567890abcdef
+    postId: v.id('post'),
+    revisionNumber: v.number(),
+    state: v.union(
+      v.literal('draft'),
+      v.literal('ready'),
+      v.literal('published'),
+      v.literal('archived')
+    ),
+    fragmentsChecksum: v.string(),
+    source: v.optional(v.union(v.literal('editor'), v.literal('import'), v.literal('api'))),
+    createdBy: v.id('user'),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+    note: v.optional(v.string()),
+    scheduledPublishAt: v.optional(v.number()),
+    publishedAt: v.optional(v.number()),
+  })
+    .index('publicId', ['publicId'])
+    .index('postId', ['postId'])
+    .index('postId_revisionNumber', ['postId', 'revisionNumber'])
+    .index('postId_state', ['postId', 'state']),
+
+  /**
+   * Ordered fragments of a revision. Each fragment references a typed payload
+   * (text, media, component) and drives chunking during artifact generation.
+   */
+  postFragment: defineTable({
+    publicId: v.string(), // pfg_1234567890abcdef
+    revisionId: v.id('postRevision'),
+    position: v.number(),
+    displayPriority: v.union(
+      v.literal('intro'),
+      v.literal('body'),
+      v.literal('supplement')
+    ),
+    payload: v.union(
+      v.object({
+        kind: v.literal('text'),
+        version: v.literal('1'),
+        editorState: v.string(), // Serialized TipTap/MDX JSON string
+        wordCount: v.number(),
+      }),
+      v.object({
+        kind: v.literal('image'),
+        version: v.literal('1'),
+        mediaId: v.id('media'),
+        layout: v.union(
+          v.literal('inline'),
+          v.literal('breakout'),
+          v.literal('fullscreen')
+        ),
+        width: v.number(),
+        height: v.number(),
+        alt: v.string(),
+        caption: v.optional(v.string()),
+        focalPoint: v.optional(v.object({ x: v.number(), y: v.number() })),
+      }),
+      v.object({
+        kind: v.literal('video'),
+        version: v.literal('1'),
+        source: v.union(
+          v.object({
+            type: v.literal('media'),
+            mediaId: v.id('media'),
+          }),
+          v.object({
+            type: v.literal('external'),
+            url: v.string(),
+          })
+        ),
+        posterMediaId: v.optional(v.id('media')),
+        aspectRatio: v.string(),
+        autoplay: v.boolean(),
+        loop: v.boolean(),
+        controls: v.boolean(),
+        caption: v.optional(v.string()),
+      }),
+      v.object({
+        kind: v.literal('component'),
+        version: v.literal('1'),
+        componentKey: v.string(),
+        propsJson: v.string(), // JSON string validated against registry schema
+        hydration: v.union(
+          v.literal('static'),
+          v.literal('client'),
+          v.literal('none')
+        ),
+      }),
+      v.object({
+        kind: v.literal('webgl'),
+        version: v.literal('1'),
+        sceneKey: v.string(),
+        propsJson: v.string(),
+        fallbackMediaId: v.optional(v.id('media')),
+        aspectRatio: v.string(),
+      })
+    ),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index('publicId', ['publicId'])
+    .index('revisionId', ['revisionId'])
+    .index('revisionId_position', ['revisionId', 'position']),
+
+  /**
+   * Join table between fragments and media assets. Enables analytics and GC of
+   * unused uploads.
+   */
+  postFragmentAsset: defineTable({
+    publicId: v.string(), // pfa_1234567890abcdef
+    fragmentId: v.id('postFragment'),
+    mediaId: v.id('media'),
+    role: v.union(
+      v.literal('primary'),
+      v.literal('poster'),
+      v.literal('thumbnail')
+    ),
+    createdAt: v.number(),
+  })
+    .index('publicId', ['publicId'])
+    .index('fragmentId', ['fragmentId'])
+    .index('mediaId', ['mediaId'])
+    .index('fragment_media', ['fragmentId', 'mediaId']),
+
+  /**
+   * Record of publish events and artifact locations. References immutable S3
+   * artifacts for rollback and cache invalidation.
+   */
+  postPublication: defineTable({
+    publicId: v.string(), // ppu_1234567890abcdef
+    postId: v.id('post'),
+    revisionId: v.id('postRevision'),
+    artifactVersion: v.string(),
+    artifactJsonPath: v.string(),
+    artifactIntroHtmlPath: v.string(),
+    artifactChecksum: v.string(),
+    publishedAt: v.number(),
+    publishedBy: v.id('user'),
+    cdnInvalidationStatus: v.optional(
+      v.union(v.literal('pending'), v.literal('completed'), v.literal('failed'))
+    ),
+    createdAt: v.number(),
+  })
+    .index('publicId', ['publicId'])
+    .index('postId', ['postId'])
+    .index('revisionId', ['revisionId'])
+    .index('postId_artifactVersion', ['postId', 'artifactVersion'])
+    .index('publishedAt', ['publishedAt']),
+
+  /**
+   * Controlled vocabulary tags for categorising posts. Replaces freeform tag
+   * arrays and enables metadata expansion in the future.
+   */
+  tag: defineTable({
+    publicId: v.string(), // tag_1234567890abcdef
+    name: v.string(),
+    slug: v.string(),
+    description: v.optional(v.string()),
+    color: v.optional(v.string()),
     createdAt: v.number(),
     updatedAt: v.number(),
   })
     .index('publicId', ['publicId'])
     .index('slug', ['slug'])
-    .index('authorId', ['authorId'])
-    .index('status', ['status'])
-    .index('publishedAt', ['publishedAt'])
-    .index('authorId_status', ['authorId', 'status'])
-    .searchIndex('search_content', {
-      searchField: 'title',
-      filterFields: ['status', 'authorId', 'tags']
-    }),
+    .index('name', ['name']),
+
+  /**
+   * Many-to-many mapping between posts and tags.
+   */
+  postTag: defineTable({
+    publicId: v.string(), // ptg_1234567890abcdef
+    postId: v.id('post'),
+    tagId: v.id('tag'),
+    createdAt: v.number(),
+  })
+    .index('publicId', ['publicId'])
+    .index('postId', ['postId'])
+    .index('tagId', ['tagId'])
+    .index('postId_tagId', ['postId', 'tagId']),
 
   /**
    * Media assets for blog posts (images, videos, files).
@@ -307,40 +474,4 @@ export default defineSchema({
       filterFields: ['mimeType', 'uploadedBy', 'tags', 'isPublic']
     }),
 
-  /**
-   * Content categories for organizing blog posts.
-   * Hierarchical structure supporting nested categories.
-   */
-  category: defineTable({
-    publicId: v.string(), // cat_1234567890abcdef - Stripe-style external identifier
-    name: v.string(),
-    slug: v.string(),
-    description: v.optional(v.string()),
-    parentId: v.optional(v.id('category')),
-    color: v.optional(v.string()),
-    icon: v.optional(v.string()),
-    isVisible: v.boolean(),
-    sortOrder: v.number(),
-    createdAt: v.number(),
-    updatedAt: v.number(),
-  })
-    .index('publicId', ['publicId'])
-    .index('slug', ['slug'])
-    .index('parentId', ['parentId'])
-    .index('isVisible_sortOrder', ['isVisible', 'sortOrder']),
-
-  /**
-   * Many-to-many relationship between posts and categories.
-   * Enables posts to belong to multiple categories.
-   */
-  postCategory: defineTable({
-    publicId: v.string(), // pcr_1234567890abcdef - Stripe-style external identifier
-    postId: v.id('post'),
-    categoryId: v.id('category'),
-    createdAt: v.number(),
-  })
-    .index('publicId', ['publicId'])
-    .index('postId', ['postId'])
-    .index('categoryId', ['categoryId'])
-    .index('postId_categoryId', ['postId', 'categoryId']),
 })

@@ -1,7 +1,7 @@
 import { describe, it } from 'vitest';
 import { App } from 'aws-cdk-lib';
 import { Match, Template } from 'aws-cdk-lib/assertions';
-import { PostArtifactsStack } from '../lib/post-artifacts-stack.js';
+import { PostArtifactsStack } from '../lib/post-artifacts-stack';
 
 describe('PostArtifactsStack', () => {
   it('creates dev and prod artifact buckets with strict security defaults', () => {

@@ -23,6 +23,7 @@ node_modules
 # misc
 .DS_Store
 *.pem
+infra/cdk/cdk.out/
 
 # debug
 npm-debug.log*

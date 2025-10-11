@@ -2,12 +2,10 @@
   "name": "anveio-post-artifacts-infra",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
-    "watch": "tsc -w --noEmit",
+    "watch": "tsc -w --pretty false",
     "cdk": "cdk",
     "synth": "cdk synth",
-    "lint": "biome lint --fix",
     "deploy": "cdk deploy --all",
     "diff": "cdk diff",
     "destroy": "cdk destroy --all",
