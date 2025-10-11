@@ -3,45 +3,21 @@ import { api, internal } from './_generated/api'
 
 import type { Id } from './_generated/dataModel'
 
-import { z } from 'zod'
+import { v } from 'convex/values'
 
-const envSchema = z.object({
-	ADMIN_EMAIL: z.string().email(),
-	ADMIN_PASSWORD: z.string().min(1, 'ADMIN_PASSWORD must be provided'),
-	ADMIN_NAME: z.string().min(1).optional(),
-	CONVEX_SITE_URL: z.string().url('CONVEX_SITE_URL must be an absolute URL'),
-})
+import { PublicEnvironmentVariables } from '../lib/public-env'
 
 const normalizeEmail = (email: string): string => email.trim().toLowerCase()
 
-const parseEnvironment = () => {
-	const result = envSchema.safeParse({
-		ADMIN_EMAIL: process.env.ADMIN_EMAIL,
-		ADMIN_PASSWORD: process.env.ADMIN_PASSWORD,
-		ADMIN_NAME: process.env.ADMIN_NAME,
-		CONVEX_SITE_URL: process.env.CONVEX_SITE_URL,
-	})
-
-	if (!result.success) {
-		const reasons = result.error.issues
-			.map((issue) => `${issue.path.join('.') || '(root)'}: ${issue.message}`)
-			.join('; ')
-		throw new Error(
-			`Missing or invalid environment configuration for admin seeding: ${reasons}`,
-		)
-	}
-
-	const { ADMIN_EMAIL, ADMIN_PASSWORD, ADMIN_NAME, CONVEX_SITE_URL } =
-		result.data
-	return {
-		email: normalizeEmail(ADMIN_EMAIL),
-		password: ADMIN_PASSWORD,
-		name: (ADMIN_NAME ?? 'Site Admin').trim() || 'Site Admin',
-		siteUrl: CONVEX_SITE_URL.replace(/\/+$/, ''),
-	}
-}
+const resolveSiteUrl = (): string =>
+	PublicEnvironmentVariables.convexSiteUrl.replace(/\/+$/, '')
 
 const ADMIN_ROLES = ['user', 'admin'] as const
+type SeedAdminArgs = {
+	email: string
+	password: string
+	name?: string
+}
 
 type SeedAdminResult = {
 	status: 'ok'
@@ -54,24 +30,32 @@ type SeedAdminResult = {
 }
 
 export const seedAdmin = internalAction({
-	args: {},
-	handler: async (ctx): Promise<SeedAdminResult> => {
-		const env = parseEnvironment()
+	args: {
+		email: v.string(),
+		password: v.string(),
+		name: v.optional(v.string()),
+	},
+	handler: async (ctx, args: SeedAdminArgs): Promise<SeedAdminResult> => {
+		const adminEmail = normalizeEmail(args.email)
+		const adminPassword = args.password
+		const trimmedName = args.name?.trim() ?? ''
+		const adminName = trimmedName.length > 0 ? trimmedName : 'Site Admin'
+		const siteUrl = resolveSiteUrl()
 
 		const { removed: removedExistingAccount } = await ctx.runMutation(
 			internal.admin.resetAdminAccount,
-			{ email: env.email },
+			{ email: adminEmail },
 		)
 
-		const response = await fetch(`${env.siteUrl}/api/auth/sign-up/email`, {
+		const response = await fetch(`${siteUrl}/api/auth/sign-up/email`, {
 			method: 'POST',
 			headers: {
 				'Content-Type': 'application/json',
 			},
 			body: JSON.stringify({
-				email: env.email,
-				password: env.password,
-				name: env.name,
+				email: adminEmail,
+				password: adminPassword,
+				name: adminName,
 				rememberMe: true,
 			}),
 		})
@@ -89,8 +73,8 @@ export const seedAdmin = internalAction({
 		} = await response.json().catch(() => ({}))
 
 		const { userId } = await ctx.runMutation(internal.admin.applyAdminProfile, {
-			email: env.email,
-			name: env.name,
+			email: adminEmail,
+			name: adminName,
 		})
 
 		const adminRoles = Array.from(ADMIN_ROLES)
@@ -98,19 +82,19 @@ export const seedAdmin = internalAction({
 		const { updated: rolesUpdated } = await ctx.runMutation(
 			api.admin.ensureRoles,
 			{
-				email: env.email,
+				email: adminEmail,
 				roles: adminRoles,
 			},
 		)
 
 		const { updated: sessionsUpdated } = await ctx.runMutation(
 			internal.admin.syncSessionRoles,
-			{ email: env.email, roles: adminRoles },
+			{ email: adminEmail, roles: adminRoles },
 		)
 
 		return {
 			status: 'ok' as const,
-			email: env.email,
+			email: adminEmail,
 			removedExistingAccount,
 			userId,
 			signupUserId: signupPayload.user?.id ?? null,
