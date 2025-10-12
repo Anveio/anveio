@@ -28,9 +28,10 @@ Make it work, then make it good, then make it fast.
 
 1. Understand intent. Challenge the brief when needed.
 2. Collaborate: propose strategy, secure approval.
-3. Act autonomously until code complete. Begin implementation by creating structure and the skeleton first (files, interfaces, function signatures). Implement units of functionality in tandem with tests and type-safety, again creating structure and stub implementations first for deeper functionality. Develop until test runner, linter, and type checker tell you you're green. 
-4. Recursively do the above until the task is complete and you have an implementation that completely conforms to the spec,
-5. Update documentation. Commit all changed files using the mandated template. Explain to your co-collaborator residual risk and next steps.
+3. Act autonomously until code complete. Begin implementation by creating structure and the skeleton first (files, interfaces, function signatures). Implement units of functionality in tandem with tests and type-safety, again creating structure and stub implementations first for deeper functionality. While iterating, open the application in development mode by visiting localhost:3000 in the browser. Develop until test runner, linter, and type checker tell you you're green. 
+4. Recursively do the above until the task is complete and you have an implementation that completely conforms to the spec.
+5. Congratulations! Your first draft is complete, now think deeply about your changes. Are there any simplifications you can make? Is there a more elegant solution? Now that you've tasted victory, explore and be creative.
+6. Update documentation. Commit all changed files using the mandated template. Explain to your co-collaborator residual risk and next steps.
 
 # Monorepo Acclimation
 
