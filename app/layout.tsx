@@ -26,8 +26,8 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className="flex min-h-screen justify-center bg-background text-foreground antialiased">
-        <div className="flex min-h-screen w-full max-w-4xl flex-col px-4 sm:px-6 lg:max-w-[70ch] lg:px-8">
+      <body className="layout-body">
+        <div className="layout-shell">
           <ConvexClientProvider>{children}</ConvexClientProvider>
         </div>
       </body>

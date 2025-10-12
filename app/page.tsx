@@ -7,7 +7,7 @@ export default async function Home() {
 	const posts = await getAllPosts()
 
 	return (
-		<main className="mx-auto max-w-3xl px-4 py-10">
+		<main className="flex-1 py-10">
 			<ul className="flex flex-col gap-5">
 				{posts.map((post) => (
 					<li
