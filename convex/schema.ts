@@ -1,6 +1,5 @@
 import { defineSchema } from 'convex/server'
 import { accountTables } from './schema/account'
-import { contentTables } from './schema/content'
 import { sessionTables } from './schema/session'
 import { userTables } from './schema/user'
 
@@ -11,5 +10,4 @@ export default defineSchema({
   ...userTables,
   ...sessionTables,
   ...accountTables,
-  ...contentTables,
 })

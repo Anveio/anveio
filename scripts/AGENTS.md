@@ -35,7 +35,6 @@ The `/scripts` workspace is evolving into an operator-focused CLI surface for An
 
   ```bash
   node scripts/seed-admin.ts --help
-  node scripts/rotate-post-artifacts-dev-key.ts
   npm run seed:admin -- --email ops@anveio.com --password "••••"
   ```
 - When adding a new tool, wire it into the dispatcher *and* keep its standalone invocation working—power users will script against the file paths.

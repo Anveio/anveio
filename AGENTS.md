@@ -130,7 +130,8 @@ export default App;
 - `lib/posts.ts` is a server-only module; it reads markdown from `content/posts`, validates front matter, and caches both the post index and individual post bodies with `react.cache`.
 - All routes opt in to `force-dynamic`, ensuring SSR behaviour on Vercel. The Next.js config emits a standalone output for portability.
 - Tailwind CSS 4 is the design system. Reach for inline utility classes; custom CSS should be a last resort.
-- The data layer is already isolated so we can replace the filesystem adapter with Convex once the CMS lands. Plan on introducing a posts data provider that can delegate to either filesystem or Convex during the migration.
+- Posts intentionally live in the repo (Markdown or React modules). Treat git as the source of truth; there is no plan to migrate post content back to Convex without a brand-new proposal.
+- The `/admin` workspace currently proves auth-only. Build tools there only if they complement the code-authored workflow (e.g., preview helpers), not to recreate the removed composer.
 - Admin auth is powered by Better Auth with an in-memory adapter seeded from environment variables (`ADMIN_EMAIL`, `ADMIN_PASSWORD`, `BETTER_AUTH_SECRET`). Sessions live behind `/admin`, and the login form posts to Better Auth’s Next handler at `/api/auth/[...betterAuth]`.
 - Users carry a `roles` array persisted in Convex (`["user"]` by default) and mirrored into session records during login. Grant yourself admin by adding `"admin"` to that array via the Convex dashboard; sign out and back in to refresh the session snapshot.
 - Gate privileged flows with the helpers in `lib/auth/roles.ts` (`isAdmin`, `assertAdmin`, `hasRole`). UI guards should call `requireAdminSession`, which already enforces the admin role before returning a session bundle.

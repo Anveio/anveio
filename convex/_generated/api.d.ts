@@ -12,9 +12,7 @@ import type * as admin from "../admin.js";
 import type * as auth from "../auth.js";
 import type * as dev from "../dev.js";
 import type * as http from "../http.js";
-import type * as posts from "../posts.js";
 import type * as schema_account from "../schema/account.js";
-import type * as schema_content from "../schema/content.js";
 import type * as schema_session from "../schema/session.js";
 import type * as schema_user from "../schema/user.js";
 
@@ -37,9 +35,7 @@ declare const fullApi: ApiFromModules<{
   auth: typeof auth;
   dev: typeof dev;
   http: typeof http;
-  posts: typeof posts;
   "schema/account": typeof schema_account;
-  "schema/content": typeof schema_content;
   "schema/session": typeof schema_session;
   "schema/user": typeof schema_user;
 }>;

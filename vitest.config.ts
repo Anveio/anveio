@@ -10,6 +10,7 @@ export default defineConfig({
     globals: true,
     include: ['tests/**/*.test.ts'],
     exclude: ['convex/**/*.convex.test.ts'],
+    passWithNoTests: true,
   },
   resolve: {
     alias: {

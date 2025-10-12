@@ -24,28 +24,15 @@ npm run dev   # http://localhost:3000
 - `npm run lint` – lint the codebase with Biome
 - `npm run typecheck` – run the TypeScript compiler in `--noEmit` mode
 
-## Blog Architecture & Media Storage
+## Blog Architecture
 
-### Content Management
-The blog uses a **block-based content architecture** stored in Convex tables:
-- **Posts**: Structured as arrays of content blocks (text, images, videos, WebGL, React components)
-- **Media**: Centralized asset management with metadata (dimensions, alt text, captions)
-- **Categories**: Hierarchical organization with many-to-many post relationships
+Posts are authored directly in the repository—either as Markdown files under `content/posts` or as React modules when richer layouts are required. Git is the revision history, and publishing is as simple as merging to `main`.
 
-### Public ID System
-Following Stripe's API design, all resources have **prefixed public identifiers** alongside Convex's internal IDs:
-
-- **Users**: `usr_1234567890abcdef`
-- **Posts**: `pst_1234567890abcdef`
-- **Media**: `med_1234567890abcdef`
-- **Categories**: `cat_1234567890abcdef`
-- **OAuth Clients**: `cid_1234567890abcdef`
-
-For a personal blog, Convex storage provides excellent performance without operational complexity.
+The Convex backend remains dedicated to authentication (Better Auth component) and future dynamic features. No Convex tables store post content anymore.
 
 ## Admin Panel
 
-There is a password-protected dashboard at `/admin`. It currently lists existing posts and holds space for the forthcoming composer.
+There is a password-protected dashboard at `/admin`. For now it acts as a thin shell that proves authentication; all post authoring happens in the IDE.
 
 1. Copy `.env.example` to `.env.local`.
 2. Provide values for:
