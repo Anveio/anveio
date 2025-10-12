@@ -91,8 +91,17 @@ export default App;
 - Unit: Vitest for logic (parser fixtures, diff reducers, React hooks). Property-based tests where state spaces explode.
 - End-to-End: We use Playwright for anything that pushes pixels to the screen (tui-react, tui-web-canvas-renderer) and apps (apps/web-demo). Every behavioral change demands a scenario. All statements in specifications MUST have a test scenario.
 - To smoke test your current changes, run `npx convex dev --once`
-- After completing a task, run `npm run typecheck`, `npm run build`, and `npm run test` before declaring victory.
+- Convex contract tests: Every new Convex query, mutation, action, or HTTP endpoint must land alongside a comprehensive `convexTest`-backed suite. Tests must:
+  1. Exercise every happy-path permutation and assert output shape plus data writes.
+  2. Prove authorization gates by covering unauthenticated, wrong-role, and revoked-session flows.
+  3. Validate input decoders by supplying malformed payloads and asserting the thrown/returned errors.
+  4. Cover domain invariants (missing dependencies, duplicate resources, race/idempotency scenarios).
+  5. Observe side effects: document inserts, patches, deletions, scheduled work, storage writes, external fetches (stubbing as needed).
+  6. For HTTP routes, assert every documented status code, method restriction, and critical headers.
+  7. For actions that call external services, simulate both success and failure transports (timeouts, non-2xx responses).
+  8. Achieve 100% line and branch coverage for the touched modules; any unavoidable gap must be annotated and follow-up ticketed before merge.
 - Spec Currency: When behavior shifts, update the relevant spec documents first (see package-level `AGENTS.md`), then tests, then code.
+- After completing a task, run `npm run typecheck`, `npm run build`, and `npm run test` before declaring victory.
 
 # Toolchain Rituals
 - Package manager + runner: npm (`npm install`, `npm run test`, `npm run typecheck`).

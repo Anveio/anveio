@@ -6,10 +6,14 @@ const rootDir = dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   test: {
-    environment: 'jsdom',
+    environment: 'edge-runtime',
     globals: true,
-    include: ['tests/**/*.test.ts'],
-    exclude: ['convex/**/*.convex.test.ts'],
+    include: ['convex/**/*.convex.test.ts'],
+    server: {
+      deps: {
+        inline: ['convex-test'],
+      },
+    },
   },
   resolve: {
     alias: {
