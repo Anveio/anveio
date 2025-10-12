@@ -3,7 +3,11 @@ import type { Metadata, Viewport } from "next"
 
 import { ConvexClientProvider } from "@/components/convex-client-provider"
 
+const siteUrl =
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://shovonhasan.com"
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: "Shovon Hasan",
   description:
     "Engineer at AWS EC2 sharing notes on systems, infrastructure, and making an impact.",
@@ -22,8 +26,10 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-background text-foreground antialiased">
-        <ConvexClientProvider>{children}</ConvexClientProvider>
+      <body className="flex min-h-screen justify-center bg-background text-foreground antialiased">
+        <div className="flex min-h-screen w-full max-w-4xl flex-col px-4 sm:px-6 lg:max-w-[70ch] lg:px-8">
+          <ConvexClientProvider>{children}</ConvexClientProvider>
+        </div>
       </body>
     </html>
   )

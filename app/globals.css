@@ -1,5 +1,22 @@
 @tailwind base;
 @tailwind components;
-@tailwind utilities;@tailwind base;
-@tailwind components;
 @tailwind utilities;
+
+:root {
+  color-scheme: light dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  font-feature-settings: "kern", "liga";
+  line-height: 1.6;
+  background-color: rgb(248 250 252);
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: rgb(10 12 15);
+  }
+}

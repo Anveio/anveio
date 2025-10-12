@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from 'react'
 import Link from 'next/link'
 
+import { getPostImage } from '@/lib/images/posts'
 import { definePost } from '@/lib/posts/definePost'
 
 const postMeta = {
@@ -26,6 +27,8 @@ const post = definePost({
 					title={postMeta.title}
 					summary={postMeta.summary}
 					publishedAt={postMeta.publishedAt}
+					heroImageKey="cover"
+					heroImageAlt="Illustration representing language models collaborating with existing software"
 					heroCaption={`Future generations will look back at our limited view that language models could "only" generate text meant for humans and think: "How could they have missed what was right in front of their eyes?"`}
 				/>
 				<Section>
@@ -53,7 +56,7 @@ const post = definePost({
 					</p>
 					<p>Pick your favorite spot somewhere on the line:</p>
 					<ImageWithCaption
-						src="/blog-assets/language-models-can-use-existing-software/platform-spectrum.webp"
+						imageKey="platform-spectrum"
 						caption="Your company’s design system and component libraries are way on the left, off the chart."
 					/>
 					<p>
@@ -147,11 +150,15 @@ const BlogHeader = ({
 	summary,
 	publishedAt,
 	heroCaption,
+	heroImageKey,
+	heroImageAlt,
 }: {
 	title: string
 	summary: string
 	publishedAt: string
 	heroCaption?: string
+	heroImageKey?: string
+	heroImageAlt?: string
 }) => {
 	const formattedDate = new Intl.DateTimeFormat('en-US', {
 		year: 'numeric',
@@ -168,6 +175,17 @@ const BlogHeader = ({
 				{title}
 			</h1>
 			<p className="text-center text-base text-slate-600 dark:text-slate-300">{summary}</p>
+			{heroImageKey ? (
+				<div className="mx-auto max-w-3xl">
+					<ResponsiveImage
+						postSlug={postMeta.slug}
+						imageKey={heroImageKey}
+						alt={heroImageAlt ?? summary}
+						sizes="(min-width: 1024px) 768px, 100vw"
+						className="mx-auto rounded-2xl"
+					/>
+				</div>
+			) : null}
 			{heroCaption ? (
 				<p className="text-center text-sm italic text-slate-500 dark:text-slate-400">{heroCaption}</p>
 			) : null}
@@ -176,16 +194,57 @@ const BlogHeader = ({
 }
 
 const ImageWithCaption = ({
-  src,
-  caption,
-  alt = '',
+	imageKey,
+	caption,
+	alt,
+	sizes = '(min-width: 768px) 640px, 100vw',
 }: {
-  src: string
-  caption: string
-  alt?: string
+	imageKey: string
+	caption: string
+	alt?: string
+	sizes?: string
 }) => (
-  <figure className="my-10 space-y-4 text-center">
-    <img src={src} alt={alt} className="mx-auto rounded-xl" />
-    <figcaption className="text-sm italic text-slate-500 dark:text-slate-400">{caption}</figcaption>
-  </figure>
+	<figure className="my-10 space-y-4 text-center">
+		<ResponsiveImage
+			postSlug={postMeta.slug}
+			imageKey={imageKey}
+			alt={alt ?? caption}
+			sizes={sizes}
+			className="mx-auto rounded-xl"
+		/>
+		<figcaption className="text-sm italic text-slate-500 dark:text-slate-400">{caption}</figcaption>
+	</figure>
 )
+
+const ResponsiveImage = ({
+	postSlug,
+	imageKey,
+	alt,
+	sizes,
+	className,
+}: {
+	postSlug: string
+	imageKey: string
+	alt: string
+	sizes: string
+	className?: string
+}) => {
+	const data = getPostImage(postSlug, imageKey)
+	return (
+		<picture>
+			<source srcSet={data.srcSet} type="image/webp" sizes={sizes} />
+			<img
+				src={data.src}
+				alt={alt}
+				width={data.width}
+				height={data.height}
+				sizes={sizes}
+				srcSet={data.srcSet}
+				className={className}
+				loading="lazy"
+				decoding="async"
+				style={{ backgroundImage: `url(${data.placeholder})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+			/>
+		</picture>
+	)
+}

@@ -19,6 +19,7 @@ export default async function Home() {
 						</span>
 						<Link
 							href={`/blog/${post.slug}`}
+							prefetch
 							className="flex-1 text-lg font-semibold text-slate-900 transition hover:text-blue-600"
 						>
 							{post.title}

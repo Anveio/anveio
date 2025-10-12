@@ -55,7 +55,7 @@ export async function getAdjacentPosts(
 
 	if (index === -1) {
 		return { newer: null, older: null }
-}
+	}
 
 	const newer = index > 0 ? posts[index - 1] : null
 	const older = index < posts.length - 1 ? posts[index + 1] : null
