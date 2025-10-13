@@ -54,5 +54,5 @@ function hasOwnProperty<T extends object, K extends PropertyKey>(
 	object: T,
 	key: K,
 ): key is K & keyof T {
-	return Object.prototype.hasOwnProperty.call(object, key)
+	return  Object.hasOwn(object, key)
 }

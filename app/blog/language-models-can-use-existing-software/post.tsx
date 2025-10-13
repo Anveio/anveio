@@ -6,10 +6,10 @@ import { definePost } from '@/lib/posts/definePost'
 
 const postMeta = {
 	slug: 'language-models-can-use-existing-software',
-	title: 'Language models can use existing software',
+	title: 'Language models can (and should) use existing software',
 	summary:
 		'Teach AI to speak the protocols we already use so it can operate the software we already have.',
-	publishedAt: '2025-02-05T00:00:00.000Z',
+	publishedAt: '2024-02-05T00:00:00.000Z',
 	tags: ['ai', 'platforms'] as const,
 	openGraphImage: {
 		type: 'dynamic' as const,

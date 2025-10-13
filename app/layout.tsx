@@ -25,9 +25,12 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
-      <body className="layout-body">
-        <div className="layout-shell">
+    <html
+      lang="en"
+      className="[color-scheme:light_dark] [font-synthesis:none] [text-rendering:optimizeLegibility]"
+    >
+      <body className="m-0 flex min-h-screen justify-center bg-slate-50 text-slate-900 [font-feature-settings:'kern','liga'] leading-[1.6] dark:bg-slate-950 dark:text-slate-200">
+        <div className="flex min-h-screen w-full max-w-[72ch] flex-col px-[clamp(1.75rem,5vw,3.5rem)] py-0">
           <ConvexClientProvider>{children}</ConvexClientProvider>
         </div>
       </body>
