@@ -2,8 +2,8 @@ import 'server-only'
 
 import { cache } from 'react'
 
-import { codePostsMeta } from './posts/codePosts'
-import type { PostMeta } from './posts/types'
+import type { PostMeta } from './posts/definePost'
+import { listCanonicalPosts } from './posts/registry'
 
 const isoFormatter = new Intl.DateTimeFormat('en-US', {
 	year: 'numeric',
@@ -34,16 +34,21 @@ export function formatListingDate(isoDate: string): string {
 	return listingFormatter.format(parsed)
 }
 
-const loadAllPosts = cache(async (): Promise<PostMeta[]> => {
-	const posts = [...codePostsMeta]
+const loadAllPosts = cache(async () => {
+	const posts = Array.from(
+		listCanonicalPosts(),
+		(entry) => entry.definition.meta,
+	)
+
 	posts.sort(
 		(a, b) =>
 			new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime(),
 	)
+
 	return posts
 })
 
-export async function getAllPosts(): Promise<PostMeta[]> {
+export async function getAllPosts() {
 	return loadAllPosts()
 }
 

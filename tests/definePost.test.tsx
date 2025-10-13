@@ -23,6 +23,7 @@ describe('definePost', () => {
 		})
 
 		expect(post.slug).toBe(meta.slug)
+		expect(post.legacySlugs).toEqual([])
 		expect(post.meta).toStrictEqual(meta)
 
 		const metadata = post.generateMetadata()
@@ -72,5 +73,37 @@ describe('definePost', () => {
 				'Expected openGraph.modifiedTime to be present for article metadata',
 			)
 		}
+	})
+
+	it('normalises slugs and legacy slugs when omitted or provided', () => {
+		const post = definePost({
+			meta: {
+				title: '  Hello, World!  ',
+				summary: 'With default slug generation.',
+				publishedAt: '2024-05-01T12:00:00Z',
+				legacySlugs: ['Hello World', 'HELLO-WORLD', 'hello-world'],
+			},
+			component: () => <article>Hello world</article>,
+		})
+
+		expect(post.slug).toBe('hello-world')
+		expect(post.legacySlugs).toEqual([])
+		expect(post.meta.slug).toBe('hello-world')
+	})
+
+	it('filters duplicates and canonical slug from legacy slugs', () => {
+		const post = definePost({
+			meta: {
+				title: 'Slugged',
+				summary: 'Testing legacy handling.',
+				publishedAt: '2024-06-10T00:00:00Z',
+				slug: 'custom-slug',
+				legacySlugs: ['custom-slug', ' previous-slug ', 'Previous Slug'],
+			},
+			component: () => <article>Slugged</article>,
+		})
+
+		expect(post.slug).toBe('custom-slug')
+		expect(post.legacySlugs).toEqual(['previous-slug'])
 	})
 })

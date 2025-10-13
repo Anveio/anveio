@@ -26,7 +26,7 @@ npm run dev   # http://localhost:3000
 
 ## Blog Architecture
 
-Posts are authored directly in the repository—either as Markdown files under `content/posts` or as React modules when richer layouts are required. Git is the revision history, and publishing is as simple as merging to `main`.
+Posts are authored directly in the repository as React modules (with Markdown still available for lightweight essays). Each module calls `registerPost(definePost({...}))` to describe its metadata; the registry then drives static generation, home-page listings, RSS, and—critically—locks the canonical slug in code so re-organising files never breaks URLs. If a post moves, add the old slug to `legacySlugs` and the app will emit a static 308 redirect to preserve SEO. New posts only need an entry in `lib/posts/registry.imports.ts` so their module executes during the build.
 
 The Convex backend remains dedicated to authentication (Better Auth component) and future dynamic features. No Convex tables store post content anymore.
 

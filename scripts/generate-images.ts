@@ -89,7 +89,11 @@ async function main(): Promise<void> {
 				await copyFile(absolute, path.join(outputDir, `${baseName}-original${ext}`))
 			}
 
-			const postManifest = (manifest[slug] ??= {})
+			if (!Object.hasOwn(manifest, slug)) {
+				manifest[slug] = {}
+			}
+
+			const postManifest = manifest[slug]
 			postManifest[baseName] = {
 				width: metadata.width,
 				height: metadata.height,
