@@ -1,9 +1,13 @@
-import type { PropsWithChildren } from 'react'
 import Link from 'next/link'
 
-import { getPostImage } from '@/lib/images/posts'
-import { definePost } from '@/lib/posts/definePost'
+import {
+	Article,
+	BlogHeader,
+	ImageWithCaption,
+	Section,
+} from '@/components/blog/primitives'
 import type { PostMetaInput } from '@/lib/posts/definePost'
+import { definePost } from '@/lib/posts/definePost'
 import { registerPost } from '@/lib/posts/registry'
 
 const postMeta: PostMetaInput = {
@@ -28,12 +32,15 @@ const post = registerPost(
 				<main className="flex-1 py-10">
 					<Article>
 						<BlogHeader
+							postSlug={post.slug}
 							title={postMeta.title}
 							summary={postMeta.summary}
 							publishedAt={postMeta.publishedAt}
-							heroImageKey="cover"
-							heroImageAlt="Illustration representing language models collaborating with existing software"
-							heroCaption={`Future generations will look back at our limited view that language models could "only" generate text meant for humans and think: "How could they have missed what was right in front of their eyes?"`}
+							hero={{
+								key: 'cover',
+								alt: 'Illustration representing language models collaborating with existing software',
+								caption: `Future generations will look back at our limited view that language models could "only" generate text meant for humans and think: "How could they have missed what was right in front of their eyes?"`,
+							}}
 						/>
 						<Section>
 							<Section.Header>A Beautiful Future</Section.Header>
@@ -90,6 +97,7 @@ const post = registerPost(
 							</p>
 							<p>Pick your favorite spot somewhere on the line:</p>
 							<ImageWithCaption
+								postSlug={post.slug}
 								imageKey="platform-spectrum"
 								caption="Your company’s design system and component libraries are way on the left, off the chart."
 							/>
@@ -243,140 +251,3 @@ const post = registerPost(
 )
 
 export const postDefinition = post
-
-const Article = ({ children }: PropsWithChildren) => (
-	<article className="prose prose-slate mx-auto max-w-3xl dark:prose-invert">
-		{children}
-	</article>
-)
-
-const SectionBase = ({ children }: PropsWithChildren) => (
-	<section className="space-y-6">{children}</section>
-)
-
-const SectionHeader = ({ children }: PropsWithChildren) => (
-	<h2 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
-		{children}
-	</h2>
-)
-
-const Section = Object.assign(SectionBase, {
-	Header: SectionHeader,
-})
-
-const BlogHeader = ({
-	title,
-	summary,
-	publishedAt,
-	heroCaption,
-	heroImageKey,
-	heroImageAlt,
-}: {
-	title: string
-	summary: string
-	publishedAt: string
-	heroCaption?: string
-	heroImageKey?: string
-	heroImageAlt?: string
-}) => {
-	const formattedDate = new Intl.DateTimeFormat('en-US', {
-		year: 'numeric',
-		month: 'long',
-		day: 'numeric',
-	}).format(new Date(publishedAt))
-
-	return (
-		<header className="space-y-4">
-			<p className="text-center text-sm font-medium text-slate-500 dark:text-slate-400">
-				Published {formattedDate}
-			</p>
-			<h1 className="text-center text-3xl font-semibold tracking-tight text-slate-900 dark:text-slate-100">
-				{title}
-			</h1>
-			<p className="text-center text-base text-slate-600 dark:text-slate-300">
-				{summary}
-			</p>
-			{heroImageKey ? (
-				<div className="mx-auto max-w-3xl">
-					<ResponsiveImage
-						postSlug={post.slug}
-						imageKey={heroImageKey}
-						alt={heroImageAlt ?? summary}
-						sizes="(min-width: 1024px) 768px, 100vw"
-						className="mx-auto rounded-2xl"
-					/>
-				</div>
-			) : null}
-			{heroCaption ? (
-				<p className="text-center text-sm italic text-slate-500 dark:text-slate-400">
-					{heroCaption}
-				</p>
-			) : null}
-		</header>
-	)
-}
-
-const ImageWithCaption = ({
-	imageKey,
-	caption,
-	alt,
-	sizes = '(min-width: 768px) 640px, 100vw',
-}: {
-	imageKey: string
-	caption: string
-	alt?: string
-	sizes?: string
-}) => (
-	<figure className="my-10 space-y-4 text-center">
-		<ResponsiveImage
-			postSlug={post.slug}
-			imageKey={imageKey}
-			alt={alt ?? caption}
-			sizes={sizes}
-			className="mx-auto rounded-xl"
-		/>
-		<figcaption className="text-sm italic text-slate-500 dark:text-slate-400">
-			{caption}
-		</figcaption>
-	</figure>
-)
-
-const ResponsiveImage = ({
-	postSlug,
-	imageKey,
-	alt,
-	sizes,
-	className,
-}: {
-	postSlug: string
-	imageKey: string
-	alt: string
-	sizes: string
-	className?: string
-}) => {
-	const data = getPostImage(postSlug, imageKey)
-	const mergedClassName = className
-		? `h-auto w-full max-w-full ${className}`
-		: 'h-auto w-full max-w-full'
-	return (
-		<picture>
-			<source srcSet={data.srcSet} type="image/webp" sizes={sizes} />
-			<img
-				src={data.src}
-				alt={alt}
-				width={data.width}
-				height={data.height}
-				sizes={sizes}
-				srcSet={data.srcSet}
-				className={mergedClassName}
-				loading="lazy"
-				decoding="async"
-				style={{
-					backgroundImage: `url(${data.placeholder})`,
-					backgroundSize: 'cover',
-					backgroundPosition: 'center',
-				}}
-			/>
-		</picture>
-	)
-}

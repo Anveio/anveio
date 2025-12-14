@@ -26,9 +26,10 @@ type ImageManifest = Record<
 >
 
 const RESIZE_TARGETS = [480, 768, 1024, 1280, 1600]
-const RAW_ROOT = path.join(projectRoot(), 'lib/assets/raw-images')
-const PUBLIC_ROOT = path.join(projectRoot(), 'public/blog-assets')
-const MANIFEST_DEST = path.join(projectRoot(), 'lib/images/generated.ts')
+const BLOG_ROOT = path.join(projectRoot(), 'apps/blog')
+const RAW_ROOT = path.join(BLOG_ROOT, 'lib/assets/raw-images')
+const PUBLIC_ROOT = path.join(BLOG_ROOT, 'public/blog-assets')
+const MANIFEST_DEST = path.join(BLOG_ROOT, 'lib/images/generated.ts')
 
 async function main(): Promise<void> {
 	const manifest: ImageManifest = {}

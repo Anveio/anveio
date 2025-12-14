@@ -2,6 +2,8 @@
 
 This repository hosts my personal site and blog. The goal is to publish systems engineering essays with the kind of minimal, reader-first presentation you might expect from Dan Luu or other classic text-heavy blogs.
 
+The Next.js app itself lives at `apps/blog`; the root `npm` scripts proxy into that workspace.
+
 ## Stack
 
 - [Next.js](https://nextjs.org/) using the App Router with server-side rendering forced for every page
@@ -26,7 +28,7 @@ npm run dev   # http://localhost:3000
 
 ## Blog Architecture
 
-Posts are authored directly in the repository as React modules (with Markdown still available for lightweight essays). Each module calls `registerPost(definePost({...}))` to describe its metadata; the registry then drives static generation, home-page listings, RSS, and—critically—locks the canonical slug in code so re-organising files never breaks URLs. If a post moves, add the old slug to `legacySlugs` and the app will emit a static 308 redirect to preserve SEO. New posts only need an entry in `lib/posts/registry.imports.ts` so their module executes during the build.
+Posts are authored directly in the repository as React modules (with Markdown still available for lightweight essays). Each module calls `registerPost(definePost({...}))` to describe its metadata; the registry then drives static generation, home-page listings, RSS, and—critically—locks the canonical slug in code so re-organising files never breaks URLs. If a post moves, add the old slug to `legacySlugs` and the app will emit a static 308 redirect to preserve SEO. New posts only need an entry in `apps/blog/lib/posts/registry.imports.ts` so their module executes during the build.
 
 The Convex backend remains dedicated to authentication (Better Auth component) and future dynamic features. No Convex tables store post content anymore.
 
@@ -34,13 +36,13 @@ The Convex backend remains dedicated to authentication (Better Auth component) a
 
 There is a password-protected dashboard at `/admin`. For now it acts as a thin shell that proves authentication; all post authoring happens in the IDE.
 
-1. Copy `.env.example` to `.env.local`.
+1. Copy `apps/blog/.env.example` to `apps/blog/.env.local`.
 2. Provide values for:
    - `BETTER_AUTH_SECRET` – a long random string (32+ chars).
    - `RESEND_API_KEY` – the Resend credential for outbound email.
-   - `NEXT_PUBLIC_CONVEX_SITE_URL` and `NEXT_PUBLIC_CONVEX_URL` – Convex deployment metadata (copy from `npx convex dev --once`).
+   - `NEXT_PUBLIC_CONVEX_SITE_URL` and `NEXT_PUBLIC_CONVEX_URL` – Convex deployment metadata (copy from `cd apps/blog && npx convex dev --once`).
    - Optional: `AUTH_BASE_URL` to override the base URL used by Better Auth (defaults to Vercel-provided origin or `http://localhost:3000`).
-3. Deploy the same variables in Vercel (`vercel env pull` keeps local copies in sync) and mirror them into Convex with `npx convex env set`.
+3. Deploy the same variables in Vercel (`vercel env pull --cwd apps/blog` keeps local copies in sync) and mirror them into Convex with `npx convex env set`.
 4. Visit `/admin/login`, sign in, and you’ll be redirected to the dashboard.
 5. When you need to recreate the admin account, either:
    - open the Convex dashboard and run `dev.seedAdmin` with `{ email, password, name? }`, or

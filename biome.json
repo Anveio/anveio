@@ -34,8 +34,8 @@
       "!node_modules",
       "!dist",
       "!.next",
-      "!convex/_generated",
-      "!app/globals.css"
+      "!apps/blog/convex/_generated",
+      "!apps/blog/app/globals.css"
     ]
   },
   "vcs": {

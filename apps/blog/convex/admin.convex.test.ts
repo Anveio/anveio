@@ -9,9 +9,11 @@ const ADMIN_NAME = 'Site Admin'
 const INITIAL_ROLES = ['user'] as const
 const ADMIN_ROLES = ['user', 'admin'] as const
 
+const modules = import.meta.glob(['./**/*.ts', '!./**/*.convex.test.ts'])
+
 describe('admin.ensureRoles', () => {
   it('promotes a user to admin and is idempotent', async () => {
-    const t = convexTest(schema)
+    const t = convexTest(schema, modules)
 
     const insertedUserId = await t.run(async (ctx) => {
       const now = Date.now()
