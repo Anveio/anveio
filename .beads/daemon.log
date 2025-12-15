@@ -91,3 +91,553 @@ fatal: 'main' is already used by worktree at '/Users/shovonhasan/Documents/works
 [2025-12-14 16:32:00] Successfully re-established JSONL watch after 50ms
 [2025-12-14 16:32:00] JSONL file created: /Users/shovonhasan/Documents/workspaces/anveio-ai-blog/.beads/beads.jsonl
 [2025-12-14 16:32:00] JSONL removed/renamed, re-establishing watch
+[2025-12-14 16:52:48] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:52:48] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:52:48] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:52:48] Upgrading .beads/.gitignore...
+[2025-12-14 16:52:48] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:52:48] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:53:09] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:53:09] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:53:09] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:53:09] Upgrading .beads/.gitignore...
+[2025-12-14 16:53:09] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:53:09] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:53:14] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:53:14] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:53:14] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:53:14] Upgrading .beads/.gitignore...
+[2025-12-14 16:53:14] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:53:14] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:53:20] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:53:20] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:53:20] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:53:20] Upgrading .beads/.gitignore...
+[2025-12-14 16:53:20] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:53:20] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:53:25] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:53:25] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:53:25] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:53:25] Upgrading .beads/.gitignore...
+[2025-12-14 16:53:25] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:53:25] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:53:30] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:53:30] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:53:30] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:53:30] Upgrading .beads/.gitignore...
+[2025-12-14 16:53:30] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:53:30] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:53:35] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:53:35] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:53:35] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:53:35] Upgrading .beads/.gitignore...
+[2025-12-14 16:53:35] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:53:35] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:53:58] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:53:58] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:53:58] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:53:58] Upgrading .beads/.gitignore...
+[2025-12-14 16:53:58] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:53:58] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:54:04] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:54:04] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:04] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:04] Upgrading .beads/.gitignore...
+[2025-12-14 16:54:04] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:54:04] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:54:09] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:54:09] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:09] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:09] Upgrading .beads/.gitignore...
+[2025-12-14 16:54:09] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:54:09] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:54:14] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:54:14] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:14] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:14] Upgrading .beads/.gitignore...
+[2025-12-14 16:54:14] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:54:14] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:54:19] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:54:19] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:19] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:19] Upgrading .beads/.gitignore...
+[2025-12-14 16:54:19] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:54:19] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:54:24] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:54:24] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:24] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:24] Upgrading .beads/.gitignore...
+[2025-12-14 16:54:24] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:54:24] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:54:37] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:54:37] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:37] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:37] Upgrading .beads/.gitignore...
+[2025-12-14 16:54:37] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:54:37] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:54:42] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:54:42] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:42] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:42] Upgrading .beads/.gitignore...
+[2025-12-14 16:54:42] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:54:42] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:54:47] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:54:47] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:47] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:47] Upgrading .beads/.gitignore...
+[2025-12-14 16:54:47] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:54:47] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:54:59] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:54:59] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:59] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:54:59] Upgrading .beads/.gitignore...
+[2025-12-14 16:54:59] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:54:59] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:55:04] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:55:04] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:55:04] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:55:04] Upgrading .beads/.gitignore...
+[2025-12-14 16:55:04] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:55:04] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:55:12] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:55:12] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:55:12] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:55:12] Upgrading .beads/.gitignore...
+[2025-12-14 16:55:12] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:55:12] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:55:17] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:55:17] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:55:17] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:55:17] Upgrading .beads/.gitignore...
+[2025-12-14 16:55:17] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:55:17] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:55:27] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:55:27] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:55:27] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:55:27] Upgrading .beads/.gitignore...
+[2025-12-14 16:55:27] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:55:27] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
+[2025-12-14 16:55:33] Daemon started (interval: 5s, auto-commit: false, auto-push: false)
+[2025-12-14 16:55:33] Using database: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:55:33] Database opened: /Users/shovonhasan/Documents/workspaces/anveio/.beads/beads.db
+[2025-12-14 16:55:33] Upgrading .beads/.gitignore...
+[2025-12-14 16:55:33] Warning: failed to upgrade .gitignore: open .beads/.gitignore: no such file or directory
+[2025-12-14 16:55:33] Error: 
+DATABASE MISMATCH DETECTED!
+
+This database belongs to a different repository:
+  Database repo ID:  7d27b809
+  Current repo ID:   8e98b7f7
+
+This usually means:
+  1. You copied a .beads directory from another repo (don't do this!)
+  2. Git remote URL changed (run 'bd migrate --update-repo-id')
+  3. Database corruption
+  4. bd was upgraded and URL canonicalization changed
+
+Solutions:
+  - If remote URL changed: bd migrate --update-repo-id
+  - If bd was upgraded: bd migrate --update-repo-id
+  - If wrong database: rm -rf .beads && bd init
+  - If correct database: BEADS_IGNORE_REPO_MISMATCH=1 bd daemon
+    (Warning: This can cause data corruption across clones!)
+
